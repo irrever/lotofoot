@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+# Une seule exécution à la fois : deux envois simultanés se disputeraient les mêmes fichiers.
+concurrency:
+  group: grilles
+  cancel-in-progress: false
+
 jobs:
   grilles:
     runs-on: ubuntu-latest
@@ -26,7 +31,23 @@ jobs:
           git add grilles
           if git diff --cached --quiet; then
             echo "Aucun changement."
-          else
-            git commit -m "Grilles : mise à jour automatique"
-            git push
+            exit 0
           fi
+          git commit -m "Grilles : mise à jour automatique"
+          # Le dépôt peut être mis à jour pendant l'exécution (autres publications sur main) :
+          # on récupère la branche avant chaque envoi, et on recommence en cas de refus.
+          delai=2
+          for essai in 1 2 3 4; do
+            if git pull --rebase -q origin main && git push -q origin HEAD:main; then
+              echo "Grilles envoyées (essai $essai)."
+              exit 0
+            fi
+            git rebase --abort >/dev/null 2>&1 || true
+            if [ "$essai" -lt 4 ]; then
+              echo "Envoi refusé (essai $essai) ; nouvel essai dans $delai s."
+              sleep "$delai"
+              delai=$((delai * 2))
+            fi
+          done
+          echo "L'envoi des grilles a échoué après 4 essais." >&2
+          exit 1
