@@ -1,0 +1,56 @@
+name: Effet des absences (historique)
+
+on:
+  workflow_dispatch:
+    inputs:
+      saison:
+        description: 'Année de début de la saison étudiée (2024 pour 2024-25)'
+        required: false
+        default: '2024'
+
+permissions:
+  contents: write
+
+# Une seule exécution à la fois : elles écrivent dans le même fichier.
+concurrency:
+  group: effet-absences
+  cancel-in-progress: false
+
+jobs:
+  effet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Mesurer l'effet des absences
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_FOOTBALL_SAISON: ${{ inputs.saison || '2024' }}
+        run: python3 src/effet_absences.py
+      - name: Enregistrer le résultat
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/absences/effet_absences.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+            exit 0
+          fi
+          git commit -m "Effet des absences : mesure sur l'historique"
+          delai=2
+          for essai in 1 2 3 4; do
+            if git pull --rebase -q origin main && git push -q origin HEAD:main; then
+              echo "Résultat envoyé (essai $essai)."
+              exit 0
+            fi
+            git rebase --abort >/dev/null 2>&1 || true
+            if [ "$essai" -lt 4 ]; then
+              sleep "$delai"
+              delai=$((delai * 2))
+            fi
+          done
+          echo "L'envoi a échoué après 4 essais." >&2
+          exit 1
