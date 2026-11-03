@@ -1,0 +1,13 @@
+# Données téléchargées (contiennent les cotes des fichiers source : elles ne sont jamais publiées)
+data/raw/
+# Intermédiaires régénérés à chaque exécution
+data/teams_profiles.json
+data/teams_with_vectors.json
+data/model_doc.json
+# Grille de travail personnelle et versions construites localement
+data/grille_perso.json
+standalone/Lotofoot.html
+standalone/lotofoot-site.zip
+standalone/site/
+standalone/tests/
+__pycache__/

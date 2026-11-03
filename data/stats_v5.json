@@ -1,0 +1,311 @@
+{
+ "periode_stats": "2023-24 à 2025-26",
+ "periode_test": "2024-25 et 2025-26",
+ "periode_recent": "2026-27 (saison en cours, jusqu’au 1er novembre 2026)",
+ "n_matchs_test": 10935,
+ "n_matchs_recent": 1512,
+ "comparaison": [
+  {
+   "nom": "Probabilités moyennes de l’historique",
+   "erreur_test": 1.0752,
+   "precision_test": null,
+   "erreur_recent": 1.0713,
+   "precision_recent": null
+  },
+  {
+   "nom": "Modèle statistique (matchs d’un même championnat)",
+   "erreur_test": 1.0063,
+   "precision_test": 50.0,
+   "erreur_recent": 0.998,
+   "precision_recent": 49.7
+  },
+  {
+   "nom": "Elo seul (matchs d’un même championnat ; utilisé entre championnats)",
+   "erreur_test": 1.0112,
+   "precision_test": 49.5,
+   "erreur_recent": null,
+   "precision_recent": null
+  }
+ ],
+ "base_stats": [
+  {
+   "code": "F1",
+   "nom": "France L1",
+   "n": 918,
+   "H": 44.0,
+   "D": 23.7,
+   "A": 32.2
+  },
+  {
+   "code": "F2",
+   "nom": "France L2",
+   "n": 990,
+   "H": 42.1,
+   "D": 27.7,
+   "A": 30.2
+  },
+  {
+   "code": "E0",
+   "nom": "Angleterre PL",
+   "n": 1140,
+   "H": 43.2,
+   "D": 24.5,
+   "A": 32.4
+  },
+  {
+   "code": "E1",
+   "nom": "Angleterre Championship",
+   "n": 1656,
+   "H": 44.0,
+   "D": 26.0,
+   "A": 30.0
+  },
+  {
+   "code": "SP1",
+   "nom": "Espagne Liga",
+   "n": 1140,
+   "H": 45.8,
+   "D": 26.1,
+   "A": 28.2
+  },
+  {
+   "code": "SP2",
+   "nom": "Espagne Liga 2",
+   "n": 1386,
+   "H": 45.9,
+   "D": 27.7,
+   "A": 26.4
+  },
+  {
+   "code": "I1",
+   "nom": "Italie Serie A",
+   "n": 1140,
+   "H": 40.2,
+   "D": 28.0,
+   "A": 31.8
+  },
+  {
+   "code": "I2",
+   "nom": "Italie Serie B",
+   "n": 1140,
+   "H": 40.6,
+   "D": 32.4,
+   "A": 27.0
+  },
+  {
+   "code": "D1",
+   "nom": "Allemagne Bundesliga",
+   "n": 918,
+   "H": 42.0,
+   "D": 25.4,
+   "A": 32.6
+  },
+  {
+   "code": "D2",
+   "nom": "Allemagne 2. Bundesliga",
+   "n": 918,
+   "H": 44.1,
+   "D": 25.2,
+   "A": 30.7
+  },
+  {
+   "code": "N1",
+   "nom": "Pays-Bas Eredivisie",
+   "n": 918,
+   "H": 44.3,
+   "D": 25.4,
+   "A": 30.3
+  },
+  {
+   "code": "P1",
+   "nom": "Portugal Liga",
+   "n": 918,
+   "H": 42.6,
+   "D": 25.8,
+   "A": 31.6
+  },
+  {
+   "code": "B1",
+   "nom": "Belgique Pro League",
+   "n": 935,
+   "H": 43.0,
+   "D": 26.7,
+   "A": 30.3
+  },
+  {
+   "code": "T1",
+   "nom": "Turquie Super Lig",
+   "n": 1028,
+   "H": 45.5,
+   "D": 26.2,
+   "A": 28.3
+  },
+  {
+   "code": "SC0",
+   "nom": "Écosse Premiership",
+   "n": 684,
+   "H": 45.0,
+   "D": 24.9,
+   "A": 30.1
+  },
+  {
+   "code": "G1",
+   "nom": "Grèce Super League",
+   "n": 709,
+   "H": 42.0,
+   "D": 25.5,
+   "A": 32.4
+  }
+ ],
+ "top_equipes": [
+  {
+   "code": "F1",
+   "nom": "France L1",
+   "equipes": [
+    "Paris SG",
+    "Lens",
+    "Lille"
+   ]
+  },
+  {
+   "code": "F2",
+   "nom": "France L2",
+   "equipes": [
+    "Metz",
+    "Auxerre",
+    "Lorient"
+   ]
+  },
+  {
+   "code": "E0",
+   "nom": "Angleterre PL",
+   "equipes": [
+    "Arsenal",
+    "Man City",
+    "Liverpool"
+   ]
+  },
+  {
+   "code": "E1",
+   "nom": "Angleterre Championship",
+   "equipes": [
+    "Burnley",
+    "Leeds",
+    "Brighton"
+   ]
+  },
+  {
+   "code": "SP1",
+   "nom": "Espagne Liga",
+   "equipes": [
+    "Barcelona",
+    "Real Madrid",
+    "Ath Madrid"
+   ]
+  },
+  {
+   "code": "SP2",
+   "nom": "Espagne Liga 2",
+   "equipes": [
+    "Osasuna",
+    "Levante",
+    "Santander"
+   ]
+  },
+  {
+   "code": "I1",
+   "nom": "Italie Serie A",
+   "equipes": [
+    "Inter",
+    "Napoli",
+    "Roma"
+   ]
+  },
+  {
+   "code": "I2",
+   "nom": "Italie Serie B",
+   "equipes": [
+    "Venezia",
+    "Frosinone",
+    "Monza"
+   ]
+  },
+  {
+   "code": "D1",
+   "nom": "Allemagne Bundesliga",
+   "equipes": [
+    "Bayern Munich",
+    "Dortmund",
+    "Leverkusen"
+   ]
+  },
+  {
+   "code": "D2",
+   "nom": "Allemagne 2. Bundesliga",
+   "equipes": [
+    "St Pauli",
+    "Heidenheim",
+    "Freiburg"
+   ]
+  },
+  {
+   "code": "N1",
+   "nom": "Pays-Bas Eredivisie",
+   "equipes": [
+    "PSV Eindhoven",
+    "Feyenoord",
+    "Ajax"
+   ]
+  },
+  {
+   "code": "P1",
+   "nom": "Portugal Liga",
+   "equipes": [
+    "Sp Lisbon",
+    "Benfica",
+    "Porto"
+   ]
+  },
+  {
+   "code": "B1",
+   "nom": "Belgique Pro League",
+   "equipes": [
+    "St. Gilloise",
+    "Club Brugge",
+    "Genk"
+   ]
+  },
+  {
+   "code": "T1",
+   "nom": "Turquie Super Lig",
+   "equipes": [
+    "Galatasaray",
+    "Fenerbahce",
+    "Trabzonspor"
+   ]
+  },
+  {
+   "code": "SC0",
+   "nom": "Écosse Premiership",
+   "equipes": [
+    "Celtic",
+    "Rangers",
+    "Hearts"
+   ]
+  },
+  {
+   "code": "G1",
+   "nom": "Grèce Super League",
+   "equipes": [
+    "Olympiakos",
+    "AEK",
+    "PAOK"
+   ]
+  }
+ ],
+ "parametres_elo": {
+  "HA": 90,
+  "S": 250,
+  "c": 0.6
+ }
+}

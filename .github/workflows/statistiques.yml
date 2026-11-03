@@ -1,0 +1,61 @@
+name: Statistiques Lotofoot
+
+on:
+  schedule:
+    - cron: '30 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Une seule mise à jour à la fois : elles écrivent dans les mêmes fichiers.
+concurrency:
+  group: statistiques
+  cancel-in-progress: false
+
+jobs:
+  statistiques:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - name: Installer les dépendances
+        run: python3 -m pip install -r requirements.txt
+      - name: Récupérer les résultats, mettre à jour le modèle, le journal et le bilan
+        run: |
+          mkdir -p data/raw
+          sh src/boucle.sh
+      - name: Enregistrer les données si elles ont changé
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp standalone/site/index.html standalone/site/donnees.json standalone/site/sw.js \
+             standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
+          git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
+                  data/donnees_publiees.json data/model_state.json data/historique data/bilan data/journal
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+            exit 0
+          fi
+          git commit -m "Statistiques : mise à jour automatique"
+          # Le dépôt peut être mis à jour pendant l'exécution (grilles, autres publications) :
+          # on récupère la branche avant chaque envoi, et on recommence en cas de refus.
+          delai=2
+          for essai in 1 2 3 4; do
+            if git pull --rebase -q origin main && git push -q origin HEAD:main; then
+              echo "Données envoyées (essai $essai)."
+              exit 0
+            fi
+            git rebase --abort >/dev/null 2>&1 || true
+            if [ "$essai" -lt 4 ]; then
+              echo "Envoi refusé (essai $essai) ; nouvel essai dans $delai s."
+              sleep "$delai"
+              delai=$((delai * 2))
+            fi
+          done
+          echo "L'envoi des données a échoué après 4 essais." >&2
+          exit 1

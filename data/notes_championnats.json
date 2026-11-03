@@ -1,0 +1,119 @@
+{
+ "echelle": 100,
+ "points_elo_par_point_de_note": 4,
+ "methode": "Classement estimé par jugement (non mesurable avec les données : aucun match entre championnats). 1 point de note sur 100 = 4 points Elo d’écart.",
+ "notes": [
+  {
+   "rang": 1,
+   "code": "E0",
+   "nom": "Premier League (Angleterre)",
+   "pays": "Angleterre",
+   "note": 100.0
+  },
+  {
+   "rang": 2,
+   "code": "SP1",
+   "nom": "Liga (Espagne)",
+   "pays": "Espagne",
+   "note": 92.5
+  },
+  {
+   "rang": 3,
+   "code": "I1",
+   "nom": "Serie A (Italie)",
+   "pays": "Italie",
+   "note": 90.0
+  },
+  {
+   "rang": 4,
+   "code": "D1",
+   "nom": "Bundesliga (Allemagne)",
+   "pays": "Allemagne",
+   "note": 87.5
+  },
+  {
+   "rang": 5,
+   "code": "F1",
+   "nom": "Ligue 1 (France)",
+   "pays": "France",
+   "note": 70.0
+  },
+  {
+   "rang": 6,
+   "code": "P1",
+   "nom": "Liga Portugal",
+   "pays": "Portugal",
+   "note": 65.0
+  },
+  {
+   "rang": 7,
+   "code": "N1",
+   "nom": "Eredivisie (Pays-Bas)",
+   "pays": "Pays-Bas",
+   "note": 60.0
+  },
+  {
+   "rang": 8,
+   "code": "E1",
+   "nom": "Championship (Angleterre)",
+   "pays": "Angleterre",
+   "note": 60.0
+  },
+  {
+   "rang": 9,
+   "code": "D2",
+   "nom": "2. Bundesliga (Allemagne)",
+   "pays": "Allemagne",
+   "note": 57.5
+  },
+  {
+   "rang": 10,
+   "code": "B1",
+   "nom": "Pro League (Belgique)",
+   "pays": "Belgique",
+   "note": 55.0
+  },
+  {
+   "rang": 11,
+   "code": "T1",
+   "nom": "Super Lig (Turquie)",
+   "pays": "Turquie",
+   "note": 52.5
+  },
+  {
+   "rang": 12,
+   "code": "SP2",
+   "nom": "Liga 2 (Espagne)",
+   "pays": "Espagne",
+   "note": 52.5
+  },
+  {
+   "rang": 13,
+   "code": "G1",
+   "nom": "Super League (Grèce)",
+   "pays": "Grèce",
+   "note": 50.0
+  },
+  {
+   "rang": 14,
+   "code": "I2",
+   "nom": "Serie B (Italie)",
+   "pays": "Italie",
+   "note": 50.0
+  },
+  {
+   "rang": 15,
+   "code": "F2",
+   "nom": "Ligue 2 (France)",
+   "pays": "France",
+   "note": 47.5
+  },
+  {
+   "rang": 16,
+   "code": "SC0",
+   "nom": "Premiership (Écosse)",
+   "pays": "Écosse",
+   "note": 45.0
+  }
+ ]
+}
