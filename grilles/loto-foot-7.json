@@ -1,45 +1,95 @@
 {
  "format": 7,
- "numero": 138,
- "nom": "Loto Foot 7 · grille N°138",
- "validite": "jeudi 5 novembre 2026 à 20 h 55",
- "source": "ruedesjoueurs.com",
- "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-7/numero-7-138-2026.html",
- "matchs": [
+ "grilles": [
   {
-   "domicile": "Leverkusen",
-   "exterieur": "Marseille",
-   "libelle": "Leverkusen – Marseille"
+   "numero": 137,
+   "nom": "Loto Foot 7 · grille N°137",
+   "cloture": "2026-11-03T20:55:00+01:00",
+   "validite": "mardi 3 novembre 2026 à 20 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-7/numero-7-137-2026.html",
+   "matchs": [
+    {
+     "domicile": "Villarreal",
+     "exterieur": "Paris SG",
+     "libelle": "Villarreal – Paris SG"
+    },
+    {
+     "domicile": "Bodø/Glimt",
+     "exterieur": "Lille",
+     "libelle": "Bodø/Glimt – Lille"
+    },
+    {
+     "domicile": "Ath Madrid",
+     "exterieur": "Bayern Munich",
+     "libelle": "Atl. Madrid – Bayern Munich"
+    },
+    {
+     "domicile": "Man United",
+     "exterieur": "Roma",
+     "libelle": "Man. United – AS Rome"
+    },
+    {
+     "domicile": "LASK Linz",
+     "exterieur": "Slo.Bratislava",
+     "libelle": "LASK Linz – Slo.Bratislava"
+    },
+    {
+     "domicile": "Feyenoord",
+     "exterieur": "Inter",
+     "libelle": "Feyenoord – Inter Milan"
+    },
+    {
+     "domicile": "Barcelona",
+     "exterieur": "Aston Villa",
+     "libelle": "FC Barcelone – Aston Villa"
+    }
+   ]
   },
   {
-   "domicile": "AZ Alkmaar",
-   "exterieur": "Juventus",
-   "libelle": "Az Alkmaar – Juventus Turin"
-  },
-  {
-   "domicile": "Celta",
-   "exterieur": "St. Gilloise",
-   "libelle": "Celta Vigo – Saint-Gilloise"
-  },
-  {
-   "domicile": "Celtic",
-   "exterieur": "Besiktas",
-   "libelle": "Celtic – Besiktas"
-  },
-  {
-   "domicile": "Sunderland",
-   "exterieur": "Dinamo Zagreb",
-   "libelle": "Sunderland – Dinamo Zagreb"
-  },
-  {
-   "domicile": "Getafe",
-   "exterieur": "Brighton",
-   "libelle": "Getafe – Brighton Hove"
-  },
-  {
-   "domicile": "Monaco",
-   "exterieur": "Nordsjaelland",
-   "libelle": "Monaco – Nordsjaelland"
+   "numero": 138,
+   "nom": "Loto Foot 7 · grille N°138",
+   "cloture": "2026-11-05T20:55:00+01:00",
+   "validite": "jeudi 5 novembre 2026 à 20 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-7/numero-7-138-2026.html",
+   "matchs": [
+    {
+     "domicile": "Leverkusen",
+     "exterieur": "Marseille",
+     "libelle": "Leverkusen – Marseille"
+    },
+    {
+     "domicile": "AZ Alkmaar",
+     "exterieur": "Juventus",
+     "libelle": "Az Alkmaar – Juventus Turin"
+    },
+    {
+     "domicile": "Celta",
+     "exterieur": "St. Gilloise",
+     "libelle": "Celta Vigo – Saint-Gilloise"
+    },
+    {
+     "domicile": "Celtic",
+     "exterieur": "Besiktas",
+     "libelle": "Celtic – Besiktas"
+    },
+    {
+     "domicile": "Sunderland",
+     "exterieur": "Dinamo Zagreb",
+     "libelle": "Sunderland – Dinamo Zagreb"
+    },
+    {
+     "domicile": "Getafe",
+     "exterieur": "Brighton",
+     "libelle": "Getafe – Brighton Hove"
+    },
+    {
+     "domicile": "Monaco",
+     "exterieur": "Nordsjaelland",
+     "libelle": "Monaco – Nordsjaelland"
+    }
+   ]
   }
  ]
 }

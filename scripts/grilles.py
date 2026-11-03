@@ -1,8 +1,8 @@
-"""Charge les grilles Loto Foot publiées (7, 8 et 15 matchs) dans grilles/.
+"""Charge les grilles Loto Foot ouvertes (7, 8 et 15 matchs) dans grilles/.
 
-Pour chaque format, on lit la page de la dernière grille publiée par ruedesjoueurs.com et on n'en
-retient que la liste des matchs, la fin de validation et le numéro de grille : ni pronostics, ni cotes.
-Écrit grilles/loto-foot-<format>.json (seulement si la grille change) et grilles/statut.json.
+Pour chaque format, on examine les dernières grilles listées par ruedesjoueurs.com et on ne garde que
+celles dont la clôture n'est pas encore passée. Pour chacune : le numéro, l'heure de clôture, la liste
+des matchs. Ni pronostics, ni cotes. Écrit grilles/loto-foot-<format>.json et grilles/statut.json.
 
 Bibliothèque standard uniquement. Usage : python3 scripts/grilles.py [dossier de sortie]
 """
@@ -14,12 +14,17 @@ import re
 import sys
 import time
 import urllib.request
+from zoneinfo import ZoneInfo
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://www.ruedesjoueurs.com'
 UA = 'Lotofoot-grilles/1.0 (+https://github.com/irrever/lotofoot)'
 FORMATS = (7, 8, 15)
-PAUSE = 3  # secondes entre deux requêtes
+CANDIDATES = 3  # nombre de grilles les plus récentes examinées pour chaque format
+PAUSE = 2  # secondes entre deux requêtes
+PARIS = ZoneInfo('Europe/Paris')
+MOIS = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin': 6, 'juillet': 7, 'août': 8,
+        'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
 # Noms utilisés sur le site, quand ils diffèrent de ceux de la base de l'application
 CORRESPONDANCES = {
@@ -28,6 +33,8 @@ CORRESPONDANCES = {
     'FC Séville': 'Sevilla', 'Annecy FC': 'Annecy', 'Man. United': 'Man United', 'Inter Milan': 'Inter',
     'Naples': 'Napoli', 'Como 1907': 'Como', 'Lazio Rome': 'Lazio', 'CF Valence': 'Valencia',
     'Atl. Madrid': 'Ath Madrid', 'FC Barcelone': 'Barcelona',
+    'AS Rome': 'Roma', 'FC Porto': 'Porto', 'Club Bruges': 'Club Brugge', 'Man. City': 'Man City',
+    'AEK Athènes': 'AEK', 'Betis Séville': 'Betis',
 }
 
 
@@ -44,19 +51,28 @@ def lignes(page):
     return [re.sub(r'\s+', ' ', l).strip() for l in texte.split('\n') if l.strip()]
 
 
-def derniere_grille(format_):
-    """Renvoie (année, numéro, adresse) de la grille la plus récente listée pour ce format."""
-    page = lire('%s/paris-sportifs/lotofoot-%d.html' % (SITE, format_))
-    motif = r'href="(/paris-sportifs/lotofoot-%d/numero-%d-(\d+)-(\d{4})[^"]*\.html)"' % (format_, format_)
-    trouvees = [(int(a), int(n), href) for href, n, a in re.findall(motif, page)]
-    if not trouvees:
-        raise ValueError('aucune grille listée sur la rubrique')
-    return max(trouvees)
+def cloture_de(texte):
+    """« mardi 3 novembre 2026 à 20 h 55 » -> date et heure de Paris, ou None."""
+    m = re.search(r'(\d{1,2}) ([a-zéûèô]+) (\d{4}) à (\d{1,2}) h (\d{2})', texte)
+    if not m or m.group(2) not in MOIS:
+        return None
+    return dt.datetime(int(m.group(3)), MOIS[m.group(2)], int(m.group(1)), int(m.group(4)), int(m.group(5)), tzinfo=PARIS)
 
 
-def lire_grille(format_, adresse):
-    """Renvoie (liste de (domicile, extérieur) tels qu'écrits sur le site, fin de validation)."""
-    texte = lignes(lire(SITE + adresse))
+def lire_grille(format_, href):
+    """Renvoie (matchs, texte de clôture, date de clôture), ou None si le site n'affiche plus de clôture."""
+    texte = lignes(lire(SITE + href))
+    cloture = None
+    for l in texte:
+        m = re.search(r'clôture le ([^)]+)\)', l)
+        if m:
+            cloture = m.group(1).strip()
+            break
+    if cloture is None:
+        return None
+    date = cloture_de(cloture)
+    if date is None:
+        raise ValueError('date de clôture illisible : %s' % cloture)
     debut = next((i for i, l in enumerate(texte) if 'Analyse des matchs' in l), None)
     if debut is None:
         raise ValueError('liste des matchs introuvable sur la page')
@@ -69,17 +85,41 @@ def lire_grille(format_, adresse):
             matchs.append((m.group(1).strip(), m.group(2).strip()))
     if len(matchs) != format_:
         raise ValueError('%d matchs trouvés pour un format de %d' % (len(matchs), format_))
-    validite = ''
-    for l in texte:
-        m = re.search(r'clôture le ([^)]+)\)', l)
-        if m:
-            validite = m.group(1).strip()
-            break
-    return matchs, validite
+    return matchs, cloture, date
 
 
 def canonique(nom):
     return CORRESPONDANCES.get(nom, nom)
+
+
+def grilles_ouvertes(format_):
+    """Grilles dont la clôture n'est pas passée, de la plus proche à la plus lointaine."""
+    index = lire('%s/paris-sportifs/lotofoot-%d.html' % (SITE, format_))
+    motif = r'href="(/paris-sportifs/lotofoot-%d/numero-%d-(\d+)-(\d{4})[^"]*\.html)"' % (format_, format_)
+    recentes = sorted({(int(a), int(n), href) for href, n, a in re.findall(motif, index)}, reverse=True)
+    if not recentes:
+        raise ValueError('aucune grille listée sur la rubrique')
+    maintenant = dt.datetime.now(dt.timezone.utc)
+    ouvertes = []
+    for annee, numero, href in recentes[:CANDIDATES]:
+        time.sleep(PAUSE)
+        lu = lire_grille(format_, href)
+        if lu is None:
+            continue
+        matchs, cloture, date = lu
+        if date <= maintenant:
+            continue
+        ouvertes.append({
+            'numero': numero,
+            'nom': 'Loto Foot %d · grille N°%d' % (format_, numero),
+            'cloture': date.isoformat(),
+            'validite': cloture,
+            'source': 'ruedesjoueurs.com',
+            'url': SITE + href,
+            'matchs': [{'domicile': canonique(a), 'exterieur': canonique(b), 'libelle': '%s – %s' % (a, b)}
+                       for a, b in matchs],
+        })
+    return sorted(ouvertes, key=lambda g: g['cloture'])
 
 
 def equipes_connues():
@@ -105,33 +145,22 @@ def main(sortie):
     echecs = 0
     for format_ in FORMATS:
         try:
-            annee, numero, adresse = derniere_grille(format_)
-            time.sleep(PAUSE)
-            matchs, validite = lire_grille(format_, adresse)
-            grille = {
-                'format': format_,
-                'numero': numero,
-                'nom': 'Loto Foot %d · grille N°%d' % (format_, numero),
-                'validite': validite,
-                'source': 'ruedesjoueurs.com',
-                'url': SITE + adresse,
-                'matchs': [],
-            }
+            ouvertes = grilles_ouvertes(format_)
             inconnues = []
-            for a, b in matchs:
-                d, e = canonique(a), canonique(b)
-                for nom in (d, e):
-                    if nom not in connues and nom not in inconnues:
-                        inconnues.append(nom)
-                grille['matchs'].append({'domicile': d, 'exterieur': e, 'libelle': '%s – %s' % (a, b)})
-            ecrire_si_change(os.path.join(sortie, 'loto-foot-%d.json' % format_), grille)
-            statut['formats'][str(format_)] = {'ok': True, 'numero': numero, 'equipes_inconnues': inconnues, 'erreur': None}
-            detail = (', équipes inconnues : ' + ', '.join(inconnues)) if inconnues else ''
-            print('Loto Foot %d : grille n°%d, %d matchs%s' % (format_, numero, len(matchs), detail))
-        except Exception as e:  # une erreur sur un format n'empêche pas les autres
+            for g in ouvertes:
+                for m in g['matchs']:
+                    for nom in (m['domicile'], m['exterieur']):
+                        if nom not in connues and nom not in inconnues:
+                            inconnues.append(nom)
+            ecrire_si_change(os.path.join(sortie, 'loto-foot-%d.json' % format_), {'format': format_, 'grilles': ouvertes})
+            statut['formats'][str(format_)] = {'ok': True, 'grilles_ouvertes': [g['numero'] for g in ouvertes],
+                                               'equipes_inconnues': inconnues, 'erreur': None}
+            detail = ', '.join('n°%d clôture %s' % (g['numero'], g['validite']) for g in ouvertes) or 'aucune grille ouverte'
+            print('Loto Foot %d : %s%s' % (format_, detail, (' ; équipes inconnues : ' + ', '.join(inconnues)) if inconnues else ''))
+        except Exception as e:  # une erreur sur un format n'empêche pas les autres ; l'ancien fichier est gardé
             echecs += 1
             statut['formats'][str(format_)] = {'ok': False, 'erreur': str(e)}
-            print('Loto Foot %d : échec (%s) ; la grille précédente est gardée' % (format_, e), file=sys.stderr)
+            print('Loto Foot %d : échec (%s) ; la version précédente est gardée' % (format_, e), file=sys.stderr)
         time.sleep(PAUSE)
     ecrire_si_change(os.path.join(sortie, 'statut.json'), statut)
     return 1 if echecs else 0

@@ -1,85 +1,175 @@
 {
  "format": 15,
- "numero": 92,
- "nom": "Loto Foot 15 · grille N°92",
- "validite": "samedi 7 novembre 2026 à 20 h 40",
- "source": "ruedesjoueurs.com",
- "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-92-2026.html",
- "matchs": [
+ "grilles": [
   {
-   "domicile": "Paris SG",
-   "exterieur": "Troyes",
-   "libelle": "Paris SG – Troyes"
+   "numero": 91,
+   "nom": "Loto Foot 15 · grille N°91",
+   "cloture": "2026-11-03T20:55:00+01:00",
+   "validite": "mardi 3 novembre 2026 à 20 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-91-2026.html",
+   "matchs": [
+    {
+     "domicile": "Villarreal",
+     "exterieur": "Paris SG",
+     "libelle": "Villarreal – Paris SG"
+    },
+    {
+     "domicile": "Bodø/Glimt",
+     "exterieur": "Lille",
+     "libelle": "Bodø/Glimt – Lille"
+    },
+    {
+     "domicile": "Ath Madrid",
+     "exterieur": "Bayern Munich",
+     "libelle": "Atl. Madrid – Bayern Munich"
+    },
+    {
+     "domicile": "Man United",
+     "exterieur": "Roma",
+     "libelle": "Man. United – AS Rome"
+    },
+    {
+     "domicile": "LASK Linz",
+     "exterieur": "Slo.Bratislava",
+     "libelle": "LASK Linz – Slo.Bratislava"
+    },
+    {
+     "domicile": "Feyenoord",
+     "exterieur": "Inter",
+     "libelle": "Feyenoord – Inter Milan"
+    },
+    {
+     "domicile": "Barcelona",
+     "exterieur": "Aston Villa",
+     "libelle": "FC Barcelone – Aston Villa"
+    },
+    {
+     "domicile": "Fenerbahce",
+     "exterieur": "Liverpool",
+     "libelle": "Fenerbahce – Liverpool"
+    },
+    {
+     "domicile": "AEK",
+     "exterieur": "Real Madrid",
+     "libelle": "AEK Athènes – Real Madrid"
+    },
+    {
+     "domicile": "PSV Eindhoven",
+     "exterieur": "Club Brugge",
+     "libelle": "PSV Eindhoven – Club Bruges"
+    },
+    {
+     "domicile": "Porto",
+     "exterieur": "Napoli",
+     "libelle": "FC Porto – Naples"
+    },
+    {
+     "domicile": "Dortmund",
+     "exterieur": "Betis",
+     "libelle": "Dortmund – Betis Séville"
+    },
+    {
+     "domicile": "Slavia Prague",
+     "exterieur": "Arsenal",
+     "libelle": "Slavia Prague – Arsenal"
+    },
+    {
+     "domicile": "RB Leipzig",
+     "exterieur": "Man City",
+     "libelle": "RB Leipzig – Man. City"
+    },
+    {
+     "domicile": "Lens",
+     "exterieur": "Como",
+     "libelle": "Lens – Como 1907"
+    }
+   ]
   },
   {
-   "domicile": "Lens",
-   "exterieur": "Marseille",
-   "libelle": "Lens – Marseille"
-  },
-  {
-   "domicile": "Rennes",
-   "exterieur": "Lille",
-   "libelle": "Rennes – Lille"
-  },
-  {
-   "domicile": "Brest",
-   "exterieur": "Lyon",
-   "libelle": "Brest – Lyon"
-  },
-  {
-   "domicile": "Le Mans",
-   "exterieur": "Monaco",
-   "libelle": "Le Mans – Monaco"
-  },
-  {
-   "domicile": "Le Havre",
-   "exterieur": "Lorient",
-   "libelle": "Le Havre – Lorient"
-  },
-  {
-   "domicile": "Angers",
-   "exterieur": "Nice",
-   "libelle": "Angers – Nice"
-  },
-  {
-   "domicile": "Crystal Palace",
-   "exterieur": "Liverpool",
-   "libelle": "Crystal Palace – Liverpool"
-  },
-  {
-   "domicile": "Man United",
-   "exterieur": "Aston Villa",
-   "libelle": "Man. United – Aston Villa"
-  },
-  {
-   "domicile": "Brighton",
-   "exterieur": "Brentford",
-   "libelle": "Brighton Hove – Brentford"
-  },
-  {
-   "domicile": "Inter",
-   "exterieur": "Como",
-   "libelle": "Inter Milan – Como 1907"
-  },
-  {
-   "domicile": "Napoli",
-   "exterieur": "Lazio",
-   "libelle": "Naples – Lazio Rome"
-  },
-  {
-   "domicile": "Fiorentina",
-   "exterieur": "Juventus",
-   "libelle": "Fiorentina – Juventus Turin"
-  },
-  {
-   "domicile": "Valencia",
-   "exterieur": "Real Madrid",
-   "libelle": "CF Valence – Real Madrid"
-  },
-  {
-   "domicile": "Ath Madrid",
-   "exterieur": "Barcelona",
-   "libelle": "Atl. Madrid – FC Barcelone"
+   "numero": 92,
+   "nom": "Loto Foot 15 · grille N°92",
+   "cloture": "2026-11-07T20:40:00+01:00",
+   "validite": "samedi 7 novembre 2026 à 20 h 40",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-92-2026.html",
+   "matchs": [
+    {
+     "domicile": "Paris SG",
+     "exterieur": "Troyes",
+     "libelle": "Paris SG – Troyes"
+    },
+    {
+     "domicile": "Lens",
+     "exterieur": "Marseille",
+     "libelle": "Lens – Marseille"
+    },
+    {
+     "domicile": "Rennes",
+     "exterieur": "Lille",
+     "libelle": "Rennes – Lille"
+    },
+    {
+     "domicile": "Brest",
+     "exterieur": "Lyon",
+     "libelle": "Brest – Lyon"
+    },
+    {
+     "domicile": "Le Mans",
+     "exterieur": "Monaco",
+     "libelle": "Le Mans – Monaco"
+    },
+    {
+     "domicile": "Le Havre",
+     "exterieur": "Lorient",
+     "libelle": "Le Havre – Lorient"
+    },
+    {
+     "domicile": "Angers",
+     "exterieur": "Nice",
+     "libelle": "Angers – Nice"
+    },
+    {
+     "domicile": "Crystal Palace",
+     "exterieur": "Liverpool",
+     "libelle": "Crystal Palace – Liverpool"
+    },
+    {
+     "domicile": "Man United",
+     "exterieur": "Aston Villa",
+     "libelle": "Man. United – Aston Villa"
+    },
+    {
+     "domicile": "Brighton",
+     "exterieur": "Brentford",
+     "libelle": "Brighton Hove – Brentford"
+    },
+    {
+     "domicile": "Inter",
+     "exterieur": "Como",
+     "libelle": "Inter Milan – Como 1907"
+    },
+    {
+     "domicile": "Napoli",
+     "exterieur": "Lazio",
+     "libelle": "Naples – Lazio Rome"
+    },
+    {
+     "domicile": "Fiorentina",
+     "exterieur": "Juventus",
+     "libelle": "Fiorentina – Juventus Turin"
+    },
+    {
+     "domicile": "Valencia",
+     "exterieur": "Real Madrid",
+     "libelle": "CF Valence – Real Madrid"
+    },
+    {
+     "domicile": "Ath Madrid",
+     "exterieur": "Barcelona",
+     "libelle": "Atl. Madrid – FC Barcelone"
+    }
+   ]
   }
  ]
 }

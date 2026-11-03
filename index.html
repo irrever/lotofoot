@@ -436,6 +436,7 @@ td.txt, th.txt { font-family: var(--mono); }
     while (rows.length < n) rows.push({ dom: '', ext: '', err: '' });
     f.rows = rows;
     f.format = n;
+    f.choix = null; f.source = null; f.cloture = null;
     f.info = perdus ? 'Les matchs au-delà du ' + n + 'e ont été retirés en passant au format ' + n + '.' : '';
   }
   function resoudreFormulaire(f) {
@@ -459,7 +460,7 @@ td.txt, th.txt { font-family: var(--mono); }
     var rf = resoudreFormulaire(f);
     var nom = f.nom.trim() || ('Grille du ' + dateFr(aujourdhuiIso()));
     var prixDemande = Math.pow(2, f.doubles) * Math.pow(3, f.triples);
-    var entete = '<p class="hint">Prix demandé : ×' + prixDemande + ' (×2 par double, ×3 par triple).</p>';
+    var entete = '<p class="hint">Prix demandé : ×' + prixDemande + ' (×2 par double, ×3 par triple).</p>' + (f.cloture ? '<p class="hint">Clôture : ' + esc(dateHeureFr(f.cloture)) + '.</p>' : '');
     if (!rf.ok) {
       var manquants = f.rows.map(function (r, i) {
         return r.err ? '<li>Match ' + (i + 1) + ' : ' + esc(r.err) + '</li>' : '';
@@ -497,6 +498,8 @@ td.txt, th.txt { font-family: var(--mono); }
     if (res.erreurs) return;
     var nom = f.nom.trim() || ('Grille du ' + dateFr(aujourdhuiIso()));
     var g = nouvelleGrille(nom, rf.paires, f.doubles, f.triples, f.validite.trim());
+    if (f.cloture) g.cloture = f.cloture;
+    if (f.source) g.source = f.source;
     if (verrouiller) figer(g);
     S.grilles.push(g);
     sauver();
@@ -664,41 +667,121 @@ td.txt, th.txt { font-family: var(--mono); }
       return;
     }
     S.form.format = lignes.length;
+    S.form.choix = null; S.form.source = null; S.form.cloture = null;
     S.form.rows = lignes.map(function (l) { return { dom: l.dom, ext: l.ext, err: '' }; });
     S.form.info = lignes.length + ' match(s) importé(s) depuis le fichier : format Loto Foot ' + lignes.length + '.';
   }
 
-  // ---------- Grille publiée (version en ligne) : la dernière grille de chaque format, dans grilles/
+  // ---------- Grilles publiées (version en ligne) : les grilles ouvertes de chaque format, dans grilles/
   function enLigne() { return /^https?:$/.test(location.protocol) && !!window.fetch; }
-  function grilleValide(d, format) {
-    return !!d && Number(d.format) === format && Array.isArray(d.matchs) && d.matchs.length === format &&
-      d.matchs.every(function (m) { return !!m && typeof m.domicile === 'string' && typeof m.exterieur === 'string'; });
+  function clotureDe(g) { return g && g.cloture ? Date.parse(g.cloture) : NaN; }
+  function grilleOuverte(g) { var t = clotureDe(g); return !isNaN(t) && t > Date.now(); }
+  function matchsValides(x, format) {
+    return !!x && Array.isArray(x.matchs) && x.matchs.length === format &&
+      x.matchs.every(function (m) { return !!m && typeof m.domicile === 'string' && typeof m.exterieur === 'string'; });
   }
-  // Remplit le formulaire avec la grille publiée pour le format choisi ; l’aperçu se calcule ensuite
+  function lireGrillesPubliees(format) {
+    return fetch('grilles/loto-foot-' + format + '.json', { cache: 'no-store' }).then(function (rep) {
+      if (rep.status === 404) return null;
+      if (!rep.ok) throw new Error('HTTP ' + rep.status);
+      return rep.json();
+    });
+  }
+  // Grilles ouvertes du format, de la plus proche de sa clôture à la plus lointaine
+  function grillesOuvertes(d, format) {
+    if (!d || Number(d.format) !== format || !Array.isArray(d.grilles)) return null;
+    return d.grilles.filter(function (x) { return matchsValides(x, format) && grilleOuverte(x); })
+      .sort(function (a, b) { return clotureDe(a) - clotureDe(b); });
+  }
+  // Remplit le formulaire avec une grille publiée ; l’aperçu se calcule ensuite
+  function appliquerGrillePubliee(x) {
+    var f = S.form;
+    f.rows = x.matchs.map(function (m) { return { dom: m.domicile, ext: m.exterieur, err: '' }; });
+    f.nom = String(x.nom || '');
+    f.validite = String(x.validite || '');
+    f.cloture = x.cloture;
+    f.source = { format: f.format, numero: x.numero };
+    f.info = 'Grille ' + String(x.nom || '') + ' chargée depuis ' + String(x.source || 'le site') + '. Elle reste à jour jusqu’à sa clôture.';
+  }
   function chargerGrille() {
     var f = S.form;
     if (!f || !enLigne()) return;
     var format = f.format;
-    f.info = 'Recherche de la grille publiée…';
-    fetch('grilles/loto-foot-' + format + '.json', { cache: 'no-store' }).then(function (rep) {
-      if (rep.status === 404) return null;
-      if (!rep.ok) throw new Error('HTTP ' + rep.status);
-      return rep.json();
-    }).then(function (d) {
+    f.info = 'Recherche des grilles ouvertes…';
+    f.choix = null;
+    lireGrillesPubliees(format).then(function (d) {
       if (!S.form || S.form !== f) return;
       if (S.form.format !== format) { S.form.info = ''; render(); return; }
-      if (d === null) S.form.info = 'Aucune grille publiée pour le format ' + format + ' pour l’instant.';
-      else if (!grilleValide(d, format)) S.form.info = 'La grille publiée n’est pas lisible : rien n’a été chargé.';
-      else {
-        S.form.rows = d.matchs.map(function (m) { return { dom: m.domicile, ext: m.exterieur, err: '' }; });
-        if (d.nom && !S.form.nom.trim()) S.form.nom = String(d.nom);
-        if (d.validite && !S.form.validite.trim()) S.form.validite = String(d.validite);
-        S.form.info = 'Grille chargée depuis ' + String(d.source || 'le site') + ' : ' + format + ' matchs.';
+      if (d === null) {
+        S.form.info = 'Aucune grille publiée pour le format ' + format + ' pour l’instant.';
+      } else {
+        var ouvertes = grillesOuvertes(d, format);
+        if (ouvertes === null) S.form.info = 'La grille publiée n’est pas lisible : rien n’a été chargé.';
+        else if (!ouvertes.length) S.form.info = 'Aucune grille ouverte pour le format ' + format + '. Les dernières sont closes, ou la suivante n’est pas encore publiée.';
+        else { S.form.choix = ouvertes; appliquerGrillePubliee(ouvertes[0]); }
       }
       render();
     }).catch(function () {
       if (S.form === f) { f.info = 'Impossible de charger la grille : vérifie la connexion.'; render(); }
     });
+  }
+  function pairesDe(x) {
+    var out = [];
+    for (var i = 0; i < x.matchs.length; i++) {
+      var h = trouverEquipe(x.matchs[i].domicile), a = trouverEquipe(x.matchs[i].exterieur);
+      if (!h || !a) return null;
+      out.push({ dom: h.ligue + '|' + h.equipe, ext: a.ligue + '|' + a.equipe });
+    }
+    return out;
+  }
+  function memesPaires(p, q) {
+    return p.length === q.length && p.every(function (x, i) { return x.dom === q[i].dom && x.ext === q[i].ext; });
+  }
+  // Une grille non verrouillée reprend les matchs de sa source tant qu’elle est ouverte.
+  function verifierGrillesPubliees() {
+    if (!enLigne()) return Promise.resolve();
+    var formats = [];
+    S.grilles.forEach(function (g) {
+      if (!g.verrouillee && g.source && formats.indexOf(g.source.format) === -1) formats.push(g.source.format);
+    });
+    return Promise.all(formats.map(function (f) {
+      return lireGrillesPubliees(f).then(function (d) { return { f: f, d: d }; }, function () { return null; });
+    })).then(function (resultats) {
+      var maj = 0;
+      resultats.forEach(function (r) {
+        if (!r || !r.d || Number(r.d.format) !== r.f || !Array.isArray(r.d.grilles)) return;
+        S.grilles.forEach(function (g) {
+          if (g.verrouillee || !g.source || g.source.format !== r.f) return;
+          var fraiche = r.d.grilles.filter(function (x) {
+            return x.numero === g.source.numero && grilleOuverte(x) && matchsValides(x, r.f);
+          })[0];
+          if (!fraiche) return;
+          var paires = pairesDe(fraiche);
+          if (!paires || memesPaires(paires, g.paires)) return;
+          g.paires = paires;
+          g.source.maj = new Date().toISOString();
+          maj++;
+        });
+      });
+      if (maj) {
+        sauver();
+        S.message = maj === 1 ? 'Une grille a vu ses matchs mis à jour depuis sa source.' : maj + ' grilles ont vu leurs matchs mis à jour depuis leur source.';
+      }
+    }).catch(function () {});
+  }
+  // Une grille se verrouille seule à l’heure de sa clôture.
+  function verrouillerEchues() {
+    var verrouillees = [];
+    S.grilles.forEach(function (g) {
+      if (g.verrouillee || isNaN(clotureDe(g)) || clotureDe(g) > Date.now()) return;
+      if (figer(g)) verrouillees.push(g.nom);
+    });
+    if (verrouillees.length) {
+      sauver();
+      S.message = verrouillees.length === 1
+        ? 'La grille « ' + verrouillees[0] + ' » est verrouillée : sa clôture est passée.'
+        : verrouillees.length + ' grilles sont verrouillées : leur clôture est passée.';
+    }
   }
 
   // ---------- Mises à jour (version en ligne uniquement)
@@ -810,9 +893,10 @@ td.txt, th.txt { font-family: var(--mono); }
         '<button type="button" class="btn" data-act="verrouiller">Verrouiller</button>' +
         '<button type="button" class="btn danger" data-act="supprimer">Supprimer</button>') + '</div>' +
       '<p class="hint">Sur téléphone, le menu d’envoi s’ouvre : choisis « Enregistrer dans Fichiers » pour garder le fichier. « Copier le texte » permet de coller la grille dans une note ou un message.</p>';
+    var clotureHtml = g.cloture ? '<p class="hint">Clôture : ' + esc(dateHeureFr(g.cloture)) + (grilleOuverte(g) ? '. La grille reste à jour jusqu’à cette heure, puis elle se verrouille seule.' : '. Elle est close.') + '</p>' : '';
     var head = '<section class="card"><span class="label">' + esc(formatDe(g)) + ' matchs · créée le ' + esc(dateFr(g.creee)) +
       ' · ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)</span>' +
-      '<h2 style="margin-top:6px">' + esc(g.nom) + '</h2><p style="margin-top:8px">' + statut + '</p>' +
+      '<h2 style="margin-top:6px">' + esc(g.nom) + '</h2><p style="margin-top:8px">' + statut + '</p>' + clotureHtml +
       '<div class="kpis">' +
         '<div class="kpi"><span class="label">Grille complète juste</span><strong>' + probGrille(res.proba_grille) + '</strong></div>' +
         '<div class="kpi"><span class="label">Prix</span><strong>' + (matchs.length ? '×' + prixDe(matchs) : '—') + '</strong></div>' +
@@ -847,6 +931,7 @@ td.txt, th.txt { font-family: var(--mono); }
     var optF = FORMATS.map(function (k) {
       return '<option value="' + k + '"' + (k === f.format ? ' selected' : '') + '>Loto Foot ' + k + ' (' + k + ' matchs)</option>';
     }).join('');
+    var choixHtml = (f.choix && f.choix.length > 1) ? '<div class="field"><label for="choix-grille">Grille ouverte à charger</label><select id="choix-grille">' + f.choix.map(function (x) { return '<option value="' + x.numero + '"' + (f.source && f.source.numero === x.numero ? ' selected' : '') + '>' + esc(x.nom) + ' · clôture ' + esc(dateHeureFr(x.cloture)) + '</option>'; }).join('') + '</select></div>' : '';
     return '<section class="card"><h2>Nouvelle grille</h2>' +
       '<p class="hint">Saisis les matchs (équipe à domicile, puis équipe à l’extérieur), ou importe un fichier CSV : son format est reconnu tout seul. L’aperçu se remplit tout seul.</p>' +
       '<div class="field"><label for="format-n">Format de la grille</label><select id="format-n">' + optF + '</select></div>' +
@@ -856,7 +941,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<div class="field"><label for="triples-n">Nombre de triples</label><select id="triples-n">' + optT + '</select></div>' +
       '<div class="btns">' + (enLigne() ? '<button type="button" class="btn primary" data-act="charger-grille">Charger la grille publiée</button>' : '') + '<label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
       '<input id="fichier-csv" type="file" accept=".csv,text/csv" style="display:none"></div>' +
-      '<div style="margin-top:12px">' + lignes + '</div>' +
+      choixHtml + '<div style="margin-top:12px">' + lignes + '</div>' +
       (f.info ? '<p class="hint" style="margin-top:10px">' + esc(f.info) + '</p>' : '') +
       datalist + '</section>' +
       '<div id="apercu-zone">' + apercu + '</div>' +
@@ -1026,7 +1111,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<li>Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort : ses écarts à la moyenne de son championnat sont réduits dans le rapport entre les deux notes, puis recentrés sur la moyenne du championnat le plus fort. Les statistiques de l’équipe du championnat le plus fort ne changent pas. Ensuite, l’écart de niveau s’ajoute à l’écart Elo : 1 point de note = 20 points Elo. Le classement des championnats est une estimation.</li></ul>' +
       '<h3>Les grilles</h3>' +
       '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
-      '<li>En ligne, « Charger la grille publiée » remplit le formulaire avec la dernière grille du format choisi, reprise de ruedesjoueurs.com : seule la liste des matchs est reprise, ni ses pronostics ni ses cotes. Tu l’enregistres ensuite comme les autres.</li>' +
+      '<li>En ligne, « Charger la grille publiée » remplit le formulaire avec la grille ouverte la plus proche de sa clôture, reprise de ruedesjoueurs.com (seule la liste des matchs est reprise, ni pronostics ni cotes). Si plusieurs grilles sont ouvertes, tu choisis celle que tu veux. Une grille enregistrée reste à jour jusqu’à sa clôture, puis elle se verrouille seule. Les équipes hors des 16 championnats suivis ne peuvent pas être calculées.</li>' +
       '<li>Doubles et triples : tu choisis leur nombre. L’application les place là où ils rapportent le plus de probabilité, en comparant toutes les possibilités. Prix : ×2 par double, ×3 par triple.</li>' +
       '<li>Une grille non verrouillée reste à jour : ses probabilités sont recalculées à chaque mise à jour des données. Une fois verrouillée, elle garde ses valeurs et ne change plus.</li>' +
       '<li>Enregistrement : chaque grille peut être enregistrée en fichier CSV, à ouvrir dans un tableur. Sur téléphone, le menu d’envoi s’ouvre (« Enregistrer dans Fichiers », Mail, Messages…). « Copier le texte » copie la grille à coller ailleurs.</li>' +
@@ -1064,6 +1149,7 @@ td.txt, th.txt { font-family: var(--mono); }
     return viewMethode();
   }
   function render() {
+    verrouillerEchues();
     var tabs = '<nav class="tabs" role="tablist" aria-label="Sections">' + TABS.map(function (t) {
       return '<button type="button" role="tab" id="tab-' + t[0] + '" aria-selected="' + (S.tab === t[0]) +
         '" data-tab="' + t[0] + '">' + t[1] + '</button>';
@@ -1122,6 +1208,7 @@ td.txt, th.txt { font-family: var(--mono); }
     var champ = el.getAttribute('data-champ');
     if (champ && S.form) {
       S.form.rows[Number(el.getAttribute('data-i'))][champ] = el.value;
+      S.form.source = null; S.form.choix = null;
       majApercu();
       return;
     }
@@ -1138,6 +1225,7 @@ td.txt, th.txt { font-family: var(--mono); }
     if (el.id === 'sel-ligue') { S.ligue = el.value; S.equipe = ''; render(); }
     else if (el.id === 'sel-equipe') { S.equipe = el.value; render(); }
     else if (el.id === 'format-n' && S.form) { changerFormat(Number(el.value)); render(); }
+    else if (el.id === 'choix-grille' && S.form) { var choisie = (S.form.choix || []).filter(function (x) { return String(x.numero) === el.value; })[0]; if (choisie) appliquerGrillePubliee(choisie); render(); }
     else if (el.id === 'doubles-n' && S.form) { S.form.doubles = Number(el.value); majApercu(); }
     else if (el.id === 'triples-n' && S.form) { S.form.triples = Number(el.value); majApercu(); }
     else if (el.id === 'fichier-csv' && S.form) {
@@ -1151,7 +1239,7 @@ td.txt, th.txt { font-family: var(--mono); }
   initGrilles();
   S.miseAJour = /^https?:$/.test(location.protocol) ? '' : 'Version fichier : pas de mise à jour automatique.';
   render();
-  verifierMiseAJour().then(function () { render(); });
+  verifierMiseAJour().then(verifierGrillesPubliees).then(function () { render(); });
 })();
 </script>
 <script>if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) { window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); }); }</script>
