@@ -470,12 +470,16 @@ __PWA_HEAD__
   }
 
   // ---------- Moteur : même méthode que l’onglet Match et que grille_v8.py
-  function probMatch(h, a, gap) {
-    var M = S.modele;
+  // Les 25 variables du modèle, dans l’ordre de model_doc.json (elo_diff en premier)
+  function vecteurX(h, a, gap) {
     var x = [h.dW, h.dD, h.dL, a.eW, a.eD, a.eL, h.forme, a.forme,
              h.gf, h.ga, a.gf, a.ga, h.rest, a.rest, h.load, a.load,
              h.cadF, h.cadA, a.cadF, a.cadA, h.cor, a.cor, h.car, a.car];
     x.unshift((h.elo - a.elo + gap) / 100);
+    return x;
+  }
+  function probMatch(h, a, gap) {
+    var M = S.modele, x = vecteurX(h, a, gap);
     var z = {};
     ['H', 'D', 'A'].forEach(function (c) {
       var s = M.ordonnee[c];
@@ -577,7 +581,7 @@ __PWA_HEAD__
     }
     var hv = cross ? niveauAjuste(h.vec, h.ligue, a.ligue) : h.vec;
     var av = cross ? niveauAjuste(a.vec, a.ligue, h.ligue) : a.vec;
-    return { p: probMatch(hv, av, gap), gap: gap, cross: cross, nh: nh, na: na };
+    return { p: probMatch(hv, av, gap), gap: gap, hv: hv, av: av, cross: cross, nh: nh, na: na };
   }
   // Doubles et triples : toutes les répartitions possibles sont comparées ; on garde celle qui donne
   // la probabilité de grille la plus élevée, pour le nombre de doubles et de triples demandé.
@@ -645,6 +649,7 @@ __PWA_HEAD__
           pronostic: c.pronostic,
           confiance: arrondir(c.couvert, 4),
           ecart_niveau_elo: Math.round(r.gap),
+          raison: texteRaison(pr.dom, pr.ext, r),
           profils: { domicile: profilDe(pr.dom), exterieur: profilDe(pr.ext) }
         };
       })
@@ -1214,6 +1219,7 @@ __PWA_HEAD__
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span></div></div>' +
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
+      (m.raison ? '<p class="raison">' + esc(m.raison) + '</p>' : '') +
       (m.hypothese_texte ? '<p class="hint">Hypothèse : ' + esc(m.hypothese_texte) + '</p>' : '') +
       (det ? '<details class="more"><summary>Statistiques des deux équipes</summary>' + det + '</details>' : '') +
       '</article>';
@@ -1392,9 +1398,7 @@ __PWA_HEAD__
     var p = r.p, best = 'H';
     if (p.D >= p.H && p.D >= p.A) best = 'D';
     else if (p.A > p.H && p.A >= p.D) best = 'A';
-    var favTxt = best === 'D' ? 'Match nul le plus probable (' + pc(p.D) + ')'
-      : (best === 'H' ? 'Favori : <strong>' + esc(h.equipe) + '</strong> (' + pc(p.H) + ')'
-                      : 'Favori : <strong>' + esc(a.equipe) + '</strong> (' + pc(p.A) + ')');
+    var favTxt = pourquoiMatch(h, a, r, best);
     var avert = r.cross
       ? '<div class="notice"><strong>Estimation très approximative.</strong> Notes des championnats : ' + esc(h.ligue_nom) + ' ' + String(r.nh).replace('.', ',') + '/100 et ' + esc(a.ligue_nom) + ' ' + String(r.na).replace('.', ',') + '/100, soit un écart de ' + String(r.gap).replace('-', '−') + ' points Elo. Les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort. Ce calcul entre championnats n’a jamais été testé : les notes sont une estimation.</div>'
       : '';
@@ -1406,7 +1410,7 @@ __PWA_HEAD__
         '<div class="kpi k2' + (best === 'A' ? ' is-fav' : '') + '"><span class="label">Victoire ' + esc(a.equipe) + '</span><strong>' + pc(p.A) + '</strong></div>' +
       '</div>' +
       barreHtml(p.H, p.D, p.A) +
-      '<p>' + favTxt + '</p>' +
+      '<p class="raison">' + favTxt + '</p>' +
       '<p class="hint">Statistiques seules, sans cotes. Ce calcul ne garantit rien.</p>' +
       avert +
       '<details class="more" open><summary>Statistiques des deux équipes</summary>' + duelTable(h, a) + '</details>';
@@ -1841,6 +1845,66 @@ __PWA_HEAD__
     if (resultat) resultat.innerHTML = resultatRecherche();
   }
   // Même présentation que l’onglet Match : trois probabilités, favori, barre, détail des équipes de nos données
+  // ---------- Pourquoi ce pronostic : chaque groupe de variables du modèle pèse pour ou contre le favori.
+  // Contribution d’une variable = (coefficient de l’issue − coefficient moyen des trois issues) × valeur centrée réduite.
+  var GROUPES_RAISON = [
+    { cle: 'elo', indices: [0] },
+    { cle: 'forme', indices: [7, 8] },
+    { cle: 'attaque', indices: [9, 11] },
+    { cle: 'defense', indices: [10, 12] },
+    { cle: 'tirs', indices: [17, 19] },
+    { cle: 'tirsConcedes', indices: [18, 20] },
+    { cle: 'repos', indices: [13, 14] },
+    { cle: 'charge', indices: [15, 16] }
+  ];
+  function phraseRaison(cle, h, a, f, x) {
+    var own = f === 'H' ? h : a, opp = f === 'H' ? a : h;
+    if (cle === 'elo') {
+      var e = Math.round(Math.abs(x[0]) * 100);
+      return (f === 'H') === (x[0] > 0) && e > 0 ? 'niveau supérieur (+' + e + ' points)' : null;
+    }
+    if (cle === 'forme') return own.forme > opp.forme ? 'meilleure forme récente (' + fr(own.forme, 1) + ' contre ' + fr(opp.forme, 1) + ' points par match)' : null;
+    if (cle === 'attaque') return own.gf > opp.gf ? 'attaque plus prolifique (' + fr(own.gf, 1) + ' contre ' + fr(opp.gf, 1) + ' buts par match)' : null;
+    if (cle === 'defense') return own.ga < opp.ga ? 'défense plus solide (' + fr(own.ga, 1) + ' contre ' + fr(opp.ga, 1) + ' buts encaissés par match)' : null;
+    if (cle === 'tirs') return own.cadF > opp.cadF ? 'plus de tirs cadrés (' + fr(own.cadF, 1) + ' contre ' + fr(opp.cadF, 1) + ' par match)' : null;
+    if (cle === 'tirsConcedes') return own.cadA < opp.cadA ? 'moins de tirs cadrés concédés (' + fr(own.cadA, 1) + ' contre ' + fr(opp.cadA, 1) + ' par match)' : null;
+    if (cle === 'repos') return own.rest > opp.rest ? 'plus de repos (' + Math.round(own.rest) + ' contre ' + Math.round(opp.rest) + ' jours)' : null;
+    if (cle === 'charge') return own.load < opp.load ? 'moins de matchs ces 30 derniers jours (' + Math.round(own.load) + ' contre ' + Math.round(opp.load) + ')' : null;
+    return null;
+  }
+  function pourquoiMatch(h, a, r, best) {
+    var p = r.p, M = S.modele, x = vecteurX(r.hv, r.av, r.gap);
+    if (best === 'D') {
+      return 'Match nul le plus probable (' + pc(p.D) + ') : niveaux proches (écart Elo de ' + Math.round(Math.abs(x[0]) * 100) +
+        ' points) et formes comparables (' + fr(r.hv.forme, 1) + ' contre ' + fr(r.av.forme, 1) + ' points par match).';
+    }
+    var f = best, nom = esc(f === 'H' ? h.equipe : a.equipe);
+    var zj = x.map(function (v, j) { return (v - M.moyenne[j]) / M.echelle[j]; });
+    var groupes = GROUPES_RAISON.map(function (g) {
+      var net = g.indices.reduce(function (s, j) {
+        var moy = (M.coef.H[j] + M.coef.D[j] + M.coef.A[j]) / 3;
+        return s + (M.coef[f][j] - moy) * zj[j];
+      }, 0);
+      return { cle: g.cle, net: net };
+    }).filter(function (g) { return g.net > 0.02; }).sort(function (u, v) { return v.net - u.net; });
+    var phrases = [];
+    groupes.forEach(function (g) {
+      var t = phrases.length < 2 ? phraseRaison(g.cle, r.hv, r.av, f, x) : null;
+      if (t) phrases.push(t);
+    });
+    var raisons = phrases.length ? phrases.join(' et ') : 'l’ensemble des statistiques penche légèrement de son côté';
+    if (p[f] >= 0.5) return 'Nous pensons que <strong>' + nom + '</strong> va gagner (' + pc(p[f]) + ') : ' + raisons + '.';
+    return '<strong>' + nom + '</strong> est le plus probable à gagner, sans favori net (' + pc(p[f]) + ') : ' + raisons + '.';
+  }
+  // Issue la plus probable, avec les mêmes règles d’égalité que l’onglet Match
+  function issueFavorite(p) {
+    if (p.D >= p.H && p.D >= p.A) return 'D';
+    return (p.A > p.H && p.A >= p.D) ? 'A' : 'H';
+  }
+  // Phrase en texte simple, pour les matchs d’une grille (enregistrée avec la grille)
+  function texteRaison(h, a, r) {
+    return pourquoiMatch(h, a, r, issueFavorite(r.p)).replace(/<\/?strong>/g, '');
+  }
   function resultatMatch(h, a) {
     if (!h || !a) return note('Données indisponibles pour ces équipes.');
     if (h.equipe === a.equipe) return note('Choisis deux équipes différentes.');
@@ -1849,9 +1913,7 @@ __PWA_HEAD__
     var p = r.p, best = 'H';
     if (p.D >= p.H && p.D >= p.A) best = 'D';
     else if (p.A > p.H && p.A >= p.D) best = 'A';
-    var favTxt = best === 'D' ? 'Match nul le plus probable (' + pc(p.D) + ')'
-      : (best === 'H' ? 'Favori : <strong>' + esc(h.equipe) + '</strong> (' + pc(p.H) + ')'
-                      : 'Favori : <strong>' + esc(a.equipe) + '</strong> (' + pc(p.A) + ')');
+    var favTxt = pourquoiMatch(h, a, r, best);
     var avert = r.cross
       ? '<div class="notice"><strong>Estimation très approximative.</strong> Notes des championnats : ' + esc(h.ligue_nom) + ' ' + String(r.nh).replace('.', ',') + '/100 et ' + esc(a.ligue_nom) + ' ' + String(r.na).replace('.', ',') + '/100, soit un écart de ' + String(r.gap).replace('-', '−') + ' points Elo. Les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort. Ce calcul entre championnats n’a jamais été testé : les notes sont une estimation.</div>'
       : '';
@@ -1868,7 +1930,7 @@ __PWA_HEAD__
         '<div class="kpi k2' + (best === 'A' ? ' is-fav' : '') + '"><span class="label">Victoire ' + esc(a.equipe) + '</span><strong>' + pc(p.A) + '</strong></div>' +
       '</div>' +
       barreHtml(p.H, p.D, p.A) +
-      '<p>' + favTxt + '</p>' +
+      '<p class="raison">' + favTxt + '</p>' +
       '<p class="hint">Statistiques seules, sans cotes. Ce calcul ne garantit rien.</p>' +
       avert + hypo + details;
   }
