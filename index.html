@@ -69,7 +69,7 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--
 .etat.info { color: var(--info); background: var(--info-soft); border-color: var(--info-line); }
 
 /* Navigation : onglets en haut sur ordinateur, barre fixe en bas sur téléphone */
-.tabs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; margin: 4px 0 0; border-bottom: 1px solid var(--line); }
+.tabs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin: 4px 0 0; border-bottom: 1px solid var(--line); }
 .tabs button { display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 50px; padding: 10px 12px; border: 0; border-bottom: 3px solid transparent; border-radius: 10px 10px 0 0; background: transparent; color: var(--muted); font: 600 15px/1.2 var(--sans); cursor: pointer; transition: background-color .15s, color .15s; }
 .tabs button:hover { color: var(--fg); }
 .tabs button[aria-selected="true"] { color: var(--ok); border-bottom-color: var(--ok); background: var(--ok-soft); }
@@ -309,6 +309,17 @@ details.sect > .corps { padding: 0 0 16px; }
 .theme-choix[aria-pressed="true"] { background: var(--ok); color: var(--ok-fg); }
 @media (min-width: 900px) { .head-barre { width: auto; margin-left: auto; } }
 
+/* Recherche d’un match */
+.rech-grille { display: grid; gap: 14px; }
+.rech-cote { min-width: 0; }
+@media (min-width: 760px) { .rech-grille { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; } }
+.rech-champs { display: grid; gap: 10px; margin-top: 10px; }
+.rech-champs .field { margin: 0; }
+.libre { margin-top: 10px; padding: 12px; border: 1.5px dashed var(--hyp-line); border-radius: var(--r-s); background: var(--hyp-soft); }
+.libre-titre { margin: 0; font: 700 15px/1.3 var(--sans); color: var(--hyp); }
+.libre .hint { margin-top: 4px; }
+.libre .btns { margin-top: 10px; }
+
 /* Pied de page */
 .pied { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--line); }
 .foot-note { margin: 0; font-size: 13px; color: var(--muted); text-wrap: pretty; }
@@ -318,7 +329,7 @@ details.sect > .corps { padding: 0 0 16px; }
   table { font-size: 13px; }
   th, td { padding: 8px 5px; }
   .tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; gap: 2px; margin: 0; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); border-bottom: 0; background: var(--surface); box-shadow: 0 -6px 20px rgba(21, 33, 26, .08); }
-  .tabs button { flex-direction: column; gap: 3px; min-height: 58px; padding: 6px 2px; border: 0; border-radius: 12px; font: 600 12px/1.1 var(--sans); }
+  .tabs button { flex-direction: column; gap: 3px; min-height: 58px; padding: 6px 1px; border: 0; border-radius: 12px; font: 600 11px/1.1 var(--sans); letter-spacing: -0.01em; }
   .tabs button[aria-selected="true"] { background: var(--ok-soft); color: var(--ok); }
   .tabs .ico { width: 22px; height: 22px; }
   .head { padding-top: 12px; }
@@ -346,7 +357,7 @@ details.sect > .corps { padding: 0 0 16px; }
 <script>
 (function () {
   var DATA = JSON.parse(document.getElementById('donnees').textContent);
-  var TABS = [['grille', 'Grille'], ['equipes', 'Équipes'], ['match', 'Match'], ['stats', 'Stats'], ['bilan', 'Bilan'], ['methode', 'Méthode']];
+  var TABS = [['grille', 'Grille'], ['equipes', 'Équipes'], ['match', 'Match'], ['recherche', 'Recherche'], ['stats', 'Stats'], ['bilan', 'Bilan'], ['methode', 'Méthode']];
   var STORE_KEY = 'lotofoot.grilles.v1';
   var FORMATS = [7, 8, 15];
   var FORMAT_DEFAUT = 8;
@@ -354,7 +365,8 @@ details.sect > .corps { padding: 0 0 16px; }
   var NOTE_METHODE = 'Calculée à partir des 25 statistiques de chaque équipe et de leur classement Elo. Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort, et l’écart de niveau s’ajoute au classement Elo (4 points Elo par point de note, sur une échelle de 100). Aucune cote n’est utilisée.';
   var ALIAS = {
     'como 1907': 'Como', 'betis seville': 'Betis', 'fc porto': 'Porto', 'naples': 'Napoli',
-    'club bruges': 'Club Brugge', 'aek athenes': 'AEK', 'manchester city': 'Man City', 'psg': 'Paris SG'
+    'club bruges': 'Club Brugge', 'aek athenes': 'AEK', 'manchester city': 'Man City', 'psg': 'Paris SG',
+    'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon'
   };
   var SOURCE_TAG = {
     modele_stats: '<span class="tag">Stats, sans cotes</span>',
@@ -365,6 +377,7 @@ details.sect > .corps { padding: 0 0 16px; }
     tab: 'grille', stats: DATA.stats, equipes: DATA.equipes, modele: DATA.modele,
     grilles: [], grilleId: null, stockage: true, nouvelle: false, form: null, message: '', texteCopie: '',
     ligue: '', equipe: '', dom: '', ext: '', q: '',
+    rech: { dom: { texte: '', championnat: '', note: '', niveau: 'haut' }, ext: { texte: '', championnat: '', note: '', niveau: 'haut' } },
     version: DATA.version, derniere: DATA.derniere_date, miseAJour: '', bilan: DATA.bilan || null
   };
   var app = document.getElementById('app');
@@ -529,7 +542,7 @@ details.sect > .corps { padding: 0 0 16px; }
   }
   function texteHypothese(t) {
     return t.equipe + ' (' + t.pays + ', championnat estimé ' + String(noteDe(t.ligue)).replace('.', ',') + '/100 ; Elo ' +
-      nb(t.vec.elo) + ' ; ' + (t.niveau === 'dominant' ? 'club dominant de son championnat' : 'club du haut de tableau') + ') : ' + t.motif;
+      nb(t.vec.elo) + ' ; ' + (t.niveau === 'dominant' ? 'club dominant de son championnat' : (t.niveau === 'milieu' ? 'club du milieu de tableau' : 'club du haut de tableau')) + ') : ' + t.motif;
   }
   // Niveau des championnats : pour deux équipes de championnats différents, les statistiques de
   // l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort.
@@ -1129,6 +1142,7 @@ details.sect > .corps { padding: 0 0 16px; }
     grille: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>',
     equipes: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.7-3.6 3.3-5.6 6.5-5.6s5.8 2 6.5 5.6"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.6c2.4.1 4.3 1.7 5 4.4"/></svg>',
     match: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>',
+    recherche: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>',
     stats: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/></svg>',
     bilan: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h6v6"/></svg>',
     methode: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.2"/></svg>'
@@ -1386,7 +1400,7 @@ details.sect > .corps { padding: 0 0 16px; }
       : (best === 'H' ? 'Favori : <strong>' + esc(h.equipe) + '</strong> (' + pc(p.H) + ')'
                       : 'Favori : <strong>' + esc(a.equipe) + '</strong> (' + pc(p.A) + ')');
     var avert = r.cross
-      ? '<div class="notice"><strong>Estimation très approximative.</strong> Notes des championnats : ' + esc(h.ligue_nom) + ' ' + r.nh + '/100 et ' + esc(a.ligue_nom) + ' ' + r.na + '/100, soit un écart de ' + r.gap + ' points Elo. Les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort. Ce calcul entre championnats n’a jamais été testé : les notes sont une estimation.</div>'
+      ? '<div class="notice"><strong>Estimation très approximative.</strong> Notes des championnats : ' + esc(h.ligue_nom) + ' ' + String(r.nh).replace('.', ',') + '/100 et ' + esc(a.ligue_nom) + ' ' + String(r.na).replace('.', ',') + '/100, soit un écart de ' + String(r.gap).replace('-', '−') + ' points Elo. Les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort. Ce calcul entre championnats n’a jamais été testé : les notes sont une estimation.</div>'
       : '';
     return '<span class="label">' + (r.cross ? esc(h.ligue_nom) + ' contre ' + esc(a.ligue_nom) : esc(h.ligue_nom)) + '</span>' +
       '<h3 class="match-titre">' + esc(h.equipe) + ' – ' + esc(a.equipe) + '</h3>' +
@@ -1736,11 +1750,173 @@ details.sect > .corps { padding: 0 0 16px; }
     }).join('') + '</div>';
   }
 
+  // ---------- Recherche : un match quelconque, tapé par équipes, calculé comme l’onglet Match
+  var RECH_NIVEAUX = [['dominant', 'Club dominant de son championnat'], ['haut', 'Club du haut de tableau'], ['milieu', 'Club du milieu de tableau']];
+  function noteSaisie(texte) {
+    var n = parseFloat(String(texte == null ? '' : texte).replace(',', '.'));
+    return (isNaN(n) || n < 0 || n > 100) ? null : n;
+  }
+  // Elo estimé d’un club hors des données, selon son niveau dans son championnat (mêmes formules que les clubs hypothétiques)
+  function eloLibre(note, niveau) {
+    var dominant = 1668 + 2.4 * note, moyen = 1512 + 0.96 * note;
+    return Math.round(niveau === 'dominant' ? dominant : (niveau === 'haut' ? (dominant + moyen) / 2 : moyen));
+  }
+  // Club hors des données : championnat et niveau saisis, statistiques moyennes (comme les clubs hypothétiques)
+  function equipeLibre(texte, championnat, note, niveau, code) {
+    CHAMPIONNATS_HYPOTHESE[code] = { pays: championnat || 'Championnat saisi', note: note };
+    var vec = {}, moyen = vecMoyen();
+    Object.keys(moyen).forEach(function (k) { vec[k] = moyen[k]; });
+    vec.elo = eloLibre(note, niveau);
+    return {
+      ligue: code, pays: championnat || 'Championnat saisi',
+      ligue_nom: (championnat || 'Championnat saisi') + ' (hypothèse)',
+      equipe: texte.trim(), vec: vec, hypothese: true, niveau: niveau,
+      motif: 'club saisi par vous, hors des 16 championnats suivis : son niveau et son championnat sont des estimations.'
+    };
+  }
+  // L’équipe telle qu’elle est calculée : nos données, un club hypothétique connu, ou un club saisi
+  // (ecart : variation de la note du championnat, pour la sensibilité)
+  function equipeRecherche(cote, ecart) {
+    var s = S.rech[cote];
+    var t = trouverEquipe(s.texte);
+    if (t) return t;
+    var note = noteSaisie(s.note);
+    if (note === null) return null;
+    note = Math.max(0, Math.min(100, note + (ecart || 0)));
+    return equipeLibre(s.texte, s.championnat, note, s.niveau, 'LIBRE_' + cote + (ecart < 0 ? 'm' : (ecart > 0 ? 'p' : '')));
+  }
+  function lienRecherche(s) {
+    return 'https://duckduckgo.com/?q=' + encodeURIComponent(s.texte.trim() + ' ' + (s.championnat || '') + ' championnat classement');
+  }
+  function repereNotes() {
+    var ns = ((S.stats && S.stats.notes) || []).slice().sort(function (a, b) { return b.note - a.note; });
+    return ns.map(function (n) { return n.nom + ' ' + String(n.note).replace('.', ','); }).join(' · ');
+  }
+  function datalistEquipes() {
+    var equipes = S.equipes.slice().sort(function (a, b) { return (a.ligue_nom + ' ' + a.equipe).localeCompare(b.ligue_nom + ' ' + b.equipe); })
+      .map(function (t) { return '<option value="' + esc(t.equipe) + '">' + esc(t.ligue_nom) + '</option>'; });
+    var hyp = Object.keys(CLUBS_HYPOTHESE).map(function (n) {
+      return '<option value="' + esc(n) + '">' + esc(CHAMPIONNATS_HYPOTHESE[CLUBS_HYPOTHESE[n].ligue].pays) + ' (hypothèse)</option>';
+    });
+    return equipes.concat(hyp).join('');
+  }
+  // Un champ d’équipe ; sous lui, les champs du club hors des données (championnat, note, niveau, recherche)
+  function champRecherche(cote, libelle) {
+    var s = S.rech[cote];
+    return '<div class="rech-cote"><div class="field"><label for="rech-' + cote + '">' + libelle + '</label>' +
+      '<input id="rech-' + cote + '" class="txtin" type="text" list="liste-recherche" autocomplete="off" data-rech="' + cote + '" value="' + esc(s.texte) + '" placeholder="Ex. Sporting, Shakhtar Donetsk"></div>' +
+      '<div id="rech-libre-' + cote + '">' + libreHtml(cote) + '</div></div>';
+  }
+  function libreHtml(cote) {
+    var s = S.rech[cote];
+    if (!s.texte.trim()) return '';
+    var trouvee = trouverEquipe(s.texte);
+    if (trouvee) return '<p class="hint">Reconnue dans nos données : ' + esc(trouvee.ligue_nom) + '.</p>';
+    return '<div class="libre"><p class="libre-titre">Équipe hors de nos données</p>' +
+      '<p class="hint">Indiquez son championnat et son niveau. Le bouton ouvre une recherche sur Internet pour les trouver.</p>' +
+      '<div class="rech-champs">' +
+        '<div class="field"><label for="rech-champ-' + cote + '">Championnat</label><input id="rech-champ-' + cote + '" class="txtin" type="text" data-rech-champ="' + cote + '" value="' + esc(s.championnat) + '" placeholder="Ex. Ukraine"></div>' +
+        '<div class="field"><label for="rech-note-' + cote + '">Note du championnat, sur 100</label><input id="rech-note-' + cote + '" class="txtin" type="text" inputmode="decimal" data-rech-note="' + cote + '" value="' + esc(s.note) + '" placeholder="Ex. 42,5"></div>' +
+        '<div class="field"><label for="rech-niveau-' + cote + '">Niveau du club dans son championnat</label><select id="rech-niveau-' + cote + '" data-rech-niveau="' + cote + '">' +
+          RECH_NIVEAUX.map(function (x) { return '<option value="' + x[0] + '"' + (x[0] === s.niveau ? ' selected' : '') + '>' + esc(x[1]) + '</option>'; }).join('') +
+        '</select></div>' +
+      '</div>' +
+      '<div class="btns"><a id="rech-lien-' + cote + '" class="btn" href="' + lienRecherche(s) + '" target="_blank" rel="noopener">Chercher sur Internet</a></div>' +
+      '</div>';
+  }
+  // Saisie : seule la zone concernée est mise à jour, pour ne pas perdre le champ où l’on écrit
+  function rechercheSaisie(el, cote, quoi) {
+    var s = S.rech[cote];
+    if (!s) return;
+    if (quoi === 'texte') {
+      s.texte = el.value;
+      var zoneLibre = document.getElementById('rech-libre-' + cote);
+      if (zoneLibre) zoneLibre.innerHTML = libreHtml(cote);
+    } else if (quoi === 'champ') {
+      s.championnat = el.value;
+      var lien = document.getElementById('rech-lien-' + cote);
+      if (lien) lien.setAttribute('href', lienRecherche(s));
+    } else if (quoi === 'note') {
+      s.note = el.value;
+    } else if (quoi === 'niveau') {
+      s.niveau = el.value;
+    }
+    var resultat = document.getElementById('rech-resultat');
+    if (resultat) resultat.innerHTML = resultatRecherche();
+  }
+  // Même présentation que l’onglet Match : trois probabilités, favori, barre, détail des équipes de nos données
+  function resultatMatch(h, a) {
+    if (!h || !a) return note('Données indisponibles pour ces équipes.');
+    if (h.equipe === a.equipe) return note('Choisis deux équipes différentes.');
+    var r = calculMatch(h, a);
+    if (r.erreur) return note(r.erreur);
+    var p = r.p, best = 'H';
+    if (p.D >= p.H && p.D >= p.A) best = 'D';
+    else if (p.A > p.H && p.A >= p.D) best = 'A';
+    var favTxt = best === 'D' ? 'Match nul le plus probable (' + pc(p.D) + ')'
+      : (best === 'H' ? 'Favori : <strong>' + esc(h.equipe) + '</strong> (' + pc(p.H) + ')'
+                      : 'Favori : <strong>' + esc(a.equipe) + '</strong> (' + pc(p.A) + ')');
+    var avert = r.cross
+      ? '<div class="notice"><strong>Estimation très approximative.</strong> Notes des championnats : ' + esc(h.ligue_nom) + ' ' + String(r.nh).replace('.', ',') + '/100 et ' + esc(a.ligue_nom) + ' ' + String(r.na).replace('.', ',') + '/100, soit un écart de ' + String(r.gap).replace('-', '−') + ' points Elo. Les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort. Ce calcul entre championnats n’a jamais été testé : les notes sont une estimation.</div>'
+      : '';
+    var hypo = [h, a].filter(function (t) { return t.hypothese; }).map(function (t) {
+      return '<p class="hint">Hypothèse : ' + esc(texteHypothese(t)) + '</p>';
+    }).join('');
+    var details = (h.hypothese || a.hypothese) ? '' :
+      '<details class="more" open><summary>Statistiques des deux équipes</summary>' + duelTable(h, a) + '</details>';
+    return '<span class="label">' + (r.cross ? esc(h.ligue_nom) + ' contre ' + esc(a.ligue_nom) : esc(h.ligue_nom)) + '</span>' +
+      '<h3 class="match-titre">' + esc(h.equipe) + ' – ' + esc(a.equipe) + '</h3>' +
+      '<div class="kpis kpis3">' +
+        '<div class="kpi k1' + (best === 'H' ? ' is-fav' : '') + '"><span class="label">Victoire ' + esc(h.equipe) + '</span><strong>' + pc(p.H) + '</strong></div>' +
+        '<div class="kpi kN' + (best === 'D' ? ' is-fav' : '') + '"><span class="label">Match nul</span><strong>' + pc(p.D) + '</strong></div>' +
+        '<div class="kpi k2' + (best === 'A' ? ' is-fav' : '') + '"><span class="label">Victoire ' + esc(a.equipe) + '</span><strong>' + pc(p.A) + '</strong></div>' +
+      '</div>' +
+      barreHtml(p.H, p.D, p.A) +
+      '<p>' + favTxt + '</p>' +
+      '<p class="hint">Statistiques seules, sans cotes. Ce calcul ne garantit rien.</p>' +
+      avert + hypo + details;
+  }
+  // Sensibilité : le niveau des championnats saisis vaut 5 points de plus ou de moins
+  function sensibiliteRecherche() {
+    var r = S.rech;
+    if (trouverEquipe(r.dom.texte) && trouverEquipe(r.ext.texte)) return '';
+    var resultats = [-5, 0, 5].map(function (ecart) {
+      var c = calculMatch(equipeRecherche('dom', ecart), equipeRecherche('ext', ecart));
+      return c.erreur ? null : c.p;
+    }).filter(function (p) { return p; });
+    if (resultats.length < 3) return '';
+    function plage(k) {
+      var v = resultats.map(function (p) { return p[k]; });
+      return pc(Math.min.apply(null, v)) + ' à ' + pc(Math.max.apply(null, v));
+    }
+    return '<p class="hint">Sensibilité : si le niveau du ou des championnats saisis vaut 5 points de plus ou de moins, ' +
+      '1 : ' + plage('H') + ' · N : ' + plage('D') + ' · 2 : ' + plage('A') + '.</p>';
+  }
+  function resultatRecherche() {
+    var r = S.rech;
+    if (!r.dom.texte.trim() || !r.ext.texte.trim()) return note('Tapez les deux équipes : les probabilités s’affichent ensuite.');
+    var manquantes = ['dom', 'ext'].filter(function (c) {
+      return !trouverEquipe(r[c].texte) && noteSaisie(r[c].note) === null;
+    }).map(function (c) { return r[c].texte.trim(); });
+    if (manquantes.length) return note('Indiquez la note du championnat de ' + manquantes.join(' et ') + ' pour calculer.');
+    return resultatMatch(equipeRecherche('dom', 0), equipeRecherche('ext', 0)) + sensibiliteRecherche();
+  }
+  function viewRecherche() {
+    if (!S.equipes.length) return note('Les équipes ne sont pas encore enregistrées.');
+    return zone('info', 1, 'Chercher un match',
+        '<p class="hint">Tapez les deux équipes, comme pour une grille. Une équipe de nos 16 championnats est reconnue tout de suite. Une équipe d’un autre championnat se calcule par hypothèse, avec le niveau que vous indiquez.</p>' +
+        '<div class="rech-grille">' + champRecherche('dom', 'Équipe à domicile (reçoit)') + champRecherche('ext', 'Équipe à l’extérieur') + '</div>' +
+        '<details class="more"><summary>Repères : notes des 16 championnats sur 100</summary><p class="hint">' + esc(repereNotes()) + '</p></details>' +
+        '<datalist id="liste-recherche">' + datalistEquipes() + '</datalist>') +
+      zone('ok', 2, 'Probabilités', '<div id="rech-resultat">' + resultatRecherche() + '</div>');
+  }
+
   // ---------- Cadre : onglets, en-tête, pied
   function panel() {
     if (S.tab === 'grille') return viewGrille();
     if (S.tab === 'equipes') return viewEquipes();
     if (S.tab === 'match') return viewMatch();
+    if (S.tab === 'recherche') return viewRecherche();
     if (S.tab === 'stats') return viewStats();
     if (S.tab === 'bilan') return viewBilan();
     return viewMethode();
@@ -1805,6 +1981,11 @@ details.sect > .corps { padding: 0 0 16px; }
   });
   app.addEventListener('input', function (e) {
     var el = e.target;
+    var rc = el.getAttribute('data-rech'), rch = el.getAttribute('data-rech-champ'), rn = el.getAttribute('data-rech-note');
+    if (rc || rch || rn) {
+      if (rc) rechercheSaisie(el, rc, 'texte'); else if (rch) rechercheSaisie(el, rch, 'champ'); else rechercheSaisie(el, rn, 'note');
+      return;
+    }
     var champ = el.getAttribute('data-champ');
     if (champ && S.form) {
       S.form.rows[Number(el.getAttribute('data-i'))][champ] = el.value;
@@ -1822,6 +2003,7 @@ details.sect > .corps { padding: 0 0 16px; }
   });
   app.addEventListener('change', function (e) {
     var el = e.target;
+    if (el.getAttribute('data-rech-niveau')) { rechercheSaisie(el, el.getAttribute('data-rech-niveau'), 'niveau'); return; }
     if (el.id === 'sel-ligue') { S.ligue = el.value; S.equipe = ''; render(); }
     else if (el.id === 'sel-equipe') { S.equipe = el.value; render(); }
     else if (el.id === 'format-n' && S.form) { changerFormat(Number(el.value)); render(); }
