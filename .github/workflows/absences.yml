@@ -1,0 +1,53 @@
+name: Blessés et suspendus
+
+on:
+  schedule:
+    - cron: '45 6,16 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Une seule exécution à la fois : elles écrivent dans les mêmes fichiers.
+concurrency:
+  group: absences
+  cancel-in-progress: false
+
+jobs:
+  absences:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Relever les blessés et suspendus
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+        run: python3 src/absences.py
+      - name: Enregistrer les changements
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/absences
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+            exit 0
+          fi
+          git commit -m "Blessés et suspendus : mise à jour automatique"
+          # Le dépôt peut être mis à jour pendant l'exécution : on récupère la branche avant chaque envoi.
+          delai=2
+          for essai in 1 2 3 4; do
+            if git pull --rebase -q origin main && git push -q origin HEAD:main; then
+              echo "Changements envoyés (essai $essai)."
+              exit 0
+            fi
+            git rebase --abort >/dev/null 2>&1 || true
+            if [ "$essai" -lt 4 ]; then
+              sleep "$delai"
+              delai=$((delai * 2))
+            fi
+          done
+          echo "L'envoi a échoué après 4 essais." >&2
+          exit 1
