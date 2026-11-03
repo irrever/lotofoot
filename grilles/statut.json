@@ -1,0 +1,26 @@
+{
+ "verifie_le": "2026-11-03T10:17:31Z",
+ "formats": {
+  "7": {
+   "ok": true,
+   "numero": 138,
+   "equipes_inconnues": [
+    "Dinamo Zagreb",
+    "Nordsjaelland"
+   ],
+   "erreur": null
+  },
+  "8": {
+   "ok": true,
+   "numero": 154,
+   "equipes_inconnues": [],
+   "erreur": null
+  },
+  "15": {
+   "ok": true,
+   "numero": 92,
+   "equipes_inconnues": [],
+   "erreur": null
+  }
+ }
+}

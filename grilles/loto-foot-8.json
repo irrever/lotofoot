@@ -1,0 +1,50 @@
+{
+ "format": 8,
+ "numero": 154,
+ "nom": "Loto Foot 8 · grille N°154",
+ "validite": "vendredi 6 novembre 2026 à 19 h 55",
+ "source": "ruedesjoueurs.com",
+ "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-154-2026.html",
+ "matchs": [
+  {
+   "domicile": "Toulouse",
+   "exterieur": "Strasbourg",
+   "libelle": "Toulouse – Strasbourg"
+  },
+  {
+   "domicile": "Dunkerque",
+   "exterieur": "Guingamp",
+   "libelle": "Dunkerque – Guingamp"
+  },
+  {
+   "domicile": "Dijon",
+   "exterieur": "Red Star",
+   "libelle": "Dijon – Red Star"
+  },
+  {
+   "domicile": "Nancy",
+   "exterieur": "Sochaux",
+   "libelle": "Nancy – Sochaux"
+  },
+  {
+   "domicile": "Boulogne",
+   "exterieur": "Annecy",
+   "libelle": "Boulogne – Annecy FC"
+  },
+  {
+   "domicile": "Grenoble",
+   "exterieur": "Reims",
+   "libelle": "Grenoble – Reims"
+  },
+  {
+   "domicile": "Montpellier",
+   "exterieur": "Metz",
+   "libelle": "Montpellier – Metz"
+  },
+  {
+   "domicile": "Sevilla",
+   "exterieur": "Alaves",
+   "libelle": "FC Séville – Alaves"
+  }
+ ]
+}
