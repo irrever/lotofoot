@@ -668,6 +668,39 @@ td.txt, th.txt { font-family: var(--mono); }
     S.form.info = lignes.length + ' match(s) importé(s) depuis le fichier : format Loto Foot ' + lignes.length + '.';
   }
 
+  // ---------- Grille publiée (version en ligne) : la dernière grille de chaque format, dans grilles/
+  function enLigne() { return /^https?:$/.test(location.protocol) && !!window.fetch; }
+  function grilleValide(d, format) {
+    return !!d && Number(d.format) === format && Array.isArray(d.matchs) && d.matchs.length === format &&
+      d.matchs.every(function (m) { return !!m && typeof m.domicile === 'string' && typeof m.exterieur === 'string'; });
+  }
+  // Remplit le formulaire avec la grille publiée pour le format choisi ; l’aperçu se calcule ensuite
+  function chargerGrille() {
+    var f = S.form;
+    if (!f || !enLigne()) return;
+    var format = f.format;
+    f.info = 'Recherche de la grille publiée…';
+    fetch('grilles/loto-foot-' + format + '.json', { cache: 'no-store' }).then(function (rep) {
+      if (rep.status === 404) return null;
+      if (!rep.ok) throw new Error('HTTP ' + rep.status);
+      return rep.json();
+    }).then(function (d) {
+      if (!S.form || S.form !== f) return;
+      if (S.form.format !== format) { S.form.info = ''; render(); return; }
+      if (d === null) S.form.info = 'Aucune grille publiée pour le format ' + format + ' pour l’instant.';
+      else if (!grilleValide(d, format)) S.form.info = 'La grille publiée n’est pas lisible : rien n’a été chargé.';
+      else {
+        S.form.rows = d.matchs.map(function (m) { return { dom: m.domicile, ext: m.exterieur, err: '' }; });
+        if (d.nom && !S.form.nom.trim()) S.form.nom = String(d.nom);
+        if (d.validite) S.form.validite = String(d.validite);
+        S.form.info = 'Grille publiée chargée' + (d.publiee_le ? ' (publiée le ' + dateFr(d.publiee_le) + ')' : '') + ' : ' + format + ' matchs.';
+      }
+      render();
+    }).catch(function () {
+      if (S.form === f) { f.info = 'Impossible de charger la grille : vérifie la connexion.'; render(); }
+    });
+  }
+
   // ---------- Mises à jour (version en ligne uniquement)
   function donneesValides(d) {
     if (!d || typeof d.version !== 'string' || !Array.isArray(d.equipes) || d.equipes.length < 200) return false;
@@ -821,7 +854,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<div class="field"><label for="validite">Fin de validation (facultatif)</label><input id="validite" class="txtin" type="text" value="' + esc(f.validite) + '" placeholder="ex. mercredi 4 novembre 2026, 18 h 40"></div>' +
       '<div class="field"><label for="doubles-n">Nombre de doubles</label><select id="doubles-n">' + optD + '</select></div>' +
       '<div class="field"><label for="triples-n">Nombre de triples</label><select id="triples-n">' + optT + '</select></div>' +
-      '<div class="btns"><label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
+      '<div class="btns">' + (enLigne() ? '<button type="button" class="btn primary" data-act="charger-grille">Charger la grille publiée</button>' : '') + '<label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
       '<input id="fichier-csv" type="file" accept=".csv,text/csv" style="display:none"></div>' +
       '<div style="margin-top:12px">' + lignes + '</div>' +
       (f.info ? '<p class="hint" style="margin-top:10px">' + esc(f.info) + '</p>' : '') +
@@ -993,6 +1026,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<li>Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort : ses écarts à la moyenne de son championnat sont réduits dans le rapport entre les deux notes, puis recentrés sur la moyenne du championnat le plus fort. Les statistiques de l’équipe du championnat le plus fort ne changent pas. Ensuite, l’écart de niveau s’ajoute à l’écart Elo : 1 point de note = 20 points Elo. Le classement des championnats est une estimation.</li></ul>' +
       '<h3>Les grilles</h3>' +
       '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
+      '<li>En ligne, « Charger la grille publiée » remplit le formulaire avec la dernière grille publiée pour le format choisi. Tu l’enregistres ensuite comme les autres.</li>' +
       '<li>Doubles et triples : tu choisis leur nombre. L’application les place là où ils rapportent le plus de probabilité, en comparant toutes les possibilités. Prix : ×2 par double, ×3 par triple.</li>' +
       '<li>Une grille non verrouillée reste à jour : ses probabilités sont recalculées à chaque mise à jour des données. Une fois verrouillée, elle garde ses valeurs et ne change plus.</li>' +
       '<li>Enregistrement : chaque grille peut être enregistrée en fichier CSV, à ouvrir dans un tableur. Sur téléphone, le menu d’envoi s’ouvre (« Enregistrer dans Fichiers », Mail, Messages…). « Copier le texte » copie la grille à coller ailleurs.</li>' +
@@ -1054,6 +1088,7 @@ td.txt, th.txt { font-family: var(--mono); }
       }
     }
     else if (action === 'copier') { copierGrille(courante()); }
+    else if (action === 'charger-grille') { chargerGrille(); }
     else if (action === 'verrouiller') {
       if (window.confirm('Verrouiller cette grille ? Ses probabilités ne changeront plus, et elle ne pourra plus être supprimée.')) verrouiller(S.grilleId);
     }
