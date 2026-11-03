@@ -22,7 +22,7 @@
   --r: 16px; --r-s: 12px;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root[data-theme="auto"] {
     color-scheme: dark;
     --bg: #0f1411; --surface: #161d19; --surface-2: #1c2520; --fg: #eef2ee; --muted: #a6b3aa; --line: #2b3732;
     --ok: #63c595; --ok-soft: #1a3a2a; --ok-line: #2f6a4b; --ok-fg: #0b150f;
@@ -301,6 +301,14 @@ details.sect > .corps { padding: 0 0 16px; }
 .corps-liste { margin: 0; padding-left: 20px; font-size: 15px; }
 .corps-liste li { margin-bottom: 8px; }
 
+/* Thème et en-tête : clair par défaut, sélecteur Clair / Sombre / Auto */
+.head-barre { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 10px; width: 100%; }
+.theme { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+.theme-choix { min-height: 32px; padding: 4px 12px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font: 600 13px/1.2 var(--sans); cursor: pointer; }
+.theme-choix:hover { color: var(--fg); }
+.theme-choix[aria-pressed="true"] { background: var(--ok); color: var(--ok-fg); }
+@media (min-width: 900px) { .head-barre { width: auto; margin-left: auto; } }
+
 /* Pied de page */
 .pied { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--line); }
 .foot-note { margin: 0; font-size: 13px; color: var(--muted); text-wrap: pretty; }
@@ -327,7 +335,7 @@ details.sect > .corps { padding: 0 0 16px; }
 }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#1d6a48">
+<meta name="theme-color" content="#f2f4f1">
 <link rel="icon" href="icone-192.png">
 <link rel="apple-touch-icon" href="icone-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1702,6 +1710,32 @@ details.sect > .corps { padding: 0 0 16px; }
     return z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8;
   }
 
+  // ---------- Thème : clair par défaut ; sombre ou automatique (réglage du téléphone), au choix
+  var THEME_KEY = 'lotofoot.theme';
+  var THEMES = [['light', 'Clair'], ['dark', 'Sombre'], ['auto', 'Auto']];
+  function lireTheme() {
+    try {
+      var t = window.localStorage.getItem(THEME_KEY);
+      return (t === 'dark' || t === 'auto') ? t : 'light';
+    } catch (e) { return 'light'; }
+  }
+  function appliquerTheme(t) {
+    if (THEMES.map(function (x) { return x[0]; }).indexOf(t) === -1) t = 'light';
+    S.theme = t;
+    document.documentElement.setAttribute('data-theme', t);
+    try { window.localStorage.setItem(THEME_KEY, t); } catch (e) { /* navigation privée : le choix n’est pas gardé */ }
+    // La barre du navigateur, sur téléphone, prend la couleur du fond affiché
+    var couleur = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) { meta = document.createElement('meta'); meta.setAttribute('name', 'theme-color'); document.head.appendChild(meta); }
+    if (couleur) meta.setAttribute('content', couleur);
+  }
+  function reglagesTheme() {
+    return '<div class="theme" role="group" aria-label="Affichage">' + THEMES.map(function (t) {
+      return '<button type="button" class="theme-choix" data-theme-choix="' + t[0] + '" aria-pressed="' + (S.theme === t[0]) + '">' + t[1] + '</button>';
+    }).join('') + '</div>';
+  }
+
   // ---------- Cadre : onglets, en-tête, pied
   function panel() {
     if (S.tab === 'grille') return viewGrille();
@@ -1719,7 +1753,7 @@ details.sect > .corps { padding: 0 0 16px; }
     }).join('') + '</nav>';
     app.innerHTML = '<div class="page">' +
       '<header class="head"><div class="marque">' + LOGO + '<div><h1>Lotofoot</h1>' +
-      '<p class="accroche">Pronostics par statistiques · aucune cote de bookmaker</p></div></div>' + etatDonnees() + '</header>' +
+      '<p class="accroche">Pronostics par statistiques · aucune cote de bookmaker</p></div></div>' + '<div class="head-barre">' + etatDonnees() + reglagesTheme() + '</div></header>' +
       tabs +
       '<main class="contenu" role="tabpanel" aria-labelledby="tab-' + S.tab + '">' + panel() + '</main>' +
       '<footer class="pied"><p class="foot-note">Sources : football-data.co.uk (résultats et statistiques de match). Données : version ' + esc(S.version) + '. ' + esc(S.miseAJour) + '</p></footer>' +
@@ -1749,6 +1783,8 @@ details.sect > .corps { padding: 0 0 16px; }
     render();
   }
   app.addEventListener('click', function (e) {
+    var th = e.target.closest('[data-theme-choix]');
+    if (th) { appliquerTheme(th.getAttribute('data-theme-choix')); render(); return; }
     var t = e.target.closest('[data-tab]');
     if (t) { S.tab = t.getAttribute('data-tab'); S.message = ''; S.texteCopie = ''; render(); return; }
     var g = e.target.closest('[data-grille]');
@@ -1802,6 +1838,7 @@ details.sect > .corps { padding: 0 0 16px; }
 
   initGrilles();
   S.miseAJour = /^https?:$/.test(location.protocol) ? '' : 'Version fichier : pas de mise à jour automatique.';
+  appliquerTheme(lireTheme());
   render();
   verifierMiseAJour().then(verifierGrillesPubliees).then(function () { render(); });
 })();
