@@ -116,7 +116,8 @@ td.txt, th.txt { font-family: var(--mono); }
   var DATA = JSON.parse(document.getElementById('donnees').textContent);
   var TABS = [['grille', 'Grille'], ['equipes', 'Équipes'], ['match', 'Match'], ['stats', 'Stats'], ['methode', 'Méthode']];
   var STORE_KEY = 'lotofoot.grilles.v1';
-  var NB_MATCHS = 8;
+  var FORMATS = [7, 8, 15];
+  var FORMAT_DEFAUT = 8;
   var LIBELLE_PRONO = { '1': '1', '2': '2', 'N': 'N', '12': '1 ou 2', '1N': '1 ou N', '2N': '2 ou N', '12N': '1 ou 2 ou N' };
   var NOTE_METHODE = 'Calculée à partir des 25 statistiques de chaque équipe et de leur classement Elo. Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort, et l’écart de niveau s’ajoute au classement Elo (20 points par point de note). Aucune cote n’est utilisée.';
   var ALIAS = {
@@ -129,7 +130,7 @@ td.txt, th.txt { font-family: var(--mono); }
   };
   var S = {
     tab: 'grille', stats: DATA.stats, equipes: DATA.equipes, modele: DATA.modele,
-    grilles: [], grilleId: null, stockage: true, nouvelle: false, form: null, message: '',
+    grilles: [], grilleId: null, stockage: true, nouvelle: false, form: null, message: '', texteCopie: '',
     ligue: '', equipe: '', dom: '', ext: '', q: '',
     version: DATA.version, derniere: DATA.derniere_date, miseAJour: ''
   };
@@ -209,6 +210,12 @@ td.txt, th.txt { font-family: var(--mono); }
   }
   function typeDe(pronostic) {
     return pronostic.length === 3 ? 'Triple' : (pronostic.length === 2 ? 'Double' : 'Simple');
+  }
+  // Format d’une grille : 7, 8 ou 15 matchs (8 pour les grilles enregistrées avant ce choix)
+  function formatDe(g) {
+    var n = g ? Number(g.format) : NaN;
+    if (FORMATS.indexOf(n) !== -1) return n;
+    return (g && g.paires && FORMATS.indexOf(g.paires.length) !== -1) ? g.paires.length : FORMAT_DEFAUT;
   }
   function prixDe(matchs) {
     return matchs.reduce(function (p, m) {
@@ -292,22 +299,26 @@ td.txt, th.txt { font-family: var(--mono); }
       var p = probas[i];
       return ordres[i].slice(0, niveau).reduce(function (s, c) { return s + p[c]; }, 0);
     }
-    var meilleur = null, meilleurProd = -1;
-    var combinaisons = Math.pow(3, n);
-    for (var code = 0; code < combinaisons; code++) {
-      var c = code, nd2 = 0, nt2 = 0, niveaux = [], i;
-      for (i = 0; i < n; i++) {
-        var niveau = (c % 3) + 1;
-        c = Math.floor(c / 3);
-        niveaux.push(niveau);
-        if (niveau === 2) nd2++;
-        if (niveau === 3) nt2++;
+    // Toutes les répartitions avec exactement nd doubles et nt triples, dans le même ordre que
+    // l’énumération complète : on garde la première meilleure. Les branches impossibles sont coupées.
+    var couv = probas.map(function (p, i) { return [0, couverture(i, 1), couverture(i, 2), 1]; });
+    var meilleur = null, meilleurProd = -1, niveaux = new Array(n);
+    function parcourir(i, d, t) {
+      if (i < 0) {
+        var prod = 1;
+        for (var k = 0; k < n; k++) prod *= couv[k][niveaux[k]];
+        if (prod > meilleurProd) { meilleurProd = prod; meilleur = niveaux.slice(); }
+        return;
       }
-      if (nd2 !== nd || nt2 !== nt) continue;
-      var prod = 1;
-      for (i = 0; i < n; i++) prod *= couverture(i, niveaux[i]);
-      if (prod > meilleurProd) { meilleurProd = prod; meilleur = niveaux; }
+      for (var niveau = 1; niveau <= 3; niveau++) {
+        var d2 = d + (niveau === 2 ? 1 : 0), t2 = t + (niveau === 3 ? 1 : 0);
+        if (d2 > nd || t2 > nt) continue;
+        if ((nd - d2) + (nt - t2) > i) continue;
+        niveaux[i] = niveau;
+        parcourir(i - 1, d2, t2);
+      }
     }
+    parcourir(n - 1, 0, 0);
     if (!meilleur) return null;
     var items = meilleur.map(function (niveau, i) {
       var garde = niveau === 3 ? ['H', 'D', 'A'] : ordres[i].slice(0, niveau);
@@ -361,7 +372,7 @@ td.txt, th.txt { font-family: var(--mono); }
   function nouvelleGrille(nom, paires, nd, nt, validite) {
     return {
       id: 'g' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-      nom: nom, format: NB_MATCHS, creee: aujourdhuiIso(),
+      nom: nom, format: paires.length, creee: aujourdhuiIso(),
       verrouillee: false, verrouillee_le: null, validite: validite || '', methode: 'stats-niveau-v8',
       doubles: nd, triples: nt,
       paires: paires.map(function (p) {
@@ -413,8 +424,19 @@ td.txt, th.txt { font-family: var(--mono); }
   // ---------- Grilles : saisie, aperçu, verrouillage, suppression
   function formVide() {
     var rows = [];
-    for (var i = 0; i < NB_MATCHS; i++) rows.push({ dom: '', ext: '', err: '' });
-    return { nom: '', validite: '', doubles: 3, triples: 0, rows: rows, info: '' };
+    for (var i = 0; i < FORMAT_DEFAUT; i++) rows.push({ dom: '', ext: '', err: '' });
+    return { nom: '', validite: '', format: FORMAT_DEFAUT, doubles: 3, triples: 0, rows: rows, info: '' };
+  }
+  // Changer de format : les matchs en trop sont retirés (avec un avertissement s’ils étaient remplis)
+  function changerFormat(n) {
+    var f = S.form;
+    if (!f || FORMATS.indexOf(n) === -1 || n === f.rows.length) return;
+    var perdus = f.rows.slice(n).some(function (r) { return r.dom.trim() || r.ext.trim(); });
+    var rows = f.rows.slice(0, n);
+    while (rows.length < n) rows.push({ dom: '', ext: '', err: '' });
+    f.rows = rows;
+    f.format = n;
+    f.info = perdus ? 'Les matchs au-delà du ' + n + 'e ont été retirés en passant au format ' + n + '.' : '';
   }
   function resoudreFormulaire(f) {
     var paires = [], ok = true;
@@ -442,7 +464,7 @@ td.txt, th.txt { font-family: var(--mono); }
       var manquants = f.rows.map(function (r, i) {
         return r.err ? '<li>Match ' + (i + 1) + ' : ' + esc(r.err) + '</li>' : '';
       }).join('');
-      return '<section class="card">' + entete + '<p class="hint">L’aperçu s’affiche dès que les ' + NB_MATCHS + ' matchs sont complets.</p>' +
+      return '<section class="card">' + entete + '<p class="hint">L’aperçu s’affiche dès que les ' + f.rows.length + ' matchs sont complets.</p>' +
         (manquants ? '<ul class="list err">' + manquants + '</ul>' : '') + '</section>';
     }
     var res = calculerGrille(rf.paires, f.doubles, f.triples);
@@ -533,10 +555,60 @@ td.txt, th.txt { font-family: var(--mono); }
     a.click();
     setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1500);
   }
+  // Sur téléphone, le menu d’envoi du système s’ouvre (« Enregistrer dans Fichiers », Mail, Messages…).
+  // Sur ordinateur, ou si le téléphone ne peut pas envoyer de fichier, le fichier est téléchargé.
+  function surTelephone() {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+  }
+  function enregistrerFichier(nom, contenu, type, titre) {
+    var fichier = null, partage = false;
+    try {
+      fichier = new File([contenu], nom, { type: type });
+      partage = surTelephone() && !!navigator.share && !!navigator.canShare && navigator.canShare({ files: [fichier] });
+    } catch (e) { partage = false; }
+    if (partage) {
+      try {
+        navigator.share({ files: [fichier], title: titre || nom }).catch(function (e) {
+          if (!e || e.name !== 'AbortError') telecharger(nom, contenu, type);
+        });
+        return 'partage';
+      } catch (e) { /* repli : téléchargement ci-dessous */ }
+    }
+    telecharger(nom, contenu, type);
+    return 'telechargement';
+  }
   function sauvegarder() {
     var contenu = JSON.stringify({ application: 'Lotofoot', version: 2, date: new Date().toISOString(), grilles: S.grilles }, null, 1);
-    telecharger('lotofoot-sauvegarde-' + aujourdhuiIso() + '.json', contenu, 'application/json');
-    S.message = 'Sauvegarde téléchargée. Garde ce fichier en lieu sûr.';
+    var mode = enregistrerFichier('lotofoot-sauvegarde-' + aujourdhuiIso() + '.json', contenu, 'application/json', 'Sauvegarde Lotofoot');
+    S.message = mode === 'partage' ? 'Sauvegarde prête. Garde ce fichier en lieu sûr.' : 'Sauvegarde téléchargée. Garde ce fichier en lieu sûr.';
+  }
+  // Texte de la grille, à coller dans une note ou un message
+  function texteGrille(g, res) {
+    var matchs = res.matchs || [];
+    var lignes = [g.nom, 'Loto Foot ' + formatDe(g) + ' · créée le ' + dateFr(g.creee), ''];
+    matchs.forEach(function (m) {
+      lignes.push(m.n + '. ' + m.domicile + ' – ' + m.exterieur + ' : ' + (LIBELLE_PRONO[m.pronostic] || m.pronostic) + ' (' + pc(m.confiance, 0) + ')');
+    });
+    lignes.push('');
+    lignes.push('Grille complète juste : ' + probGrille(res.proba_grille));
+    if (matchs.length) lignes.push('Prix : ×' + prixDe(matchs));
+    lignes.push(g.verrouillee ? 'Verrouillée le ' + dateHeureFr(g.verrouillee_le) : 'Non verrouillée : données jusqu’au ' + dateFr(S.derniere));
+    if (g.validite) lignes.push('Validation : ' + g.validite);
+    return lignes.join('\n');
+  }
+  function copierGrille(g) {
+    if (!g) return;
+    var texte = texteGrille(g, resultatGrille(g));
+    function echec() {
+      S.texteCopie = texte;
+      S.message = 'Copie automatique impossible : sélectionne le texte ci-dessous et copie-le.';
+      render();
+    }
+    if (!navigator.clipboard || !navigator.clipboard.writeText) { echec(); return; }
+    navigator.clipboard.writeText(texte).then(function () {
+      S.message = 'Grille copiée. Colle-la dans une note ou un message.';
+      render();
+    }, echec);
   }
   function restaurer(texte) {
     var obj;
@@ -575,21 +647,25 @@ td.txt, th.txt { font-family: var(--mono); }
     var debut = 0;
     if (iDom === -1 || iExt === -1) { iDom = 0; iExt = 1; } else { debut = 1; }
     var out = [];
-    for (var i = debut; i < lignes.length && out.length < NB_MATCHS; i++) {
+    for (var i = debut; i < lignes.length; i++) {
       if (lignes[i].trim() === '') { if (out.length) break; continue; }
       var c = cellules(lignes[i]);
-      if (c[iDom] || c[iExt]) out.push({ dom: c[iDom] || '', ext: c[iExt] || '' });
+      out.push({ dom: c[iDom] || '', ext: c[iExt] || '' });
     }
+    // Les lignes vides de la fin (fichiers de tableur) ne comptent pas
+    while (out.length && !out[out.length - 1].dom && !out[out.length - 1].ext) out.pop();
     return out;
   }
   function appliquerCsv(texte) {
     var lignes = lireCsv(texte);
     if (!lignes.length) { S.form.info = 'Aucun match trouvé dans ce fichier.'; return; }
-    S.form.rows = S.form.rows.map(function (r, i) {
-      return lignes[i] ? { dom: lignes[i].dom, ext: lignes[i].ext, err: '' } : { dom: '', ext: '', err: '' };
-    });
-    S.form.info = lignes.length + ' match(s) importé(s) depuis le fichier.' +
-      (lignes.length < NB_MATCHS ? ' Complète les matchs manquants.' : '');
+    if (FORMATS.indexOf(lignes.length) === -1) {
+      S.form.info = 'Ce fichier contient ' + lignes.length + ' match(s) : il en faut 7, 8 ou 15. Rien n’a été importé.';
+      return;
+    }
+    S.form.format = lignes.length;
+    S.form.rows = lignes.map(function (l) { return { dom: l.dom, ext: l.ext, err: '' }; });
+    S.form.info = lignes.length + ' match(s) importé(s) depuis le fichier : format Loto Foot ' + lignes.length + '.';
   }
 
   // ---------- Mises à jour (version en ligne uniquement)
@@ -677,7 +753,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<div class="btns"><button type="button" class="btn primary" data-act="nouvelle">Nouvelle grille</button></div>';
     var avert = S.stockage ? '' : '<p class="notice">Ce navigateur ne garde pas les grilles entre deux ouvertures. Télécharge une sauvegarde avant de fermer.</p>';
     if (!gs.length) {
-      return haut + avert + '<section class="card"><h2>Aucune grille enregistrée</h2><p>Crée une grille à partir de ses huit matchs, ou importe un fichier CSV.</p></section>' + sauvegardeHtml();
+      return haut + avert + '<section class="card"><h2>Aucune grille enregistrée</h2><p>Crée une grille à partir de ses matchs (Loto Foot 7, 8 ou 15), ou importe un fichier CSV.</p></section>' + sauvegardeHtml();
     }
     var g = courante();
     S.grilleId = g.id;
@@ -695,11 +771,13 @@ td.txt, th.txt { font-family: var(--mono); }
     var erreurs = res.erreurs ? '<section class="card"><h2>À vérifier</h2><ul class="list">' + res.erreurs.map(function (e) {
       return '<li>' + esc(e) + '</li>';
     }).join('') + '</ul></section>' : '';
-    var actions = '<div class="btns"><button type="button" class="btn" data-act="csv">Télécharger (CSV)</button>' +
+    var actions = '<div class="btns"><button type="button" class="btn primary" data-act="csv">Enregistrer le fichier (CSV)</button>' +
+      '<button type="button" class="btn" data-act="copier">Copier le texte</button>' +
       (g.verrouillee ? '' :
         '<button type="button" class="btn" data-act="verrouiller">Verrouiller</button>' +
-        '<button type="button" class="btn danger" data-act="supprimer">Supprimer</button>') + '</div>';
-    var head = '<section class="card"><span class="label">' + esc(NB_MATCHS) + ' matchs · créée le ' + esc(dateFr(g.creee)) +
+        '<button type="button" class="btn danger" data-act="supprimer">Supprimer</button>') + '</div>' +
+      '<p class="hint">Sur téléphone, le menu d’envoi s’ouvre : choisis « Enregistrer dans Fichiers » pour garder le fichier. « Copier le texte » permet de coller la grille dans une note ou un message.</p>';
+    var head = '<section class="card"><span class="label">' + esc(formatDe(g)) + ' matchs · créée le ' + esc(dateFr(g.creee)) +
       ' · ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)</span>' +
       '<h2 style="margin-top:6px">' + esc(g.nom) + '</h2><p style="margin-top:8px">' + statut + '</p>' +
       '<div class="kpis">' +
@@ -711,10 +789,12 @@ td.txt, th.txt { font-family: var(--mono); }
       actions + '</section>';
     var liste = matchs.length ? '<section class="card"><h2>Pronostics match par match</h2>' + matchs.map(matchHtml).join('') + '</section>' : '';
     var extra = g.note ? '<section class="card"><p>' + esc(g.note) + '</p></section>' : '';
-    return haut + avert + chips + head + erreurs + liste + extra + sauvegardeHtml();
+    var copie = S.texteCopie ? '<section class="card"><h2>Texte de la grille</h2><p class="hint">Maintiens le doigt sur le texte, puis choisis « Tout sélectionner », puis « Copier ».</p><textarea class="txtin" readonly style="box-sizing:border-box;min-height:240px;line-height:1.5">' + esc(S.texteCopie) + '</textarea></section>' : '';
+    return haut + avert + chips + head + copie + erreurs + liste + extra + sauvegardeHtml();
   }
   function viewNouvelle() {
     var f = S.form || (S.form = formVide());
+    var apercu = apercuHtml(f); // d’abord : marque les lignes à compléter (err) avant de les afficher
     var lignes = f.rows.map(function (r, i) {
       return '<div class="rowform"><span class="num">' + (i + 1) + '</span>' +
         '<input class="txtin" type="text" list="liste-equipes" autocomplete="off" data-champ="dom" data-i="' + i + '" placeholder="Domicile" aria-label="Match ' + (i + 1) + ', domicile" value="' + esc(r.dom) + '">' +
@@ -731,8 +811,12 @@ td.txt, th.txt { font-family: var(--mono); }
     var datalist = '<datalist id="liste-equipes">' + equipes.map(function (t) {
       return '<option value="' + esc(t.equipe) + '">' + esc(t.ligue_nom) + '</option>';
     }).join('') + '</datalist>';
+    var optF = FORMATS.map(function (k) {
+      return '<option value="' + k + '"' + (k === f.format ? ' selected' : '') + '>Loto Foot ' + k + ' (' + k + ' matchs)</option>';
+    }).join('');
     return '<section class="card"><h2>Nouvelle grille</h2>' +
-      '<p class="hint">Saisis les ' + NB_MATCHS + ' matchs (équipe à domicile, puis équipe à l’extérieur), ou importe un fichier CSV. L’aperçu se remplit tout seul.</p>' +
+      '<p class="hint">Saisis les matchs (équipe à domicile, puis équipe à l’extérieur), ou importe un fichier CSV : son format est reconnu tout seul. L’aperçu se remplit tout seul.</p>' +
+      '<div class="field"><label for="format-n">Format de la grille</label><select id="format-n">' + optF + '</select></div>' +
       '<div class="field"><label for="nom-grille">Nom de la grille</label><input id="nom-grille" class="txtin" type="text" value="' + esc(f.nom) + '" placeholder="Grille du ' + esc(dateFr(aujourdhuiIso())) + '"></div>' +
       '<div class="field"><label for="validite">Fin de validation (facultatif)</label><input id="validite" class="txtin" type="text" value="' + esc(f.validite) + '" placeholder="ex. mercredi 4 novembre 2026, 18 h 40"></div>' +
       '<div class="field"><label for="doubles-n">Nombre de doubles</label><select id="doubles-n">' + optD + '</select></div>' +
@@ -742,7 +826,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<div style="margin-top:12px">' + lignes + '</div>' +
       (f.info ? '<p class="hint" style="margin-top:10px">' + esc(f.info) + '</p>' : '') +
       datalist + '</section>' +
-      '<div id="apercu-zone">' + apercuHtml(f) + '</div>' +
+      '<div id="apercu-zone">' + apercu + '</div>' +
       '<div class="btns"><button type="button" class="btn" data-act="annuler">Annuler</button></div>';
   }
 
@@ -908,10 +992,10 @@ td.txt, th.txt { font-family: var(--mono); }
       '<li>Entre deux équipes d’un même championnat, le calcul utilise les 25 statistiques des deux équipes, dont l’écart de classement Elo.</li>' +
       '<li>Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort : ses écarts à la moyenne de son championnat sont réduits dans le rapport entre les deux notes, puis recentrés sur la moyenne du championnat le plus fort. Les statistiques de l’équipe du championnat le plus fort ne changent pas. Ensuite, l’écart de niveau s’ajoute à l’écart Elo : 1 point de note = 20 points Elo. Le classement des championnats est une estimation.</li></ul>' +
       '<h3>Les grilles</h3>' +
-      '<ul><li>Une grille se crée avec ses huit matchs : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application télécharge). L’aperçu se remplit tout seul.</li>' +
+      '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
       '<li>Doubles et triples : tu choisis leur nombre. L’application les place là où ils rapportent le plus de probabilité, en comparant toutes les possibilités. Prix : ×2 par double, ×3 par triple.</li>' +
       '<li>Une grille non verrouillée reste à jour : ses probabilités sont recalculées à chaque mise à jour des données. Une fois verrouillée, elle garde ses valeurs et ne change plus.</li>' +
-      '<li>Téléchargement : chaque grille peut être enregistrée en fichier CSV, à ouvrir dans un tableur.</li>' +
+      '<li>Enregistrement : chaque grille peut être enregistrée en fichier CSV, à ouvrir dans un tableur. Sur téléphone, le menu d’envoi s’ouvre (« Enregistrer dans Fichiers », Mail, Messages…). « Copier le texte » copie la grille à coller ailleurs.</li>' +
       '<li>Les grilles sont gardées dans le navigateur de cet ordinateur. La sauvegarde (onglet Grille) crée un fichier à garder ailleurs, et à restaurer si besoin.</li></ul>' +
       '<h3>Les statistiques prises en compte</h3>' +
       '<ul><li>Victoires, nuls et défaites à domicile (équipe qui reçoit) et à l’extérieur, sur les 20 derniers matchs.</li>' +
@@ -958,16 +1042,18 @@ td.txt, th.txt { font-family: var(--mono); }
       '<p class="foot-note">Sources : football-data.co.uk (résultats et statistiques de match). Données : version ' + esc(S.version) + '. ' + esc(S.miseAJour) + '</p>';
   }
   function agir(action, el) {
+    if (action !== 'copier') S.texteCopie = '';
     if (action === 'nouvelle') { S.nouvelle = true; S.form = formVide(); S.message = ''; }
     else if (action === 'annuler') { S.nouvelle = false; S.form = null; }
     else if (action === 'enregistrer') { enregistrerApercu(el.getAttribute('data-lock') === '1'); }
     else if (action === 'csv') {
       var gc = courante();
       if (gc) {
-        telecharger(nomFichier(gc.nom, '') + '.csv', csvGrille(gc, resultatGrille(gc)), 'text/csv;charset=utf-8');
-        S.message = 'Grille téléchargée au format CSV.';
+        var mode = enregistrerFichier(nomFichier(gc.nom, '') + '.csv', csvGrille(gc, resultatGrille(gc)), 'text/csv;charset=utf-8', gc.nom);
+        S.message = mode === 'partage' ? '' : 'Grille téléchargée au format CSV.';
       }
     }
+    else if (action === 'copier') { copierGrille(courante()); }
     else if (action === 'verrouiller') {
       if (window.confirm('Verrouiller cette grille ? Ses probabilités ne changeront plus, et elle ne pourra plus être supprimée.')) verrouiller(S.grilleId);
     }
@@ -979,9 +1065,9 @@ td.txt, th.txt { font-family: var(--mono); }
   }
   app.addEventListener('click', function (e) {
     var t = e.target.closest('[data-tab]');
-    if (t) { S.tab = t.getAttribute('data-tab'); S.message = ''; render(); return; }
+    if (t) { S.tab = t.getAttribute('data-tab'); S.message = ''; S.texteCopie = ''; render(); return; }
     var g = e.target.closest('[data-grille]');
-    if (g) { S.grilleId = g.getAttribute('data-grille'); S.message = ''; render(); return; }
+    if (g) { S.grilleId = g.getAttribute('data-grille'); S.message = ''; S.texteCopie = ''; render(); return; }
     var b = e.target.closest('[data-act]');
     if (b) { agir(b.getAttribute('data-act'), b); return; }
     var st = e.target.closest('[data-set]');
@@ -1016,6 +1102,7 @@ td.txt, th.txt { font-family: var(--mono); }
     var el = e.target;
     if (el.id === 'sel-ligue') { S.ligue = el.value; S.equipe = ''; render(); }
     else if (el.id === 'sel-equipe') { S.equipe = el.value; render(); }
+    else if (el.id === 'format-n' && S.form) { changerFormat(Number(el.value)); render(); }
     else if (el.id === 'doubles-n' && S.form) { S.form.doubles = Number(el.value); majApercu(); }
     else if (el.id === 'triples-n' && S.form) { S.form.triples = Number(el.value); majApercu(); }
     else if (el.id === 'fichier-csv' && S.form) {
