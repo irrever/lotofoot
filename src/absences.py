@@ -28,7 +28,7 @@ JOURNAL = DOSSIER / 'evenements.jsonl'
 LIGUES = json.load(open(RACINE / 'data' / 'ligues_api.json', encoding='utf-8'))
 BASE = os.environ.get('API_FOOTBALL_BASE', 'https://v3.football.api-sports.io')
 SAISON = int(os.environ.get('API_FOOTBALL_SAISON', '2026'))  # saison 2026-27 : année de début
-PAUSE = float(os.environ.get('API_FOOTBALL_PAUSE', '3'))  # secondes entre deux appels (limite par minute)
+PAUSE = float(os.environ.get('API_FOOTBALL_PAUSE', '7'))  # secondes entre deux appels : 10 appels par minute au maximum
 
 
 def appeler(cle, chemin, params):
@@ -43,14 +43,12 @@ def appeler(cle, chemin, params):
 
 
 def toutes_les_pages(cle, chemin, params):
-    resultats, page = [], 1
-    while True:
-        donnees = appeler(cle, chemin, dict(params, page=page))
-        resultats += donnees.get('response') or []
-        if page >= int((donnees.get('paging') or {}).get('total') or 1):
-            return resultats
-        page += 1
-        time.sleep(PAUSE)
+    """Une seule requête : l'API refuse le paramètre page sur cet endpoint. Un avertissement si la liste est coupée."""
+    donnees = appeler(cle, chemin, params)
+    total = int((donnees.get('paging') or {}).get('total') or 1)
+    if total > 1:
+        print('  attention : la liste compte %d pages, seule la première est relevée' % total)
+    return donnees.get('response') or []
 
 
 def blesses(cle, identifiant):
