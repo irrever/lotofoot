@@ -34,6 +34,11 @@ jobs:
         run: python3 src/absences.py
       - name: Enregistrer les changements
         run: |
+          # Un essai sur une saison passée ne doit jamais entrer dans le relevé en cours.
+          if [ -n "${{ inputs.saison }}" ] && [ "${{ inputs.saison }}" != "2026" ]; then
+            echo "Saison passée : le relevé en cours n'est pas modifié."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/absences
