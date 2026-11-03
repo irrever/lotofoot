@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-03T10:35:26Z",
+ "verifie_le": "2026-11-03T10:44:37Z",
  "formats": {
   "7": {
    "ok": true,
@@ -10,7 +10,7 @@
    "equipes_inconnues": [
     "Bodø/Glimt",
     "LASK Linz",
-    "Slo.Bratislava",
+    "Slovan Bratislava",
     "Dinamo Zagreb",
     "Nordsjaelland"
    ],
@@ -36,7 +36,7 @@
    "equipes_inconnues": [
     "Bodø/Glimt",
     "LASK Linz",
-    "Slo.Bratislava",
+    "Slovan Bratislava",
     "Slavia Prague"
    ],
    "erreur": null

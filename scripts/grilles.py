@@ -34,7 +34,7 @@ CORRESPONDANCES = {
     'Naples': 'Napoli', 'Como 1907': 'Como', 'Lazio Rome': 'Lazio', 'CF Valence': 'Valencia',
     'Atl. Madrid': 'Ath Madrid', 'FC Barcelone': 'Barcelona',
     'AS Rome': 'Roma', 'FC Porto': 'Porto', 'Club Bruges': 'Club Brugge', 'Man. City': 'Man City',
-    'AEK Athènes': 'AEK', 'Betis Séville': 'Betis',
+    'AEK Athènes': 'AEK', 'Betis Séville': 'Betis', 'Slo.Bratislava': 'Slovan Bratislava',
 }
 
 

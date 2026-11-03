@@ -126,6 +126,7 @@ td.txt, th.txt { font-family: var(--mono); }
   };
   var SOURCE_TAG = {
     modele_stats: '<span class="tag warn">Stats, sans cotes</span>',
+    hypothese: '<span class="tag warn">Hypothèse</span>',
     aucune: '<span class="tag bad">Pas de pronostic</span>'
   };
   var S = {
@@ -189,7 +190,8 @@ td.txt, th.txt { font-family: var(--mono); }
     for (var i = 0; i < S.equipes.length; i++) {
       if (S.equipes[i].ligue === parts[0] && S.equipes[i].equipe === parts.slice(1).join('|')) return S.equipes[i];
     }
-    return null;
+    var nom = parts.slice(1).join('|'), h = CLUBS_HYPOTHESE[nom];
+    return (h && h.ligue === parts[0]) ? equipeHypothese(nom) : null;
   }
   function trouverEquipe(nom) {
     var k = cle(nom);
@@ -201,6 +203,8 @@ td.txt, th.txt { font-family: var(--mono); }
         if (cle(S.equipes[i].equipe) === cibles[c]) return S.equipes[i];
       }
     }
+    var nomsH = Object.keys(CLUBS_HYPOTHESE);
+    for (var j = 0; j < nomsH.length; j++) { if (cle(nomsH[j]) === k) return equipeHypothese(nomsH[j]); }
     return null;
   }
   function profilDe(t) {
@@ -245,7 +249,55 @@ td.txt, th.txt { font-family: var(--mono); }
   function noteDe(code) {
     var ns = (S.stats && S.stats.notes) || [];
     for (var i = 0; i < ns.length; i++) { if (ns[i].code === code) return ns[i].note; }
-    return null;
+    return CHAMPIONNATS_HYPOTHESE[code] ? CHAMPIONNATS_HYPOTHESE[code].note : null;
+  }
+  // ---------- Clubs hors des 16 championnats suivis : des hypothèses, pas des données
+  // Niveau du championnat estimé sur 20. Elo : celui d’un club dominant de son championnat (3e meilleur club :
+  // 1 668 + 12 × note, relation observée dans les 16 championnats suivis), ou la moyenne entre ce niveau et la
+  // moyenne du championnat (1 512 + 4,8 × note) pour un club du haut de tableau. Le reste : moyennes des équipes.
+  var CHAMPIONNATS_HYPOTHESE = {
+    NO1: { pays: 'Norvège', note: 9.5 },
+    AT1: { pays: 'Autriche', note: 10 },
+    SK1: { pays: 'Slovaquie', note: 7.5 },
+    CZ1: { pays: 'Tchéquie', note: 9 },
+    HR1: { pays: 'Croatie', note: 8 },
+    DK1: { pays: 'Danemark', note: 9.5 }
+  };
+  var CLUBS_HYPOTHESE = {
+    'Bodø/Glimt': { ligue: 'NO1', elo: 1782, niveau: 'dominant', motif: 'Un des clubs les plus forts de Norvège ces dernières saisons.' },
+    'LASK Linz': { ligue: 'AT1', elo: 1674, niveau: 'haut', motif: 'Club du haut de tableau autrichien, souvent dans les places européennes, sans être dominant.' },
+    'Slovan Bratislava': { ligue: 'SK1', elo: 1758, niveau: 'dominant', motif: 'Club le plus titré de Slovaquie, en général le plus fort de son championnat.' },
+    'Slavia Prague': { ligue: 'CZ1', elo: 1776, niveau: 'dominant', motif: 'Club le plus fort de Tchéquie ces dernières saisons.' },
+    'Dinamo Zagreb': { ligue: 'HR1', elo: 1764, niveau: 'dominant', motif: 'Club le plus fort de Croatie, en général champion.' },
+    'Nordsjaelland': { ligue: 'DK1', elo: 1670, niveau: 'haut', motif: 'Club du haut de tableau danois, sans statut de favori.' }
+  };
+  var vecMoyenCache = null;
+  function vecMoyen() {
+    if (vecMoyenCache) return vecMoyenCache;
+    var out = {};
+    ['dW', 'dD', 'dL', 'eW', 'eD', 'eL', 'forme', 'gf', 'ga', 'rest', 'load', 'cadF', 'cadA', 'cor', 'car'].forEach(function (k) {
+      var s = 0, n = 0;
+      S.equipes.forEach(function (t) { if (t.vec && typeof t.vec[k] === 'number') { s += t.vec[k]; n++; } });
+      out[k] = n ? s / n : 0;
+    });
+    vecMoyenCache = out;
+    return out;
+  }
+  function equipeHypothese(nom) {
+    var h = CLUBS_HYPOTHESE[nom];
+    if (!h) return null;
+    var vec = {}, moyen = vecMoyen();
+    Object.keys(moyen).forEach(function (k) { vec[k] = moyen[k]; });
+    vec.elo = h.elo;
+    return {
+      ligue: h.ligue, pays: CHAMPIONNATS_HYPOTHESE[h.ligue].pays,
+      ligue_nom: CHAMPIONNATS_HYPOTHESE[h.ligue].pays + ' (hypothèse)',
+      equipe: nom, vec: vec, hypothese: true, niveau: h.niveau, motif: h.motif
+    };
+  }
+  function texteHypothese(t) {
+    return t.equipe + ' (' + t.pays + ', championnat estimé ' + String(noteDe(t.ligue)).replace('.', ',') + '/20 ; Elo ' +
+      nb(t.vec.elo) + ' ; ' + (t.niveau === 'dominant' ? 'club dominant de son championnat' : 'club du haut de tableau') + ') : ' + t.motif;
   }
   // Niveau des championnats : pour deux équipes de championnats différents, les statistiques de
   // l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort.
@@ -347,7 +399,8 @@ td.txt, th.txt { font-family: var(--mono); }
           ligue_nom: r.cross ? pr.dom.ligue_nom + ' / ' + pr.ext.ligue_nom : pr.dom.ligue_nom,
           domicile: pr.dom.equipe, exterieur: pr.ext.equipe, cotes: null,
           proba: { '1': arrondir(r.p.H, 4), 'N': arrondir(r.p.D, 4), '2': arrondir(r.p.A, 4) },
-          source: 'modele_stats',
+          source: (pr.dom.hypothese || pr.ext.hypothese) ? 'hypothese' : 'modele_stats',
+          hypothese_texte: [pr.dom, pr.ext].filter(function (t) { return t.hypothese; }).map(texteHypothese).join(' '),
           pronostic: c.pronostic,
           confiance: arrondir(c.couvert, 4),
           ecart_niveau_elo: Math.round(r.gap),
@@ -481,6 +534,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<div class="kpis"><div class="kpi"><span class="label">Grille complète juste</span><strong>' + probGrille(res.proba_grille) + '</strong></div>' +
       '<div class="kpi"><span class="label">Prix</span><strong>×' + prixDe(res.matchs) + '</strong></div></div>' +
       '<p class="hint">' + nDoubles + ' double(s) et ' + nTriples + ' triple(s), placés là où ils rapportent le plus de probabilité.</p>' +
+      (f.cloture ? '<p class="hint">Clôture : ' + esc(dateHeureFr(f.cloture)) + '.</p>' : '') +
       '<div class="btns"><button type="button" class="btn primary" data-act="enregistrer" data-lock="1">Enregistrer et verrouiller</button>' +
       '<button type="button" class="btn" data-act="enregistrer" data-lock="0">Enregistrer sans verrouiller</button></div></section>' +
       '<section class="card"><h2>Pronostics match par match</h2>' + res.matchs.map(matchHtml).join('') + '</section>';
@@ -846,12 +900,13 @@ td.txt, th.txt { font-family: var(--mono); }
           ? typeDe(pick) + ' : <strong>' + esc(pick.split('').join(' / ')) + '</strong> (' + pc(covered, 0) + ')'
           : 'Pronostic : <strong>' + esc(pick) + '</strong> (' + pc(covered, 0) + ')')
       : 'Pas de pronostic';
-    var det = comparaison(m);
+    var det = m.source === 'hypothese' ? '' : comparaison(m);
     return '<article class="match">' +
       '<div class="top"><span class="num">' + esc(m.n) + '</span><div><div class="teams">' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</div>' +
       '<div class="lg">' + esc(m.ligue_nom || m.ligue || '') + '</div></div></div>' +
       (m.proba ? '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="foot"><span>' + pickTxt + '</span>' + (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + '</div>' +
+      (m.hypothese_texte ? '<p class="hint">Hypothèse : ' + esc(m.hypothese_texte) + '</p>' : '') +
       (det ? '<details class="more"><summary>Statistiques des deux équipes</summary>' + det + '</details>' : '') +
       '</article>';
   }
@@ -893,10 +948,12 @@ td.txt, th.txt { font-family: var(--mono); }
         '<button type="button" class="btn" data-act="verrouiller">Verrouiller</button>' +
         '<button type="button" class="btn danger" data-act="supprimer">Supprimer</button>') + '</div>' +
       '<p class="hint">Sur téléphone, le menu d’envoi s’ouvre : choisis « Enregistrer dans Fichiers » pour garder le fichier. « Copier le texte » permet de coller la grille dans une note ou un message.</p>';
+    var nHyp = matchs.filter(function (m) { return m.source === 'hypothese'; }).length;
+    var hypHtml = nHyp ? '<p class="hint">' + nHyp + ' match(es) sur hypothèse : leur probabilité repose sur une estimation, pas sur des données (voir l’onglet Méthode).</p>' : '';
     var clotureHtml = g.cloture ? '<p class="hint">Clôture : ' + esc(dateHeureFr(g.cloture)) + (grilleOuverte(g) ? '. La grille reste à jour jusqu’à cette heure, puis elle se verrouille seule.' : '. Elle est close.') + '</p>' : '';
     var head = '<section class="card"><span class="label">' + esc(formatDe(g)) + ' matchs · créée le ' + esc(dateFr(g.creee)) +
       ' · ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)</span>' +
-      '<h2 style="margin-top:6px">' + esc(g.nom) + '</h2><p style="margin-top:8px">' + statut + '</p>' + clotureHtml +
+      '<h2 style="margin-top:6px">' + esc(g.nom) + '</h2><p style="margin-top:8px">' + statut + '</p>' + clotureHtml + hypHtml +
       '<div class="kpis">' +
         '<div class="kpi"><span class="label">Grille complète juste</span><strong>' + probGrille(res.proba_grille) + '</strong></div>' +
         '<div class="kpi"><span class="label">Prix</span><strong>' + (matchs.length ? '×' + prixDe(matchs) : '—') + '</strong></div>' +
@@ -1111,7 +1168,7 @@ td.txt, th.txt { font-family: var(--mono); }
       '<li>Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort : ses écarts à la moyenne de son championnat sont réduits dans le rapport entre les deux notes, puis recentrés sur la moyenne du championnat le plus fort. Les statistiques de l’équipe du championnat le plus fort ne changent pas. Ensuite, l’écart de niveau s’ajoute à l’écart Elo : 1 point de note = 20 points Elo. Le classement des championnats est une estimation.</li></ul>' +
       '<h3>Les grilles</h3>' +
       '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
-      '<li>En ligne, « Charger la grille publiée » remplit le formulaire avec la grille ouverte la plus proche de sa clôture, reprise de ruedesjoueurs.com (seule la liste des matchs est reprise, ni pronostics ni cotes). Si plusieurs grilles sont ouvertes, tu choisis celle que tu veux. Une grille enregistrée reste à jour jusqu’à sa clôture, puis elle se verrouille seule. Les équipes hors des 16 championnats suivis ne peuvent pas être calculées.</li>' +
+      '<li>En ligne, « Charger la grille publiée » remplit le formulaire avec la grille ouverte la plus proche de sa clôture, reprise de ruedesjoueurs.com (seule la liste des matchs est reprise, ni pronostics ni cotes). Si plusieurs grilles sont ouvertes, tu choisis celle que tu veux. Une grille enregistrée reste à jour jusqu’à sa clôture, puis elle se verrouille seule. Les équipes hors des 16 championnats suivis sont calculées par hypothèse (voir plus bas).</li>' +
       '<li>Doubles et triples : tu choisis leur nombre. L’application les place là où ils rapportent le plus de probabilité, en comparant toutes les possibilités. Prix : ×2 par double, ×3 par triple.</li>' +
       '<li>Une grille non verrouillée reste à jour : ses probabilités sont recalculées à chaque mise à jour des données. Une fois verrouillée, elle garde ses valeurs et ne change plus.</li>' +
       '<li>Enregistrement : chaque grille peut être enregistrée en fichier CSV, à ouvrir dans un tableur. Sur téléphone, le menu d’envoi s’ouvre (« Enregistrer dans Fichiers », Mail, Messages…). « Copier le texte » copie la grille à coller ailleurs.</li>' +
@@ -1128,6 +1185,12 @@ td.txt, th.txt { font-family: var(--mono); }
       '<h3>Mises à jour</h3>' +
       '<ul><li>Version en ligne : à chaque ouverture avec connexion, l’application récupère la dernière version de ses données et de son code. Sans connexion, elle garde la dernière version reçue et fonctionne hors ligne.</li>' +
       '<li>Version fichier (Lotofoot.html) : pas de mise à jour automatique. Pour une version plus récente, il faut remplacer le fichier.</li></ul>' +
+      '<h3>Clubs hors des 16 championnats suivis</h3>' +
+      '<p>Certaines grilles contiennent des clubs que l’application ne suit pas (Bodø/Glimt, LASK Linz, Slovan Bratislava, Slavia Prague, Dinamo Zagreb, Nordsjaelland). Elle leur attribue une hypothèse, signalée par « Hypothèse » :</p>' +
+      '<ul><li>Le niveau du championnat du club, estimé sur 20 : Norvège 9,5 ; Autriche 10 ; Slovaquie 7,5 ; Tchéquie 9 ; Croatie 8 ; Danemark 9,5.</li>' +
+      '<li>L’Elo du club : celui d’un club dominant de son championnat (3e meilleur club, d’après la relation observée dans les 16 championnats suivis), ou la moyenne entre ce niveau et la moyenne du championnat pour un club du haut de tableau.</li>' +
+      '<li>Les autres statistiques sont les moyennes de toutes les équipes suivies.</li></ul>' +
+      '<p>Ce sont des hypothèses, pas des données : les probabilités de ces matchs changent si le niveau supposé change. Le match indique le motif retenu pour chaque club.</p>' +
       '<h3>Ce que montrent les tests</h3>' +
       '<p>Sur des matchs d’un même championnat, le modèle fait mieux que les probabilités moyennes de l’historique. Il n’a pas été testé sur des matchs entre championnats.</p>' +
       '<h3>Limites</h3>' +
