@@ -2,51 +2,6 @@
  "format": 7,
  "grilles": [
   {
-   "numero": 137,
-   "nom": "Loto Foot 7 · grille N°137",
-   "cloture": "2026-11-03T20:55:00+01:00",
-   "validite": "mardi 3 novembre 2026 à 20 h 55",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-7/numero-7-137-2026.html",
-   "matchs": [
-    {
-     "domicile": "Villarreal",
-     "exterieur": "Paris SG",
-     "libelle": "Villarreal – Paris SG"
-    },
-    {
-     "domicile": "Bodø/Glimt",
-     "exterieur": "Lille",
-     "libelle": "Bodø/Glimt – Lille"
-    },
-    {
-     "domicile": "Ath Madrid",
-     "exterieur": "Bayern Munich",
-     "libelle": "Atl. Madrid – Bayern Munich"
-    },
-    {
-     "domicile": "Man United",
-     "exterieur": "Roma",
-     "libelle": "Man. United – AS Rome"
-    },
-    {
-     "domicile": "LASK Linz",
-     "exterieur": "Slovan Bratislava",
-     "libelle": "LASK Linz – Slo.Bratislava"
-    },
-    {
-     "domicile": "Feyenoord",
-     "exterieur": "Inter",
-     "libelle": "Feyenoord – Inter Milan"
-    },
-    {
-     "domicile": "Barcelona",
-     "exterieur": "Aston Villa",
-     "libelle": "FC Barcelone – Aston Villa"
-    }
-   ]
-  },
-  {
    "numero": 138,
    "nom": "Loto Foot 7 · grille N°138",
    "cloture": "2026-11-05T20:55:00+01:00",
@@ -88,6 +43,51 @@
      "domicile": "Monaco",
      "exterieur": "Nordsjaelland",
      "libelle": "Monaco – Nordsjaelland"
+    }
+   ]
+  },
+  {
+   "numero": 139,
+   "nom": "Loto Foot 7 · grille N°139",
+   "cloture": "2026-11-08T14:55:00+01:00",
+   "validite": "dimanche 8 novembre 2026 à 14 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-7/numero-7-139-2026.html",
+   "matchs": [
+    {
+     "domicile": "Lens",
+     "exterieur": "Marseille",
+     "libelle": "Lens – Marseille"
+    },
+    {
+     "domicile": "Rennes",
+     "exterieur": "Lille",
+     "libelle": "Rennes – Lille"
+    },
+    {
+     "domicile": "Brest",
+     "exterieur": "Lyon",
+     "libelle": "Brest – Lyon"
+    },
+    {
+     "domicile": "Angers",
+     "exterieur": "Nice",
+     "libelle": "Angers – Nice"
+    },
+    {
+     "domicile": "Le Havre",
+     "exterieur": "Lorient",
+     "libelle": "Le Havre – Lorient"
+    },
+    {
+     "domicile": "Le Mans",
+     "exterieur": "Monaco",
+     "libelle": "Le Mans – Monaco"
+    },
+    {
+     "domicile": "Ath Madrid",
+     "exterieur": "Barcelona",
+     "libelle": "Atl. Madrid – FC Barcelone"
     }
    ]
   }

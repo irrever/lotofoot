@@ -1,16 +1,13 @@
 {
- "verifie_le": "2026-11-03T19:21:55Z",
+ "verifie_le": "2026-11-03T20:18:45Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    137,
-    138
+    138,
+    139
    ],
    "equipes_inconnues": [
-    "Bodø/Glimt",
-    "LASK Linz",
-    "Slovan Bratislava",
     "Dinamo Zagreb",
     "Nordsjaelland"
    ],
@@ -30,15 +27,9 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    91,
     92
    ],
-   "equipes_inconnues": [
-    "Bodø/Glimt",
-    "LASK Linz",
-    "Slovan Bratislava",
-    "Slavia Prague"
-   ],
+   "equipes_inconnues": [],
    "erreur": null
   }
  }
