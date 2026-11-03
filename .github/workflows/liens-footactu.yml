@@ -1,0 +1,19 @@
+name: Liens foot-actu (repérage)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  liens:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Relever les chemins des pages
+        run: python3 scripts/liens_footactu.py
