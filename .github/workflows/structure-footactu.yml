@@ -16,4 +16,4 @@ jobs:
         with:
           python-version: '3.13'
       - name: Repérer la structure des pages
-        run: python3 src/footactu.py plan
+        run: python3 src/footactu.py diagnostic

@@ -10,6 +10,7 @@ Usage :
 """
 import datetime as dt
 import difflib
+import hashlib
 import json
 import pathlib
 import re
@@ -608,6 +609,66 @@ def diagnostic_plan(lecteur):
             print('%s : %s' % (chemin, type(e).__name__))
 
 
+# ---------- Diagnostic anonyme des alertes buteur et passeur (aucun nom n’est affiché)
+
+def anonyme(cle):
+    """Identifiant masqué d’un joueur (dérivé de son nom de famille et de son initiale)."""
+    if not cle:
+        return 'inconnu'
+    base = hashlib.sha1((cle[0] + '|' + cle[1]).encode('utf-8')).hexdigest()[:6]
+    return base + ('' if cle[1] else '(initiale absente)')
+
+
+def diagnostic_alertes(lecteur):
+    chemins = json.loads(CHEMINS.read_text(encoding='utf-8'))
+    equipes = {}
+    for t in json.loads(DONNEES_PUBLIEES.read_text(encoding='utf-8'))['equipes']:
+        equipes.setdefault(t['ligue'], set()).add(t['equipe'])
+    for code in sorted(chemins):
+        if code not in equipes:
+            continue
+        noms = sorted(equipes[code])
+        pages = chemins[code]
+        absents, buteurs, passeurs, rapproches = {}, {}, {}, {}
+
+        def nom_de(club):
+            if club not in rapproches:
+                rapproches[club] = rapprocher(club, noms)
+            return rapproches[club]
+
+        if 'blessures' in pages:
+            for club, joueurs in lire_blessures(lecteur.page(pages['blessures'])):
+                nom = nom_de(club)
+                if nom:
+                    absents.setdefault(nom, []).extend(joueurs)
+        for type_, dest in (('buteurs', buteurs), ('passeurs', passeurs)):
+            if type_ in pages:
+                for joueur, club, valeur in lire_classement(lecteur.page(pages[type_])):
+                    nom = nom_de(club)
+                    if nom:
+                        dest.setdefault(nom, []).append((cle_joueur(joueur), valeur))
+        for nom in noms:
+            if nom not in absents:
+                continue
+            tb = meilleurs(buteurs.get(nom, []))
+            tp = meilleurs(passeurs.get(nom, []))
+            concerne = False
+            for k in absents[nom]:
+                if not k:
+                    continue
+                dans_b = any(meme_joueur(k, c) for c in tb)
+                dans_p = any(meme_joueur(k, c) for c in tp)
+                if dans_b or dans_p:
+                    concerne = True
+                    print('  %s : absent %s | parmi les meilleurs buteurs : %s | parmi les meilleurs passeurs : %s' % (
+                        nom, anonyme(k), dans_b, dans_p))
+            if concerne:
+                for libelle, liste in (('buteurs', buteurs.get(nom, [])), ('passeurs', passeurs.get(nom, []))):
+                    tete = sorted(liste, key=lambda x: -x[1])[:4]
+                    print('    %s (trois premiers) : %s' % (libelle, ' ; '.join(
+                        '%s %d' % (anonyme(c), v) for c, v in tete)))
+
+
 def main(argv):
     commande = argv[1] if len(argv) > 1 else 'collecter'
     if commande == 'chemins':
@@ -616,6 +677,8 @@ def main(argv):
         CHEMINS.write_text(json.dumps(chemins, ensure_ascii=False, indent=1), encoding='utf-8')
         for code in LIGUES:
             print('%-4s %s' % (code, ', '.join(sorted(chemins[code])) if code in chemins else 'aucune page trouvée'))
+    elif commande == 'diagnostic':
+        diagnostic_alertes(Lecteur())
     elif commande == 'plan':
         diagnostic_plan(Lecteur())
     elif commande == 'brut':
