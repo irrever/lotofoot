@@ -536,6 +536,34 @@ def diagnostic_brut(lecteur, codes):
         print('    ' + ', '.join(pages[:80]))
 
 
+def brut_chemin(lecteur, chemin):
+    """Où se trouvent blessés et suspendus dans le HTML d’une page (sans le texte)."""
+    html = lecteur.page(chemin)
+    bas = html.lower()
+    print('== %s (%d caractères)' % (chemin, len(html)))
+    print('  mots dans le HTML brut : ' + ' ; '.join('%s %d' % (m, bas.count(m)) for m in MOTS_BRUTS))
+    scripts = re.findall(r'<script([^>]*)>(.*?)</script>', html, re.S | re.I)
+    print('  balises script : %d' % len(scripts))
+    for attrs, corps in scripts:
+        ident = re.search(r'id="([^"]*)"', attrs)
+        typ = re.search(r'type="([^"]*)"', attrs)
+        bas_corps = corps.lower()
+        hits = bas_corps.count('bless') + bas_corps.count('suspen') + bas_corps.count('absent')
+        if hits or ident:
+            print('    script id=%s type=%s longueur=%d mots blessés/suspendus/absents=%d' % (
+                ident.group(1) if ident else '-', typ.group(1) if typ else '-', len(corps), hits))
+    racine = arbre(html)
+    touches = [(t, ch) for t, ch in textes_avec_chemin(racine)
+               if any(m in t.lower() for m in ('bless', 'suspen', 'indisponib', 'absent'))]
+    print('  textes du DOM contenant bless / suspen / indisponib / absent : %d' % len(touches))
+    for t, ch in touches[:4]:
+        print('    ancêtres : ' + ' > '.join(n.tag + ''.join('.' + c for c in sorted(n.classes)) for n in ch[-6:]))
+    tableaux = [n for n in descendants(racine) if n.tag == 'table']
+    print('  tableaux : %d ; titres (h1-h4) : %d' % (len(tableaux), sum(1 for n in descendants(racine) if n.tag in ('h1', 'h2', 'h3', 'h4'))))
+    pages = sorted(liens(html))
+    print('  liens de la page : %d' % len(pages))
+
+
 def diagnostic_plan(lecteur):
     """Adresses du site qui parlent de blessés, suspendus, buteurs, passeurs ou Europe, d’après le plan du site
     et les plans XML (adresses seulement)."""
@@ -544,7 +572,7 @@ def diagnostic_plan(lecteur):
                              or 'aucune ligne Sitemap'))
     a_lire = ['/plan-de-site', '/sitemap.xml']
     lues, adresses = set(), set()
-    while a_lire and len(lues) < 8:
+    while a_lire and len(lues) < 14:
         chemin = a_lire.pop(0)
         if chemin in lues:
             continue
@@ -558,7 +586,7 @@ def diagnostic_plan(lecteur):
                 for u in re.findall(r'<loc>\s*([^<\s]+)\s*</loc>', html)]
         sous = [u for u in locs if u.endswith('.xml')]
         pages = set(liens(html)) | {u for u in locs if u.startswith('/') and not u.endswith('.xml')}
-        print('%s : %d adresses ; plans XML enfants : %d' % (chemin, len(pages), len(sous)))
+        print('%s : %d adresses ; plans XML enfants : %s' % (chemin, len(pages), ', '.join(sous) or 'aucun'))
         a_lire.extend(u for u in sous if u not in lues)
         adresses |= pages
     rubriques = {}
@@ -569,6 +597,15 @@ def diagnostic_plan(lecteur):
                                                   sorted(rubriques.items(), key=lambda kv: -kv[1])[:40]))
     utiles = sorted(a for a in adresses if re.search(r'bless|suspen|buteur|passeur|europe', a.lower()))
     print('adresses utiles (%d) : %s' % (len(utiles), ', '.join(utiles[:200]) or 'aucune'))
+    billets = sorted(a for a in adresses if a.strip('/').startswith('billet-'))
+    clubs = sorted(a for a in adresses if a.startswith('/club/'))
+    print('billets (%d) : %s' % (len(billets), ', '.join(billets[:30])))
+    print('clubs (%d) : %s' % (len(clubs), ', '.join(clubs[:40])))
+    for chemin in ([billets[0]] if billets else []) + ([clubs[0]] if clubs else []):
+        try:
+            brut_chemin(lecteur, chemin)
+        except Exception as e:
+            print('%s : %s' % (chemin, type(e).__name__))
 
 
 def main(argv):
