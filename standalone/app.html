@@ -582,14 +582,29 @@ __PWA_HEAD__
     return v;
   }
   // Phrases d’alerte : buteur ou passeur principal absent, ou trois absents ou plus dans une équipe
-  var NOMBRES_ALERTE = { 3: 'trois', 4: 'quatre', 5: 'cinq', 6: 'six', 7: 'sept', 8: 'huit', 9: 'neuf' };
+  var NOMBRES_ALERTE = { 2: 'deux', 3: 'trois', 4: 'quatre', 5: 'cinq', 6: 'six', 7: 'sept', 8: 'huit', 9: 'neuf' };
+  // Buteurs et passeurs : le meilleur, ou un des trois meilleurs (égalités comprises)
+  function phrasePlusieurs(k, role, eq) {
+    if (k === 1) return 'Attention : un des trois meilleurs ' + role + ' de ' + eq + ' n’est pas présent.';
+    return 'Attention : ' + (NOMBRES_ALERTE[k] || k) + ' des trois meilleurs ' + role + ' de ' + eq + ' ne sont pas présents.';
+  }
+  function alertesJoueurs(s, eq) {
+    if (s.meme && s.buteurs_cles === 1 && s.passeurs_cles === 1) {
+      return ['Attention : le meilleur buteur et le meilleur passeur de ' + eq + ' sont le même joueur, il n’est pas présent.'];
+    }
+    var out = [];
+    if (s.buteur && s.buteurs_cles === 1) out.push('Attention : le meilleur buteur de ' + eq + ' n’est pas présent.');
+    else if (s.buteurs_cles >= 1) out.push(phrasePlusieurs(s.buteurs_cles, 'buteurs', eq));
+    if (s.passeur && s.passeurs_cles === 1) out.push('Attention : le meilleur passeur de ' + eq + ' n’est pas présent.');
+    else if (s.passeurs_cles >= 1) out.push(phrasePlusieurs(s.passeurs_cles, 'passeurs', eq));
+    return out;
+  }
   function alertesAbsences(h, a) {
     var out = [];
     [h, a].forEach(function (t) {
       var s = t.absences;
       if (!s) return;
-      if (s.buteur) out.push('Attention : le meilleur buteur de ' + t.equipe + ' n’est pas présent.');
-      if (s.passeur) out.push('Attention : le meilleur passeur de ' + t.equipe + ' n’est pas présent.');
+      alertesJoueurs(s, t.equipe).forEach(function (phrase) { out.push(phrase); });
       if (s.nombre >= 3) out.push('Attention : ' + (NOMBRES_ALERTE[s.nombre] || s.nombre) + ' joueurs de ' + t.equipe + ' figurent sur la liste des blessés ou suspendus (pas forcément titulaires).');
     });
     return out;

@@ -269,8 +269,25 @@ def cle_joueur(nom):
     return (mots[-1], mots[0][0] if len(mots) > 1 else '')
 
 
-def meme_joueur(a, b):
-    return a[0] == b[0] and (not a[1] or not b[1] or a[1] == b[1])
+def meme_joueur(a, b, initiales=None):
+    """Deux clés désignent le même joueur : même nom de famille et initiales compatibles. Si une initiale manque,
+    le nom de famille doit être unique dans l’équipe (initiales : nom de famille -> initiales connues)."""
+    if a[0] != b[0]:
+        return False
+    if a[1] and b[1]:
+        return a[1] == b[1]
+    if initiales is None:
+        return True
+    return len(initiales.get(a[0], ())) <= 1
+
+
+def trois_premiers(liste):
+    """Joueurs classés aux trois premières places d’un classement, égalités comprises. liste : [(clé, valeur)]."""
+    tries = sorted([(v, k) for k, v in liste if k and v > 0], key=lambda x: -x[0])
+    if not tries:
+        return []
+    seuil = tries[min(2, len(tries) - 1)][0]
+    return [k for v, k in tries if v >= seuil]
 
 
 def cle_equipe(nom):
@@ -305,21 +322,30 @@ def meilleurs(liste):
     return [k for k, v in liste if v == haut and k]
 
 
-def bilan_equipe(absents, tetes_buteurs, tetes_passeurs):
-    """Absents d’une équipe et malus Elo qui en découle."""
-    buteur = passeur = False
+def bilan_equipe(absents, tetes_buteurs, tetes_passeurs, trois_buteurs=(), trois_passeurs=(), initiales=None):
+    """Absents d’une équipe : meilleur buteur et passeur (malus), trois premiers (alertes), malus Elo."""
+    def dans(k, liste):
+        return any(meme_joueur(k, c, initiales) for c in liste)
+
+    buteur = passeur = meme = False
     cles = 0
     for k in absents:
-        if k and any(meme_joueur(k, c) for c in tetes_buteurs):
-            buteur = True
+        if not k:
+            continue
+        b = dans(k, tetes_buteurs)
+        p = dans(k, tetes_passeurs)
+        if b or p:
             cles += 1
-        elif k and any(meme_joueur(k, c) for c in tetes_passeurs):
-            passeur = True
-            cles += 1
+        buteur = buteur or b
+        passeur = passeur or (p and not b)
+        meme = meme or (b and p)
+    buteurs_cles = sum(1 for k in absents if k and dans(k, trois_buteurs))
+    passeurs_cles = sum(1 for k in absents if k and dans(k, trois_passeurs))
     autres = len(absents) - cles
     malus = (MALUS_BUTEUR if buteur else 0) + (MALUS_PASSEUR if passeur else 0)
     malus += max(MALUS_AUTRES_MAX, MALUS_AUTRE * autres)
-    return {'absents': len(absents), 'buteur': buteur, 'passeur': passeur, 'malus': max(MALUS_MAX, malus)}
+    return {'absents': len(absents), 'buteur': buteur, 'passeur': passeur, 'meme_joueur': meme,
+            'buteurs_cles': buteurs_cles, 'passeurs_cles': passeurs_cles, 'malus': max(MALUS_MAX, malus)}
 
 
 # ---------- Relevé du jour
@@ -381,8 +407,16 @@ def collecter():
         resultat = {}
         for nom in noms:
             if nom in absents:
+                pool = ([k for k in absents[nom] if k] + [k for k, _ in buteurs.get(nom, []) if k]
+                        + [k for k, _ in passeurs.get(nom, []) if k])
+                initiales = {}
+                for surnom, initiale in pool:
+                    if initiale:
+                        initiales.setdefault(surnom, set()).add(initiale)
                 resultat[nom] = bilan_equipe(absents[nom], meilleurs(buteurs.get(nom, [])),
-                                             meilleurs(passeurs.get(nom, [])))
+                                             meilleurs(passeurs.get(nom, [])),
+                                             trois_premiers(buteurs.get(nom, [])),
+                                             trois_premiers(passeurs.get(nom, [])), initiales)
         if resultat:
             releve['championnats'][code] = resultat
         releve['suivi'][code] = suivi
@@ -415,7 +449,8 @@ def absences_par_equipe(releve):
     for code, equipes in releve.get('championnats', {}).items():
         for nom, a in equipes.items():
             out[(code, nom)] = {'nombre': a['absents'], 'buteur': a['buteur'], 'passeur': a['passeur'],
-                                'malus': a['malus']}
+                                'meme': a.get('meme_joueur', False), 'buteurs_cles': a.get('buteurs_cles', 0),
+                                'passeurs_cles': a.get('passeurs_cles', 0), 'malus': a['malus']}
     return out
 
 

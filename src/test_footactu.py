@@ -130,6 +130,24 @@ class Malus(unittest.TestCase):
         r = fa.bilan_equipe(absents, [('exemple', 'a')], [('essai', 'b')])
         self.assertEqual(r['malus'], -20)
 
+    def test_meme_joueur_signale_buteur_et_passeur(self):
+        r = fa.bilan_equipe([('exemple', 'a')], [('exemple', 'a')], [('exemple', 'a')])
+        self.assertTrue(r['meme_joueur'])
+        self.assertEqual((r['buteur'], r['passeur']), (True, False))
+
+    def test_trois_premiers_avec_egalites(self):
+        liste = [(('a', 'x'), 5), (('b', 'x'), 5), (('c', 'x'), 3), (('d', 'x'), 2)]
+        self.assertEqual(fa.trois_premiers(liste), [('a', 'x'), ('b', 'x'), ('c', 'x')])
+
+    def test_buteurs_cles_hors_meilleur(self):
+        r = fa.bilan_equipe([('x', 'a'), ('y', 'b')], [], [], [('x', 'a')], [])
+        self.assertEqual((r['buteurs_cles'], r['buteur'], r['malus']), (1, False, -2))
+
+    def test_initiale_manquante_seulement_si_nom_unique(self):
+        self.assertTrue(fa.meme_joueur(('palmer', ''), ('palmer', 'c')))
+        self.assertFalse(fa.meme_joueur(('palmer', ''), ('palmer', 'c'), {'palmer': {'c', 'j'}}))
+        self.assertTrue(fa.meme_joueur(('palmer', ''), ('palmer', 'c'), {'palmer': {'c'}}))
+
     def test_meilleurs_egalites(self):
         self.assertEqual(fa.meilleurs([(('a', 'x'), 5), (('b', 'x'), 5), (('c', 'x'), 3)]),
                          [('a', 'x'), ('b', 'x')])
@@ -153,7 +171,8 @@ class Fraicheur(unittest.TestCase):
     def test_absences_par_equipe(self):
         releve = {'championnats': {'F1': {'Lens': {'absents': 3, 'buteur': True, 'passeur': False, 'malus': -12}}}}
         self.assertEqual(fa.absences_par_equipe(releve),
-                         {('F1', 'Lens'): {'nombre': 3, 'buteur': True, 'passeur': False, 'malus': -12}})
+                         {('F1', 'Lens'): {'nombre': 3, 'buteur': True, 'passeur': False, 'meme': False,
+                                           'buteurs_cles': 0, 'passeurs_cles': 0, 'malus': -12}})
         self.assertEqual(fa.absences_par_equipe(None), {})
 
 
