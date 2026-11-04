@@ -70,6 +70,13 @@ class JourDeLaVeille(unittest.TestCase):
         self.assertIn('Résultats surprenants', texte)
         self.assertIn('pas de prévision', texte)
 
+    def test_choix_du_jour_le_plus_recent_avec_resultats(self):
+        vides = {'date': '2026-11-03', 'joues': 0, 'matchs': []}
+        avec = {'date': '2026-11-02', 'joues': 4, 'matchs': []}
+        ancien = {'date': '2026-11-01', 'joues': 9, 'matchs': []}
+        self.assertEqual(rapport.choisir_jour([vides, avec, ancien])['date'], '2026-11-02')
+        self.assertEqual(rapport.choisir_jour([vides, dict(vides, date='2026-11-02')])['date'], '2026-11-03')
+
     def test_sans_matchs_veille(self):
         jour = rapport.jour_de_la_veille([], [], [], {}, {}, dt.date(2026, 11, 4))
         self.assertEqual((jour['joues'], jour['avec_prevision'], jour['precision']), (0, 0, None))

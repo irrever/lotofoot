@@ -148,9 +148,9 @@ def frequences(rows):
     return {c: max(jouees.count(c), 1) / total for c in ORDRE}
 
 
-def jour_de_la_veille(rows, journal, entrees_grilles, idx, noms, aujourdhui):
+def jour_de_la_veille(rows, journal, entrees_grilles, idx, noms, aujourdhui, retard=1):
     """Matchs joués la veille dans nos championnats, avec la prévision enregistrée quand elle existe."""
-    veille = aujourdhui - dt.timedelta(days=1)
+    veille = aujourdhui - dt.timedelta(days=retard)
     joues = sorted({(r['league'], r['home'], r['away'], r['date'], r['result'], int(r['hg']), int(r['ag']))
                     for r in rows if r['date'] == veille and r['result'] in ORDRE
                     and r['hg'] not in (None, '') and r['ag'] not in (None, '')})
@@ -184,6 +184,11 @@ def jour_de_la_veille(rows, journal, entrees_grilles, idx, noms, aujourdhui):
             'log_loss': round(sum(ll_modele) / n, 4) if n else None,
             'log_loss_ref': round(sum(ll_ref) / n, 4) if n else None,
             'matchs': matchs}
+
+
+def choisir_jour(jours):
+    """Le plus récent des jours (du plus récent au plus ancien) qui a des résultats ; sinon le plus récent."""
+    return next((j for j in jours if j['joues']), jours[0])
 
 
 def markdown_jour(jour):
@@ -281,10 +286,15 @@ def principal():
     idx = index_resultats(rows) if rows else {}
     jour = None
     if rows:
-        jour = jour_de_la_veille(rows, charger_jsonl(JOURNAL), entrees, idx, noms, aujourdhui)
+        # Les résultats arrivent parfois avec un ou deux jours de retard : on reprend les trois derniers jours.
+        journal = charger_jsonl(JOURNAL)
+        jours = [jour_de_la_veille(rows, journal, entrees, idx, noms, aujourdhui, retard) for retard in (1, 2, 3)]
         RAPPORTS.mkdir(parents=True, exist_ok=True)
-        (RAPPORTS / ('jour-%s.md' % jour['date'])).write_text(markdown_jour(jour), encoding='utf-8')
-        print('rapport du %s : %d matchs joués, %d avec prévision' % (jour['date'], jour['joues'], jour['avec_prevision']))
+        for j in jours:
+            if j['joues']:
+                (RAPPORTS / ('jour-%s.md' % j['date'])).write_text(markdown_jour(j), encoding='utf-8')
+                print('rapport du %s : %d matchs joués, %d avec prévision' % (j['date'], j['joues'], j['avec_prevision']))
+        jour = choisir_jour(jours)
     else:
         print('pas de données de résultats : rapport du jour non produit')
     resultats = {'maj': maintenant.isoformat(), 'jour': jour, 'grilles': grilles_resume(entrees, idx, noms)}

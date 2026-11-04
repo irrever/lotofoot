@@ -1990,7 +1990,7 @@ __PWA_HEAD__
   }
   function resultatsJour(j) {
     if (!j || !j.date) return note('Le rapport de la veille n’est pas encore disponible.');
-    if (!j.joues) return note('Aucun match joué la veille dans nos 16 championnats (' + dateFr(j.date) + ').');
+    if (!j.joues) return note('Aucun résultat disponible pour le ' + dateFr(j.date) + ' : les résultats arrivent parfois avec un ou deux jours de retard.');
     var out = '<p class="hint">Matchs du ' + esc(dateFr(j.date)) + ' : ' + esc(j.joues) + ' joués, dont ' +
       esc(j.avec_prevision) + ' avec une prévision enregistrée avant le match.</p>';
     if (j.precision) {
