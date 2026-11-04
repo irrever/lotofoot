@@ -360,14 +360,14 @@ details.sect > .corps { padding: 0 0 16px; }
   var DATA = JSON.parse(document.getElementById('donnees').textContent);
   var TABS = [['grille', 'Grille'], ['resultats', 'Résultats'], ['match', 'Match'], ['recherche', 'Recherche'], ['stats', 'Stats'], ['bilan', 'Bilan'], ['methode', 'Méthode']];
   var STORE_KEY = 'lotofoot.grilles.v1';
-  var FORMATS = [7, 8, 15];
+  var FORMATS = [7, 8, 12, 15];
   var FORMAT_DEFAUT = 8;
   var LIBELLE_PRONO = { '1': '1', '2': '2', 'N': 'N', '12': '1 ou 2', '1N': '1 ou N', '2N': '2 ou N', '12N': '1 ou 2 ou N' };
   var NOTE_METHODE = 'Calculée à partir des 25 statistiques de chaque équipe et de leur classement Elo. Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort, et l’écart de niveau s’ajoute au classement Elo (4 points Elo par point de note, sur une échelle de 100). Aucune cote n’est utilisée.';
   var ALIAS = {
     'como 1907': 'Como', 'betis seville': 'Betis', 'fc porto': 'Porto', 'naples': 'Napoli',
     'club bruges': 'Club Brugge', 'aek athenes': 'AEK', 'manchester city': 'Man City', 'psg': 'Paris SG',
-    'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava'
+    'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava', 'milan ac': 'Milan', 'real sociedad': 'Sociedad', 'cologne': 'FC Koln'
   };
   var SOURCE_TAG = {
     modele_stats: '<span class="tag">Stats, sans cotes</span>',
@@ -1108,7 +1108,7 @@ details.sect > .corps { padding: 0 0 16px; }
     var lignes = lireCsv(texte);
     if (!lignes.length) { S.form.info = 'Aucun match trouvé dans ce fichier.'; return; }
     if (FORMATS.indexOf(lignes.length) === -1) {
-      S.form.info = 'Ce fichier contient ' + lignes.length + ' match(s) : il en faut 7, 8 ou 15. Rien n’a été importé.';
+      S.form.info = 'Ce fichier contient ' + lignes.length + ' match(s) : il en faut 7, 8, 12 ou 15. Rien n’a été importé.';
       return;
     }
     S.form.format = lignes.length;
@@ -1378,7 +1378,7 @@ details.sect > .corps { padding: 0 0 16px; }
     if (!gs.length) {
       return haut + avert +
         zone('info', 1, 'Mes grilles', '<div class="vide"><p>Aucune grille enregistrée pour l’instant.</p>' +
-          '<p class="hint">Crée une grille à partir de ses matchs (Loto Foot 7, 8 ou 15), ou importe un fichier CSV.</p></div>', nouvelleBtn) +
+          '<p class="hint">Crée une grille à partir de ses matchs (Loto Foot 7, 8, 12 ou 15), ou importe un fichier CSV.</p></div>', nouvelleBtn) +
         sauvegardeHtml(2);
     }
     var g = courante();
@@ -1601,7 +1601,7 @@ details.sect > .corps { padding: 0 0 16px; }
         '<li>Entre deux équipes d’un même championnat, le calcul utilise les 25 statistiques des deux équipes, dont l’écart de classement Elo.</li>' +
         '<li>Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort : ses écarts à la moyenne de son championnat sont réduits dans le rapport entre les deux notes, puis recentrés sur la moyenne du championnat le plus fort. Les statistiques de l’équipe du championnat le plus fort ne changent pas. Ensuite, l’écart de niveau s’ajoute à l’écart Elo : 1 point de note sur 100 = 4 points Elo. Le classement des championnats est une estimation.</li></ul>', false) +
       section('Les grilles',
-        '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
+        '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8, 12 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
         '<li>En ligne, « Charger la grille publiée » remplit le formulaire avec la grille ouverte la plus proche de sa clôture, reprise de ruedesjoueurs.com (seule la liste des matchs est reprise, ni pronostics ni cotes). Si plusieurs grilles sont ouvertes, tu choisis celle que tu veux. Une grille enregistrée reste à jour jusqu’à sa clôture, puis elle se verrouille seule. Les équipes hors des 16 championnats suivis sont calculées par hypothèse (voir plus bas).</li>' +
         '<li>Doubles et triples : tu choisis leur nombre. L’application les place là où ils rapportent le plus de probabilité, en comparant toutes les possibilités. Prix : ×2 par double, ×3 par triple.</li>' +
         '<li>Une grille non verrouillée reste à jour : ses probabilités sont recalculées à chaque mise à jour des données. Une fois verrouillée, elle garde ses valeurs et ne change plus.</li>' +
@@ -2137,6 +2137,19 @@ details.sect > .corps { padding: 0 0 16px; }
       '<strong>' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</strong></div>' +
       '<div style="text-align:right;white-space:nowrap">' + resultat + '</div></div>' + bloc + '</article>';
   }
+  // Une grille est « en cours » quand sa clôture est passée, « à venir » sinon
+  function enCoursCloture(cloture) {
+    var v = Date.parse(cloture || '');
+    return !isNaN(v) && v <= Date.now();
+  }
+  // Bandeau d’en-tête d’une grille : titre et détail (déjà échappés), et un badge en cours ou à venir
+  function entetteGrille(titre, cloture, detail) {
+    var badge = '';
+    if (cloture) badge = enCoursCloture(cloture) ? '<span class="etat warn">En cours</span>' : '<span class="etat info">À venir</span>';
+    return '<header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;padding:10px 12px;border-radius:10px;background:var(--surface-2)">' +
+      '<div style="min-width:0"><h3 style="font-size:17px;margin:0;line-height:1.25">' + titre + '</h3>' +
+      '<p class="hint" style="margin:3px 0 0">' + detail + '</p></div>' + badge + '</header>';
+  }
   function grilleResultats(g) {
     var modele = { ok: 0, n: 0 };
     var cartes = g.matchs.map(function (m) {
@@ -2144,18 +2157,20 @@ details.sect > .corps { padding: 0 0 16px; }
       return carteMatch(m);
     }).join('');
     var etat = g.complete ? 'grille complète' : 'résultats partiels : certains matchs ne sont pas encore publiés';
-    return '<section style="margin:20px 0 4px">' +
-      '<h3 style="font-size:15px;margin:0">Loto Foot ' + esc(g.format) + ' · grille N°' + esc(g.numero) + ' · ' + esc(g.matchs.length) + ' matchs</h3>' +
-      '<p class="hint" style="margin:2px 0 6px">Clôture : ' + esc(heureCloture(g.cloture)) + ' · ' + esc(etat) + '</p>' +
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px"><span class="tag">Modèle : ' + esc(modele.ok) +
+    var ton = enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)';
+    return '<section style="margin:22px 0 4px;padding:12px;border:2px solid ' + ton + ';border-radius:14px;background:var(--surface)">' +
+      entetteGrille(esc('Loto Foot ' + g.format + ' · grille N°' + g.numero + ' · ' + g.matchs.length + ' matchs'), g.cloture,
+        esc('Clôture : ' + heureCloture(g.cloture) + ' · ' + etat)) +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px"><span class="tag">Modèle : ' + esc(modele.ok) +
       ' bon(s) sur ' + esc(modele.n) + '</span></div>' + cartes + '</section>';
   }
   // Une grille enregistrée : ce qui était prévu, match par match, et le résultat en vert ou en rouge
   function carteGrilleEnregistree(g, publies) {
+    var bouton = '<div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div>';
     var res = resultatGrille(g);
     if (!res || res.erreurs || !res.matchs) {
-      return '<article style="border:1px solid var(--bad-line);border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
-        '<p class="err" style="margin:0">' + esc(g.nom) + ' : grille à vérifier (' + esc(res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes') + ').</p><div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div></article>';
+      return '<article style="border:2px solid var(--bad-line);border-radius:14px;padding:12px;margin:14px 0;background:var(--surface)">' +
+        entetteGrille(esc(g.nom), g.cloture, esc('Grille à vérifier : ' + (res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes'))) + bouton + '</article>';
     }
     var picks = res.matchs.map(function (m) { return { cle: clePaire(m.domicile, m.exterieur), pronostic: m.pronostic, m: m }; });
     var gp = grillePubliee(picks, g.format);
@@ -2175,12 +2190,14 @@ details.sect > .corps { padding: 0 0 16px; }
         '<span style="font-size:14px">Prévu : <strong>' + esc(j.libelle) + '</strong> (' + esc(j.type.toLowerCase()) + ')</span></div>' +
         '<div style="text-align:right;white-space:nowrap">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</div></div>';
     }).join('');
-    var couleurG = connus === 0 ? 'var(--line)' : (ok === connus ? 'var(--ok)' : 'var(--bad)');
+    var ton = g.cloture ? (enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)') : 'var(--line)';
     var titre = (gp ? 'Loto Foot ' + gp.format + ' · grille N°' + gp.numero : 'Loto Foot ' + g.format) + ' · ' + picks.length + ' matchs';
-    return '<article style="border:1px solid var(--line);border-left:5px solid ' + couleurG + ';border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
-      '<h3 style="font-size:15px;margin:0">' + esc(titre) + '</h3>' +
-      '<p class="hint" style="margin:2px 0 4px">' + esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)' +
-      (connus ? ' · résultats : ' + ok + ' bon(s) sur ' + connus : ' · résultats pas encore publiés') + '</p>' + lignes + '<div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div></article>';
+    var detail = esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)';
+    var bilan = connus ? '<span class="tag" style="color:' + (ok === connus ? 'var(--ok)' : 'var(--bad)') + '">Résultats : ' + ok + ' bon(s) sur ' + connus + '</span>' :
+      '<span class="tag">Résultats pas encore publiés</span>';
+    return '<article style="border:2px solid ' + ton + ';border-radius:14px;padding:12px;margin:14px 0;background:var(--surface)">' +
+      entetteGrille(esc(titre), g.cloture, detail) +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px">' + bilan + '</div>' + lignes + bouton + '</article>';
   }
   function contenuMesGrilles(publies) {
     var gs = ordreResultats(sortedGrilles(), function (g) { return g.cloture; });
