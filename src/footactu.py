@@ -739,6 +739,42 @@ def diagnostic_coupes(lecteur):
         print('  motifs « 2 - 1 » dans le HTML : %d' % len(scores))
 
 
+SCORE_SEUL = re.compile(r'^\s*\d{1,2}\s*[-–]\s*\d{1,2}\s*$')
+DATE_TEXTE = re.compile(r'(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\s+\d{1,2}|\d{1,2}\s+(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)', re.I)
+
+
+def _plan(n, indent, budget):
+    """Contour d’un élément : balises, classes et longueur du texte (pas le texte lui-même, sauf libellés courts)."""
+    for e in n.enfants:
+        if budget[0] <= 0:
+            return
+        if isinstance(e, Noeud):
+            budget[0] -= 1
+            court = texte(e)
+            libelle = ('  « %s »' % court) if (court and len(court) <= 30 and not e.enfants[0:0] and
+                                              all(isinstance(x, str) for x in e.enfants)) else ''
+            print('%s%s%s%s' % (indent, e.tag, ''.join('.' + c for c in sorted(e.classes)), libelle))
+            _plan(e, indent + '  ', budget)
+
+
+def diagnostic_cartes(lecteur, chemin):
+    html = lecteur.page(chemin)
+    racine = arbre(html)
+    print('== %s (%d caractères)' % (chemin, len(html)))
+    dates = [t_ for t_, _ in textes_avec_chemin(racine) if DATE_TEXTE.search(t_)]
+    print('  libellés de date (%d) : %s' % (len(dates), ' | '.join(d_.strip()[:50] for d_ in dates[:6])))
+    scores = [(t_, ch) for t_, ch in textes_avec_chemin(racine) if SCORE_SEUL.match(t_)]
+    print('  scores isolés : %d' % len(scores))
+    for k, (t_, ch) in enumerate(scores[:3], 1):
+        print('  score %d, ancêtres (du plus proche) : %s' % (k, ' < '.join(
+            n.tag + ''.join('.' + c for c in sorted(n.classes)) for n in reversed(ch[-6:]))))
+    if scores:
+        ch = scores[0][1]
+        niveau = ch[-4] if len(ch) >= 4 else ch[-1]
+        print('  contour de la carte (4 niveaux au-dessus du score) :')
+        _plan(niveau, '    ', [60])
+
+
 def main(argv):
     commande = argv[1] if len(argv) > 1 else 'collecter'
     if commande == 'chemins':
@@ -749,6 +785,10 @@ def main(argv):
             print('%-4s %s' % (code, ', '.join(sorted(chemins[code])) if code in chemins else 'aucune page trouvée'))
     elif commande == 'diagnostic':
         diagnostic_alertes(Lecteur())
+    elif commande == 'cartes':
+        lecteur = Lecteur()
+        for chemin in ('/champions-league/resultats', '/europa-league/resultats'):
+            diagnostic_cartes(lecteur, chemin)
     elif commande == 'coupes':
         diagnostic_coupes(Lecteur())
     elif commande == 'plan':
