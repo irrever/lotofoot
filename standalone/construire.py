@@ -30,7 +30,7 @@ def dernier_bilan():
 
 pub = json.load(open(ROOT / 'data/donnees_publiees.json', encoding='utf-8'))
 donnees = {'version': pub['version'], 'derniere_date': pub['derniere_date'], 'equipes': pub['equipes'],
-           'stats': pub['stats'], 'modele': pub['modele']}
+           'stats': pub['stats'], 'modele': pub['modele'], 'publie_le': pub.get('publie_le')}
 donnees['bilan'] = dernier_bilan()
 RESULTATS = ROOT / 'data/resultats.json'   # matchs de la veille et précision des grilles (src/rapport.py)
 if RESULTATS.exists():

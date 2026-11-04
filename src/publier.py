@@ -139,7 +139,8 @@ def main():
     modele = json.load(open(DATA / 'model_doc.json', encoding='utf-8'))
     donnees = {'version': version_publiee(asof), 'derniere_date': derniere.isoformat(),
                'equipes': equipes, 'stats': stats, 'modele': modele,
-               'absences_date': du['date'] if du else None}
+               'absences_date': du['date'] if du else None,
+               'publie_le': dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')}
 
     sortie = DATA / 'donnees_publiees.json'
     if sortie.exists():

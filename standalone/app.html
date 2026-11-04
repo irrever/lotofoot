@@ -375,7 +375,7 @@ __PWA_HEAD__
     grilles: [], grilleId: null, stockage: true, nouvelle: false, form: null, message: '', texteCopie: '',
     ligue: '', equipe: '', dom: '', ext: '', q: '',
     rech: { dom: { texte: '', championnat: '', note: '', niveau: 'haut' }, ext: { texte: '', championnat: '', note: '', niveau: 'haut' } },
-    version: DATA.version, derniere: DATA.derniere_date, miseAJour: '', bilan: DATA.bilan || null, resultats: DATA.resultats || null
+    version: DATA.version, derniere: DATA.derniere_date, publieLe: DATA.publie_le || null, miseAJour: '', bilan: DATA.bilan || null, resultats: DATA.resultats || null
   };
   var app = document.getElementById('app');
 
@@ -1242,7 +1242,7 @@ __PWA_HEAD__
     return ['H', 'D', 'A'].every(function (c) { return Array.isArray(m.coef[c]) && m.coef[c].length === 25; });
   }
   function appliquerDonnees(d) {
-    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.bilan = d.bilan || null; S.resultats = d.resultats || null;
+    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.publieLe = d.publie_le || null; S.bilan = d.bilan || null; S.resultats = d.resultats || null;
   }
   function verifierMiseAJour() {
     if (!/^https?:$/.test(location.protocol) || !window.fetch) return Promise.resolve();
@@ -1251,7 +1251,7 @@ __PWA_HEAD__
       return rep.json();
     }).then(function (d) {
       if (!donneesValides(d)) { S.miseAJour = 'Mise à jour ignorée : fichier incomplet.'; return; }
-      if (String(d.version) > String(S.version)) {
+      if (String(d.version) > String(S.version) || (!!d.publie_le && String(d.publie_le) > String(S.publieLe || ''))) {
         appliquerDonnees(d);
         S.miseAJour = 'Mise à jour automatique effectuée.';
       } else {
@@ -1287,11 +1287,15 @@ __PWA_HEAD__
     return '<details class="sect"' + (ouvert ? ' open' : '') + '><summary>' + titre + '</summary><div class="corps">' + corps + '</div></details>';
   }
   // État des données, affiché dans l’en-tête
+  // Fraîcheur des données : date de publication (quand elle est connue) et dernier match pris en compte
+  function fraicheurDonnees() {
+    if (!S.publieLe) return 'Données du ' + dateFr(S.derniere);
+    return 'Données publiées le ' + dateHeureFr(S.publieLe) + ' · matchs joués jusqu’au ' + dateFr(S.derniere);
+  }
   function etatDonnees() {
-    var date = dateFr(S.derniere);
-    if (!enLigne()) return '<span class="etat">Version fichier · données du ' + esc(date) + '</span>';
-    if (/Pas de connexion|ignorée/.test(S.miseAJour)) return '<span class="etat warn">Hors connexion · données du ' + esc(date) + '</span>';
-    return '<span class="etat ok">À jour · données du ' + esc(date) + '</span>';
+    if (!enLigne()) return '<span class="etat">Version fichier · ' + esc(fraicheurDonnees()) + '</span>';
+    if (/Pas de connexion|ignorée/.test(S.miseAJour)) return '<span class="etat warn">Hors connexion · ' + esc(fraicheurDonnees()) + '</span>';
+    return '<span class="etat ok">À jour · ' + esc(fraicheurDonnees()) + '</span>';
   }
   // Légende des couleurs des issues : 1 (vert), N (gris), 2 (bleu)
   function legendeHtml() {
@@ -1616,7 +1620,7 @@ __PWA_HEAD__
         '<li>Classement Elo, calculé sur les résultats de chaque championnat.</li></ul>', false) +
       section('D’où viennent les données',
         '<p>Résultats et statistiques de match publiés par football-data.co.uk, pour 16 championnats, des saisons 2015-16 à 2026-27. Les coupes d’Europe ne sont pas couvertes, et les championnats qui ne figurent pas dans cette liste non plus, comme le championnat tchèque.</p>' +
-        '<p>Les données sont celles du ' + esc(dateFr(S.derniere)) + '.</p>', false) +
+        '<p>' + esc(fraicheurDonnees()) + '.</p>', false) +
       section('Mises à jour',
         '<ul><li>Version en ligne : à chaque ouverture avec connexion, l’application récupère la dernière version de ses données et de son code. Sans connexion, elle garde la dernière version reçue et fonctionne hors ligne.</li>' +
         '<li>Version fichier (Lotofoot.html) : pas de mise à jour automatique. Pour une version plus récente, il faut remplacer le fichier.</li></ul>', false) +
@@ -2264,7 +2268,7 @@ __PWA_HEAD__
       '<p class="accroche">Pronostics par statistiques · aucune cote de bookmaker</p></div></div>' + '<div class="head-barre">' + etatDonnees() + reglagesTheme() + '</div></header>' +
       tabs +
       '<main class="contenu" role="tabpanel" aria-labelledby="tab-' + S.tab + '">' + panel() + '</main>' +
-      '<footer class="pied"><p class="foot-note">Sources : football-data.co.uk (résultats et statistiques de match). Données : version ' + esc(S.version) + '. ' + esc(S.miseAJour) + '</p></footer>' +
+      '<footer class="pied"><p class="foot-note">Sources : football-data.co.uk (résultats et statistiques de match). ' + esc(fraicheurDonnees()) + '. ' + esc(S.miseAJour) + '</p></footer>' +
       '</div>';
   }
   function agir(action, el) {
