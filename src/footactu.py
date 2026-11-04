@@ -704,6 +704,41 @@ def diagnostic_alertes(lecteur):
                         '%s %d' % (anonyme(c), v) for c, v in tete)))
 
 
+def diagnostic_coupes(lecteur):
+    """Coupes d’Europe : adresses des pages de résultats et structure de leurs lignes (sans le texte des articles)."""
+    trouvees = []
+    for plan in ('/sitemap-champions-league.xml', '/sitemap-europa-league.xml'):
+        try:
+            xml = lecteur.page(plan)
+        except Exception as e:
+            print('%s : %s' % (plan, type(e).__name__))
+            continue
+        locs = [re.sub(r'^https?://(www\.)?foot-actu\.com', '', u) for u in re.findall(r'<loc>\s*([^<\s]+)\s*</loc>', xml)]
+        utiles = sorted(u for u in locs if re.search(r'calendrier|resultat|journee|match|classement', u.lower()))
+        print('%s : %d adresses ; utiles : %s' % (plan, len(locs), ', '.join(utiles[:60]) or 'aucune'))
+        trouvees += utiles
+    cibles = [u for u in trouvees if re.search(r'calendrier|resultat', u.lower())][:2]
+    for chemin in cibles:
+        html = lecteur.page(chemin)
+        racine = arbre(html)
+        print('== %s (%d caractères)' % (chemin, len(html)))
+        titres = [texte(n)[:40] for n in descendants(racine)
+                  if n.tag in ('h1', 'h2', 'h3', 'h4') and re.search(r'calendrier|résultat|journ|match|tour', texte(n).lower())]
+        print('  titres utiles : ' + (' | '.join(titres[:15]) or 'aucun'))
+        tableaux = [n for n in descendants(racine) if n.tag == 'table']
+        print('  tableaux : %d' % len(tableaux))
+        for i, t in enumerate(tableaux[:3], 1):
+            lignes = [n for n in descendants(t) if n.tag == 'tr']
+            entetes = [texte(n)[:20] for n in descendants(t) if n.tag == 'th']
+            print('  tableau %d : %d lignes ; en-têtes : %s' % (i, len(lignes), ' | '.join(entetes[:10]) or 'aucun'))
+            donnees = [tr for tr in lignes if any(isinstance(c, Noeud) and c.tag == 'td' for c in tr.enfants)]
+            for k, tr in enumerate(donnees[:2], 1):
+                print('    ligne %d' % k)
+                _chaine(tr, '      ', [40])
+        scores = re.findall(r'\b\d{1,2} ?[-–] ?\d{1,2}\b', html)
+        print('  motifs « 2 - 1 » dans le HTML : %d' % len(scores))
+
+
 def main(argv):
     commande = argv[1] if len(argv) > 1 else 'collecter'
     if commande == 'chemins':
@@ -714,6 +749,8 @@ def main(argv):
             print('%-4s %s' % (code, ', '.join(sorted(chemins[code])) if code in chemins else 'aucune page trouvée'))
     elif commande == 'diagnostic':
         diagnostic_alertes(Lecteur())
+    elif commande == 'coupes':
+        diagnostic_coupes(Lecteur())
     elif commande == 'plan':
         diagnostic_plan(Lecteur())
     elif commande == 'brut':
