@@ -215,16 +215,18 @@ def liens(html):
 
 
 def pages_de(lecteur, chemin_ligue):
-    """Adresses des pages de blessures, de buteurs et de passeurs d’un championnat, prises dans sa rubrique."""
+    """Adresses des pages de blessures, de buteurs et de passeurs d’un championnat, prises dans sa rubrique.
+    Renvoie aussi les liens qui parlent de ces pages, hors rubrique, pour le diagnostic."""
     rubrique = re.sub(r'-\d+$', '', chemin_ligue.rsplit('/', 1)[-1])
     liens_ligue = liens(lecteur.page(chemin_ligue))
+    utiles = sorted(c for c in liens_ligue if re.search(r'blessure|suspen|buteur|passeur', c))
     pages = {}
     for type_, mot in (('blessures', 'blessure'), ('buteurs', 'buteur'), ('passeurs', 'passeur')):
         propres = sorted((c for c in liens_ligue
                           if mot in c.rsplit('/', 1)[-1] and rubrique in c.strip('/').split('/')), key=len)
         if propres:
             pages[type_] = propres[0]
-    return pages
+    return pages, utiles
 
 
 def decouvrir(lecteur):
@@ -241,10 +243,11 @@ def decouvrir(lecteur):
             continue
         chemin = sorted(liste, key=lambda c: (not c.startswith(CLASSEMENTS), len(c)))[0]
         try:
-            pages = pages_de(lecteur, chemin)
+            pages, utiles = pages_de(lecteur, chemin)
         except Exception as e:
             print('  page du championnat %s indisponible : %s' % (code, type(e).__name__))
             continue
+        print('  %s : page %s ; liens utiles : %s' % (code, chemin, ', '.join(utiles[:15]) or 'aucun'))
         if pages:
             chemins[code] = pages
     for code, pages in CONNUS.items():
