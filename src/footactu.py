@@ -57,6 +57,8 @@ ALIAS = {
     'AJ Auxerre': 'Auxerre', 'Lille OSC': 'Lille', 'Stade Brestois': 'Brest', 'Estac': 'Troyes',
     'SCO Angers': 'Angers', 'Olympique de Marseille': 'Marseille', 'Toulouse Football Club': 'Toulouse',
     'Le Havre Athletic Club': 'Le Havre', 'Paris FC': 'Paris FC',
+    'PSG': 'Paris SG', 'Stade Rennais': 'Rennes', 'Manchester City': 'Man City',
+    'Manchester United': 'Man United', 'Nottingham Forest': "Nott'm Forest",
 }
 MOTS_VIDES = {'fc', 'cf', 'afc', 'ac', 'as', 'rc', 'ogc', 'osc', 'sc', 'sco', 'aj', 'us', 'ss', 'sv', 'vfb', 'vfl',
               'bv', 'rb', 'the', 'club', 'football', 'athletic', 'de', 'la', 'le', 'of', 'calcio', 'ssc', 'cd', 'rcd',
@@ -486,6 +488,54 @@ def diagnostic(lecteur, codes):
                     _chaine(tr, '      ', [40])
 
 
+MOTS_BRUTS = ['blessé', 'blessure', 'suspendu', 'suspension', 'indisponible', 'absent', 'opacity-60',
+              '__next_data__', 'application/json', 'role="tab"', 'aria-selected', 'data-tab']
+
+
+def textes_avec_chemin(n, chemin=()):
+    """Textes d’un arbre, avec le chemin des éléments qui les contiennent."""
+    for e in n.enfants:
+        if isinstance(e, Noeud):
+            yield from textes_avec_chemin(e, chemin + (e,))
+        else:
+            yield e, chemin
+
+
+def diagnostic_brut(lecteur, codes):
+    """Où se trouvent les blessés et suspendus dans le HTML des pages de classement (sans le texte)."""
+    accueil = lecteur.page(CLASSEMENTS)
+    hors = sorted(c for c in liens(accueil) if not c.startswith(CLASSEMENTS))
+    print('accueil : %d liens hors classements : %s' % (len(hors), ', '.join(hors[:60]) or 'aucun'))
+    trouves = classements_suivis(accueil)
+    for code in codes:
+        if code not in trouves:
+            print('%s : page de classement introuvable' % code)
+            continue
+        html = lecteur.page(trouves[code])
+        bas = html.lower()
+        print('== %s %s (%d caractères)' % (code, trouves[code], len(html)))
+        print('  mots dans le HTML brut : ' + ' ; '.join('%s %d' % (m, bas.count(m)) for m in MOTS_BRUTS))
+        scripts = re.findall(r'<script([^>]*)>(.*?)</script>', html, re.S | re.I)
+        print('  balises script : %d' % len(scripts))
+        for attrs, corps in scripts:
+            ident = re.search(r'id="([^"]*)"', attrs)
+            typ = re.search(r'type="([^"]*)"', attrs)
+            bas_corps = corps.lower()
+            hits = bas_corps.count('bless') + bas_corps.count('suspen')
+            if hits or ident:
+                print('    script id=%s type=%s longueur=%d mots blessés/suspendus=%d' % (
+                    ident.group(1) if ident else '-', typ.group(1) if typ else '-', len(corps), hits))
+        racine = arbre(html)
+        touches = [(t, ch) for t, ch in textes_avec_chemin(racine)
+                   if any(m in t.lower() for m in ('bless', 'suspen', 'indisponib'))]
+        print('  textes du DOM contenant bless / suspen / indisponib : %d' % len(touches))
+        for t, ch in touches[:3]:
+            print('    ancêtres : ' + ' > '.join(n.tag + ''.join('.' + c for c in sorted(n.classes)) for n in ch[-6:]))
+        pages = sorted(liens(html))
+        print('  liens de la page : %d' % len(pages))
+        print('    ' + ', '.join(pages[:80]))
+
+
 def main(argv):
     commande = argv[1] if len(argv) > 1 else 'collecter'
     if commande == 'chemins':
@@ -494,6 +544,8 @@ def main(argv):
         CHEMINS.write_text(json.dumps(chemins, ensure_ascii=False, indent=1), encoding='utf-8')
         for code in LIGUES:
             print('%-4s %s' % (code, ', '.join(sorted(chemins[code])) if code in chemins else 'aucune page trouvée'))
+    elif commande == 'brut':
+        diagnostic_brut(Lecteur(), argv[2:] or ['I1', 'SP1', 'E1'])
     elif commande == 'structure':
         diagnostic(Lecteur(), argv[2:] or ['I1', 'SP1', 'E1'])
     elif commande == 'collecter':

@@ -16,4 +16,4 @@ jobs:
         with:
           python-version: '3.13'
       - name: Repérer la structure des pages
-        run: python3 src/footactu.py structure I1 SP1 E1
+        run: python3 src/footactu.py brut I1 SP1 E1

@@ -6,8 +6,9 @@ ni enregistrées. Une prévision n’est écrite qu’une fois, à la première 
 Le fichier data/journal/predictions.jsonl ne reçoit que des lignes ajoutées en fin de fichier : aucune
 prévision ancienne n’est modifiée. Le bilan (bilan.py) compare ensuite ces prévisions aux résultats.
 
-Chaque prévision garde la probabilité du modèle (« proba ») et, pour les matchs proches, celle qui tient
-compte des absences du jour (« proba_absences », avec le malus Elo appliqué à chaque équipe).
+Les absences du jour (foot-actu.com) ont leur propre journal, data/journal/absences.jsonl : pour chaque
+match qui entre dans les trois jours suivants et dont une équipe a un malus Elo, la prévision de base et la
+prévision ajustée sont enregistrées une seule fois. Ce journal servira à mesurer l’effet des absences.
 
 Usage : python3 journal.py [--jours 14]
 """
@@ -22,11 +23,12 @@ from footactu import absences_par_equipe, du_jour_frais
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 JOURNAL = os.path.join(HERE, '..', 'data', 'journal', 'predictions.jsonl')
+JOURNAL_ABSENCES = os.path.join(HERE, '..', 'data', 'journal', 'absences.jsonl')
 FIXTURES_URL = 'https://www.football-data.co.uk/fixtures.csv'
 CA = '/root/.ccr/ca-bundle.crt'
 ORDRE = ['H', 'D', 'A']
 ETIQ = {'H': '1', 'D': 'N', 'A': '2'}
-# Les absences du jour ne sont prises en compte que pour les matchs des jours qui suivent
+# Les absences du jour ne sont prises en compte que pour les matchs des trois jours qui suivent
 HORIZON_ABSENCES = 3
 # Noms de la liste des rencontres -> noms des résultats (même source, orthographe différente)
 ALIAS_LISTE = {'Sheffield Utd': 'Sheffield United', 'KV Mechelen': 'Mechelen'}
@@ -51,6 +53,17 @@ def rencontres_a_venir():
     return out
 
 
+def identifiant(m):
+    return f"{m['ligue']}|{m['date'].isoformat()}|{m['domicile']}|{m['exterieur']}"
+
+
+def lire_ids(chemin):
+    if not os.path.exists(chemin):
+        return set()
+    with open(chemin, encoding='utf-8') as f:
+        return {json.loads(l)['id'] for l in f if l.strip()}
+
+
 def principal(jours):
     rows = load_all()
     jouees = [r for r in rows if r['result'] in ORDRE and r['hg'] not in (None, '') and r['ag'] not in (None, '')]
@@ -62,10 +75,8 @@ def principal(jours):
     sc = StandardScaler().fit(X)
     lr = LogisticRegression(C=0.5, max_iter=5000).fit(sc.transform(X), y)
     cl = list(lr.classes_)
-    deja = set()
-    if os.path.exists(JOURNAL):
-        with open(JOURNAL, encoding='utf-8') as f:
-            deja = {json.loads(l)['id'] for l in f if l.strip()}
+    deja = lire_ids(JOURNAL)
+    deja_absences = lire_ids(JOURNAL_ABSENCES)
     absences = absences_par_equipe(du_jour_frais())
     aujourdhui = dt.date.today()
     fin = reference + dt.timedelta(days=jours)
@@ -77,40 +88,59 @@ def principal(jours):
     a_venir = sorted([m for m in liste if m['ligue'] in LEAGUES and reference <= m['date'] <= fin],
                      key=lambda m: (m['date'], m['ligue'], m['domicile']))
     maintenant = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
+
+    def proba(x):
+        p = lr.predict_proba(sc.transform(np.array([x], dtype=float)))[0]
+        return {c: float(p[cl.index(c)]) for c in ORDRE}
+
     nouvelles, inconnues = [], []
     for m in a_venir:
-        ident = f"{m['ligue']}|{m['date'].isoformat()}|{m['domicile']}|{m['exterieur']}"
+        ident = identifiant(m)
         if ident in deja:
             continue
         if (m['ligue'], m['domicile']) not in st.R or (m['ligue'], m['exterieur']) not in st.R:
             inconnues.append(f"{m['domicile']} – {m['exterieur']} ({m['ligue']})")
             continue
         deja.add(ident)
-        x = st.features(m['ligue'], m['domicile'], m['exterieur'], m['date'])
-        p = lr.predict_proba(sc.transform(np.array([x], dtype=float)))[0]
-        pr = {c: float(p[cl.index(c)]) for c in ORDRE}
-        # Absences du jour : prises en compte pour les matchs proches seulement ; « proba » reste la prévision de base
-        proche = 0 <= (m['date'] - aujourdhui).days <= HORIZON_ABSENCES
-        mal_d = absences.get((m['ligue'], m['domicile']), {}).get('malus', 0) if proche else 0
-        mal_e = absences.get((m['ligue'], m['exterieur']), {}).get('malus', 0) if proche else 0
-        xa = st.features(m['ligue'], m['domicile'], m['exterieur'], m['date'], malus=(mal_d, mal_e))
-        pa = lr.predict_proba(sc.transform(np.array([xa], dtype=float)))[0]
-        pra = {c: float(pa[cl.index(c)]) for c in ORDRE}
+        pr = proba(st.features(m['ligue'], m['domicile'], m['exterieur'], m['date']))
         nouvelles.append({'id': ident, 'enregistree_le': maintenant, 'reference_donnees': reference.isoformat(),
                           'saison': saison_courante,
                           'ligue': m['ligue'], 'date': m['date'].isoformat(), 'heure_source': m['heure_source'],
                           'domicile': m['domicile'], 'exterieur': m['exterieur'],
                           'proba': {ETIQ[c]: round(pr[c], 6) for c in ORDRE},
-                          'pronostic': ETIQ[max(ORDRE, key=lambda c: pr[c])],
-                          'proba_absences': {ETIQ[c]: round(pra[c], 6) for c in ORDRE},
-                          'malus': {'domicile': mal_d, 'exterieur': mal_e}})
+                          'pronostic': ETIQ[max(ORDRE, key=lambda c: pr[c])]})
+
+    # Absences du jour : une prévision ajustée par match, écrite quand le match entre dans les trois jours
+    ajustees = []
+    for m in a_venir:
+        ident = identifiant(m)
+        if ident in deja_absences or not 0 <= (m['date'] - aujourdhui).days <= HORIZON_ABSENCES:
+            continue
+        if (m['ligue'], m['domicile']) not in st.R or (m['ligue'], m['exterieur']) not in st.R:
+            continue
+        mal_d = absences.get((m['ligue'], m['domicile']), {}).get('malus', 0)
+        mal_e = absences.get((m['ligue'], m['exterieur']), {}).get('malus', 0)
+        if not (mal_d or mal_e):
+            continue
+        deja_absences.add(ident)
+        base = proba(st.features(m['ligue'], m['domicile'], m['exterieur'], m['date']))
+        ajuste = proba(st.features(m['ligue'], m['domicile'], m['exterieur'], m['date'], malus=(mal_d, mal_e)))
+        ajustees.append({'id': ident, 'enregistree_le': maintenant, 'date': m['date'].isoformat(),
+                         'ligue': m['ligue'], 'domicile': m['domicile'], 'exterieur': m['exterieur'],
+                         'malus': {'domicile': mal_d, 'exterieur': mal_e},
+                         'proba_base': {ETIQ[c]: round(base[c], 6) for c in ORDRE},
+                         'proba_absences': {ETIQ[c]: round(ajuste[c], 6) for c in ORDRE}})
+
     os.makedirs(os.path.dirname(JOURNAL), exist_ok=True)
     with open(JOURNAL, 'a', encoding='utf-8') as f:
         for e in nouvelles:
             f.write(json.dumps(e, ensure_ascii=False) + '\n')
-    avec_absences = sum(1 for e in nouvelles if e['malus']['domicile'] or e['malus']['exterieur'])
+    with open(JOURNAL_ABSENCES, 'a', encoding='utf-8') as f:
+        for e in ajustees:
+            f.write(json.dumps(e, ensure_ascii=False) + '\n')
     print(f'rencontres de nos championnats du {reference.isoformat()} au {fin.isoformat()} : {len(a_venir)} | '
-          f'nouvelles prévisions enregistrées : {len(nouvelles)} | avec absences du jour : {avec_absences}')
+          f'nouvelles prévisions enregistrées : {len(nouvelles)}')
+    print(f'prévisions ajustées par les absences du jour enregistrées : {len(ajustees)}')
     if inconnues:
         print('équipes absentes des données, non enregistrées :', ' ; '.join(inconnues))
     for e in nouvelles:

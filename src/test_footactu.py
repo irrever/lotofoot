@@ -90,6 +90,16 @@ class Rapprochement(unittest.TestCase):
         for club, attendu in cas.items():
             self.assertEqual(fa.rapprocher(club, NOMS_LIGUE), attendu, club)
 
+    def test_alias_supplementaires(self):
+        self.assertEqual(fa.rapprocher('PSG', NOMS_LIGUE), 'Paris SG')
+        self.assertEqual(fa.rapprocher('Stade Rennais', NOMS_LIGUE + ['Rennes']), 'Rennes')
+        noms_e0 = ['Man City', 'Man United', "Nott'm Forest", 'Tottenham', 'Newcastle']
+        self.assertEqual(fa.rapprocher('Manchester City', noms_e0), 'Man City')
+        self.assertEqual(fa.rapprocher('Manchester United', noms_e0), 'Man United')
+        self.assertEqual(fa.rapprocher('Nottingham Forest', noms_e0), "Nott'm Forest")
+        self.assertEqual(fa.rapprocher('Tottenham Hotspur', noms_e0), 'Tottenham')
+        self.assertEqual(fa.rapprocher('Newcastle United', noms_e0), 'Newcastle')
+
     def test_inconnu(self):
         self.assertIsNone(fa.rapprocher('Club Inconnu Sans Rapport', NOMS_LIGUE))
 
