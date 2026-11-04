@@ -86,6 +86,14 @@ def note_de(donnees, code):
     return h['note'] if h else None
 
 
+def moyenne_elo_ligue(donnees, code):
+    """Elo moyen d’un championnat : celui des équipes suivies, ou, pour un championnat hypothétique, 1 512 + 0,96 × note."""
+    elos = [t['vec']['elo'] for t in donnees['equipes'] if t['ligue'] == code]
+    if elos:
+        return sum(elos) / len(elos)
+    return 1512 + 0.96 * note_de(donnees, code)
+
+
 def moyenne(equipes, champs):
     out = {}
     for k in champs:
@@ -165,6 +173,9 @@ def calcul_match(donnees, h, a):
     if cross:
         vh = niveau_ajuste(vh, h['ligue'], a['ligue'], donnees)
         va = niveau_ajuste(va, a['ligue'], h['ligue'], donnees)
+        # Position dans le championnat : chaque club est comparé à la moyenne de son propre championnat
+        vh['elo'] -= moyenne_elo_ligue(donnees, h['ligue'])
+        va['elo'] -= moyenne_elo_ligue(donnees, a['ligue'])
     ecart = vh['elo'] - va['elo'] + gap
     p = proba_match({'vec': vh}, {'vec': va}, donnees['modele'], ecart)
     hypothese = [t['equipe'] for t in (h, a) if t.get('hypothese')]

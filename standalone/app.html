@@ -614,6 +614,12 @@ __PWA_HEAD__
   function alertesHtml(liste) {
     return liste.map(function (t) { return '<p class="alerte">' + esc(t) + '</p>'; }).join('');
   }
+  // Elo moyen d’un championnat : celui des équipes suivies, ou, pour un championnat hypothétique, 1 512 + 0,96 × note
+  function moyenneElo(code) {
+    var ts = S.equipes.filter(function (t) { return t.ligue === code && t.vec && typeof t.vec.elo === 'number'; });
+    if (ts.length) return ts.reduce(function (s, t) { return s + t.vec.elo; }, 0) / ts.length;
+    return 1512 + 0.96 * noteDe(code);
+  }
   function calculMatch(h, a) {
     if (!h.vec || !a.vec || !S.modele) return { erreur: 'Données indisponibles pour cette équipe.' };
     var cross = h.ligue !== a.ligue, gap = 0, nh = null, na = null;
@@ -624,6 +630,11 @@ __PWA_HEAD__
     }
     var hv = cross ? niveauAjuste(vecAvecAbsences(h), h.ligue, a.ligue) : vecAvecAbsences(h);
     var av = cross ? niveauAjuste(vecAvecAbsences(a), a.ligue, h.ligue) : vecAvecAbsences(a);
+    if (cross) {
+      // Position dans le championnat : chaque club est comparé à la moyenne de son propre championnat
+      hv.elo -= moyenneElo(h.ligue);
+      av.elo -= moyenneElo(a.ligue);
+    }
     return { p: probMatch(hv, av, gap), gap: gap, hv: hv, av: av, cross: cross, nh: nh, na: na };
   }
   // Doubles et triples : toutes les répartitions possibles sont comparées ; on garde celle qui donne

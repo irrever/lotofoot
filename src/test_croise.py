@@ -109,7 +109,12 @@ class Calculs(unittest.TestCase):
         d = donnees_test()
         r = croise.calcul_match(d, d['equipes'][2], d['equipes'][0])  # Girona (SP1) reçoit Arsenal (E0)
         self.assertEqual((r['methode'], r['gap'], r['croise']), ('inter_championnats', -80.0, True))
-        self.assertEqual(r['ecart'], round(1650 - 1800 - 80, 1))
+        # position dans le championnat : Girona 1650 contre une moyenne SP1 de 1625, Arsenal 1800 contre 1750
+        self.assertEqual(r['ecart'], round((1650 - 1625) - (1800 - 1750) - 80, 1))
+
+    def test_moyenne_elo_championnat_hypothese(self):
+        self.assertAlmostEqual(croise.moyenne_elo_ligue(donnees_test(), 'NO1'), 1512 + 0.96 * 47.5, places=9)
+        self.assertAlmostEqual(croise.moyenne_elo_ligue(donnees_test(), 'SP1'), 1625.0, places=9)
 
     def test_absences_baissent_lelo(self):
         d = donnees_test()
