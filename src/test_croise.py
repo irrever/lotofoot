@@ -88,6 +88,13 @@ class Noms(unittest.TestCase):
         self.assertEqual(croise.trouver_equipe(d, 'PSG')['equipe'], 'Paris SG')
         self.assertIsNone(croise.trouver_equipe(d, 'Équipe inconnue'))
 
+    def test_clubs_estimes_des_grilles_12(self):
+        d = donnees_test()
+        self.assertEqual(croise.trouver_equipe(d, 'Ferencvaros')['equipe'], 'Ferencváros')
+        self.assertEqual(croise.trouver_equipe(d, 'Salzbourg')['ligue'], 'AT1')
+        self.assertEqual(croise.trouver_equipe(d, 'Sparta Prague')['vec']['elo'], 1666)
+        self.assertAlmostEqual(croise.moyenne_elo_ligue(d, 'HU1'), 1512 + 0.96 * 37.5, places=9)
+
 
 class Calculs(unittest.TestCase):
     def test_meme_championnat_sans_ajustement(self):

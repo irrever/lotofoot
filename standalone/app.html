@@ -509,7 +509,8 @@ __PWA_HEAD__
     SK1: { pays: 'Slovaquie', note: 37.5 },
     CZ1: { pays: 'Tchéquie', note: 45 },
     HR1: { pays: 'Croatie', note: 40 },
-    DK1: { pays: 'Danemark', note: 47.5 }
+    DK1: { pays: 'Danemark', note: 47.5 },
+    HU1: { pays: 'Hongrie', note: 37.5 }
   };
   var CLUBS_HYPOTHESE = {
     'Bodø/Glimt': { ligue: 'NO1', elo: 1782, niveau: 'dominant', motif: 'Un des clubs les plus forts de Norvège ces dernières saisons.' },
@@ -517,7 +518,10 @@ __PWA_HEAD__
     'Slovan Bratislava': { ligue: 'SK1', elo: 1758, niveau: 'dominant', motif: 'Club le plus titré de Slovaquie, en général le plus fort de son championnat.' },
     'Slavia Prague': { ligue: 'CZ1', elo: 1776, niveau: 'dominant', motif: 'Club le plus fort de Tchéquie ces dernières saisons.' },
     'Dinamo Zagreb': { ligue: 'HR1', elo: 1764, niveau: 'dominant', motif: 'Club le plus fort de Croatie, en général champion.' },
-    'Nordsjaelland': { ligue: 'DK1', elo: 1670, niveau: 'haut', motif: 'Club du haut de tableau danois, sans statut de favori.' }
+    'Nordsjaelland': { ligue: 'DK1', elo: 1670, niveau: 'haut', motif: 'Club du haut de tableau danois, sans statut de favori.' },
+    'Salzbourg': { ligue: 'AT1', elo: 1788, niveau: 'dominant', motif: 'Estimation : club le plus fort d’Autriche ces dernières saisons.' },
+    'Sparta Prague': { ligue: 'CZ1', elo: 1666, niveau: 'haut', motif: 'Estimation : grand club tchèque, souvent dans le haut de tableau, sans statut de favori.' },
+    'Ferencváros': { ligue: 'HU1', elo: 1700, niveau: 'dominant', motif: 'Estimation : club le plus titré de Hongrie, en général champion.' }
   };
   var vecMoyenCache = null;
   function vecMoyen() {
@@ -1250,15 +1254,37 @@ __PWA_HEAD__
       if (!rep.ok) throw new Error('HTTP ' + rep.status);
       return rep.json();
     }).then(function (d) {
+      S.verifieLe = new Date();
       if (!donneesValides(d)) { S.miseAJour = 'Mise à jour ignorée : fichier incomplet.'; return; }
       if (String(d.version) > String(S.version) || (!!d.publie_le && String(d.publie_le) > String(S.publieLe || ''))) {
         appliquerDonnees(d);
-        S.miseAJour = 'Mise à jour automatique effectuée.';
+        S.miseAJour = 'Données mises à jour à ' + heureFr(S.verifieLe, true) + '.';
       } else {
-        S.miseAJour = 'À jour.';
+        S.miseAJour = 'Données déjà à jour (vérifiées à ' + heureFr(S.verifieLe, true) + ').';
       }
     }).catch(function () {
       S.miseAJour = 'Pas de connexion : dernière version reçue.';
+    });
+  }
+  // Heure d’affichage (hh:mm)
+  function heureFr(d, avecSecondes) { return d ? d.toLocaleTimeString('fr-FR', avecSecondes ? { hour: '2-digit', minute: '2-digit', second: '2-digit' } : { hour: '2-digit', minute: '2-digit' }) : ''; }
+  // L’application elle-même (index.html) est-elle plus récente que celle qui tourne ?
+  function verifierNouvelleVersion() {
+    if (!/^https?:$/.test(location.protocol) || !window.fetch) return Promise.resolve();
+    return fetch('index.html', { cache: 'no-store' }).then(function (rep) {
+      if (!rep.ok) throw new Error('HTTP ' + rep.status);
+      return rep.text();
+    }).then(function (texte) {
+      var m = /"publie_le"\s*:\s*"([^"]+)"/.exec(texte);
+      if (m && m[1] > String(DATA.publie_le || '')) S.nouvelleVersion = true;
+    }).catch(function () {});
+  }
+  // Bouton « Mettre à jour » : données et application, avec l’heure de la vérification
+  function mettreAJour() {
+    if (S.miseAJourEnCours) return;
+    S.miseAJourEnCours = true; render();
+    Promise.all([verifierMiseAJour(), verifierNouvelleVersion()]).then(function () {
+      S.miseAJourEnCours = false; render();
     });
   }
 
@@ -1292,10 +1318,18 @@ __PWA_HEAD__
     if (!S.publieLe) return 'Données du ' + dateFr(S.derniere);
     return 'Données publiées le ' + dateHeureFr(S.publieLe) + ' · matchs joués jusqu’au ' + dateFr(S.derniere);
   }
+  // Libellé court : heure de publication des données, avec sa date
+  function miseAJourCourte() {
+    if (!S.publieLe) return 'données du ' + dateFr(S.derniere);
+    return 'mise à jour à ' + heureFr(new Date(S.publieLe)) + ' (' + dateFr(S.publieLe) + ')';
+  }
   function etatDonnees() {
-    if (!enLigne()) return '<span class="etat">Version fichier · ' + esc(fraicheurDonnees()) + '</span>';
-    if (/Pas de connexion|ignorée/.test(S.miseAJour)) return '<span class="etat warn">Hors connexion · ' + esc(fraicheurDonnees()) + '</span>';
-    return '<span class="etat ok">À jour · ' + esc(fraicheurDonnees()) + '</span>';
+    if (!enLigne()) return '<span class="etat">Version fichier · ' + esc(miseAJourCourte()) + '</span>';
+    if (S.nouvelleVersion) return '<span class="etat warn">Nouvelle version disponible</span> <button type="button" class="btn petit primary" data-act="recharger">Recharger</button>';
+    var verif = S.verifieLe ? ' · vérifié à ' + heureFr(S.verifieLe, true) : '';
+    var bouton = '<button type="button" class="btn petit" data-act="mettre-a-jour"' + (S.miseAJourEnCours ? ' disabled' : '') + '>' + (S.miseAJourEnCours ? 'Vérification…' : 'Mettre à jour') + '</button>';
+    if (/Pas de connexion|ignorée/.test(S.miseAJour)) return '<span class="etat warn">Hors connexion · ' + esc(miseAJourCourte() + verif) + '</span> ' + bouton;
+    return '<span class="etat ok">À jour · ' + esc(miseAJourCourte() + verif) + '</span> ' + bouton;
   }
   // Légende des couleurs des issues : 1 (vert), N (gris), 2 (bleu)
   function legendeHtml() {
@@ -2286,6 +2320,8 @@ __PWA_HEAD__
     }
     else if (action === 'copier') { copierGrille(courante()); }
     else if (action === 'charger-grille') { chargerGrille(); }
+    else if (action === 'mettre-a-jour') { mettreAJour(); }
+    else if (action === 'recharger') { window.location.reload(); }
     else if (action === 'verrouiller') {
       if (window.confirm('Verrouiller cette grille ? Ses probabilités ne changeront plus.')) verrouiller(S.grilleId);
     }

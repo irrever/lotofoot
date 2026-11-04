@@ -20,6 +20,7 @@ CHAMPIONNATS_HYPOTHESE = {
     'CZ1': {'pays': 'Tchéquie', 'note': 45},
     'HR1': {'pays': 'Croatie', 'note': 40},
     'DK1': {'pays': 'Danemark', 'note': 47.5},
+    'HU1': {'pays': 'Hongrie', 'note': 37.5},
 }
 CLUBS_HYPOTHESE = {
     'Bodø/Glimt': {'ligue': 'NO1', 'elo': 1782, 'niveau': 'dominant',
@@ -34,6 +35,12 @@ CLUBS_HYPOTHESE = {
                       'motif': 'Club le plus fort de Croatie, en général champion.'},
     'Nordsjaelland': {'ligue': 'DK1', 'elo': 1670, 'niveau': 'haut',
                       'motif': 'Club du haut de tableau danois, sans statut de favori.'},
+    'Salzbourg': {'ligue': 'AT1', 'elo': 1788, 'niveau': 'dominant',
+                  'motif': 'Estimation : club le plus fort d’Autriche ces dernières saisons.'},
+    'Sparta Prague': {'ligue': 'CZ1', 'elo': 1666, 'niveau': 'haut',
+                      'motif': 'Estimation : grand club tchèque, souvent dans le haut de tableau, sans statut de favori.'},
+    'Ferencváros': {'ligue': 'HU1', 'elo': 1700, 'niveau': 'dominant',
+                    'motif': 'Estimation : club le plus titré de Hongrie, en général champion.'},
 }
 
 # Noms de l’application (clés normalisées) : variantes courantes des noms de grilles.
