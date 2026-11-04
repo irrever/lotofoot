@@ -1,8 +1,9 @@
 name: Blessés et suspendus
 
+# Planification désactivée : le plan gratuit de l’API refuse la saison 2026, le relevé ne peut donc pas aboutir.
+# Le relevé quotidien des blessés est fait par foot-actu (src/footactu.py, dans statistiques.yml).
+# Exécution manuelle seulement.
 on:
-  schedule:
-    - cron: '45 6,16 * * *'
   workflow_dispatch:
     inputs:
       saison:
