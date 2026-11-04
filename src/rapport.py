@@ -31,6 +31,7 @@ ETIQ = {'H': '1', 'D': 'N', 'A': '2'}
 NOM_ISSUE = {'1': 'victoire à domicile', 'N': 'match nul', '2': 'victoire à l’extérieur'}
 FENETRE_JOURS = 3             # tolérance entre la date de clôture d’une grille et la date du match (football-data)
 FENETRE_PRONOSOFT_JOURS = 14  # une page Pronosoft est relevée quelques jours après le match au plus tard
+VERSION_METHODE = 2          # 2 : position dans le championnat (écart de niveau entre championnats)
 MALUS_SIGNIFICATIF = -5       # un malus d’absences plus fort (en points Elo) est cité comme raison possible
 SEUIL_FAVORI = 0.5            # au-dessus de cette probabilité, le pronostic désigne un favori net
 CAUSES = {
@@ -112,14 +113,18 @@ def enregistrer_grilles(donnees, grilles, maintenant, aujourdhui, reconstituee=F
         for n, m in enumerate(g['matchs'], 1):
             cle_id = '%s|%s|%s' % (date_cloture, m['domicile'], m['exterieur'])
             ancienne = actuelles.get(cle_id)
-            if ancienne is not None and ('proba' in ancienne or not ouverte):
+            # Une prévision déjà enregistrée n’est refaite que si la méthode a changé et que la grille n’est pas close
+            a_jour = ancienne is not None and 'proba' in ancienne and ancienne.get('version_methode', 1) == VERSION_METHODE
+            if ancienne is not None and (a_jour or not ouverte):
                 continue
             base = {'id': cle_id, 'enregistree_le': maintenant, 'format': g['format'], 'numero': g['numero'], 'n': n,
                     'cloture': g['cloture'], 'date': date_cloture, 'domicile': m['domicile'],
                     'exterieur': m['exterieur']}
             if reconstituee:
                 base['reconstituee'] = True
-            entree = {**base, **pronostic_match(donnees, m['domicile'], m['exterieur'])}
+            entree = {**base, **pronostic_match(donnees, m['domicile'], m['exterieur']), 'version_methode': VERSION_METHODE}
+            if ancienne is not None and 'proba' in ancienne:
+                entree['remplace'] = ancienne['enregistree_le']
             actuelles[cle_id] = entree
             nouvelles.append(entree)
     if nouvelles:

@@ -125,6 +125,19 @@ class Journal(unittest.TestCase):
         seconde = rapport.enregistrer_grilles(self.donnees, self.grilles, 'maintenant', dt.date(2026, 11, 2))
         self.assertEqual([e['domicile'] for e in seconde], ['Inconnu FC'])
 
+    def test_ancienne_methode_remplacee_si_grille_ouverte(self):
+        import json
+        ancienne = {'id': '2026-11-03|Arsenal|Chelsea', 'enregistree_le': 'avant',
+                    'proba': {'1': 0.5, 'N': 0.3, '2': 0.2}, 'pronostic': '1'}
+        rapport.JOURNAL_GRILLES.write_text(json.dumps(ancienne) + '\n', encoding='utf-8')
+        fermee = rapport.enregistrer_grilles(self.donnees, [self.grilles[0]], 'maintenant', dt.date(2026, 11, 5))
+        self.assertNotIn('2026-11-03|Arsenal|Chelsea', [e['id'] for e in fermee])  # grille close : rien n’est refait
+        ouverte = rapport.enregistrer_grilles(self.donnees, [self.grilles[0]], 'maintenant', dt.date(2026, 11, 2))
+        arsenal = next(e for e in ouverte if e['domicile'] == 'Arsenal')
+        self.assertEqual((arsenal['version_methode'], arsenal['remplace']), (rapport.VERSION_METHODE, 'avant'))
+        derniere = rapport.derniere_entree(rapport.charger_jsonl(rapport.JOURNAL_GRILLES))
+        self.assertEqual(derniere['2026-11-03|Arsenal|Chelsea']['version_methode'], rapport.VERSION_METHODE)
+
     def test_sans_pronostic_refait_tant_que_la_grille_est_ouverte(self):
         rapport.enregistrer_grilles(self.donnees, self.grilles, 'maintenant', dt.date(2026, 11, 2))
         apres_cloture = rapport.enregistrer_grilles(self.donnees, self.grilles, 'maintenant', dt.date(2026, 11, 5))
