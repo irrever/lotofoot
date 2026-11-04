@@ -133,9 +133,9 @@ if __name__ == '__main__':
     elif commande == 'loto':
         grilles = lire_loto(Lecteur(SITE).lire('/fr/lotofoot/resultats-et-rapports.php'))
         print('grilles lues : %d' % len(grilles))
-        for g in grilles[:4]:
+        for g in grilles:
             print('- %s : %d matchs' % (g['libelle'][:90], len(g['matchs'])))
-            for m in g['matchs'][:3]:
+            for m in g['matchs'][:2]:
                 print('    %s – %s : %s (%s)' % (m['domicile'], m['exterieur'], m['score'], m['issue']))
     else:
         print(__doc__)
