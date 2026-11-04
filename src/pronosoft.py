@@ -18,6 +18,7 @@ from footactu import Noeud, _chaine, arbre, descendants, texte, textes_avec_chem
 SITE = 'https://www.pronosoft.com'
 UA = 'Lotofoot-analyse/1.0 (usage personnel, une lecture par jour)'
 PAUSE = 7
+SCORE_DANS_TEXTE = re.compile(r'\d{1,2}\s*[-–]\s*\d{1,2}')
 
 
 class Lecteur:
@@ -43,37 +44,41 @@ class Lecteur:
         return self.brut(chemin)
 
 
+def chemins_de(html):
+    """Adresses internes d’une page (sans domaine, paramètres ni ancre)."""
+    out = set()
+    for href in re.findall(r'href="([^"]+)"', html):
+        href = re.sub(r'^https?://(www\.)?pronosoft\.com', '', href)
+        if href.startswith('/') and not href.startswith('//'):
+            out.add(href.split('?')[0].split('#')[0])
+    return out
+
+
 def decouverte(lecteur):
     robots = lecteur.brut('/robots.txt')
-    print('robots.txt : règles d’accès')
+    print('robots.txt : règles d’accès (lignes utiles)')
     for ligne in robots.splitlines():
         ligne = ligne.strip()
         if ligne and ligne.lower().startswith(('user-agent', 'allow', 'disallow', 'sitemap', 'crawl-delay')):
             print('  ' + ligne[:120])
-    sitemaps = [l.split(':', 1)[1].strip() for l in robots.splitlines() if l.lower().startswith('sitemap:')]
-    sitemaps = sitemaps or ['/sitemap.xml']
-    adresses = []
-    for sm in sitemaps[:3]:
-        chemin = sm.replace(lecteur.site, '')
-        try:
-            xml = lecteur.lire(chemin)
-        except Exception as e:
-            print('%s : %s' % (chemin, type(e).__name__))
-            continue
-        locs = [re.sub(r'^https?://[^/]+', '', u) for u in re.findall(r'<loc>\s*([^<\s]+)\s*</loc>', xml)]
-        print('%s : %d adresses' % (chemin, len(locs)))
-        adresses += locs
-    utiles = sorted({u for u in adresses if re.search(r'loto|resultat|grille|coupe|champion|europa', u.lower())
-                     and not u.endswith('.xml')})
-    print('adresses utiles (%d) : %s' % (len(utiles), ', '.join(utiles[:80]) or 'aucune'))
-    cibles = [u for u in utiles if re.search(r'resultat', u.lower())][:2]
+    accueil = lecteur.lire('/')
+    liens = chemins_de(accueil)
+    utiles = sorted(l for l in liens if re.search(r'loto|resultat|champion|europa|coupe|grille|pronostic', l.lower()))
+    print('accueil : %d liens ; utiles (%d) : %s' % (len(liens), len(utiles), ', '.join(utiles[:80]) or 'aucun'))
+    cibles = [l for l in utiles if re.search(r'resultat', l.lower())][:2]
+    if not cibles:
+        cibles = [l for l in utiles if re.search(r'loto', l.lower())][:1]
     for chemin in cibles:
         html = lecteur.lire(chemin)
         racine = arbre(html)
         print('== %s (%d caractères)' % (chemin, len(html)))
-        scores = [t for t, _ in textes_avec_chemin(racine) if re.match(r'^\s*\d{1,2}\s*[-–]\s*\d{1,2}\s*$', t)]
         tableaux = [n for n in descendants(racine) if n.tag == 'table']
-        print('  tableaux : %d ; scores isolés : %d' % (len(tableaux), len(scores)))
+        avec_score = [(t, ch) for t, ch in textes_avec_chemin(racine) if SCORE_DANS_TEXTE.search(t)]
+        print('  tableaux : %d ; textes contenant un score : %d' % (len(tableaux), len(avec_score)))
+        for t, ch in avec_score[:2]:
+            print('  texte « %s »' % t.strip()[:70])
+            print('    ancêtres : ' + ' > '.join(n.tag + ''.join('.' + c for c in sorted(n.classes))
+                                                   for n in ch[-6:]))
         for i, t in enumerate(tableaux[:2], 1):
             lignes = [n for n in descendants(t) if n.tag == 'tr']
             entetes = [texte(n)[:20] for n in descendants(t) if n.tag == 'th']
