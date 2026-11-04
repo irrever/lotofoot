@@ -356,7 +356,7 @@ __PWA_HEAD__
   var DATA = JSON.parse(document.getElementById('donnees').textContent);
   var TABS = [['grille', 'Grille'], ['resultats', 'Résultats'], ['match', 'Match'], ['recherche', 'Recherche'], ['stats', 'Stats'], ['bilan', 'Bilan'], ['methode', 'Méthode']];
   var STORE_KEY = 'lotofoot.grilles.v1';
-  var FORMATS = [7, 8, 15];
+  var FORMATS = [7, 8, 12, 15];
   var FORMAT_DEFAUT = 8;
   var LIBELLE_PRONO = { '1': '1', '2': '2', 'N': 'N', '12': '1 ou 2', '1N': '1 ou N', '2N': '2 ou N', '12N': '1 ou 2 ou N' };
   var NOTE_METHODE = 'Calculée à partir des 25 statistiques de chaque équipe et de leur classement Elo. Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort, et l’écart de niveau s’ajoute au classement Elo (4 points Elo par point de note, sur une échelle de 100). Aucune cote n’est utilisée.';
@@ -1104,7 +1104,7 @@ __PWA_HEAD__
     var lignes = lireCsv(texte);
     if (!lignes.length) { S.form.info = 'Aucun match trouvé dans ce fichier.'; return; }
     if (FORMATS.indexOf(lignes.length) === -1) {
-      S.form.info = 'Ce fichier contient ' + lignes.length + ' match(s) : il en faut 7, 8 ou 15. Rien n’a été importé.';
+      S.form.info = 'Ce fichier contient ' + lignes.length + ' match(s) : il en faut 7, 8, 12 ou 15. Rien n’a été importé.';
       return;
     }
     S.form.format = lignes.length;
@@ -1374,7 +1374,7 @@ __PWA_HEAD__
     if (!gs.length) {
       return haut + avert +
         zone('info', 1, 'Mes grilles', '<div class="vide"><p>Aucune grille enregistrée pour l’instant.</p>' +
-          '<p class="hint">Crée une grille à partir de ses matchs (Loto Foot 7, 8 ou 15), ou importe un fichier CSV.</p></div>', nouvelleBtn) +
+          '<p class="hint">Crée une grille à partir de ses matchs (Loto Foot 7, 8, 12 ou 15), ou importe un fichier CSV.</p></div>', nouvelleBtn) +
         sauvegardeHtml(2);
     }
     var g = courante();
@@ -1597,7 +1597,7 @@ __PWA_HEAD__
         '<li>Entre deux équipes d’un même championnat, le calcul utilise les 25 statistiques des deux équipes, dont l’écart de classement Elo.</li>' +
         '<li>Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort : ses écarts à la moyenne de son championnat sont réduits dans le rapport entre les deux notes, puis recentrés sur la moyenne du championnat le plus fort. Les statistiques de l’équipe du championnat le plus fort ne changent pas. Ensuite, l’écart de niveau s’ajoute à l’écart Elo : 1 point de note sur 100 = 4 points Elo. Le classement des championnats est une estimation.</li></ul>', false) +
       section('Les grilles',
-        '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
+        '<ul><li>Une grille se crée avec ses matchs, au format Loto Foot 7, 8, 12 ou 15 : tu saisis les équipes, ou tu importes un fichier CSV (même format que celui que l’application enregistre). Le format est reconnu tout seul. L’aperçu se remplit tout seul.</li>' +
         '<li>En ligne, « Charger la grille publiée » remplit le formulaire avec la grille ouverte la plus proche de sa clôture, reprise de ruedesjoueurs.com (seule la liste des matchs est reprise, ni pronostics ni cotes). Si plusieurs grilles sont ouvertes, tu choisis celle que tu veux. Une grille enregistrée reste à jour jusqu’à sa clôture, puis elle se verrouille seule. Les équipes hors des 16 championnats suivis sont calculées par hypothèse (voir plus bas).</li>' +
         '<li>Doubles et triples : tu choisis leur nombre. L’application les place là où ils rapportent le plus de probabilité, en comparant toutes les possibilités. Prix : ×2 par double, ×3 par triple.</li>' +
         '<li>Une grille non verrouillée reste à jour : ses probabilités sont recalculées à chaque mise à jour des données. Une fois verrouillée, elle garde ses valeurs et ne change plus.</li>' +

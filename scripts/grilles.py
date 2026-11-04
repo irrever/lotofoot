@@ -1,4 +1,4 @@
-"""Charge les grilles Loto Foot ouvertes (7, 8 et 15 matchs) dans grilles/.
+"""Charge les grilles Loto Foot ouvertes (7, 8, 12 et 15 matchs) dans grilles/.
 
 Pour chaque format, on examine les dernières grilles listées par ruedesjoueurs.com et on ne garde que
 celles dont la clôture n'est pas encore passée. Pour chacune : le numéro, l'heure de clôture, la liste
@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = 'https://www.ruedesjoueurs.com'
 UA = 'Lotofoot-grilles/1.0 (+https://github.com/irrever/lotofoot)'
-FORMATS = (7, 8, 15)
+FORMATS = (7, 8, 12, 15)
 CANDIDATES = 3  # nombre de grilles les plus récentes examinées pour chaque format
 PAUSE = 2  # secondes entre deux requêtes
 PARIS = ZoneInfo('Europe/Paris')
