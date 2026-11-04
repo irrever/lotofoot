@@ -785,17 +785,22 @@ details.sect > .corps { padding: 0 0 16px; }
     for (var i = 0; i < FORMAT_DEFAUT; i++) rows.push({ dom: '', ext: '', err: '' });
     return { nom: '', validite: '', format: FORMAT_DEFAUT, doubles: 3, triples: 0, rows: rows, info: '' };
   }
-  // Changer de format : les matchs en trop sont retirés (avec un avertissement s’ils étaient remplis)
+  // Changer de format : une grille publiée chargée est remplacée par celle du nouveau format (ses matchs ne restent pas) ;
+  // les matchs saisis à la main sont gardés, les matchs en trop sont retirés (avec un avertissement s’ils étaient remplis).
+  // Renvoie vrai quand il faut charger la grille publiée du nouveau format.
   function changerFormat(n) {
     var f = S.form;
-    if (!f || FORMATS.indexOf(n) === -1 || n === f.rows.length) return;
-    var perdus = f.rows.slice(n).some(function (r) { return r.dom.trim() || r.ext.trim(); });
-    var rows = f.rows.slice(0, n);
+    if (!f || FORMATS.indexOf(n) === -1 || n === f.rows.length) return false;
+    var depuisGrille = !!f.source;
+    var perdus = !depuisGrille && f.rows.slice(n).some(function (r) { return r.dom.trim() || r.ext.trim(); });
+    var rows = depuisGrille ? [] : f.rows.slice(0, n);
     while (rows.length < n) rows.push({ dom: '', ext: '', err: '' });
     f.rows = rows;
     f.format = n;
     f.choix = null; f.source = null; f.cloture = null;
+    if (depuisGrille) { f.nom = ''; f.validite = ''; }
     f.info = perdus ? 'Les matchs au-delà du ' + n + 'e ont été retirés en passant au format ' + n + '.' : '';
+    return depuisGrille;
   }
   function resoudreFormulaire(f) {
     var paires = [], ok = true;
@@ -2343,7 +2348,7 @@ details.sect > .corps { padding: 0 0 16px; }
     if (el.getAttribute('data-rech-niveau')) { rechercheSaisie(el, el.getAttribute('data-rech-niveau'), 'niveau'); return; }
     if (el.id === 'sel-ligue') { S.ligue = el.value; S.equipe = ''; render(); }
     else if (el.id === 'sel-equipe') { S.equipe = el.value; render(); }
-    else if (el.id === 'format-n' && S.form) { changerFormat(Number(el.value)); render(); }
+    else if (el.id === 'format-n' && S.form) { if (changerFormat(Number(el.value))) chargerGrille(); render(); }
     else if (el.id === 'choix-grille' && S.form) { var choisie = (S.form.choix || []).filter(function (x) { return String(x.numero) === el.value; })[0]; if (choisie) appliquerGrillePubliee(choisie); render(); }
     else if (el.id === 'doubles-n' && S.form) { S.form.doubles = Number(el.value); S.form.preference = null; majApercu(); }
     else if (el.id === 'triples-n' && S.form) { S.form.triples = Number(el.value); S.form.preference = null; majApercu(); }
