@@ -68,11 +68,13 @@ def etape(script, env):
                    stdout=subprocess.DEVNULL)
 
 
-def classement_elo(st):
+def classement_elo(st, actifs):
+    """Trois meilleures équipes Elo de chaque championnat, parmi les équipes de la saison en cours."""
     from load import LEAGUES
     par_ligue = {}
     for (lg, equipe), v in st.R.items():
-        par_ligue.setdefault(lg, []).append((v, equipe))
+        if (lg, equipe) in actifs:
+            par_ligue.setdefault(lg, []).append((v, equipe))
     top = []
     for code, nom in LEAGUES.items():
         if par_ligue.get(code):
@@ -97,8 +99,9 @@ def main():
     etape('teams.py', env)
     etape('export_model.py', env)
 
-    from features2 import build
+    from features2 import build, equipes_de_la_saison
     data, st = build(rows)
+    actifs = equipes_de_la_saison(rows)
     import evaluation_publiee as ev
     f = ev.fiche(data)
     v5 = json.load(open(DATA / 'stats_v5.json', encoding='utf-8'))
@@ -119,7 +122,7 @@ def main():
         'periode_recent': '2026-27 (saison en cours, jusqu’au %s)' % date_fr(derniere),
         'n_matchs_test': f['test']['n'], 'n_matchs_recent': f['recent']['n'],
         'base_stats': v5['base_stats'], 'comparaison': comparaison,
-        'top_equipes': classement_elo(st),
+        'top_equipes': classement_elo(st, actifs),
         'notes': NOTES['notes'], 'notes_methode': NOTES['methode'], 'points_elo_par_note': NOTES['points_elo_par_point_de_note'],
         'parametres_elo': v5['parametres_elo'],
     }

@@ -119,6 +119,18 @@ class State:
                     self.lg_stat[league][key][0] += rec[key]
                     self.lg_stat[league][key][1] += 1
 
+def equipes_de_la_saison(rows):
+    """Équipes ayant joué dans la saison la plus récente, par championnat. Les anciennes équipes du championnat
+    (reléguées, montées, disparues) n’y figurent pas : elles ne doivent ni être classées ni compter dans un rang."""
+    saison = max(r['season'] for r in rows)
+    out = set()
+    for r in rows:
+        if r['season'] == saison:
+            out.add((r['league'], r['home']))
+            out.add((r['league'], r['away']))
+    return out
+
+
 def build(rows):
     st = State()
     out = []
