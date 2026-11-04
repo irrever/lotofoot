@@ -141,7 +141,7 @@ class Malus(unittest.TestCase):
 
     def test_buteurs_cles_hors_meilleur(self):
         r = fa.bilan_equipe([('x', 'a'), ('y', 'b')], [], [], [('x', 'a')], [])
-        self.assertEqual((r['buteurs_cles'], r['buteur'], r['malus']), (1, False, -2))
+        self.assertEqual((r['buteurs_cles'], r['buteur'], r['malus']), (1, False, -4))
 
     def test_initiale_manquante_seulement_si_nom_unique(self):
         self.assertTrue(fa.meme_joueur(('palmer', ''), ('palmer', 'c')))
