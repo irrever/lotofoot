@@ -799,6 +799,55 @@ __PWA_HEAD__
     });
     return { ok: ok, paires: paires };
   }
+  // Ma préférence : au plus deux doubles, sur les matchs les plus serrés (le deuxième résultat atteint au moins 60 %
+  // du premier), et aucun triple. Le nombre de doubles est fixé par cette règle ; les matchs retenus sont ceux que le
+  // calcul donne pour ce nombre (un double couvre le premier et le deuxième résultat d’un match).
+  var DOUBLES_PREFERENCE = 2;
+  var SEUIL_PREFERENCE = 0.6;
+  function appliquerPreference() {
+    var f = S.form;
+    if (!f) return;
+    var rf = resoudreFormulaire(f);
+    if (!rf.ok) return majApercu();
+    var calculs = rf.paires.map(function (pr) { return calculMatch(pr.dom, pr.ext); });
+    if (calculs.some(function (r) { return r.erreur; })) {
+      f.preference = { erreur: 'Calcul impossible : une équipe n’a pas de données.' };
+      return majApercu();
+    }
+    var lignes = calculs.map(function (r, i) {
+      var p = r.p, ordre = ['H', 'D', 'A'].slice().sort(function (x, y) { return p[y] - p[x]; });
+      return { nom: rf.paires[i].dom.equipe + ' – ' + rf.paires[i].ext.equipe, p1: p[ordre[0]], p2: p[ordre[1]],
+        ratio: p[ordre[1]] / p[ordre[0]] };
+    });
+    var serres = lignes.filter(function (l) { return l.ratio >= SEUIL_PREFERENCE; })
+      .sort(function (a, b) { return b.ratio - a.ratio; });
+    var nd = Math.min(DOUBLES_PREFERENCE, serres.length);
+    var retenus = serres.slice(0, nd);
+    var sansDouble = lignes.reduce(function (s, l) { return s * l.p1; }, 1);
+    var avec = lignes.reduce(function (s, l) { return s * (retenus.indexOf(l) !== -1 ? l.p1 + l.p2 : l.p1); }, 1);
+    f.doubles = nd;
+    f.triples = 0;
+    f.preference = { doubles: nd, matchs: retenus.map(function (l) { return l.nom; }), sansDouble: sansDouble,
+      avec: avec, prix: Math.pow(2, nd) };
+    var selD = document.getElementById('doubles-n'), selT = document.getElementById('triples-n');
+    if (selD) selD.value = String(nd);
+    if (selT) selT.value = '0';
+    majApercu();
+  }
+  function preferenceHtml(p) {
+    if (p.erreur) return '<p class="err">' + esc(p.erreur) + '</p>';
+    var titre = p.doubles ? p.doubles + (p.doubles > 1 ? ' doubles' : ' double') + ' sur ' + p.matchs.join(' et ') :
+      'aucun double, car aucun match n’est assez serré';
+    return '<div class="flash" role="status" style="margin-top:12px"><div style="min-width:0">' +
+      '<p style="margin:0"><strong>Ma préférence : ' + esc(titre) + '.</strong></p>' +
+      '<p style="margin:6px 0 0">Règle : au plus ' + DOUBLES_PREFERENCE + ' doubles, sur les matchs où le deuxième résultat atteint au moins ' +
+      Math.round(SEUIL_PREFERENCE * 100) + ' % du premier ; jamais de triple. Un double multiplie la mise par deux, ' +
+      'et la chance de la grille par moins de deux : c’est une protection contre l’incertitude, pas une façon de gagner ' +
+      'plus par euro.</p>' +
+      (p.doubles ? '<p style="margin:6px 0 0">Sans double : ' + esc(pc(p.sansDouble, 1)) + ' de chances de tout cocher ; avec ma préférence : ' +
+        esc(pc(p.avec, 1)) + ' pour une mise ×' + esc(p.prix) + '.</p>' : '') +
+      '</div></div>';
+  }
   function apercuHtml(f) {
     var rf = resoudreFormulaire(f);
     var nom = f.nom.trim() || ('Grille du ' + dateFr(aujourdhuiIso()));
@@ -822,7 +871,7 @@ __PWA_HEAD__
     var nDoubles = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Double'; }).length;
     var nTriples = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Triple'; }).length;
     return zone('ok', 3, 'Aperçu avant enregistrement',
-        '<p class="hint">' + esc(nom) + '</p>' +
+        '<p class="hint">' + esc(nom) + '</p>' + (f.preference ? preferenceHtml(f.preference) : '') +
         '<div class="kpis">' +
           '<div class="kpi kpi-grand"><span class="label">Grille complète juste</span><strong>' + probGrille(res.proba_grille) + '</strong></div>' +
           '<div class="kpi"><span class="label">Prix</span><strong>×' + prixDe(res.matchs) + '</strong></div>' +
@@ -1365,6 +1414,7 @@ __PWA_HEAD__
       '<div class="field"><label for="nom-grille">Nom de la grille</label><input id="nom-grille" class="txtin" type="text" value="' + esc(f.nom) + '" placeholder="Grille du ' + esc(dateFr(aujourdhuiIso())) + '"></div>' +
       '<div class="field large"><label for="validite">Fin de validation (facultatif)</label><input id="validite" class="txtin" type="text" value="' + esc(f.validite) + '" placeholder="ex. mercredi 4 novembre 2026, 18 h 40"></div>' +
       '<div class="field"><label for="doubles-n">Nombre de doubles</label><select id="doubles-n">' + optD + '</select></div>' +
+      '<div class="field"><span class="label">Mon conseil</span><button type="button" class="btn" data-act="preference">Ma préférence</button></div>' +
       '<div class="field"><label for="triples-n">Nombre de triples</label><select id="triples-n">' + optT + '</select></div>' +
       '</div>';
     var saisie = '<div class="btns">' + charger + '<label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
@@ -2083,6 +2133,7 @@ __PWA_HEAD__
     if (action === 'nouvelle') { S.nouvelle = true; S.form = formVide(); S.message = ''; }
     else if (action === 'annuler') { S.nouvelle = false; S.form = null; }
     else if (action === 'enregistrer') { enregistrerApercu(el.getAttribute('data-lock') === '1'); }
+    else if (action === 'preference') { appliquerPreference(); }
     else if (action === 'csv') {
       var gc = courante();
       if (gc) {
@@ -2132,6 +2183,7 @@ __PWA_HEAD__
     var champ = el.getAttribute('data-champ');
     if (champ && S.form) {
       S.form.rows[Number(el.getAttribute('data-i'))][champ] = el.value;
+      S.form.preference = null;
       S.form.source = null; S.form.choix = null;
       majApercu();
       return;
@@ -2151,8 +2203,8 @@ __PWA_HEAD__
     else if (el.id === 'sel-equipe') { S.equipe = el.value; render(); }
     else if (el.id === 'format-n' && S.form) { changerFormat(Number(el.value)); render(); }
     else if (el.id === 'choix-grille' && S.form) { var choisie = (S.form.choix || []).filter(function (x) { return String(x.numero) === el.value; })[0]; if (choisie) appliquerGrillePubliee(choisie); render(); }
-    else if (el.id === 'doubles-n' && S.form) { S.form.doubles = Number(el.value); majApercu(); }
-    else if (el.id === 'triples-n' && S.form) { S.form.triples = Number(el.value); majApercu(); }
+    else if (el.id === 'doubles-n' && S.form) { S.form.doubles = Number(el.value); S.form.preference = null; majApercu(); }
+    else if (el.id === 'triples-n' && S.form) { S.form.triples = Number(el.value); S.form.preference = null; majApercu(); }
     else if (el.id === 'fichier-csv' && S.form) {
       lireFichier(el.files && el.files[0], function (texte) { appliquerCsv(texte); render(); });
     }
