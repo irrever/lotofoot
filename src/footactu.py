@@ -536,6 +536,41 @@ def diagnostic_brut(lecteur, codes):
         print('    ' + ', '.join(pages[:80]))
 
 
+def diagnostic_plan(lecteur):
+    """Adresses du site qui parlent de blessés, suspendus, buteurs, passeurs ou Europe, d’après le plan du site
+    et les plans XML (adresses seulement)."""
+    robots = lecteur.page('/robots.txt')
+    print('robots.txt : ' + (' | '.join(l.strip() for l in robots.splitlines() if l.lower().startswith('sitemap'))
+                             or 'aucune ligne Sitemap'))
+    a_lire = ['/plan-de-site', '/sitemap.xml']
+    lues, adresses = set(), set()
+    while a_lire and len(lues) < 8:
+        chemin = a_lire.pop(0)
+        if chemin in lues:
+            continue
+        lues.add(chemin)
+        try:
+            html = lecteur.page(chemin)
+        except Exception as e:
+            print('%s : %s' % (chemin, type(e).__name__))
+            continue
+        locs = [re.sub(r'^https?://(www\.)?foot-actu\.com', '', u)
+                for u in re.findall(r'<loc>\s*([^<\s]+)\s*</loc>', html)]
+        sous = [u for u in locs if u.endswith('.xml')]
+        pages = set(liens(html)) | {u for u in locs if u.startswith('/') and not u.endswith('.xml')}
+        print('%s : %d adresses ; plans XML enfants : %d' % (chemin, len(pages), len(sous)))
+        a_lire.extend(u for u in sous if u not in lues)
+        adresses |= pages
+    rubriques = {}
+    for a in adresses:
+        premier = a.strip('/').split('/')[0]
+        rubriques[premier] = rubriques.get(premier, 0) + 1
+    print('rubriques (nombre d’adresses) : ' + ', '.join('%s %d' % (k, v) for k, v in
+                                                  sorted(rubriques.items(), key=lambda kv: -kv[1])[:40]))
+    utiles = sorted(a for a in adresses if re.search(r'bless|suspen|buteur|passeur|europe', a.lower()))
+    print('adresses utiles (%d) : %s' % (len(utiles), ', '.join(utiles[:200]) or 'aucune'))
+
+
 def main(argv):
     commande = argv[1] if len(argv) > 1 else 'collecter'
     if commande == 'chemins':
@@ -544,6 +579,8 @@ def main(argv):
         CHEMINS.write_text(json.dumps(chemins, ensure_ascii=False, indent=1), encoding='utf-8')
         for code in LIGUES:
             print('%-4s %s' % (code, ', '.join(sorted(chemins[code])) if code in chemins else 'aucune page trouvée'))
+    elif commande == 'plan':
+        diagnostic_plan(Lecteur())
     elif commande == 'brut':
         diagnostic_brut(Lecteur(), argv[2:] or ['I1', 'SP1', 'E1'])
     elif commande == 'structure':
