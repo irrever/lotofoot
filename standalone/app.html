@@ -834,6 +834,16 @@ __PWA_HEAD__
     if (selT) selT.value = '0';
     majApercu();
   }
+  // Le bouton « Ma préférence » prend la couleur principale quand le conseil est appliqué à la grille en cours
+  function boutonPreference(f) {
+    var actif = !!(f.preference && !f.preference.erreur);
+    return '<button type="button" class="' + (actif ? 'btn primary' : 'btn') + '" data-act="preference" aria-pressed="' +
+      (actif ? 'true' : 'false') + '">' + (actif ? '✓ Ma préférence appliquée' : 'Ma préférence') + '</button>';
+  }
+  function majBoutonPreference() {
+    var b = document.querySelector('[data-act="preference"]');
+    if (b && S.form) b.outerHTML = boutonPreference(S.form);
+  }
   function preferenceHtml(p) {
     if (p.erreur) return '<p class="err">' + esc(p.erreur) + '</p>';
     var titre = p.doubles ? p.doubles + (p.doubles > 1 ? ' doubles' : ' double') + ' sur ' + p.matchs.join(' et ') :
@@ -886,6 +896,7 @@ __PWA_HEAD__
   function majApercu() {
     var zone = document.getElementById('apercu-zone');
     if (zone && S.form) zone.innerHTML = apercuHtml(S.form);
+    majBoutonPreference();
     majErreurs();
   }
   // Les messages « match à compléter » ou « équipe introuvable » suivent la saisie, sans refaire la page
@@ -1414,7 +1425,7 @@ __PWA_HEAD__
       '<div class="field"><label for="nom-grille">Nom de la grille</label><input id="nom-grille" class="txtin" type="text" value="' + esc(f.nom) + '" placeholder="Grille du ' + esc(dateFr(aujourdhuiIso())) + '"></div>' +
       '<div class="field large"><label for="validite">Fin de validation (facultatif)</label><input id="validite" class="txtin" type="text" value="' + esc(f.validite) + '" placeholder="ex. mercredi 4 novembre 2026, 18 h 40"></div>' +
       '<div class="field"><label for="doubles-n">Nombre de doubles</label><select id="doubles-n">' + optD + '</select></div>' +
-      '<div class="field"><span class="label">Mon conseil</span><button type="button" class="btn" data-act="preference">Ma préférence</button></div>' +
+      '<div class="field"><span class="label">Mon conseil</span>' + boutonPreference(f) + '</div>' +
       '<div class="field"><label for="triples-n">Nombre de triples</label><select id="triples-n">' + optT + '</select></div>' +
       '</div>';
     var saisie = '<div class="btns">' + charger + '<label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
