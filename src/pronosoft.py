@@ -3,8 +3,11 @@
 Lecture seule : robots.txt respecté, une page toutes les sept secondes. Le diagnostic n’affiche que les règles
 d’accès, les adresses, la structure des pages et les équipes avec leurs scores ; il n’enregistre rien.
 
-Usage : python3 src/pronosoft.py decouverte
+Usage : python3 src/pronosoft.py collecter   (relève les scores des grilles du Loto Foot, données/resultats/pronosoft.json)
+        python3 src/pronosoft.py loto | decouverte   (affichage seul)
 """
+import datetime as dt
+import json
 import pathlib
 import re
 import sys
@@ -18,6 +21,8 @@ from footactu import Noeud, _chaine, arbre, descendants, texte, textes_avec_chem
 SITE = 'https://www.pronosoft.com'
 UA = 'Lotofoot-analyse/1.0 (usage personnel, une lecture par jour)'
 PAUSE = 7
+PAGE_LOTO = '/fr/lotofoot/resultats-et-rapports.php'
+SORTIE_LOTO = pathlib.Path(__file__).resolve().parent.parent / 'data' / 'resultats' / 'pronosoft.json'
 SCORE_DANS_TEXTE = re.compile(r'\d{1,2}\s*[-–]\s*\d{1,2}')
 
 
@@ -126,12 +131,44 @@ def lire_loto(html):
     return grilles
 
 
+def fusionner_loto(existants, grilles, aujourdhui):
+    """Ajoute les matchs lus aux relevés déjà enregistrés. Un match est identifié par ses équipes et son score ; sa date
+    est celle de son premier relevé. Renvoie la liste triée et le nombre de matchs nouveaux."""
+    par_cle = {(m['domicile'], m['exterieur'], m['score']): m for m in existants}
+    nouveaux = 0
+    for g in grilles:
+        for m in g['matchs']:
+            cle = (m['domicile'], m['exterieur'], m['score'])
+            if cle not in par_cle:
+                par_cle[cle] = {'domicile': m['domicile'], 'exterieur': m['exterieur'], 'score': m['score'],
+                                'vu': aujourdhui, 'grilles': []}
+                nouveaux += 1
+            if g['libelle'] not in par_cle[cle]['grilles']:
+                par_cle[cle]['grilles'].append(g['libelle'])
+    return sorted(par_cle.values(), key=lambda m: (m['vu'], m['domicile'], m['exterieur'])), nouveaux
+
+
+def collecter(lecteur, sortie=SORTIE_LOTO, aujourdhui=None):
+    """Relève la page « Résultats et rapports » du Loto Foot et ajoute les scores au fichier de relevés."""
+    jour = (aujourdhui or dt.datetime.now(dt.timezone.utc).date()).isoformat()
+    grilles = lire_loto(lecteur.lire(PAGE_LOTO))
+    existants = json.loads(sortie.read_text(encoding='utf-8'))['matchs'] if sortie.exists() else []
+    matchs, nouveaux = fusionner_loto(existants, grilles, jour)
+    sortie.parent.mkdir(parents=True, exist_ok=True)
+    sortie.write_text(json.dumps({'maj': jour, 'source': 'Pronosoft, Loto Foot, résultats et rapports',
+                                  'matchs': matchs}, ensure_ascii=False, indent=1), encoding='utf-8')
+    print('Pronosoft : %d grilles lues, %d matchs enregistrés, %d nouveaux' % (len(grilles), len(matchs), nouveaux))
+    return grilles
+
+
 if __name__ == '__main__':
     commande = sys.argv[1] if len(sys.argv) > 1 else 'decouverte'
     if commande == 'decouverte':
         decouverte(Lecteur(SITE))
+    elif commande == 'collecter':
+        collecter(Lecteur(SITE))
     elif commande == 'loto':
-        grilles = lire_loto(Lecteur(SITE).lire('/fr/lotofoot/resultats-et-rapports.php'))
+        grilles = lire_loto(Lecteur(SITE).lire(PAGE_LOTO))
         print('grilles lues : %d' % len(grilles))
         for g in grilles:
             print('- %s : %d matchs' % (g['libelle'][:90], len(g['matchs'])))

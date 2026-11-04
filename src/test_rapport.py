@@ -1,11 +1,24 @@
-"""Contrôles du rapport de la veille et des résultats des grilles, avec des données fictives."""
+"""Contrôles des résultats de grilles (pronostic, verdict, raison, bilan), avec des données fictives."""
 import datetime as dt
 import pathlib
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import croise  # noqa: E402
 import rapport  # noqa: E402
+from test_croise import donnees_test  # noqa: E402
+
+CLOTURE = '2026-11-03T20:55:00+01:00'
+
+
+def entree(**champs):
+    base = {'id': 'x', 'n': 1, 'format': 15, 'numero': 91, 'domicile': 'Lens', 'exterieur': 'Lille',
+            'cloture': CLOTURE, 'date': '2026-11-03', 'pronostic': '1',
+            'proba': {'1': 0.6, 'N': 0.25, '2': 0.15}, 'malus': {'domicile': 0, 'exterieur': 0}, 'ligue': 'F1'}
+    base.update(champs)
+    return base
 
 
 class Calculs(unittest.TestCase):
@@ -13,102 +26,138 @@ class Calculs(unittest.TestCase):
         h = {'vec': {k: 0.5 for k in ['dW', 'dD', 'dL', 'forme', 'gf', 'ga', 'rest', 'load', 'cadF', 'cadA', 'cor', 'car',
                                       'eW', 'eD', 'eL']}}
         a = {'vec': dict(h['vec'])}
-        modele = {'ordonnee': {'H': 0.1, 'D': 0.0, 'A': -0.1},
-                  'coef': {c: [0.01] * 25 for c in 'HDA'}, 'moyenne': [0.0] * 25, 'echelle': [1.0] * 25}
-        p = rapport.proba_match(h, a, modele, 100)
+        p = croise.proba_match(h, a, {'ordonnee': {'H': 0.1, 'D': 0.0, 'A': -0.1},
+                                      'coef': {c: [0.01] * 25 for c in 'HDA'}, 'moyenne': [0.0] * 25,
+                                      'echelle': [1.0] * 25}, 100)
         self.assertAlmostEqual(sum(p.values()), 1.0, places=9)
         self.assertGreater(p['H'], p['A'])
-
-    def test_fenetre_de_resultat(self):
-        idx = {('F1', 'Lens', 'Lille'): [(dt.date(2026, 11, 7), 'H', 2, 1)]}
-        self.assertIsNotNone(rapport.resultat_de(idx, 'F1', 'Lens', 'Lille', dt.date(2026, 11, 6)))
-        self.assertIsNone(rapport.resultat_de(idx, 'F1', 'Lens', 'Lille', dt.date(2026, 11, 20)))
-        self.assertIsNone(rapport.resultat_de(idx, 'F1', 'Lille', 'Lens', dt.date(2026, 11, 7)))
 
     def test_date_francaise(self):
         self.assertEqual(rapport.date_fr(dt.date(2026, 11, 3)), '3 novembre 2026')
         self.assertEqual(rapport.date_fr(dt.date(2026, 11, 1)), '1er novembre 2026')
 
 
-class JourDeLaVeille(unittest.TestCase):
+class Explications(unittest.TestCase):
+    def test_bon_pronostic_favori(self):
+        a = rapport.analyser(entree(), {'issue': '1', 'score': '2 – 1', 'source': 'football-data'})
+        self.assertEqual(a['statut'], 'ok')
+        self.assertIn('Lens était favori à 60 %', a['explication'])
+        self.assertIsNone(a['cause'])
+
+    def test_favori_battu(self):
+        a = rapport.analyser(entree(), {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'})
+        self.assertEqual((a['statut'], a['cause']), ('ko', 'surprise'))
+        self.assertIn('Lens était favori à 60 %', a['explication'])
+
+    def test_match_nul_non_anticipe(self):
+        e = entree(pronostic='1', proba={'1': 0.4, 'N': 0.3, '2': 0.3})
+        a = rapport.analyser(e, {'issue': 'N', 'score': '1 – 1', 'source': 'pronosoft'})
+        self.assertEqual((a['statut'], a['cause']), ('ko', 'nul'))
+
+    def test_absences_du_favori(self):
+        e = entree(malus={'domicile': -13, 'exterieur': 0})
+        a = rapport.analyser(e, {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'})
+        self.assertEqual(a['cause'], 'absences')
+        self.assertIn('13 points Elo', a['explication'])
+
+    def test_club_hors_championnats(self):
+        e = entree(hypothese=['Bodø/Glimt'], ligue=None)
+        del e['ligue']
+        a = rapport.analyser(e, {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'})
+        self.assertEqual(a['cause'], 'hypothese')
+
+    def test_match_serre(self):
+        e = entree(pronostic='1', proba={'1': 0.42, 'N': 0.3, '2': 0.28})
+        a = rapport.analyser(e, {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'})
+        self.assertEqual((a['statut'], a['cause']), ('ko', 'serre'))
+
+    def test_sans_pronostic_et_en_attente(self):
+        sans = rapport.analyser({'non_prevu': 'équipe hors des 16 championnats suivis'}, None)
+        self.assertEqual(sans['statut'], 'sans_pronostic')
+        self.assertIn('Pas de pronostic', sans['explication'])
+        self.assertEqual(rapport.analyser(entree(), None)['statut'], 'attente')
+
+
+class Resultats(unittest.TestCase):
+    def test_championnat_football_data(self):
+        rows = [{'league': 'F1', 'home': 'Lens', 'away': 'Lille', 'date': dt.date(2026, 11, 3), 'result': 'H',
+                 'hg': 2, 'ag': 1}]
+        r = rapport.resultat_match(entree(), rapport.index_resultats(rows), {})
+        self.assertEqual((r['source'], r['issue'], r['score']), ('football-data', '1', '2 – 1'))
+
+    def test_pronosoft_nom_canonique_et_fenetre(self):
+        releves = [{'domicile': 'Bod/Glimt', 'exterieur': 'Lille', 'score': '0-0', 'vu': '2026-11-04'}]
+        idx = rapport.index_pronosoft(releves)
+        e = entree(domicile='Bodø/Glimt', ligue=None)
+        del e['ligue']
+        r = rapport.resultat_match(e, {}, idx)
+        self.assertEqual((r['source'], r['issue'], r['score']), ('pronosoft', 'N', '0 – 0'))
+        hors = rapport.index_pronosoft([dict(releves[0], vu='2026-12-30')])
+        self.assertIsNone(rapport.resultat_match(e, {}, hors))
+        avant = rapport.index_pronosoft([dict(releves[0], vu='2026-11-01')])
+        self.assertIsNone(rapport.resultat_match(e, {}, avant))
+
+
+class Journal(unittest.TestCase):
     def setUp(self):
-        veille = dt.date(2026, 11, 3)
-        self.rows = [
-            {'league': 'F1', 'home': 'Lens', 'away': 'Lille', 'date': veille, 'result': 'H', 'hg': 2, 'ag': 1},
-            {'league': 'F1', 'home': 'Brest', 'away': 'Nice', 'date': veille, 'result': 'A', 'hg': 0, 'ag': 2},
-            {'league': 'E0', 'home': 'Arsenal', 'away': 'Chelsea', 'date': veille, 'result': 'D', 'hg': 1, 'ag': 1},
+        self.dossier = tempfile.TemporaryDirectory()
+        self.ancien = rapport.JOURNAL_GRILLES
+        rapport.JOURNAL_GRILLES = pathlib.Path(self.dossier.name) / 'grilles.jsonl'
+        self.donnees = donnees_test()
+        self.grilles = [{'format': 7, 'numero': 91, 'cloture': CLOTURE, 'matchs': [
+            {'domicile': 'Arsenal', 'exterieur': 'Chelsea'},
+            {'domicile': 'Bodø/Glimt', 'exterieur': 'Girona'},
+            {'domicile': 'Inconnu FC', 'exterieur': 'Girona'}]}]
+
+    def tearDown(self):
+        rapport.JOURNAL_GRILLES = self.ancien
+        self.dossier.cleanup()
+
+    def test_pronostic_enregistre_une_fois(self):
+        nouvelles = rapport.enregistrer_grilles(self.donnees, self.grilles, 'maintenant', dt.date(2026, 11, 2))
+        self.assertEqual(len(nouvelles), 3)
+        self.assertEqual(nouvelles[0]['ligue'], 'E0')
+        self.assertEqual(nouvelles[1]['methode'], 'hypothese')
+        self.assertIn('non_prevu', nouvelles[2])
+        # Deuxième passage le même jour : seul le match resté sans pronostic est recalculé.
+        seconde = rapport.enregistrer_grilles(self.donnees, self.grilles, 'maintenant', dt.date(2026, 11, 2))
+        self.assertEqual([e['domicile'] for e in seconde], ['Inconnu FC'])
+
+    def test_sans_pronostic_refait_tant_que_la_grille_est_ouverte(self):
+        rapport.enregistrer_grilles(self.donnees, self.grilles, 'maintenant', dt.date(2026, 11, 2))
+        apres_cloture = rapport.enregistrer_grilles(self.donnees, self.grilles, 'maintenant', dt.date(2026, 11, 5))
+        self.assertEqual(apres_cloture, [])  # grille close : aucune prévision n’est ajoutée après coup
+
+    def test_derniere_entree_remplace_la_precedente(self):
+        entrees = [{'id': 'a', 'v': 1}, {'id': 'a', 'v': 2}]
+        self.assertEqual(rapport.derniere_entree(entrees)['a']['v'], 2)
+
+
+class Bilan(unittest.TestCase):
+    def test_causes_et_tranches(self):
+        donnees = [
+            (entree(), {'issue': '1', 'score': '2 – 1', 'source': 'football-data'}),
+            (entree(), {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'}),
+            (entree(malus={'domicile': -13, 'exterieur': 0}), {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'}),
+            ({'non_prevu': 'équipe hors des 16 championnats suivis'}, None),
         ]
-        self.journal = [
-            {'ligue': 'F1', 'domicile': 'Lens', 'exterieur': 'Lille', 'date': '2026-11-03', 'pronostic': '1',
-             'proba': {'1': 0.5, 'N': 0.25, '2': 0.25}},
-            {'ligue': 'F1', 'domicile': 'Brest', 'exterieur': 'Nice', 'date': '2026-11-03', 'pronostic': '1',
-             'proba': {'1': 0.6, 'N': 0.2, '2': 0.2}, 'malus': {'domicile': -4, 'exterieur': -13}},
-        ]
-        self.jour = rapport.jour_de_la_veille(self.rows, self.journal, [], {}, {'F1': 'France L1'},
-                                              dt.date(2026, 11, 4))
+        analyses = [{'e': e, 'res': r, 'a': rapport.analyser(e, r)} for e, r in donnees]
+        b = rapport.bilan(analyses)
+        self.assertEqual((b['resolus'], b['ok'], b['ko'], b['sans_pronostic']), (3, 1, 2, 1))
+        self.assertEqual(b['precision'], round(1 / 3, 3))
+        self.assertEqual({c['code']: c['n'] for c in b['causes']}, {'surprise': 1, 'absences': 1})
+        self.assertEqual(b['tranches'][2], {'libelle': 'pronostic à 60 % et plus', 'n': 3, 'ok': 1})
 
-    def test_structure_du_jour(self):
-        self.assertEqual(self.jour['date'], '2026-11-03')
-        self.assertEqual(self.jour['joues'], 3)
-        self.assertEqual(self.jour['avec_prevision'], 2)
-        self.assertEqual(self.jour['precision'], {'ok': 1, 'n': 2})
-        lens = next(m for m in self.jour['matchs'] if m['domicile'] == 'Lens')
-        self.assertEqual(lens['championnat'], 'France L1')
-
-    def test_surprise_et_absences(self):
-        brest = next(m for m in self.jour['matchs'] if m['domicile'] == 'Brest')
-        self.assertTrue(brest['surprise'])
-        self.assertEqual(brest['verdict'], 'ko')
-        self.assertEqual(brest['absences'], {'domicile': -4, 'exterieur': -13})
-        arsenal = next(m for m in self.jour['matchs'] if m['domicile'] == 'Arsenal')
-        self.assertIsNone(arsenal['prevu'])
-
-    def test_markdown(self):
-        texte = rapport.markdown_jour(self.jour)
-        self.assertIn('Matchs joués la veille dans nos 16 championnats : **3**, dont **2**', texte)
-        self.assertIn('Précision : **1 / 2** (50 %).', texte)
-        self.assertIn('Résultats surprenants', texte)
-        self.assertIn('pas de prévision', texte)
-
-    def test_choix_du_jour_le_plus_recent_avec_resultats(self):
-        vides = {'date': '2026-11-03', 'joues': 0, 'matchs': []}
-        avec = {'date': '2026-11-02', 'joues': 4, 'matchs': []}
-        ancien = {'date': '2026-11-01', 'joues': 9, 'matchs': []}
-        self.assertEqual(rapport.choisir_jour([vides, avec, ancien])['date'], '2026-11-02')
-        self.assertEqual(rapport.choisir_jour([vides, dict(vides, date='2026-11-02')])['date'], '2026-11-03')
-
-    def test_sans_matchs_veille(self):
-        jour = rapport.jour_de_la_veille([], [], [], {}, {}, dt.date(2026, 11, 4))
-        self.assertEqual((jour['joues'], jour['avec_prevision'], jour['precision']), (0, 0, None))
-
-
-class GrillesResume(unittest.TestCase):
-    def test_match_joue_marque_bon_pronostic(self):
-        entree = {'format': 8, 'numero': 154, 'n': 1, 'ligue': 'F1', 'domicile': 'Lens', 'exterieur': 'Lille',
-                  'cloture': '2026-11-03T20:00:00+01:00', 'pronostic': '1',
-                  'proba': {'1': 0.5, 'N': 0.25, '2': 0.25}, 'id': 'a'}
-        idx = {('F1', 'Lens', 'Lille'): [(dt.date(2026, 11, 3), 'H', 2, 1)]}
-        resume = rapport.grilles_resume([entree], idx, {'F1': 'France L1'})
-        self.assertEqual(resume['precision'], {'ok': 1, 'n': 1})
-        match = resume['liste'][0]['matchs'][0]
-        self.assertEqual((match['verdict'], match['score'], match['championnat']), ('ok', '2 – 1', 'France L1'))
-
-    def test_match_a_venir_et_hors_suivi(self):
-        entrees = [{'format': 15, 'numero': 92, 'n': 1, 'ligue': 'F1', 'domicile': 'Paris SG', 'exterieur': 'Troyes',
-                    'cloture': '2026-11-07T20:40:00+01:00', 'pronostic': '1',
-                    'proba': {'1': 0.83, 'N': 0.13, '2': 0.04}, 'id': 'b'},
-                   {'format': 15, 'numero': 92, 'n': 2, 'domicile': 'Dinamo Zagreb', 'exterieur': 'Lens',
-                    'cloture': '2026-11-07T20:40:00+01:00', 'non_prevu': 'équipe hors des 16 championnats suivis',
-                    'id': 'c'}]
-        resume = rapport.grilles_resume(entrees, {}, {})
-        self.assertEqual(resume['precision'], {'ok': 0, 'n': 0})
-        self.assertEqual(resume['a_venir'], 1)
-        matchs = resume['liste'][0]['matchs']
-        self.assertIsNone(matchs[0]['verdict'])
-        self.assertIn('non_prevu', matchs[1])
-
-    def test_grille_privee_absente_du_journal(self):
-        self.assertIn(153, rapport.GRILLES_PRIVEES)
+    def test_grilles_recentes_et_completes(self):
+        ancienne = entree(id='old', numero=90, cloture='2026-10-20T20:55:00+01:00')
+        recente = entree(id='new', numero=91, n=1, domicile='Lens', exterieur='Lille')
+        seconde = entree(id='new2', numero=91, n=2, domicile='Paris SG', exterieur='Troyes', ligue='F1')
+        analyses = [{'e': e, 'res': None, 'a': rapport.analyser(e, None)} for e in (ancienne, recente, seconde)]
+        grilles = rapport.grilles_resumees(analyses, {'F1': 'France L1'})
+        self.assertEqual([g['numero'] for g in grilles], [91, 90])
+        self.assertFalse(grilles[0]['complete'])
+        self.assertEqual([m['n'] for m in grilles[0]['matchs']], [1, 2])
+        self.assertEqual(grilles[0]['matchs'][0]['championnat'], 'France L1')
 
 
 if __name__ == '__main__':

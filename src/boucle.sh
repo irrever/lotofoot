@@ -9,7 +9,7 @@ cd "$(dirname "$0")"
 python3 publier.py "$@"
 python3 journal.py
 python3 bilan.py
-# Matchs de la veille et précision des grilles (onglet Résultats de l’application)
+# Résultats des matchs de grille : pronostic, verdict et raison (onglet Résultats de l’application)
 python3 rapport.py
 # Reconstruit les deux versions de l’application avec le bilan à jour
 python3 ../standalone/construire.py

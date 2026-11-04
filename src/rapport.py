@@ -1,35 +1,47 @@
-"""Rapport des matchs de la veille et suivi des grilles Loto Foot.
+"""Résultats des grilles du Loto Foot : pronostic, résultat, verdict et raison, pour chaque match de grille.
 
-Sorties :
-- data/resultats.json : ce que l’onglet « Résultats » de l’application affiche (matchs de la veille, précision
-  des grilles) ;
-- rapports/jour-AAAA-MM-JJ.md : le rapport de la veille, en texte, pour l’archive ;
-- data/journal/grilles.jsonl : la probabilité de chaque match des grilles ouvertes, enregistrée une seule fois,
-  avant la clôture.
+- data/journal/grilles.jsonl : le pronostic de chaque match de grille, enregistré une fois, avant la clôture. Une ligne
+  n’est jamais modifiée ; un match sans pronostic (équipe inconnue) est recalculé tant que sa grille n’est pas close.
+- Résultats : championnats suivis (football-data) ; pour les autres matchs, page « Résultats et rapports » de
+  Pronosoft (data/resultats/pronosoft.json, alimenté par src/pronosoft.py collecter).
+- Chaque match reçoit un verdict, une explication, et, quand le pronostic est faux, une raison. Les raisons sont comptées
+  dans le bilan pour voir ce qui fait échouer le modèle.
 
-Les probabilités reprennent la formule de l’application, à partir de data/donnees_publiees.json.
-Sans données de résultats (exécution hors publication), seules les prévisions de grille et resultats.json sont
-mis à jour. Usage : python3 src/rapport.py (lancé par boucle.sh, après bilan.py et avant la construction du site).
+Sortie : data/resultats.json, lu par l’onglet « Résultats ». Usage : python3 src/rapport.py (lancé par boucle.sh).
+Les probabilités reprennent la formule de l’application (src/croise.py), à partir de data/donnees_publiees.json.
 """
 import datetime as dt
 import json
-import math
 import pathlib
 import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from croise import calcul_match, canon_pronosoft, cle, trouver_equipe  # noqa: E402
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 DONNEES = RACINE / 'data'
 GRILLES = RACINE / 'grilles'
-RAPPORTS = RACINE / 'rapports'
-JOURNAL = DONNEES / 'journal' / 'predictions.jsonl'
 JOURNAL_GRILLES = DONNEES / 'journal' / 'grilles.jsonl'
+PRONOSOFT = DONNEES / 'resultats' / 'pronosoft.json'
 SORTIE = DONNEES / 'resultats.json'
-GRILLES_PRIVEES = {153}    # grille personnelle : exclue de toutes les sorties (demande initiale)
-GRILLES_AFFICHEES = 12     # les grilles les plus récentes dans l’onglet
+GRILLES_PRIVEES = {153}       # grille personnelle : exclue de toutes les sorties (demande initiale)
+GRILLES_AFFICHEES = 12        # les grilles les plus récentes dans l’onglet
 ORDRE = ['H', 'D', 'A']
 ETIQ = {'H': '1', 'D': 'N', 'A': '2'}
-FENETRE_JOURS = 3          # tolérance entre la date de clôture d’une grille et la date du match joué
-SEUIL_SURPRISE = 0.25      # résultat jugé surprenant si le modèle lui donnait moins de 25 %
+NOM_ISSUE = {'1': 'victoire à domicile', 'N': 'match nul', '2': 'victoire à l’extérieur'}
+FENETRE_JOURS = 3             # tolérance entre la date de clôture d’une grille et la date du match (football-data)
+FENETRE_PRONOSOFT_JOURS = 14  # une page Pronosoft est relevée quelques jours après le match au plus tard
+MALUS_SIGNIFICATIF = -5       # un malus d’absences plus fort (en points Elo) est cité comme raison possible
+SEUIL_FAVORI = 0.5            # au-dessus de cette probabilité, le pronostic désigne un favori net
+CAUSES = {
+    'absences': 'Absences signalées chez le favori',
+    'hypothese': 'Club hors des 16 championnats (niveau estimé)',
+    'nul': 'Match nul, peu probable selon le modèle',
+    'surprise': 'Favori battu',
+    'serre': 'Match trop serré pour trancher',
+}
+TRANCHES = [(0.0, 0.45, 'pronostic à moins de 45 %'), (0.45, 0.6, 'pronostic de 45 à 60 %'),
+            (0.6, 1.01, 'pronostic à 60 % et plus')]
 MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août',
         'septembre', 'octobre', 'novembre', 'décembre']
 
@@ -38,27 +50,20 @@ def date_fr(d):
     return ('1er' if d.day == 1 else str(d.day)) + ' ' + MOIS[d.month - 1] + ' ' + str(d.year)
 
 
-def malus(t):
-    return (t.get('absences') or {}).get('malus', 0)
+def pct(p):
+    return str(round(p * 100))
 
 
-def proba_match(h, a, modele, ecart_elo):
-    """Probabilités 1 / N / 2 : même calcul que l’application (les 25 variables du modèle)."""
-    v, w = h['vec'], a['vec']
-    x = [ecart_elo / 100, v['dW'], v['dD'], v['dL'], w['eW'], w['eD'], w['eL'], v['forme'], w['forme'],
-         v['gf'], v['ga'], w['gf'], w['ga'], v['rest'], w['rest'], v['load'], w['load'],
-         v['cadF'], v['cadA'], w['cadF'], w['cadA'], v['cor'], w['cor'], v['car'], w['car']]
-    z = {c: modele['ordonnee'][c] + sum(modele['coef'][c][j] * (x[j] - modele['moyenne'][j]) / modele['echelle'][j]
-                                       for j in range(len(x)))
-         for c in ORDRE}
-    haut = max(z.values())
-    e = {c: math.exp(z[c] - haut) for c in ORDRE}
-    total = sum(e.values())
-    return {c: e[c] / total for c in ORDRE}
+def charger_jsonl(chemin):
+    if not chemin.exists():
+        return []
+    with open(chemin, encoding='utf-8') as f:
+        return [json.loads(l) for l in f if l.strip()]
 
 
-def noms_ligues(donnees):
-    return {t['ligue']: t.get('ligue_nom', t['ligue']) for t in donnees['equipes']}
+def derniere_entree(entrees):
+    """Pour chaque match, la dernière ligne du journal (une ligne plus récente remplace une « non prévu »)."""
+    return {e['id']: e for e in entrees}
 
 
 def charger_grilles():
@@ -74,52 +79,63 @@ def charger_grilles():
     return out
 
 
-def charger_jsonl(chemin):
-    if not chemin.exists():
-        return []
-    with open(chemin, encoding='utf-8') as f:
-        return [json.loads(l) for l in f if l.strip()]
+def pronostic_match(donnees, domicile, exterieur):
+    """Champs du pronostic d’un match de grille, ou la raison pour laquelle il n’y en a pas."""
+    h, a = trouver_equipe(donnees, domicile), trouver_equipe(donnees, exterieur)
+    r = calcul_match(donnees, h, a) if h and a else None
+    if r is None:
+        return {'non_prevu': 'équipe hors des 16 championnats suivis, sans estimation de niveau'}
+    p = r['p']
+    out = {'proba': {ETIQ[c]: round(p[c], 6) for c in ORDRE},
+           'pronostic': ETIQ[max(ORDRE, key=lambda c: p[c])],
+           'ecart_elo': r['ecart'], 'gap': r['gap'], 'methode': r['methode'], 'malus': r['malus']}
+    if r['croise']:
+        out['ligues'] = [h['ligue'], a['ligue']]
+        out['notes'] = {'domicile': r['nh'], 'exterieur': r['na']}
+    else:
+        out['ligue'] = h['ligue']
+    if r['hypothese']:
+        out['hypothese'] = r['hypothese']
+    return out
 
 
-def enregistrer_grilles(donnees, grilles, maintenant):
-    """Ajoute au journal des grilles les matchs jamais enregistrés. Les lignes existantes ne sont pas modifiées."""
-    deja = {e['id'] for e in charger_jsonl(JOURNAL_GRILLES)}
-    par_nom = {}
-    for t in donnees['equipes']:
-        par_nom.setdefault(t['equipe'], []).append(t)
+def enregistrer_grilles(donnees, grilles, maintenant, aujourdhui, reconstituee=False):
+    """Ajoute au journal le pronostic de chaque match de grille, avant le match. Une ligne existante n’est pas modifiée.
+    Une prévision reconstituée (grille déjà close au moment de l’enregistrement) est marquée comme telle."""
+    actuelles = derniere_entree(charger_jsonl(JOURNAL_GRILLES))
     nouvelles = []
     for g in grilles:
         date_cloture = g['cloture'][:10]
+        ouverte = dt.date.fromisoformat(date_cloture) >= aujourdhui
         for n, m in enumerate(g['matchs'], 1):
-            cle = '%s|%s|%s' % (date_cloture, m['domicile'], m['exterieur'])
-            if cle in deja:
+            cle_id = '%s|%s|%s' % (date_cloture, m['domicile'], m['exterieur'])
+            ancienne = actuelles.get(cle_id)
+            if ancienne is not None and ('proba' in ancienne or not ouverte):
                 continue
-            deja.add(cle)
-            base = {'id': cle, 'enregistree_le': maintenant, 'format': g['format'], 'numero': g['numero'], 'n': n,
+            base = {'id': cle_id, 'enregistree_le': maintenant, 'format': g['format'], 'numero': g['numero'], 'n': n,
                     'cloture': g['cloture'], 'date': date_cloture, 'domicile': m['domicile'],
                     'exterieur': m['exterieur']}
-            hs = par_nom.get(m['domicile'], [])
-            as_ = par_nom.get(m['exterieur'], [])
-            if not hs or not as_:
-                nouvelles.append({**base, 'non_prevu': 'équipe hors des 16 championnats suivis'})
-                continue
-            paires = [(h, a) for h in hs for a in as_ if h['ligue'] == a['ligue']]
-            if not paires:
-                nouvelles.append({**base, 'non_prevu': 'équipes de championnats différents'})
-                continue
-            t_h, t_a = paires[0]
-            ecart = (t_h['vec']['elo'] + malus(t_h)) - (t_a['vec']['elo'] + malus(t_a))
-            p = proba_match(t_h, t_a, donnees['modele'], ecart)
-            nouvelles.append({**base, 'ligue': t_h['ligue'], 'proba': {ETIQ[c]: round(p[c], 6) for c in ORDRE},
-                              'pronostic': ETIQ[max(ORDRE, key=lambda c: p[c])],
-                              'ecart_elo': round(ecart, 1),
-                              'malus': {'domicile': malus(t_h), 'exterieur': malus(t_a)}})
+            if reconstituee:
+                base['reconstituee'] = True
+            entree = {**base, **pronostic_match(donnees, m['domicile'], m['exterieur'])}
+            actuelles[cle_id] = entree
+            nouvelles.append(entree)
     if nouvelles:
         JOURNAL_GRILLES.parent.mkdir(parents=True, exist_ok=True)
         with open(JOURNAL_GRILLES, 'a', encoding='utf-8') as f:
             for e in nouvelles:
                 f.write(json.dumps(e, ensure_ascii=False) + '\n')
     return nouvelles
+
+
+def charger_championnats():
+    """Résultats des championnats suivis (football-data). Liste vide si indisponibles (exécution hors publication)."""
+    try:
+        from load import load_all
+        return load_all() if (DONNEES / 'raw').exists() else []
+    except Exception as e:  # sans ces données, seuls les résultats Pronosoft sont utilisés
+        print('résultats des championnats indisponibles :', type(e).__name__)
+        return []
 
 
 def index_resultats(rows):
@@ -142,166 +158,167 @@ def resultat_de(idx, ligue, domicile, exterieur, date_ref):
     return meilleur[1:] if meilleur else None
 
 
-def frequences(rows):
-    jouees = [r['result'] for r in rows if r['result'] in ORDRE]
-    total = len(jouees) or 1
-    return {c: max(jouees.count(c), 1) / total for c in ORDRE}
+def charger_pronosoft():
+    if not PRONOSOFT.exists():
+        return []
+    return json.loads(PRONOSOFT.read_text(encoding='utf-8')).get('matchs', [])
 
 
-def jour_de_la_veille(rows, journal, entrees_grilles, idx, noms, aujourdhui, retard=1):
-    """Matchs joués la veille dans nos championnats, avec la prévision enregistrée quand elle existe."""
-    veille = aujourdhui - dt.timedelta(days=retard)
-    joues = sorted({(r['league'], r['home'], r['away'], r['date'], r['result'], int(r['hg']), int(r['ag']))
-                    for r in rows if r['date'] == veille and r['result'] in ORDRE
-                    and r['hg'] not in (None, '') and r['ag'] not in (None, '')})
-    freq = frequences(rows)
-    matchs, ll_modele, ll_ref, ok = [], [], [], 0
-    for ligue, dom, ext, d, res, hg, ag in joues:
-        prevu = next((e for e in journal if e['ligue'] == ligue and e['domicile'] == dom and e['exterieur'] == ext
-                      and e['date'] == d.isoformat()), None)
-        if prevu is None:
-            prevu = next((e for e in entrees_grilles if 'proba' in e and e['ligue'] == ligue
-                          and e['domicile'] == dom and e['exterieur'] == ext
-                          and abs((dt.date.fromisoformat(e['cloture'][:10]) - d).days) <= FENETRE_JOURS), None)
-        m = {'championnat': noms.get(ligue, ligue), 'domicile': dom, 'exterieur': ext, 'score': '%d – %d' % (hg, ag),
-             'issue': ETIQ[res], 'prevu': None, 'pourcent': None, 'verdict': None, 'surprise': False,
-             'absences': None}
-        if prevu is not None and 'proba' in prevu:
-            p = {c: prevu['proba'][ETIQ[c]] for c in ORDRE}
-            juste = prevu['pronostic'] == ETIQ[res]
-            ll_modele.append(-math.log(max(p[res], 1e-9)))
-            ll_ref.append(-math.log(freq[res]))
-            ok += juste
-            m.update({'prevu': prevu['pronostic'], 'pourcent': {ETIQ[c]: round(p[c], 4) for c in ORDRE},
-                      'verdict': 'ok' if juste else 'ko', 'surprise': p[res] < SEUIL_SURPRISE})
-            mal = prevu.get('malus') or {}
-            if mal.get('domicile') or mal.get('exterieur'):
-                m['absences'] = {'domicile': mal.get('domicile', 0), 'exterieur': mal.get('exterieur', 0)}
-        matchs.append(m)
-    n = len(ll_modele)
-    return {'date': veille.isoformat(), 'joues': len(joues), 'avec_prevision': n,
-            'precision': {'ok': ok, 'n': n} if n else None,
-            'log_loss': round(sum(ll_modele) / n, 4) if n else None,
-            'log_loss_ref': round(sum(ll_ref) / n, 4) if n else None,
-            'matchs': matchs}
+def index_pronosoft(matchs):
+    """(domicile, extérieur) normalisés -> relevés (score, date du relevé)."""
+    idx = {}
+    for m in matchs:
+        cles = (cle(canon_pronosoft(m['domicile'])), cle(canon_pronosoft(m['exterieur'])))
+        idx.setdefault(cles, []).append({'score': m['score'], 'vu': dt.date.fromisoformat(m['vu'])})
+    return idx
 
 
-def choisir_jour(jours):
-    """Le plus récent des jours (du plus récent au plus ancien) qui a des résultats ; sinon le plus récent."""
-    return next((j for j in jours if j['joues']), jours[0])
+def resultat_match(e, idx_fd, idx_ps):
+    """Résultat d’un match de grille : source, date, score et issue (1, N ou 2), ou None si pas encore publié."""
+    date_cloture = dt.date.fromisoformat(e['cloture'][:10])
+    if 'ligue' in e and idx_fd:
+        res = resultat_de(idx_fd, e['ligue'], e['domicile'], e['exterieur'], date_cloture)
+        if res is not None:
+            d, issue, hg, ag = res
+            return {'source': 'football-data', 'date': d.isoformat(), 'score': '%d – %d' % (hg, ag),
+                    'issue': ETIQ[issue]}
+    cles = (cle(canon_pronosoft(e['domicile'])), cle(canon_pronosoft(e['exterieur'])))
+    fin = date_cloture + dt.timedelta(days=FENETRE_PRONOSOFT_JOURS)
+    releves = [r for r in idx_ps.get(cles, []) if date_cloture <= r['vu'] <= fin]
+    if releves:
+        r = min(releves, key=lambda r: r['vu'])
+        a, b = (int(x) for x in r['score'].split('-'))
+        issue = '1' if a > b else ('N' if a == b else '2')
+        return {'source': 'pronosoft', 'date': r['vu'].isoformat(), 'score': '%d – %d' % (a, b), 'issue': issue}
+    return None
 
 
-def markdown_jour(jour):
-    veille = dt.date.fromisoformat(jour['date'])
-    md = ['# Matchs du %s' % date_fr(veille), '',
-          'Matchs joués la veille dans nos 16 championnats : **%d**, dont **%d** avec une prévision enregistrée avant le '
-          'match.' % (jour['joues'], jour['avec_prevision']), '']
-    if jour['matchs']:
-        md += ['| Championnat | Match | Résultat | Prévu | Verdict |', '|---|---|---|---|---|']
-        for m in jour['matchs']:
-            prevu = ('%s (%s)' % (m['prevu'], ' · '.join('%s %d %%' % (c, round(m['pourcent'][c] * 100))
-                                                        for c in ('1', 'N', '2')))) if m['prevu'] else 'pas de prévision'
-            md.append('| %s | %s – %s | %s (%s) | %s | %s |' % (
-                m['championnat'], m['domicile'], m['exterieur'], m['score'], ISSUE_TXT[m['issue']], prevu,
-                {'ok': '✓', 'ko': '✗'}.get(m['verdict'], '—')))
-        md.append('')
-    if jour['precision']:
-        p = jour['precision']
-        md += ['## Bilan du jour', '',
-               '- Précision : **%d / %d** (%d %%).' % (p['ok'], p['n'], round(100 * p['ok'] / p['n'])),
-               '- Log-loss du modèle : **%.3f** ; référence constante (fréquences de la saison) : **%.3f**.' % (
-                   jour['log_loss'], jour['log_loss_ref']), '']
-        surprises = [m for m in jour['matchs'] if m['surprise']]
-        if surprises:
-            md += ['## Résultats surprenants', '']
-            md += ['- %s : %s – %s, résultat jugé à %d %%.' % (
-                m['championnat'], m['domicile'], m['exterieur'], round(m['pourcent'][m['issue']] * 100))
-                for m in surprises]
-            md.append('')
+def explication_ok(e):
+    prono, p = e['pronostic'], e['proba'][e['pronostic']]
+    if prono == 'N':
+        texte = 'Le match nul était l’issue la plus probable (%s %%) : il s’est produit.' % pct(p)
+    elif p >= SEUIL_FAVORI:
+        equipe = e['domicile'] if prono == '1' else e['exterieur']
+        texte = '%s était favori à %s %%, et a gagné.' % (equipe, pct(p))
     else:
-        md += ['Aucune prévision enregistrée pour ces matchs : rien à comparer.', '']
-    md += ['---', 'Une prévision n’est comparée que si elle a été enregistrée avant le match. Un match de quelques '
-           'jours ne mesure pas la qualité du modèle : seul le total sur la saison le fait (bilan).', '']
-    return '\n'.join(md)
+        texte = ('Pronostic « %s » le plus probable, mais sans favori net (%s %%) : il s’est confirmé.'
+                 % (NOM_ISSUE[prono], pct(p)))
+    if e.get('hypothese'):
+        texte += ' Un des clubs est hors des 16 championnats : son niveau est estimé.'
+    return texte
 
 
-ISSUE_TXT = {'1': 'victoire domicile', 'N': 'match nul', '2': 'victoire extérieur'}
+def raison_erreur(e, res):
+    """Raison principale d’un pronostic faux, et explication : absences, club estimé, nul, favori battu, match serré."""
+    prono, issue = e['pronostic'], res['issue']
+    pp, pi = e['proba'][prono], e['proba'][issue]
+    equipe = e['domicile'] if prono == '1' else (e['exterieur'] if prono == '2' else None)
+    mal = e.get('malus') or {}
+    m = (mal.get('domicile' if prono == '1' else 'exterieur') or 0) if equipe else 0
+    if equipe and m <= MALUS_SIGNIFICATIF:
+        return 'absences', ('%s avait des absences signalées (malus de %d points Elo) : le modèle les a prises en '
+                            'compte, mais leur effet a pu être sous-estimé.' % (equipe, -m))
+    if e.get('hypothese'):
+        return 'hypothese', ('%s : son niveau est une estimation, car le club évolue hors des 16 championnats suivis. '
+                             'Le pronostic est donc moins fiable.' % ' et '.join(e['hypothese']))
+    if issue == 'N':
+        return 'nul', ('Match nul : le modèle ne lui donnait que %s %%, contre %s %% pour le pronostic (%s).'
+                       % (pct(pi), pct(pp), NOM_ISSUE[prono]))
+    if pp >= SEUIL_FAVORI:
+        return 'surprise', ('%s était favori à %s %% et a perdu.' % (equipe or 'Le pronostic', pct(pp)))
+    return 'serre', ('Aucune issue nette : le pronostic (%s) ne dépassait pas %s %%, et le résultat (%s) '
+                     'était possible à %s %%.' % (NOM_ISSUE[prono], pct(pp), NOM_ISSUE[issue], pct(pi)))
 
 
-def grilles_resume(entrees, idx, noms):
-    """Grilles suivies : précision sur tous les matchs joués (dédoublonnée), et les grilles les plus récentes."""
+def analyser(e, res):
+    """Statut, cause et explication d’un match de grille."""
+    if 'proba' not in e:
+        return {'statut': 'sans_pronostic', 'cause': None,
+                'explication': 'Pas de pronostic : %s.' % e.get('non_prevu', 'donnée manquante')}
+    if res is None:
+        return {'statut': 'attente', 'cause': None, 'explication': 'Résultat pas encore publié.'}
+    if e['pronostic'] == res['issue']:
+        return {'statut': 'ok', 'cause': None, 'explication': explication_ok(e)}
+    cause, texte = raison_erreur(e, res)
+    return {'statut': 'ko', 'cause': cause, 'explication': texte}
+
+
+def bilan(analyses):
+    """Précision sur les matchs à pronostic résolu, causes des erreurs, précision par tranche de probabilité."""
+    resolus = [x for x in analyses if x['a']['statut'] in ('ok', 'ko')]
+    ok = sum(1 for x in resolus if x['a']['statut'] == 'ok')
+    causes = {}
+    for x in resolus:
+        if x['a']['cause']:
+            causes[x['a']['cause']] = causes.get(x['a']['cause'], 0) + 1
+    tranches = []
+    for bas, haut, libelle in TRANCHES:
+        dans = [x for x in resolus if bas <= x['e']['proba'][x['e']['pronostic']] < haut]
+        tranches.append({'libelle': libelle, 'n': len(dans), 'ok': sum(1 for x in dans if x['a']['statut'] == 'ok')})
+    return {'resolus': len(resolus), 'ok': ok, 'ko': len(resolus) - ok,
+            'precision': round(ok / len(resolus), 3) if resolus else None,
+            'sans_pronostic': sum(1 for x in analyses if x['a']['statut'] == 'sans_pronostic'),
+            'en_attente': sum(1 for x in analyses if x['a']['statut'] == 'attente'),
+            'causes': [{'code': c, 'libelle': CAUSES[c], 'n': n}
+                       for c, n in sorted(causes.items(), key=lambda kv: -kv[1])],
+            'tranches': tranches}
+
+
+def match_resume(x, noms):
+    e, res, a = x['e'], x['res'], x['a']
+    if 'ligue' in e:
+        championnat = noms.get(e['ligue'], e['ligue'])
+    elif e.get('hypothese'):
+        championnat = 'Hors des 16 championnats (estimé)'
+    else:
+        championnat = 'Entre championnats'
+    return {'n': e['n'], 'domicile': e['domicile'], 'exterieur': e['exterieur'], 'championnat': championnat,
+            'methode': e.get('methode'), 'pronostic': e.get('pronostic'),
+            'pourcent': {c: round(e['proba'][c] * 100) for c in ('1', 'N', '2')} if 'proba' in e else None,
+            'score': res['score'] if res else None, 'issue': res['issue'] if res else None,
+            'source': res['source'] if res else None,
+            'statut': a['statut'], 'cause': a['cause'], 'cause_libelle': CAUSES.get(a['cause']),
+            'explication': a['explication'], 'reconstituee': bool(e.get('reconstituee'))}
+
+
+def grilles_resumees(analyses, noms):
+    """Les grilles les plus récentes, avec leurs matchs dans l’ordre de la grille."""
     groupes = {}
-    for e in entrees:
-        groupes.setdefault((e['format'], e['numero']), []).append(e)
-    vus, a_venir, ok, total = set(), set(), 0, 0
-    for e in entrees:
-        if 'proba' not in e:
-            continue
-        res = resultat_de(idx, e['ligue'], e['domicile'], e['exterieur'], dt.date.fromisoformat(e['cloture'][:10]))
-        if res is None:
-            a_venir.add(e['id'])
-            continue
-        cle = (e['ligue'], e['domicile'], e['exterieur'], res[0])
-        if cle not in vus:
-            vus.add(cle)
-            total += 1
-            ok += e['pronostic'] == ETIQ[res[1]]
-    recentes = sorted(groupes.items(), key=lambda kv: kv[1][0]['cloture'], reverse=True)[:GRILLES_AFFICHEES]
+    for x in analyses:
+        groupes.setdefault((x['e']['format'], x['e']['numero']), []).append(x)
+    recentes = sorted(groupes.values(), key=lambda membres: membres[0]['e']['cloture'], reverse=True)
     liste = []
-    for (fmt, numero), membres in recentes:
-        matchs = []
-        for e in sorted(membres, key=lambda x: x['n']):
-            base = {'n': e['n'], 'championnat': noms.get(e.get('ligue', ''), e.get('ligue', '')),
-                    'domicile': e['domicile'], 'exterieur': e['exterieur']}
-            if 'non_prevu' in e:
-                matchs.append({**base, 'non_prevu': e['non_prevu']})
-                continue
-            res = resultat_de(idx, e['ligue'], e['domicile'], e['exterieur'], dt.date.fromisoformat(e['cloture'][:10]))
-            m = {**base, 'pronostic': e['pronostic'], 'pourcent': {ETIQ[c]: round(e['proba'][ETIQ[c]], 4)
-                                                                  for c in ORDRE},
-                 'score': None, 'verdict': None}
-            if res is not None:
-                m['score'] = '%d – %d' % (res[2], res[3])
-                m['verdict'] = 'ok' if e['pronostic'] == ETIQ[res[1]] else 'ko'
-            matchs.append(m)
-        liste.append({'format': fmt, 'numero': numero, 'cloture': membres[0]['cloture'], 'matchs': matchs})
-    return {'precision': {'ok': ok, 'n': total}, 'a_venir': len(a_venir), 'liste': liste}
+    for membres in recentes[:GRILLES_AFFICHEES]:
+        membres.sort(key=lambda x: x['e']['n'])
+        cloture = dt.date.fromisoformat(membres[0]['e']['cloture'][:10])
+        liste.append({'format': membres[0]['e']['format'], 'numero': membres[0]['e']['numero'],
+                      'cloture': membres[0]['e']['cloture'], 'cloture_fr': date_fr(cloture),
+                      'complete': all(x['res'] is not None for x in membres),
+                      'matchs': [match_resume(x, noms) for x in membres]})
+    return liste
 
 
 def principal():
     maintenant = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
     aujourdhui = maintenant.date()
     donnees = json.loads((DONNEES / 'donnees_publiees.json').read_text(encoding='utf-8'))
-    noms = noms_ligues(donnees)
-    nouvelles = enregistrer_grilles(donnees, charger_grilles(), maintenant.isoformat())
+    noms = {t['ligue']: t.get('ligue_nom', t['ligue']) for t in donnees['equipes']}
+    nouvelles = enregistrer_grilles(donnees, charger_grilles(), maintenant.isoformat(), aujourdhui)
     print('grilles : %d matchs nouvellement enregistrés' % len(nouvelles))
-    rows = []
-    try:
-        sys.path.insert(0, str(RACINE / 'src'))
-        from load import load_all
-        rows = load_all() if (DONNEES / 'raw').exists() else []
-    except Exception as e:  # sans données de résultats, seules les grilles sont mises à jour
-        print('résultats indisponibles :', type(e).__name__)
-    entrees = charger_jsonl(JOURNAL_GRILLES)
-    idx = index_resultats(rows) if rows else {}
-    jour = None
-    if rows:
-        # Les résultats arrivent parfois avec un ou deux jours de retard : on reprend les trois derniers jours.
-        journal = charger_jsonl(JOURNAL)
-        jours = [jour_de_la_veille(rows, journal, entrees, idx, noms, aujourdhui, retard) for retard in (1, 2, 3)]
-        RAPPORTS.mkdir(parents=True, exist_ok=True)
-        for j in jours:
-            if j['joues']:
-                (RAPPORTS / ('jour-%s.md' % j['date'])).write_text(markdown_jour(j), encoding='utf-8')
-                print('rapport du %s : %d matchs joués, %d avec prévision' % (j['date'], j['joues'], j['avec_prevision']))
-        jour = choisir_jour(jours)
-    else:
-        print('pas de données de résultats : rapport du jour non produit')
-    resultats = {'maj': maintenant.isoformat(), 'jour': jour, 'grilles': grilles_resume(entrees, idx, noms)}
-    SORTIE.write_text(json.dumps(resultats, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-    g = resultats['grilles']
-    print('résultats écrits : précision des grilles %d / %d, %d matchs à venir, %d grilles affichées' % (
-        g['precision']['ok'], g['precision']['n'], g['a_venir'], len(g['liste'])))
+    rows = charger_championnats()
+    idx_fd = index_resultats(rows) if rows else {}
+    idx_ps = index_pronosoft(charger_pronosoft())
+    print('résultats : %d matchs de championnats, %d relevés Pronosoft' % (
+        len(rows), sum(len(v) for v in idx_ps.values())))
+    analyses = []
+    for e in derniere_entree(charger_jsonl(JOURNAL_GRILLES)).values():
+        res = resultat_match(e, idx_fd, idx_ps)
+        analyses.append({'e': e, 'res': res, 'a': analyser(e, res)})
+    sortie = {'maj': maintenant.isoformat(), 'bilan': bilan(analyses), 'grilles': grilles_resumees(analyses, noms)}
+    SORTIE.write_text(json.dumps(sortie, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
+    b = sortie['bilan']
+    print('résultats écrits : %d pronostics résolus, %d bons ; %d en attente ; %d grilles affichées' % (
+        b['resolus'], b['ok'], b['en_attente'], len(sortie['grilles'])))
 
 
 if __name__ == '__main__':

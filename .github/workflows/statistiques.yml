@@ -29,6 +29,10 @@ jobs:
         # Sans relevé récent, le modèle garde ses probabilités sans malus : la mise à jour n’est pas bloquée.
         continue-on-error: true
         run: python3 src/footactu.py collecter
+      - name: Relever les scores des grilles du Loto Foot (Pronosoft)
+        # Sans ce relevé, les matchs de grille hors championnats suivis restent sans résultat : la mise à jour n’est pas bloquée.
+        continue-on-error: true
+        run: python3 src/pronosoft.py collecter
       - name: Récupérer les résultats, mettre à jour le modèle, le journal et le bilan
         run: |
           mkdir -p data/raw
@@ -42,6 +46,7 @@ jobs:
           git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
                   data/donnees_publiees.json data/model_state.json data/historique data/bilan data/journal data/resultats.json
           if [ -d rapports ]; then git add rapports; fi
+          if [ -d data/resultats ]; then git add data/resultats; fi
           for f in data/absences/du_jour.json data/absences/chemins_footactu.json; do
             if [ -e "$f" ]; then git add "$f"; fi
           done
