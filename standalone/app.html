@@ -2064,93 +2064,109 @@ __PWA_HEAD__
           esc(c) + ' ' + esc(m.pourcent[c]) + ' %</div>';
       }).join('') + '</div>';
   }
-  // Votre jeu : les grilles enregistrées sur cet appareil, comparées aux résultats publiés (mêmes équipes, même format)
+  // Mes grilles : les grilles enregistrées sur cet appareil, avec ce qui était prévu et le résultat quand il est publié
   function nomCanonique(nom) {
     var h = trouverEquipe(nom);
     return cle(h ? h.equipe : nom);
   }
   function clePaire(dom, ext) { return nomCanonique(dom) + '|' + nomCanonique(ext); }
-  function jeuPourGrille(gp) {
-    var clesPubliees = gp.matchs.map(function (m) { return clePaire(m.domicile, m.exterieur); });
+  // Résultats publiés, par match (une seule fois par match, quelle que soit la grille qui le contient)
+  function resultatsPublies() {
+    var idx = {};
+    ((S.resultats && S.resultats.grilles) || []).forEach(function (gp) {
+      gp.matchs.forEach(function (m) {
+        var c = clePaire(m.domicile, m.exterieur);
+        if (m.issue && !idx[c]) idx[c] = m;
+      });
+    });
+    return idx;
+  }
+  // Numéro de la grille publiée qui contient les mêmes matchs que la grille enregistrée, s’il existe
+  function grillePubliee(picks, format) {
     var trouve = null;
-    sortedGrilles().forEach(function (g) {
-      if (trouve || Number(g.format) !== Number(gp.format)) return;
-      var res = resultatGrille(g);
-      if (!res || res.erreurs || !res.matchs || res.matchs.length !== clesPubliees.length) return;
-      var picks = res.matchs.map(function (m) { return { cle: clePaire(m.domicile, m.exterieur), pronostic: m.pronostic }; });
-      var presentes = picks.map(function (p) { return p.cle; });
-      if (clesPubliees.every(function (c) { return presentes.indexOf(c) !== -1; })) trouve = picks;
+    ((S.resultats && S.resultats.grilles) || []).forEach(function (gp) {
+      if (trouve || Number(gp.format) !== Number(format) || gp.matchs.length !== picks.length) return;
+      var ensemble = picks.map(function (p) { return p.cle; });
+      if (gp.matchs.every(function (m) { return ensemble.indexOf(clePaire(m.domicile, m.exterieur)) !== -1; })) trouve = gp;
     });
     return trouve;
   }
-  function pronosticJoue(picks, m) {
-    var c = clePaire(m.domicile, m.exterieur);
-    var p = picks.filter(function (x) { return x.cle === c; })[0];
-    return p ? p.pronostic : null;
-  }
-  // Votre jeu sur un match : le choix joué (simple, double ou triple) face au résultat
+  // Le choix joué sur un match (simple, double ou triple) face au résultat publié
   function jeuMatch(pronostic, issue) {
     var type = typeDe(pronostic), libelle = LIBELLE_PRONO[pronostic] || pronostic;
-    if (!issue) return { libelle: libelle, type: type, statut: 'attente', texte: 'Résultat pas encore publié.' };
-    var couvert = pronostic.indexOf(issue) !== -1;
-    var texte;
-    if (couvert && type === 'Simple') texte = 'Votre pronostic simple était juste.';
-    else if (couvert && type === 'Double') texte = 'Doublé : votre double (' + libelle + ') couvre le résultat. Votre jeu est bon.';
-    else if (couvert) texte = 'Triple : toutes les issues étaient couvertes.';
-    else if (type === 'Double') texte = 'Doublé, mais le résultat n’était pas dans votre double (' + libelle + ') : votre jeu est raté.';
-    else texte = 'Votre pronostic simple était faux.';
-    return { libelle: libelle, type: type, statut: couvert ? 'ok' : 'ko', texte: texte };
+    if (!issue) return { libelle: libelle, type: type, statut: 'attente' };
+    return { libelle: libelle, type: type, statut: pronostic.indexOf(issue) !== -1 ? 'ok' : 'ko' };
   }
   function blocResultat(titre, couleur, contenu) {
     return '<div style="border-left:4px solid ' + couleur + ';padding:6px 10px;margin-top:8px;border-radius:6px;background:var(--surface-2)">' +
       '<p style="margin:0;font-size:12px;font-weight:600;color:var(--muted)">' + esc(titre) + '</p>' + contenu + '</div>';
   }
-  function carteMatch(m, pronostic) {
+  function carteMatch(m) {
     var resultat = m.score ? '<strong style="font-size:18px">' + esc(m.score) + '</strong>' : '<span class="hint">à venir</span>';
-    var blocJeu = '';
-    if (pronostic) {
-      var j = jeuMatch(pronostic, m.issue);
-      var couleurJ = j.statut === 'ok' ? 'var(--ok)' : (j.statut === 'ko' ? 'var(--bad)' : 'var(--line)');
-      var marqueJ = j.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓ couvert</span>' :
-        (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗ non couvert</span>' : '');
-      blocJeu = blocResultat('Votre jeu', couleurJ, '<p style="margin:4px 0 0;font-size:13px"><strong>' + esc(j.libelle) +
-        '</strong> (' + esc(j.type.toLowerCase()) + ') ' + marqueJ + '</p><p style="margin:4px 0 0;font-size:13px">' +
-        esc(j.texte) + '</p>');
-    }
-    var couleurM = m.statut === 'ok' ? 'var(--ok)' : (m.statut === 'ko' ? 'var(--bad)' : 'var(--line)');
-    var marqueM = m.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓ bon</span>' :
+    var couleur = m.statut === 'ok' ? 'var(--ok)' : (m.statut === 'ko' ? 'var(--bad)' : 'var(--line)');
+    var marque = m.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓ bon</span>' :
       (m.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗ raté</span>' : '');
-    var texteM = m.statut === 'ko' ? '<strong>Raison : ' + esc(m.cause_libelle) + '.</strong> ' + esc(m.explication) : esc(m.explication || '');
-    var blocModele = blocResultat('Analyse du modèle (statistiques, sans votre jeu)', couleurM,
-      (m.pronostic ? '<p style="margin:4px 0 0;font-size:13px">Pronostic du modèle : <strong>' + esc(m.pronostic) + '</strong> (' +
-        esc(LIBELLE_ISSUE_GRILLE[m.pronostic] || '') + ') ' + marqueM + '</p><div style="margin-top:6px">' + barreProbas(m) + '</div>' : '') +
-      '<p style="margin:6px 0 0;font-size:13px;line-height:1.45">' + texteM + '</p>' +
+    var texte = m.statut === 'ko' ? '<strong>Raison : ' + esc(m.cause_libelle) + '.</strong> ' + esc(m.explication) : esc(m.explication || '');
+    var bloc = blocResultat('Pronostic du modèle', couleur,
+      (m.pronostic ? '<p style="margin:4px 0 0;font-size:13px">Pronostic : <strong>' + esc(m.pronostic) + '</strong> (' +
+        esc(LIBELLE_ISSUE_GRILLE[m.pronostic] || '') + ') ' + marque + '</p><div style="margin-top:6px">' + barreProbas(m) + '</div>' : '') +
+      '<p style="margin:6px 0 0;font-size:13px;line-height:1.45">' + texte + '</p>' +
       (m.reconstituee ? '<p class="hint" style="margin:4px 0 0;font-size:12px">Prévision reconstituée après coup, à partir des données de l’époque (non enregistrée en direct).</p>' : ''));
     return '<article style="border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;background:var(--surface)">' +
       '<div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">' +
       '<div style="min-width:0"><span class="hint">' + esc(m.n) + ' · ' + esc(m.championnat) + '</span><br>' +
       '<strong>' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</strong></div>' +
-      '<div style="text-align:right;white-space:nowrap">' + resultat + '</div></div>' +
-      blocJeu + blocModele + '</article>';
+      '<div style="text-align:right;white-space:nowrap">' + resultat + '</div></div>' + bloc + '</article>';
   }
   function grilleResultats(g) {
-    var picks = jeuPourGrille(g);
-    var modele = { ok: 0, n: 0 }, perso = { ok: 0, n: 0 };
+    var modele = { ok: 0, n: 0 };
     var cartes = g.matchs.map(function (m) {
-      var pron = picks ? pronosticJoue(picks, m) : null;
       if (m.statut === 'ok' || m.statut === 'ko') { modele.n++; if (m.statut === 'ok') modele.ok++; }
-      if (pron && m.issue) { perso.n++; if (pron.indexOf(m.issue) !== -1) perso.ok++; }
-      return carteMatch(m, pron);
+      return carteMatch(m);
     }).join('');
     var etat = g.complete ? 'grille complète' : 'résultats partiels : certains matchs ne sont pas encore publiés';
     return '<section style="margin:20px 0 4px">' +
       '<h3 style="font-size:15px;margin:0">Loto Foot ' + esc(g.format) + ' · grille N°' + esc(g.numero) + ' · ' + esc(g.matchs.length) + ' matchs</h3>' +
       '<p class="hint" style="margin:2px 0 6px">Clôture : ' + esc(heureCloture(g.cloture)) + ' · ' + esc(etat) + '</p>' +
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px">' +
-      '<span class="tag">Modèle : ' + esc(modele.ok) + ' bon(s) sur ' + esc(modele.n) + '</span>' +
-      (picks ? '<span class="tag">Votre jeu : ' + esc(perso.ok) + ' couvert(s) sur ' + esc(perso.n) + '</span>' :
-        '<span class="tag">Grille non enregistrée sur cet appareil</span>') +
-      '</div>' + cartes + '</section>';
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px"><span class="tag">Modèle : ' + esc(modele.ok) +
+      ' bon(s) sur ' + esc(modele.n) + '</span></div>' + cartes + '</section>';
+  }
+  // Une grille enregistrée : ce qui était prévu, match par match, et le résultat en vert ou en rouge
+  function carteGrilleEnregistree(g, publies) {
+    var res = resultatGrille(g);
+    if (!res || res.erreurs || !res.matchs) {
+      return '<article style="border:1px solid var(--bad-line);border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
+        '<p class="err" style="margin:0">' + esc(g.nom) + ' : grille à vérifier (' + esc(res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes') + ').</p></article>';
+    }
+    var picks = res.matchs.map(function (m) { return { cle: clePaire(m.domicile, m.exterieur), pronostic: m.pronostic, m: m }; });
+    var gp = grillePubliee(picks, g.format);
+    var nDoubles = picks.filter(function (p) { return p.pronostic.length === 2; }).length;
+    var nTriples = picks.filter(function (p) { return p.pronostic.length === 3; }).length;
+    var connus = 0, ok = 0;
+    var lignes = picks.map(function (p) {
+      var pub = publies[p.cle];
+      var j = jeuMatch(p.pronostic, pub ? pub.issue : null);
+      if (pub) { connus++; if (j.statut === 'ok') ok++; }
+      var couleur = j.statut === 'ok' ? 'var(--ok)' : (j.statut === 'ko' ? 'var(--bad)' : 'var(--line)');
+      var marque = j.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓</span>' :
+        (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '<span class="hint">—</span>');
+      return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;border-left:4px solid ' + couleur +
+        ';padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
+        '<div style="min-width:0"><span class="hint">' + esc(p.m.n) + ' · ' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span><br>' +
+        '<span style="font-size:14px">Prévu : <strong>' + esc(j.libelle) + '</strong> (' + esc(j.type.toLowerCase()) + ')</span></div>' +
+        '<div style="text-align:right;white-space:nowrap">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</div></div>';
+    }).join('');
+    var couleurG = connus === 0 ? 'var(--line)' : (ok === connus ? 'var(--ok)' : 'var(--bad)');
+    var titre = (gp ? 'Loto Foot ' + gp.format + ' · grille N°' + gp.numero : 'Loto Foot ' + g.format) + ' · ' + picks.length + ' matchs';
+    return '<article style="border:1px solid var(--line);border-left:5px solid ' + couleurG + ';border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
+      '<h3 style="font-size:15px;margin:0">' + esc(titre) + '</h3>' +
+      '<p class="hint" style="margin:2px 0 4px">' + esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)' +
+      (connus ? ' · résultats : ' + ok + ' bon(s) sur ' + connus : ' · résultats pas encore publiés') + '</p>' + lignes + '</article>';
+  }
+  function contenuMesGrilles(publies) {
+    var gs = sortedGrilles();
+    if (!gs.length) return '<p class="hint">Aucune grille enregistrée sur cet appareil. Une grille que tu enregistres dans l’onglet Grille apparaît ici, avec ce qui était prévu et le résultat.</p>';
+    return gs.map(function (g) { return carteGrilleEnregistree(g, publies); }).join('');
   }
   function bilanResultats(b) {
     var precision = b.resolus ? esc(b.ok) + ' / ' + esc(b.resolus) + ' · ' + Math.round(100 * b.precision) + ' %' : 'aucun match joué';
@@ -2171,11 +2187,12 @@ __PWA_HEAD__
   }
   function viewResultats() {
     var r = S.resultats;
-    if (!r) return note('Les résultats des grilles ne sont pas encore publiés.');
+    var mes = zone('ok', 1, 'Mes grilles', contenuMesGrilles(resultatsPublies()));
+    if (!r) return mes + note('Les résultats des grilles publiées ne sont pas encore disponibles.');
     var grilles = r.grilles.length ? r.grilles.map(grilleResultats).join('') : note('Aucune grille suivie pour l’instant.');
-    return zone('info', 1, 'Bilan général du modèle', bilanResultats(r.bilan) + legendeResultats()) +
-      zone('ok', 2, 'Grille par grille', grilles) +
-      '<p class="hint">Mis à jour le ' + esc(dateFr(r.maj.slice(0, 10))) + '. « Votre jeu » reprend les grilles que tu as enregistrées sur cet appareil ; « Analyse du modèle » reprend le pronostic statistique, sans ton jeu. Aucune cote de bookmaker.</p>';
+    return mes + zone('info', 2, 'Bilan général du modèle', bilanResultats(r.bilan) + legendeResultats()) +
+      zone('neutre', 3, 'Grille par grille (pronostics du modèle)', grilles) +
+      '<p class="hint">Mis à jour le ' + esc(dateFr(r.maj.slice(0, 10))) + '. « Mes grilles » reprend tes grilles enregistrées sur cet appareil. Les pronostics du modèle sont calculés sans ton jeu. Aucune cote de bookmaker.</p>';
   }
   // ---------- Cadre : onglets, en-tête, pied
   function panel() {
