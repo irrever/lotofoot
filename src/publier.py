@@ -124,9 +124,19 @@ def main():
         'parametres_elo': v5['parametres_elo'],
     }
     equipes = json.load(open(DATA / 'teams_with_vectors.json', encoding='utf-8'))['equipes']
+    # Absences du jour (foot-actu.com) : joueurs absents, buteur et passeur principaux, malus Elo par équipe
+    from footactu import absences_par_equipe, du_jour_frais
+    du = du_jour_frais()
+    par_equipe = absences_par_equipe(du)
+    for t in equipes:
+        a = par_equipe.get((t['ligue'], t['equipe']))
+        if a:
+            t['absences'] = a
+    print('Absences du jour :', du['date'] if du else 'aucun relevé récent', '| équipes concernées :', len(par_equipe))
     modele = json.load(open(DATA / 'model_doc.json', encoding='utf-8'))
     donnees = {'version': version_publiee(asof), 'derniere_date': derniere.isoformat(),
-               'equipes': equipes, 'stats': stats, 'modele': modele}
+               'equipes': equipes, 'stats': stats, 'modele': modele,
+               'absences_date': du['date'] if du else None}
 
     sortie = DATA / 'donnees_publiees.json'
     if sortie.exists():

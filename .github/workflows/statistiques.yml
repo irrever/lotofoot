@@ -25,6 +25,10 @@ jobs:
           cache: 'pip'
       - name: Installer les dépendances
         run: python3 -m pip install -r requirements.txt
+      - name: Relever les blessés, suspendus et meilleurs buteurs (foot-actu)
+        # Sans relevé récent, le modèle garde ses probabilités sans malus : la mise à jour n’est pas bloquée.
+        continue-on-error: true
+        run: python3 src/footactu.py collecter
       - name: Récupérer les résultats, mettre à jour le modèle, le journal et le bilan
         run: |
           mkdir -p data/raw
@@ -37,6 +41,9 @@ jobs:
              standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
           git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
                   data/donnees_publiees.json data/model_state.json data/historique data/bilan data/journal
+          for f in data/absences/du_jour.json data/absences/chemins_footactu.json; do
+            if [ -e "$f" ]; then git add "$f"; fi
+          done
           if git diff --cached --quiet; then
             echo "Aucun changement."
             exit 0

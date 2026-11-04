@@ -98,6 +98,7 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--
 .note { margin: 14px 0 0; padding: 14px; border: 1px dashed var(--line); border-radius: var(--r-s); color: var(--muted); }
 .flash { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0 0; padding: 12px 14px 12px 12px; border: 1px solid var(--info-line); border-radius: var(--r-s); background: var(--info-soft); color: var(--fg); font-size: 15px; }
 .flash::before { content: ''; flex: none; align-self: stretch; width: 4px; border-radius: 4px; background: var(--info); }
+.alerte { margin: 10px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-weight: 600; font-size: 14px; }
 .notice { margin: 16px 0 0; padding: 12px 14px; border: 1px solid var(--warn-line); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; }
 .err { color: var(--bad); font-size: 14px; }
 .vide { padding: 14px 4px 4px; text-align: center; }
@@ -571,6 +572,31 @@ __PWA_HEAD__
     NIVEAU_VARS.forEach(function (f) { out[f] = muStrong[f] + ratio * (vec[f] - muWeak[f]); });
     return out;
   }
+  // Absences du jour (foot-actu.com) : le malus Elo de l’équipe ne modifie que son niveau Elo
+  function vecAvecAbsences(t) {
+    var m = t.absences && t.absences.malus ? t.absences.malus : 0;
+    if (!m) return t.vec;
+    var v = {};
+    Object.keys(t.vec).forEach(function (k) { v[k] = t.vec[k]; });
+    v.elo = t.vec.elo + m;
+    return v;
+  }
+  // Phrases d’alerte : buteur ou passeur principal absent, ou trois absents ou plus dans une équipe
+  var NOMBRES_ALERTE = { 3: 'trois', 4: 'quatre', 5: 'cinq', 6: 'six', 7: 'sept', 8: 'huit', 9: 'neuf' };
+  function alertesAbsences(h, a) {
+    var out = [];
+    [h, a].forEach(function (t) {
+      var s = t.absences;
+      if (!s) return;
+      if (s.buteur) out.push('Attention : le meilleur buteur de ' + t.equipe + ' n’est pas présent.');
+      if (s.passeur) out.push('Attention : le meilleur passeur de ' + t.equipe + ' n’est pas présent.');
+      if (s.nombre >= 3) out.push('Attention : ' + (NOMBRES_ALERTE[s.nombre] || s.nombre) + ' joueurs de ' + t.equipe + ' ne sont pas présents.');
+    });
+    return out;
+  }
+  function alertesHtml(liste) {
+    return liste.map(function (t) { return '<p class="alerte">' + esc(t) + '</p>'; }).join('');
+  }
   function calculMatch(h, a) {
     if (!h.vec || !a.vec || !S.modele) return { erreur: 'Données indisponibles pour cette équipe.' };
     var cross = h.ligue !== a.ligue, gap = 0, nh = null, na = null;
@@ -579,8 +605,8 @@ __PWA_HEAD__
       if (nh == null || na == null) return { erreur: 'il manque une note de championnat : calcul impossible.' };
       gap = (S.stats && S.stats.points_elo_par_note ? S.stats.points_elo_par_note : 4) * (nh - na);
     }
-    var hv = cross ? niveauAjuste(h.vec, h.ligue, a.ligue) : h.vec;
-    var av = cross ? niveauAjuste(a.vec, a.ligue, h.ligue) : a.vec;
+    var hv = cross ? niveauAjuste(vecAvecAbsences(h), h.ligue, a.ligue) : vecAvecAbsences(h);
+    var av = cross ? niveauAjuste(vecAvecAbsences(a), a.ligue, h.ligue) : vecAvecAbsences(a);
     return { p: probMatch(hv, av, gap), gap: gap, hv: hv, av: av, cross: cross, nh: nh, na: na };
   }
   // Doubles et triples : toutes les répartitions possibles sont comparées ; on garde celle qui donne
@@ -650,6 +676,7 @@ __PWA_HEAD__
           confiance: arrondir(c.couvert, 4),
           ecart_niveau_elo: Math.round(r.gap),
           raison: texteRaison(pr.dom, pr.ext, r),
+          alertes: alertesAbsences(pr.dom, pr.ext),
           profils: { domicile: profilDe(pr.dom), exterieur: profilDe(pr.ext) }
         };
       })
@@ -1220,6 +1247,7 @@ __PWA_HEAD__
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
       (m.raison ? '<p class="raison">' + esc(m.raison) + '</p>' : '') +
+      (m.alertes && m.alertes.length ? alertesHtml(m.alertes) : '') +
       (m.hypothese_texte ? '<p class="hint">Hypothèse : ' + esc(m.hypothese_texte) + '</p>' : '') +
       (det ? '<details class="more"><summary>Statistiques des deux équipes</summary>' + det + '</details>' : '') +
       '</article>';
@@ -1412,6 +1440,7 @@ __PWA_HEAD__
       barreHtml(p.H, p.D, p.A) +
       '<p class="raison">' + favTxt + '</p>' +
       '<p class="hint">Statistiques seules, sans cotes. Ce calcul ne garantit rien.</p>' +
+      alertesHtml(alertesAbsences(h, a)) +
       avert +
       '<details class="more" open><summary>Statistiques des deux équipes</summary>' + duelTable(h, a) + '</details>';
   }
@@ -1932,7 +1961,7 @@ __PWA_HEAD__
       barreHtml(p.H, p.D, p.A) +
       '<p class="raison">' + favTxt + '</p>' +
       '<p class="hint">Statistiques seules, sans cotes. Ce calcul ne garantit rien.</p>' +
-      avert + hypo + details;
+      alertesHtml(alertesAbsences(h, a)) + avert + hypo + details;
   }
   // Sensibilité : le niveau des championnats saisis vaut 5 points de plus ou de moins
   function sensibiliteRecherche() {

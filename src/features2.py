@@ -57,9 +57,10 @@ class State:
         prior = g_sum / g_n if g_n else 0.0
         return (sum(vals) + SHRINK * prior) / (len(vals) + SHRINK)
 
-    def features(self, league, home, away, date):
+    def features(self, league, home, away, date, malus=(0.0, 0.0)):
+        # malus : points Elo ajoutés à chaque équipe (absences du jour) ; (0, 0) pour la prévision de base
         kh, ka = (league, home), (league, away)
-        Rh, Ra = self.R.get(kh, 1500.0), self.R.get(ka, 1500.0)
+        Rh, Ra = self.R.get(kh, 1500.0) + malus[0], self.R.get(ka, 1500.0) + malus[1]
         hh, ha_ = self.hist[kh], self.hist[ka]
         dom = [r for r in hh if r['home']][-WIN_HA:]
         ext = [r for r in ha_ if not r['home']][-WIN_HA:]
