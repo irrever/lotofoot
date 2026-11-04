@@ -18,7 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
+      # Partir de la dernière version de main, et non du commit de déclenchement : une exécution précédente
+      # peut avoir publié entre-temps, et ses fichiers générés entreraient en conflit avec les nôtres.
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
