@@ -2133,6 +2133,19 @@ __PWA_HEAD__
       '<strong>' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</strong></div>' +
       '<div style="text-align:right;white-space:nowrap">' + resultat + '</div></div>' + bloc + '</article>';
   }
+  // Une grille est « en cours » quand sa clôture est passée, « à venir » sinon
+  function enCoursCloture(cloture) {
+    var v = Date.parse(cloture || '');
+    return !isNaN(v) && v <= Date.now();
+  }
+  // Bandeau d’en-tête d’une grille : titre et détail (déjà échappés), et un badge en cours ou à venir
+  function entetteGrille(titre, cloture, detail) {
+    var badge = '';
+    if (cloture) badge = enCoursCloture(cloture) ? '<span class="etat warn">En cours</span>' : '<span class="etat info">À venir</span>';
+    return '<header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;padding:10px 12px;border-radius:10px;background:var(--surface-2)">' +
+      '<div style="min-width:0"><h3 style="font-size:17px;margin:0;line-height:1.25">' + titre + '</h3>' +
+      '<p class="hint" style="margin:3px 0 0">' + detail + '</p></div>' + badge + '</header>';
+  }
   function grilleResultats(g) {
     var modele = { ok: 0, n: 0 };
     var cartes = g.matchs.map(function (m) {
@@ -2140,18 +2153,20 @@ __PWA_HEAD__
       return carteMatch(m);
     }).join('');
     var etat = g.complete ? 'grille complète' : 'résultats partiels : certains matchs ne sont pas encore publiés';
-    return '<section style="margin:20px 0 4px">' +
-      '<h3 style="font-size:15px;margin:0">Loto Foot ' + esc(g.format) + ' · grille N°' + esc(g.numero) + ' · ' + esc(g.matchs.length) + ' matchs</h3>' +
-      '<p class="hint" style="margin:2px 0 6px">Clôture : ' + esc(heureCloture(g.cloture)) + ' · ' + esc(etat) + '</p>' +
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px"><span class="tag">Modèle : ' + esc(modele.ok) +
+    var ton = enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)';
+    return '<section style="margin:22px 0 4px;padding:12px;border:2px solid ' + ton + ';border-radius:14px;background:var(--surface)">' +
+      entetteGrille(esc('Loto Foot ' + g.format + ' · grille N°' + g.numero + ' · ' + g.matchs.length + ' matchs'), g.cloture,
+        esc('Clôture : ' + heureCloture(g.cloture) + ' · ' + etat)) +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px"><span class="tag">Modèle : ' + esc(modele.ok) +
       ' bon(s) sur ' + esc(modele.n) + '</span></div>' + cartes + '</section>';
   }
   // Une grille enregistrée : ce qui était prévu, match par match, et le résultat en vert ou en rouge
   function carteGrilleEnregistree(g, publies) {
+    var bouton = '<div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div>';
     var res = resultatGrille(g);
     if (!res || res.erreurs || !res.matchs) {
-      return '<article style="border:1px solid var(--bad-line);border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
-        '<p class="err" style="margin:0">' + esc(g.nom) + ' : grille à vérifier (' + esc(res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes') + ').</p><div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div></article>';
+      return '<article style="border:2px solid var(--bad-line);border-radius:14px;padding:12px;margin:14px 0;background:var(--surface)">' +
+        entetteGrille(esc(g.nom), g.cloture, esc('Grille à vérifier : ' + (res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes'))) + bouton + '</article>';
     }
     var picks = res.matchs.map(function (m) { return { cle: clePaire(m.domicile, m.exterieur), pronostic: m.pronostic, m: m }; });
     var gp = grillePubliee(picks, g.format);
@@ -2171,12 +2186,14 @@ __PWA_HEAD__
         '<span style="font-size:14px">Prévu : <strong>' + esc(j.libelle) + '</strong> (' + esc(j.type.toLowerCase()) + ')</span></div>' +
         '<div style="text-align:right;white-space:nowrap">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</div></div>';
     }).join('');
-    var couleurG = connus === 0 ? 'var(--line)' : (ok === connus ? 'var(--ok)' : 'var(--bad)');
+    var ton = g.cloture ? (enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)') : 'var(--line)';
     var titre = (gp ? 'Loto Foot ' + gp.format + ' · grille N°' + gp.numero : 'Loto Foot ' + g.format) + ' · ' + picks.length + ' matchs';
-    return '<article style="border:1px solid var(--line);border-left:5px solid ' + couleurG + ';border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
-      '<h3 style="font-size:15px;margin:0">' + esc(titre) + '</h3>' +
-      '<p class="hint" style="margin:2px 0 4px">' + esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)' +
-      (connus ? ' · résultats : ' + ok + ' bon(s) sur ' + connus : ' · résultats pas encore publiés') + '</p>' + lignes + '<div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div></article>';
+    var detail = esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)';
+    var bilan = connus ? '<span class="tag" style="color:' + (ok === connus ? 'var(--ok)' : 'var(--bad)') + '">Résultats : ' + ok + ' bon(s) sur ' + connus + '</span>' :
+      '<span class="tag">Résultats pas encore publiés</span>';
+    return '<article style="border:2px solid ' + ton + ';border-radius:14px;padding:12px;margin:14px 0;background:var(--surface)">' +
+      entetteGrille(esc(titre), g.cloture, detail) +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px">' + bilan + '</div>' + lignes + bouton + '</article>';
   }
   function contenuMesGrilles(publies) {
     var gs = ordreResultats(sortedGrilles(), function (g) { return g.cloture; });
