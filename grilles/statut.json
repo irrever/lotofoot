@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-04T17:20:43Z",
+ "verifie_le": "2026-11-04T19:25:50Z",
  "formats": {
   "7": {
    "ok": true,
@@ -16,11 +16,13 @@
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    153,
-    154
+    154,
+    155
    ],
    "equipes_inconnues": [
-    "Slavia Prague"
+    "Pau",
+    "Nottingham F.",
+    "Werder Brême"
    ],
    "erreur": null
   },
