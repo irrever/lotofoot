@@ -97,8 +97,8 @@
    "Man City": {
     "absents": 1,
     "buteur": false,
-    "passeur": false,
-    "malus": -2
+    "passeur": true,
+    "malus": -5
    },
    "Man United": {
     "absents": 5,
@@ -111,6 +111,12 @@
     "buteur": false,
     "passeur": false,
     "malus": -8
+   },
+   "Nott'm Forest": {
+    "absents": 3,
+    "buteur": false,
+    "passeur": false,
+    "malus": -6
    },
    "Sunderland": {
     "absents": 3,
@@ -207,8 +213,14 @@
    "Paris SG": {
     "absents": 5,
     "buteur": false,
+    "passeur": true,
+    "malus": -13
+   },
+   "Rennes": {
+    "absents": 2,
+    "buteur": true,
     "passeur": false,
-    "malus": -10
+    "malus": -12
    },
    "Strasbourg": {
     "absents": 2,
