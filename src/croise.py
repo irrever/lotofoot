@@ -41,6 +41,7 @@ ALIAS_EQUIPES = {
     'como 1907': 'Como', 'betis seville': 'Betis', 'fc porto': 'Porto', 'naples': 'Napoli',
     'club bruges': 'Club Brugge', 'aek athenes': 'AEK', 'manchester city': 'Man City', 'psg': 'Paris SG',
     'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava',
+    'milan ac': 'Milan', 'real sociedad': 'Sociedad', 'cologne': 'FC Koln',
 }
 # Noms de la page de résultats Pronosoft (clés normalisées) vers les noms de l’application.
 ALIAS_PRONOSOFT = {'bod/glimt': 'Bodø/Glimt', 'atl madrid': 'Ath Madrid', 'psg': 'Paris SG',
