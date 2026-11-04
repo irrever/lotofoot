@@ -2179,7 +2179,7 @@ __PWA_HEAD__
       (connus ? ' · résultats : ' + ok + ' bon(s) sur ' + connus : ' · résultats pas encore publiés') + '</p>' + lignes + '<div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div></article>';
   }
   function contenuMesGrilles(publies) {
-    var gs = sortedGrilles();
+    var gs = ordreResultats(sortedGrilles(), function (g) { return g.cloture; });
     if (!gs.length) return '<p class="hint">Aucune grille enregistrée sur cet appareil. Une grille que tu enregistres dans l’onglet Grille apparaît ici, avec ce qui était prévu et le résultat.</p>';
     return gs.map(function (g) { return carteGrilleEnregistree(g, publies); }).join('');
   }
@@ -2200,11 +2200,23 @@ __PWA_HEAD__
       '<p style="margin:14px 0 0"><strong>Pourquoi les pronostics échouent</strong></p>' + causes + facteurs +
       (tranches ? '<p style="margin:12px 0 0"><strong>Fiabilité selon la probabilité annoncée</strong></p><ul style="margin:6px 0 0;padding-left:18px">' + tranches + '</ul>' : '');
   }
+  // Grilles « en cours » (clôture passée) d’abord, la plus récente en tête ; puis les grilles « à venir », la plus proche en tête
+  function ordreResultats(liste, cloture) {
+    var maintenant = Date.now();
+    function instant(x) { var v = Date.parse(cloture(x)); return isNaN(v) ? null : v; }
+    return liste.slice().sort(function (a, b) {
+      var ta = instant(a), tb = instant(b);
+      var ea = ta !== null && ta <= maintenant, eb = tb !== null && tb <= maintenant;
+      if (ea !== eb) return ea ? -1 : 1;
+      if (ta === null || tb === null) return (ta === null ? 1 : 0) - (tb === null ? 1 : 0);
+      return ea ? tb - ta : ta - tb;
+    });
+  }
   function viewResultats() {
     var r = S.resultats;
     var mes = zone('ok', 1, 'Mes grilles', contenuMesGrilles(resultatsPublies()));
     if (!r) return mes + note('Les résultats des grilles publiées ne sont pas encore disponibles.');
-    var grilles = r.grilles.length ? r.grilles.map(grilleResultats).join('') : note('Aucune grille suivie pour l’instant.');
+    var grilles = r.grilles.length ? ordreResultats(r.grilles, function (g) { return g.cloture; }).map(grilleResultats).join('') : note('Aucune grille suivie pour l’instant.');
     return mes + zone('info', 2, 'Bilan général du modèle', bilanResultats(r.bilan) + legendeResultats()) +
       zone('neutre', 3, 'Grille par grille (pronostics du modèle)', grilles) +
       '<p class="hint">Mis à jour le ' + esc(dateFr(r.maj.slice(0, 10))) + '. « Mes grilles » reprend tes grilles enregistrées sur cet appareil. Les pronostics du modèle sont calculés sans ton jeu. Aucune cote de bookmaker.</p>';
