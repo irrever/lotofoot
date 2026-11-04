@@ -948,7 +948,7 @@ __PWA_HEAD__
   }
   function supprimer(id) {
     var i = indexGrille(id);
-    if (i === -1 || S.grilles[i].verrouillee) return;
+    if (i === -1) return;
     S.grilles.splice(i, 1);
     S.grilleId = null;
     sauver();
@@ -1376,8 +1376,8 @@ __PWA_HEAD__
     var statut = g.verrouillee ? 'Verrouillée le ' + dateHeureFr(g.verrouillee_le) : 'Non verrouillée · données jusqu’au ' + dateFr(S.derniere);
     var actions = '<div class="actions"><button type="button" class="btn primary" data-act="csv">Enregistrer le fichier (CSV)</button>' +
       '<button type="button" class="btn" data-act="copier">Copier le texte</button>' +
-      (g.verrouillee ? '' : '<button type="button" class="btn" data-act="verrouiller">Verrouiller</button>' +
-        '<button type="button" class="btn danger" data-act="supprimer">Supprimer</button>') + '</div>' +
+      (g.verrouillee ? '' : '<button type="button" class="btn" data-act="verrouiller">Verrouiller</button>') +
+        '<button type="button" class="btn danger" data-act="supprimer">Supprimer</button>' + '</div>' +
       '<p class="hint">Sur téléphone, le menu d’envoi s’ouvre : choisis « Enregistrer dans Fichiers » pour garder le fichier. « Copier le texte » permet de coller la grille dans une note ou un message.</p>';
     var fiche = zone(g.verrouillee ? 'ok' : 'warn', 2, esc(g.nom),
       '<p class="hint">' + esc(formatDe(g)) + ' matchs · créée le ' + esc(dateFr(g.creee)) + '</p>' +
@@ -2140,7 +2140,7 @@ __PWA_HEAD__
     var res = resultatGrille(g);
     if (!res || res.erreurs || !res.matchs) {
       return '<article style="border:1px solid var(--bad-line);border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
-        '<p class="err" style="margin:0">' + esc(g.nom) + ' : grille à vérifier (' + esc(res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes') + ').</p></article>';
+        '<p class="err" style="margin:0">' + esc(g.nom) + ' : grille à vérifier (' + esc(res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes') + ').</p><div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div></article>';
     }
     var picks = res.matchs.map(function (m) { return { cle: clePaire(m.domicile, m.exterieur), pronostic: m.pronostic, m: m }; });
     var gp = grillePubliee(picks, g.format);
@@ -2165,7 +2165,7 @@ __PWA_HEAD__
     return '<article style="border:1px solid var(--line);border-left:5px solid ' + couleurG + ';border-radius:10px;padding:10px 12px;margin:10px 0;background:var(--surface)">' +
       '<h3 style="font-size:15px;margin:0">' + esc(titre) + '</h3>' +
       '<p class="hint" style="margin:2px 0 4px">' + esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)' +
-      (connus ? ' · résultats : ' + ok + ' bon(s) sur ' + connus : ' · résultats pas encore publiés') + '</p>' + lignes + '</article>';
+      (connus ? ' · résultats : ' + ok + ' bon(s) sur ' + connus : ' · résultats pas encore publiés') + '</p>' + lignes + '<div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div></article>';
   }
   function contenuMesGrilles(publies) {
     var gs = sortedGrilles();
@@ -2238,10 +2238,14 @@ __PWA_HEAD__
     else if (action === 'copier') { copierGrille(courante()); }
     else if (action === 'charger-grille') { chargerGrille(); }
     else if (action === 'verrouiller') {
-      if (window.confirm('Verrouiller cette grille ? Ses probabilités ne changeront plus, et elle ne pourra plus être supprimée.')) verrouiller(S.grilleId);
+      if (window.confirm('Verrouiller cette grille ? Ses probabilités ne changeront plus.')) verrouiller(S.grilleId);
     }
     else if (action === 'supprimer') {
       if (window.confirm('Supprimer cette grille ? Cette action est définitive.')) supprimer(S.grilleId);
+    }
+    else if (action === 'supprimer-grille') {
+      var gDel = S.grilles[indexGrille(el.getAttribute('data-id'))];
+      if (gDel && window.confirm('Supprimer la grille « ' + gDel.nom + ' » ? Cette action est définitive.')) supprimer(gDel.id);
     }
     else if (action === 'sauvegarder') { sauvegarder(); }
     render();
