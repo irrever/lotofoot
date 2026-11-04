@@ -594,7 +594,7 @@ details.sect > .corps { padding: 0 0 16px; }
       if (!s) return;
       if (s.buteur) out.push('Attention : le meilleur buteur de ' + t.equipe + ' n’est pas présent.');
       if (s.passeur) out.push('Attention : le meilleur passeur de ' + t.equipe + ' n’est pas présent.');
-      if (s.nombre >= 3) out.push('Attention : ' + (NOMBRES_ALERTE[s.nombre] || s.nombre) + ' joueurs de ' + t.equipe + ' ne sont pas présents.');
+      if (s.nombre >= 3) out.push('Attention : ' + (NOMBRES_ALERTE[s.nombre] || s.nombre) + ' joueurs de ' + t.equipe + ' figurent sur la liste des blessés ou suspendus (pas forcément titulaires).');
     });
     return out;
   }
