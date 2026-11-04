@@ -416,6 +416,76 @@ def absences_par_equipe(releve):
     return out
 
 
+# ---------- Diagnostic : organisation d’une page de classement (titres, tableaux), sans son contenu
+
+def classements_suivis(accueil):
+    """Adresse de la page de classement de chaque championnat suivi, relevée sur la page d’accueil des classements."""
+    par_id = {int(v): k for k, v in LIGUES.items()}
+    candidats = {}
+    for chemin in liens(accueil):
+        m = re.match(r'^/(?:[^/]+/)*[a-z0-9-]+-(\d+)$', chemin)
+        if m and int(m.group(1)) in par_id:
+            candidats.setdefault(par_id[int(m.group(1))], []).append(chemin)
+    return {code: sorted(liste, key=lambda c: (not c.startswith(CLASSEMENTS), len(c)))[0]
+            for code, liste in candidats.items()}
+
+
+def _chaine(n, indent, budget):
+    """Arbre des balises d’un élément ; le texte est remplacé par sa longueur."""
+    for e in n.enfants:
+        if budget[0] <= 0:
+            return
+        if isinstance(e, Noeud):
+            budget[0] -= 1
+            print('%s%s%s' % (indent, e.tag, ''.join('.' + c for c in sorted(e.classes))))
+            _chaine(e, indent + '  ', budget)
+        elif e.strip():
+            budget[0] -= 1
+            print('%s[texte de %d caractères]' % (indent, len(e.strip())))
+
+
+MOTS_DIAG = r'classement|buteur|passeur|bless|suspen|absent|championnat|europe'
+
+
+def diagnostic(lecteur, codes):
+    accueil = lecteur.page(CLASSEMENTS)
+    print('liens « europe » sur la page d’accueil :',
+          ', '.join(sorted(c for c in liens(accueil) if 'europe' in c)) or 'aucun')
+    trouves = classements_suivis(accueil)
+    for code in codes:
+        if code not in trouves:
+            print('%s : page de classement introuvable' % code)
+            continue
+        html = lecteur.page(trouves[code])
+        racine = arbre(html)
+        print('== %s %s (%d caractères)' % (code, trouves[code], len(html)))
+        print('  liens « europe » : ' + (', '.join(sorted(c for c in liens(html) if 'europe' in c)) or 'aucun'))
+        titres = [texte(n)[:40] for n in descendants(racine)
+                  if n.tag in ('h1', 'h2', 'h3', 'h4') and re.search(MOTS_DIAG, texte(n).lower())]
+        print('  titres utiles : ' + (' | '.join(titres[:20]) or 'aucun'))
+        boutons = [texte(n)[:30] for n in descendants(racine)
+                   if n.tag == 'button' and re.search(MOTS_DIAG, texte(n).lower())]
+        print('  boutons utiles : ' + (' | '.join(boutons[:20]) or 'aucun'))
+        utiles = sorted(c for c in liens(html) if re.search(r'blesse|suspen|buteur|passeur|joueur|absent', c))
+        print('  liens utiles : ' + (', '.join(utiles[:20]) or 'aucun'))
+        tableaux = [n for n in descendants(racine) if n.tag == 'table']
+        print('  tableaux : %d' % len(tableaux))
+        montres = 0
+        for i, t in enumerate(tableaux, 1):
+            entetes = [texte(n)[:20] for n in descendants(t) if n.tag == 'th']
+            lignes = [n for n in descendants(t) if n.tag == 'tr']
+            motif = any(c.tag == 'span' and 'opacity-60' in c.classes for c in descendants(t))
+            cle = bool(re.search(r'buteur|passeur|bless|suspen|absent', texte(t).lower()))
+            print('  tableau %d : %d lignes ; en-têtes : %s ; motifs (opacity-60) : %s' % (
+                i, len(lignes), ' | '.join(entetes[:10]) or 'aucun', 'oui' if motif else 'non'))
+            if (motif or cle) and montres < 4:
+                montres += 1
+                donnees = [tr for tr in lignes if any(isinstance(c, Noeud) and c.tag == 'td' for c in tr.enfants)]
+                for k, tr in enumerate(donnees[:2], 1):
+                    print('    ligne %d' % k)
+                    _chaine(tr, '      ', [40])
+
+
 def main(argv):
     commande = argv[1] if len(argv) > 1 else 'collecter'
     if commande == 'chemins':
@@ -424,6 +494,8 @@ def main(argv):
         CHEMINS.write_text(json.dumps(chemins, ensure_ascii=False, indent=1), encoding='utf-8')
         for code in LIGUES:
             print('%-4s %s' % (code, ', '.join(sorted(chemins[code])) if code in chemins else 'aucune page trouvée'))
+    elif commande == 'structure':
+        diagnostic(Lecteur(), argv[2:] or ['I1', 'SP1', 'E1'])
     elif commande == 'collecter':
         collecter()
     else:
