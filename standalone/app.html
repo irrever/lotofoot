@@ -2034,13 +2034,16 @@ __PWA_HEAD__
     var causes = b.causes.length ? '<ul style="margin:6px 0 0;padding-left:18px">' + b.causes.map(function (c) {
       return '<li>' + esc(c.libelle) + ' : <strong>' + esc(c.n) + '</strong></li>';
     }).join('') + '</ul>' : '<p class="hint">Aucune erreur analysée pour l’instant.</p>';
+    var facteurs = b.facteurs.length ? '<p style="margin:10px 0 0"><strong>Facteurs signalés chez les pronostics ratés</strong></p><ul style="margin:6px 0 0;padding-left:18px">' + b.facteurs.map(function (c) {
+      return '<li>' + esc(c.libelle) + ' : <strong>' + esc(c.n) + '</strong></li>';
+    }).join('') + '</ul>' : '';
     var tranches = b.tranches.filter(function (t) { return t.n; }).map(function (t) {
       return '<li>' + esc(t.libelle) + ' : ' + esc(t.ok) + ' bon(s) sur ' + esc(t.n) + '</li>';
     }).join('');
     return '<div class="kpis kpis3"><div class="kpi kpi-grand"><span class="label">Bons pronostics</span><strong>' + precision +
       '</strong></div><div class="kpi"><span class="label">En attente de résultat</span><strong>' + esc(b.en_attente) +
       '</strong></div><div class="kpi"><span class="label">Sans pronostic</span><strong>' + esc(b.sans_pronostic) + '</strong></div></div>' +
-      '<p style="margin:14px 0 0"><strong>Pourquoi les pronostics échouent</strong></p>' + causes +
+      '<p style="margin:14px 0 0"><strong>Pourquoi les pronostics échouent</strong></p>' + causes + facteurs +
       (tranches ? '<p style="margin:12px 0 0"><strong>Fiabilité selon la probabilité annoncée</strong></p><ul style="margin:6px 0 0;padding-left:18px">' + tranches + '</ul>' : '');
   }
   function viewResultats() {

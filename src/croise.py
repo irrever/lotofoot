@@ -43,7 +43,8 @@ ALIAS_EQUIPES = {
     'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava',
 }
 # Noms de la page de résultats Pronosoft (clés normalisées) vers les noms de l’application.
-ALIAS_PRONOSOFT = {'bod/glimt': 'Bodø/Glimt', 'atl madrid': 'Ath Madrid', 'psg': 'Paris SG'}
+ALIAS_PRONOSOFT = {'bod/glimt': 'Bodø/Glimt', 'atl madrid': 'Ath Madrid', 'psg': 'Paris SG',
+                   'fc barcelone': 'Barcelona', 'inter milan': 'Inter', 'as rome': 'Roma'}
 
 
 def norm(texte):

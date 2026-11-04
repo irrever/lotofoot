@@ -77,6 +77,9 @@ class Noms(unittest.TestCase):
         self.assertEqual(croise.canon_pronosoft('Bod/Glimt'), 'Bodø/Glimt')
         self.assertEqual(croise.canon_pronosoft('Atl. Madrid'), 'Ath Madrid')
         self.assertEqual(croise.canon_pronosoft('Lille'), 'Lille')
+        self.assertEqual(croise.canon_pronosoft('FC Barcelone'), 'Barcelona')
+        self.assertEqual(croise.canon_pronosoft('Inter Milan'), 'Inter')
+        self.assertEqual(croise.canon_pronosoft('AS Rome'), 'Roma')
 
     def test_trouver_equipe(self):
         d = donnees_test()

@@ -57,14 +57,16 @@ class Explications(unittest.TestCase):
     def test_absences_du_favori(self):
         e = entree(malus={'domicile': -13, 'exterieur': 0})
         a = rapport.analyser(e, {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'})
-        self.assertEqual(a['cause'], 'absences')
+        self.assertEqual(a['cause'], 'surprise')
+        self.assertEqual(a['facteurs'], ['absences'])
         self.assertIn('13 points Elo', a['explication'])
 
     def test_club_hors_championnats(self):
         e = entree(hypothese=['Bodø/Glimt'], ligue=None)
         del e['ligue']
         a = rapport.analyser(e, {'issue': '2', 'score': '0 – 1', 'source': 'pronosoft'})
-        self.assertEqual(a['cause'], 'hypothese')
+        self.assertEqual(a['cause'], 'surprise')
+        self.assertEqual(a['facteurs'], ['hypothese'])
 
     def test_match_serre(self):
         e = entree(pronostic='1', proba={'1': 0.42, 'N': 0.3, '2': 0.28})
@@ -145,7 +147,8 @@ class Bilan(unittest.TestCase):
         b = rapport.bilan(analyses)
         self.assertEqual((b['resolus'], b['ok'], b['ko'], b['sans_pronostic']), (3, 1, 2, 1))
         self.assertEqual(b['precision'], round(1 / 3, 3))
-        self.assertEqual({c['code']: c['n'] for c in b['causes']}, {'surprise': 1, 'absences': 1})
+        self.assertEqual({c['code']: c['n'] for c in b['causes']}, {'surprise': 2})
+        self.assertEqual({c['code']: c['n'] for c in b['facteurs']}, {'absences': 1})
         self.assertEqual(b['tranches'][2], {'libelle': 'pronostic à 60 % et plus', 'n': 3, 'ok': 1})
 
     def test_grilles_recentes_et_completes(self):

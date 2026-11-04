@@ -34,11 +34,13 @@ FENETRE_PRONOSOFT_JOURS = 14  # une page Pronosoft est relevée quelques jours a
 MALUS_SIGNIFICATIF = -5       # un malus d’absences plus fort (en points Elo) est cité comme raison possible
 SEUIL_FAVORI = 0.5            # au-dessus de cette probabilité, le pronostic désigne un favori net
 CAUSES = {
-    'absences': 'Absences signalées chez le favori',
-    'hypothese': 'Club hors des 16 championnats (niveau estimé)',
     'nul': 'Match nul, peu probable selon le modèle',
     'surprise': 'Favori battu',
     'serre': 'Match trop serré pour trancher',
+}
+FACTEURS = {
+    'absences': 'Absences signalées chez le pronostic',
+    'hypothese': 'Club hors des 16 championnats (niveau estimé)',
 }
 TRANCHES = [(0.0, 0.45, 'pronostic à moins de 45 %'), (0.45, 0.6, 'pronostic de 45 à 60 %'),
             (0.6, 1.01, 'pronostic à 60 % et plus')]
@@ -208,59 +210,84 @@ def explication_ok(e):
     return texte
 
 
+def facteurs_de(e):
+    """Facteurs signalés avant le match, qui peuvent expliquer un échec : absences chez l’équipe pronostiquée,
+    club hors des 16 championnats (niveau estimé)."""
+    prono = e['pronostic']
+    mal = e.get('malus') or {}
+    m = (mal.get('domicile' if prono == '1' else 'exterieur') or 0) if prono in ('1', '2') else 0
+    out = []
+    if m <= MALUS_SIGNIFICATIF:
+        out.append('absences')
+    if e.get('hypothese'):
+        out.append('hypothese')
+    return out
+
+
 def raison_erreur(e, res):
-    """Raison principale d’un pronostic faux, et explication : absences, club estimé, nul, favori battu, match serré."""
+    """Raison principale d’un pronostic faux (match nul, favori battu, match serré), explication et facteurs."""
     prono, issue = e['pronostic'], res['issue']
     pp, pi = e['proba'][prono], e['proba'][issue]
     equipe = e['domicile'] if prono == '1' else (e['exterieur'] if prono == '2' else None)
-    mal = e.get('malus') or {}
-    m = (mal.get('domicile' if prono == '1' else 'exterieur') or 0) if equipe else 0
-    if equipe and m <= MALUS_SIGNIFICATIF:
-        return 'absences', ('%s avait des absences signalées (malus de %d points Elo) : le modèle les a prises en '
-                            'compte, mais leur effet a pu être sous-estimé.' % (equipe, -m))
-    if e.get('hypothese'):
-        return 'hypothese', ('%s : son niveau est une estimation, car le club évolue hors des 16 championnats suivis. '
-                             'Le pronostic est donc moins fiable.' % ' et '.join(e['hypothese']))
     if issue == 'N':
-        return 'nul', ('Match nul : le modèle ne lui donnait que %s %%, contre %s %% pour le pronostic (%s).'
-                       % (pct(pi), pct(pp), NOM_ISSUE[prono]))
-    if pp >= SEUIL_FAVORI:
-        return 'surprise', ('%s était favori à %s %% et a perdu.' % (equipe or 'Le pronostic', pct(pp)))
-    return 'serre', ('Aucune issue nette : le pronostic (%s) ne dépassait pas %s %%, et le résultat (%s) '
-                     'était possible à %s %%.' % (NOM_ISSUE[prono], pct(pp), NOM_ISSUE[issue], pct(pi)))
+        cause = 'nul'
+        texte = ('Match nul : le modèle ne lui donnait que %s %%, contre %s %% pour le pronostic (%s).'
+                 % (pct(pi), pct(pp), NOM_ISSUE[prono]))
+    elif pp >= SEUIL_FAVORI:
+        cause = 'surprise'
+        texte = '%s était favori à %s %% et a perdu.' % (equipe or 'Le pronostic', pct(pp))
+    else:
+        cause = 'serre'
+        texte = ('Aucune issue nette : le pronostic (%s) ne dépassait pas %s %%, et le résultat (%s) '
+                 'était possible à %s %%.' % (NOM_ISSUE[prono], pct(pp), NOM_ISSUE[issue], pct(pi)))
+    facteurs = facteurs_de(e)
+    if 'absences' in facteurs:
+        mal = e.get('malus') or {}
+        m = mal.get('domicile' if prono == '1' else 'exterieur')
+        texte += (' %s avait des absences signalées (malus de %d points Elo) : le modèle les a prises en compte, '
+                  'mais leur effet a pu être sous-estimé.' % (equipe, -m))
+    if 'hypothese' in facteurs:
+        texte += (' %s : niveau estimé, car le club évolue hors des 16 championnats suivis ; le pronostic est donc '
+                  'moins fiable.' % ' et '.join(e['hypothese']))
+    return cause, texte, facteurs
 
 
 def analyser(e, res):
-    """Statut, cause et explication d’un match de grille."""
+    """Statut, cause principale, facteurs et explication d’un match de grille."""
     if 'proba' not in e:
-        return {'statut': 'sans_pronostic', 'cause': None,
+        return {'statut': 'sans_pronostic', 'cause': None, 'facteurs': [],
                 'explication': 'Pas de pronostic : %s.' % e.get('non_prevu', 'donnée manquante')}
     if res is None:
-        return {'statut': 'attente', 'cause': None, 'explication': 'Résultat pas encore publié.'}
+        return {'statut': 'attente', 'cause': None, 'facteurs': [], 'explication': 'Résultat pas encore publié.'}
     if e['pronostic'] == res['issue']:
-        return {'statut': 'ok', 'cause': None, 'explication': explication_ok(e)}
-    cause, texte = raison_erreur(e, res)
-    return {'statut': 'ko', 'cause': cause, 'explication': texte}
+        return {'statut': 'ok', 'cause': None, 'facteurs': facteurs_de(e), 'explication': explication_ok(e)}
+    cause, texte, facteurs = raison_erreur(e, res)
+    return {'statut': 'ko', 'cause': cause, 'facteurs': facteurs, 'explication': texte}
 
 
 def bilan(analyses):
-    """Précision sur les matchs à pronostic résolu, causes des erreurs, précision par tranche de probabilité."""
+    """Précision sur les matchs à pronostic résolu, raisons des erreurs, facteurs signalés, et précision par tranche
+    de probabilité."""
     resolus = [x for x in analyses if x['a']['statut'] in ('ok', 'ko')]
-    ok = sum(1 for x in resolus if x['a']['statut'] == 'ok')
-    causes = {}
-    for x in resolus:
-        if x['a']['cause']:
-            causes[x['a']['cause']] = causes.get(x['a']['cause'], 0) + 1
+    ratés = [x for x in resolus if x['a']['statut'] == 'ko']
+    ok = len(resolus) - len(ratés)
+    causes, facteurs = {}, {}
+    for x in ratés:
+        causes[x['a']['cause']] = causes.get(x['a']['cause'], 0) + 1
+        for f in x['a']['facteurs']:
+            facteurs[f] = facteurs.get(f, 0) + 1
     tranches = []
     for bas, haut, libelle in TRANCHES:
         dans = [x for x in resolus if bas <= x['e']['proba'][x['e']['pronostic']] < haut]
         tranches.append({'libelle': libelle, 'n': len(dans), 'ok': sum(1 for x in dans if x['a']['statut'] == 'ok')})
-    return {'resolus': len(resolus), 'ok': ok, 'ko': len(resolus) - ok,
+    return {'resolus': len(resolus), 'ok': ok, 'ko': len(ratés),
             'precision': round(ok / len(resolus), 3) if resolus else None,
             'sans_pronostic': sum(1 for x in analyses if x['a']['statut'] == 'sans_pronostic'),
             'en_attente': sum(1 for x in analyses if x['a']['statut'] == 'attente'),
             'causes': [{'code': c, 'libelle': CAUSES[c], 'n': n}
                        for c, n in sorted(causes.items(), key=lambda kv: -kv[1])],
+            'facteurs': [{'code': f, 'libelle': FACTEURS[f], 'n': n}
+                         for f, n in sorted(facteurs.items(), key=lambda kv: -kv[1])],
             'tranches': tranches}
 
 
@@ -278,7 +305,8 @@ def match_resume(x, noms):
             'score': res['score'] if res else None, 'issue': res['issue'] if res else None,
             'source': res['source'] if res else None,
             'statut': a['statut'], 'cause': a['cause'], 'cause_libelle': CAUSES.get(a['cause']),
-            'explication': a['explication'], 'reconstituee': bool(e.get('reconstituee'))}
+            'explication': a['explication'], 'facteurs': [FACTEURS[f] for f in a['facteurs']],
+            'reconstituee': bool(e.get('reconstituee'))}
 
 
 def grilles_resumees(analyses, noms):
