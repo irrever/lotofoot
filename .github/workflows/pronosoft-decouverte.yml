@@ -16,4 +16,4 @@ jobs:
         with:
           python-version: '3.13'
       - name: Repérer les pages de résultats
-        run: python3 src/pronosoft.py decouverte
+        run: python3 src/pronosoft.py loto

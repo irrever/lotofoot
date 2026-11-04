@@ -89,10 +89,54 @@ def decouverte(lecteur):
                 _chaine(tr, '      ', [40])
 
 
+def lire_loto(html):
+    """Grilles de la page « Résultats et rapports » du Loto Foot : libellé, puis matchs avec leur score final."""
+    grilles, titre = [], ''
+
+    def marcher(n):
+        nonlocal titre
+        for e in n.enfants:
+            if isinstance(e, Noeud):
+                if e.tag == 'table':
+                    matchs = []
+                    for tr in descendants(e):
+                        if tr.tag != 'tr':
+                            continue
+                        dom = ext = score = None
+                        for c in descendants(tr):
+                            if c.tag == 'td' and 'equipe1' in c.classes:
+                                dom = texte(c)
+                            elif c.tag == 'td' and 'equipe2' in c.classes:
+                                ext = texte(c)
+                            elif c.tag == 'span' and 'score-ft' in c.classes:
+                                score = texte(c)
+                        if dom and ext and score and re.match(r'^\d{1,2}-\d{1,2}$', score):
+                            a, b = score.split('-')
+                            matchs.append({'domicile': dom, 'exterieur': ext, 'score': score,
+                                           'issue': '1' if int(a) > int(b) else ('N' if a == b else '2')})
+                    if matchs:
+                        grilles.append({'libelle': titre, 'matchs': matchs})
+                else:
+                    marcher(e)
+            else:
+                if re.search(r'loto|grille|n°|numéro', e, re.I) and len(e.strip()) < 120:
+                    titre = ' '.join(e.split())
+
+    marcher(arbre(html))
+    return grilles
+
+
 if __name__ == '__main__':
     commande = sys.argv[1] if len(sys.argv) > 1 else 'decouverte'
     if commande == 'decouverte':
         decouverte(Lecteur(SITE))
+    elif commande == 'loto':
+        grilles = lire_loto(Lecteur(SITE).lire('/fr/lotofoot/resultats-et-rapports.php'))
+        print('grilles lues : %d' % len(grilles))
+        for g in grilles[:4]:
+            print('- %s : %d matchs' % (g['libelle'][:90], len(g['matchs'])))
+            for m in g['matchs'][:3]:
+                print('    %s – %s : %s (%s)' % (m['domicile'], m['exterieur'], m['score'], m['issue']))
     else:
         print(__doc__)
         sys.exit(2)
