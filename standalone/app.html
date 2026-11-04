@@ -354,7 +354,7 @@ __PWA_HEAD__
 <script>
 (function () {
   var DATA = JSON.parse(document.getElementById('donnees').textContent);
-  var TABS = [['grille', 'Grille'], ['equipes', 'Équipes'], ['match', 'Match'], ['recherche', 'Recherche'], ['stats', 'Stats'], ['bilan', 'Bilan'], ['methode', 'Méthode']];
+  var TABS = [['grille', 'Grille'], ['resultats', 'Résultats'], ['match', 'Match'], ['recherche', 'Recherche'], ['stats', 'Stats'], ['bilan', 'Bilan'], ['methode', 'Méthode']];
   var STORE_KEY = 'lotofoot.grilles.v1';
   var FORMATS = [7, 8, 15];
   var FORMAT_DEFAUT = 8;
@@ -375,7 +375,7 @@ __PWA_HEAD__
     grilles: [], grilleId: null, stockage: true, nouvelle: false, form: null, message: '', texteCopie: '',
     ligue: '', equipe: '', dom: '', ext: '', q: '',
     rech: { dom: { texte: '', championnat: '', note: '', niveau: 'haut' }, ext: { texte: '', championnat: '', note: '', niveau: 'haut' } },
-    version: DATA.version, derniere: DATA.derniere_date, miseAJour: '', bilan: DATA.bilan || null
+    version: DATA.version, derniere: DATA.derniere_date, miseAJour: '', bilan: DATA.bilan || null, resultats: DATA.resultats || null
   };
   var app = document.getElementById('app');
 
@@ -1160,7 +1160,7 @@ __PWA_HEAD__
     return ['H', 'D', 'A'].every(function (c) { return Array.isArray(m.coef[c]) && m.coef[c].length === 25; });
   }
   function appliquerDonnees(d) {
-    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.bilan = d.bilan || null;
+    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.bilan = d.bilan || null; S.resultats = d.resultats || null;
   }
   function verifierMiseAJour() {
     if (!/^https?:$/.test(location.protocol) || !window.fetch) return Promise.resolve();
@@ -1183,7 +1183,7 @@ __PWA_HEAD__
   // ---------- Affichage : cadre, zones, grilles, équipes, match, stats, méthode
   var ICONES = {
     grille: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>',
-    equipes: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.7-3.6 3.3-5.6 6.5-5.6s5.8 2 6.5 5.6"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.6c2.4.1 4.3 1.7 5 4.4"/></svg>',
+    resultats: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13.5l4.5 4.5L20 6.5"/><path d="M3.5 20.5h17"/></svg>',
     match: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.5" cy="12" r="5.5"/><circle cx="15.5" cy="12" r="5.5"/></svg>',
     recherche: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>',
     stats: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/></svg>',
@@ -1383,41 +1383,6 @@ __PWA_HEAD__
     var seen = {}; var out = [];
     S.equipes.forEach(function (t) { if (!seen[t.ligue]) { seen[t.ligue] = 1; out.push([t.ligue, t.ligue_nom]); } });
     return out;
-  }
-  function viewEquipes() {
-    if (!S.equipes.length) return note('Les statistiques par équipe ne sont pas encore enregistrées.');
-    var lgs = ligues();
-    if (!S.ligue) S.ligue = lgs[0][0];
-    var inLigue = S.equipes.filter(function (t) { return t.ligue === S.ligue; });
-    if (!inLigue.some(function (t) { return t.equipe === S.equipe; })) S.equipe = inLigue[0] ? inLigue[0].equipe : '';
-    var t = inLigue.filter(function (x) { return x.equipe === S.equipe; })[0];
-    var choix = '<div class="form-grille">' +
-      '<div class="field"><label for="sel-ligue">Championnat</label><select id="sel-ligue">' +
-      lgs.map(function (l) { return '<option value="' + esc(l[0]) + '"' + (l[0] === S.ligue ? ' selected' : '') + '>' + esc(l[1]) + '</option>'; }).join('') +
-      '</select></div>' +
-      '<div class="field"><label for="sel-equipe">Équipe</label><select id="sel-equipe">' +
-      inLigue.map(function (x) { return '<option value="' + esc(x.equipe) + '"' + (x.equipe === S.equipe ? ' selected' : '') + '>' + esc(x.equipe) + '</option>'; }).join('') +
-      '</select></div></div>';
-    var fiche = '';
-    if (t) {
-      fiche = zone('ok', 2, esc(t.equipe),
-        '<p class="hint">' + esc(t.ligue_nom) + '</p>' +
-        '<div class="kpis"><div class="kpi kpi-grand"><span class="label">Elo dans son championnat</span><strong>' + esc(Math.round(t.elo)) + '</strong></div>' +
-        '<div class="kpi"><span class="label">Rang dans son championnat</span><strong>' + esc(t.rang_elo_dans_le_championnat) + 'e</strong></div></div>' +
-        '<div class="scroll"><table><thead><tr><th>Indicateur</th><th class="txt">Valeur</th></tr></thead><tbody>' +
-        '<tr><td>À domicile, 20 derniers</td><td class="txt">' + esc(bilan(t.domicile)) + '</td></tr>' +
-        '<tr><td>À l’extérieur, 20 derniers</td><td class="txt">' + esc(bilan(t.exterieur)) + '</td></tr>' +
-        '<tr><td>Forme, 5 derniers</td><td class="txt">' + esc(t.forme) + '</td></tr>' +
-        '<tr><td>Buts pour / contre, 10 derniers</td><td class="txt">' + fr(t.buts_pour, 1) + ' / ' + fr(t.buts_contre, 1) + '</td></tr>' +
-        '<tr><td>Tirs cadrés pour / contre, 10 derniers</td><td class="txt">' + fr(t.tirs_cadres_pour, 1) + ' / ' + fr(t.tirs_cadres_contre, 1) + '</td></tr>' +
-        '<tr><td>Corners pour, 10 derniers</td><td class="txt">' + fr(t.corners_pour, 1) + '</td></tr>' +
-        '<tr><td>Cartons, 10 derniers</td><td class="txt">' + fr(t.cartons, 1) + '</td></tr>' +
-        '<tr><td>Jours depuis le dernier match</td><td class="txt">' + esc(t.jours_depuis_dernier_match) + '</td></tr>' +
-        '<tr><td>Matchs sur 30 jours</td><td class="txt">' + esc(t.matchs_30_jours) + '</td></tr>' +
-        '</tbody></table></div>' +
-        '<p class="hint">Bilans calculés sur les matchs joués jusqu’au ' + esc(dateFr(S.derniere)) + '. V : victoire, N : nul, D : défaite.</p>');
-    }
-    return zone('info', 1, 'Choisir une équipe', choix) + fiche;
   }
 
   // ---------- Affichage : match
@@ -2013,10 +1978,80 @@ __PWA_HEAD__
       zone('ok', 2, 'Probabilités', '<div id="rech-resultat">' + resultatRecherche() + '</div>');
   }
 
+  // ---------- Résultats et analyse : matchs de la veille et précision des grilles (données : resultats.json)
+  var NOM_ISSUE = { '1': 'victoire domicile', 'N': 'match nul', '2': 'victoire extérieur' };
+  function marqueVerdict(v) {
+    if (v === 'ok') return '<span style="color:var(--ok)">✓</span>';
+    if (v === 'ko') return '<span style="color:var(--bad)">✗</span>';
+    return '<span class="hint">—</span>';
+  }
+  function heureCloture(c) {
+    return dateFr(c.slice(0, 10)) + ' à ' + c.slice(11, 13) + ' h ' + c.slice(14, 16);
+  }
+  function resultatsJour(j) {
+    if (!j || !j.date) return note('Le rapport de la veille n’est pas encore disponible.');
+    if (!j.joues) return note('Aucun match joué la veille dans nos 16 championnats (' + dateFr(j.date) + ').');
+    var out = '<p class="hint">Matchs du ' + esc(dateFr(j.date)) + ' : ' + esc(j.joues) + ' joués, dont ' +
+      esc(j.avec_prevision) + ' avec une prévision enregistrée avant le match.</p>';
+    if (j.precision) {
+      out += '<div class="kpis"><div class="kpi kpi-grand"><span class="label">Bons pronostics</span><strong>' +
+        esc(j.precision.ok) + ' / ' + esc(j.precision.n) + '</strong></div>' +
+        '<div class="kpi"><span class="label">Log-loss : modèle / référence</span><strong>' +
+        fr(j.log_loss, 3) + ' / ' + fr(j.log_loss_ref, 3) + '</strong></div></div>';
+    }
+    var lignes = j.matchs.map(function (m) {
+      var absences = m.absences ? '<div class="hint">malus Elo : domicile ' + esc(m.absences.domicile) +
+        ', extérieur ' + esc(m.absences.exterieur) + '</div>' : '';
+      var match = '<span class="hint">' + esc(m.championnat) + '</span><br>' + esc(m.domicile) + ' – ' +
+        esc(m.exterieur) + absences;
+      var prevu = m.prevu ? '<strong>' + esc(m.prevu) + '</strong> ' + pc(m.pourcent[m.prevu]) +
+        (m.surprise ? '<div style="color:var(--warn)">résultat surprenant</div>' : '') :
+        '<span class="hint">aucune</span>';
+      var resultat = esc(m.score) + ' ' + marqueVerdict(m.verdict) + '<br><span class="hint">' +
+        esc(NOM_ISSUE[m.issue]) + '</span>';
+      return '<tr><td>' + match + '</td><td class="txt">' + prevu + '</td><td class="txt">' + resultat + '</td></tr>';
+    }).join('');
+    return out + '<div class="scroll"><table><thead><tr><th>Match</th><th class="txt">Prévu</th>' +
+      '<th class="txt">Résultat</th></tr></thead><tbody>' + lignes + '</tbody></table></div>';
+  }
+  function grilleHtml(gr) {
+    var lignes = gr.matchs.map(function (m) {
+      var match = esc(m.domicile) + ' – ' + esc(m.exterieur) + '<br><span class="hint">' + esc(m.championnat) + '</span>';
+      if (m.non_prevu) {
+        return '<tr><td>' + esc(m.n) + '</td><td>' + match + '</td><td class="txt" colspan="2">' +
+          '<span class="hint">hors suivi : ' + esc(m.non_prevu) + '</span></td></tr>';
+      }
+      var prono = '<strong>' + esc(m.pronostic) + '</strong> ' + pc(m.pourcent[m.pronostic]);
+      var resultat = m.score ? esc(m.score) + ' ' + marqueVerdict(m.verdict) : '<span class="hint">à venir</span>';
+      return '<tr><td>' + esc(m.n) + '</td><td>' + match + '</td><td class="txt">' + prono +
+        '</td><td class="txt">' + resultat + '</td></tr>';
+    }).join('');
+    return '<h3 style="font-size:15px;margin:18px 0 2px">Loto Foot ' + esc(gr.format) + ' · grille N°' + esc(gr.numero) + '</h3>' +
+      '<p class="hint">Clôture : ' + esc(heureCloture(gr.cloture)) + '</p>' +
+      '<div class="scroll"><table><thead><tr><th>N°</th><th>Match</th><th class="txt">Pronostic (1 / N / 2)</th>' +
+      '<th class="txt">Résultat</th></tr></thead><tbody>' + lignes + '</tbody></table></div>';
+  }
+  function resultatsGrilles(g) {
+    if (!g) return note('Aucune grille suivie pour l’instant.');
+    var p = g.precision;
+    return '<div class="kpis kpis3"><div class="kpi kpi-grand"><span class="label">Précision sur les matchs joués</span><strong>' +
+      (p.n ? esc(p.ok) + ' / ' + esc(p.n) + ' · ' + Math.round(100 * p.ok / p.n) + ' %' : 'aucun match joué') +
+      '</strong></div><div class="kpi"><span class="label">Matchs à venir</span><strong>' + esc(g.a_venir) +
+      '</strong></div><div class="kpi"><span class="label">Grilles suivies</span><strong>' + esc(g.liste.length) +
+      '</strong></div></div>' + g.liste.map(grilleHtml).join('');
+  }
+  function viewResultats() {
+    var r = S.resultats;
+    if (!r) return note('Les résultats et l’analyse ne sont pas encore publiés.');
+    return zone('info', 1, 'Matchs de la veille', resultatsJour(r.jour)) +
+      zone('ok', 2, 'Précision des grilles Loto Foot', resultatsGrilles(r.grilles)) +
+      '<p class="hint">Mis à jour le ' + esc(dateFr(r.maj.slice(0, 10))) + '. Le pronostic est l’issue la plus probable du ' +
+      'modèle, enregistrée avant le match. Une grille n’est jugée que sur les matchs joués. Aucune cote de bookmaker.</p>';
+  }
   // ---------- Cadre : onglets, en-tête, pied
   function panel() {
     if (S.tab === 'grille') return viewGrille();
-    if (S.tab === 'equipes') return viewEquipes();
+    if (S.tab === 'resultats') return viewResultats();
     if (S.tab === 'match') return viewMatch();
     if (S.tab === 'recherche') return viewRecherche();
     if (S.tab === 'stats') return viewStats();

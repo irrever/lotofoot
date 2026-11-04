@@ -32,6 +32,9 @@ pub = json.load(open(ROOT / 'data/donnees_publiees.json', encoding='utf-8'))
 donnees = {'version': pub['version'], 'derniere_date': pub['derniere_date'], 'equipes': pub['equipes'],
            'stats': pub['stats'], 'modele': pub['modele']}
 donnees['bilan'] = dernier_bilan()
+RESULTATS = ROOT / 'data/resultats.json'   # matchs de la veille et précision des grilles (src/rapport.py)
+if RESULTATS.exists():
+    donnees['resultats'] = json.load(open(RESULTATS, encoding='utf-8'))
 embarque = None
 if GRILLE_PERSONNELLE.exists():
     embarque = dict(donnees, grilles=[json.load(open(GRILLE_PERSONNELLE, encoding='utf-8'))])

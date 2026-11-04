@@ -33,8 +33,6 @@ jobs:
         run: |
           mkdir -p data/raw
           sh src/boucle.sh
-      - name: Rapport des matchs de la veille et suivi des grilles
-        run: python3 src/rapport.py
       - name: Enregistrer les données si elles ont changé
         run: |
           git config user.name "github-actions[bot]"
@@ -42,7 +40,7 @@ jobs:
           cp standalone/site/index.html standalone/site/donnees.json standalone/site/sw.js \
              standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
           git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
-                  data/donnees_publiees.json data/model_state.json data/historique data/bilan data/journal
+                  data/donnees_publiees.json data/model_state.json data/historique data/bilan data/journal data/resultats.json
           if [ -d rapports ]; then git add rapports; fi
           for f in data/absences/du_jour.json data/absences/chemins_footactu.json; do
             if [ -e "$f" ]; then git add "$f"; fi
