@@ -1,0 +1,12 @@
+{
+ "F1": {
+  "blessures": "/ligue-1/blessures-suspensions",
+  "buteurs": "/ligue-1/classement-meilleur-buteur-ligue-1",
+  "passeurs": "/ligue-1/classement-meilleur-passeur-ligue-1"
+ },
+ "E0": {
+  "blessures": "/premier-league/blessures-suspensions-premier-league",
+  "buteurs": "/premier-league/classement-buteurs-premier-league",
+  "passeurs": "/premier-league/classement-passeurs-premier-league"
+ }
+}
