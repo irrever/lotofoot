@@ -787,6 +787,7 @@ __PWA_HEAD__
     f.rows.forEach(function (r) {
       var msg = '';
       if (!r.dom.trim() && !r.ext.trim()) msg = 'match à compléter.';
+      else if (!r.dom.trim() || !r.ext.trim()) msg = 'il manque l’équipe ' + (r.dom.trim() ? 'à l’extérieur' : 'à domicile') + '.';
       else {
         var h = trouverEquipe(r.dom), a = trouverEquipe(r.ext);
         if (!h) msg = 'équipe introuvable : « ' + r.dom.trim() + ' ».';
@@ -869,8 +870,11 @@ __PWA_HEAD__
         return r.err ? '<li>Match ' + (i + 1) + ' : ' + esc(r.err) + '</li>' : '';
       }).join('');
       return zone('bad', 3, 'Aperçu avant enregistrement', entete +
-        '<p class="hint">L’aperçu s’affiche dès que les ' + f.rows.length + ' matchs sont complets.</p>' +
-        (manquants ? '<ul class="list err">' + manquants + '</ul>' : ''));
+        '<p class="hint">Pour enregistrer, il faut compléter les ' + f.rows.length + ' matchs (il en reste ' +
+        f.rows.filter(function (r) { return r.err; }).length + ' à compléter).</p>' +
+        (manquants ? '<ul class="list err">' + manquants + '</ul>' : '') +
+        '<div class="actions"><button type="button" class="btn primary" disabled style="opacity:.45;cursor:not-allowed">Enregistrer et verrouiller</button>' +
+        '<button type="button" class="btn" disabled style="opacity:.45;cursor:not-allowed">Enregistrer sans verrouiller</button></div>');
     }
     var res = calculerGrille(rf.paires, f.doubles, f.triples);
     if (res.erreurs) {
