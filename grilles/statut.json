@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-04T13:38:16Z",
+ "verifie_le": "2026-11-04T17:20:43Z",
  "formats": {
   "7": {
    "ok": true,
@@ -21,6 +21,24 @@
    ],
    "equipes_inconnues": [
     "Slavia Prague"
+   ],
+   "erreur": null
+  },
+  "12": {
+   "ok": true,
+   "grilles_ouvertes": [
+    96,
+    97
+   ],
+   "equipes_inconnues": [
+    "Dinamo Zagreb",
+    "Nordsjaelland",
+    "Milan AC",
+    "Ferencvaros",
+    "Sparta Prague",
+    "Salzbourg",
+    "Real Sociedad",
+    "Cologne"
    ],
    "erreur": null
   },
