@@ -2209,20 +2209,23 @@ __PWA_HEAD__
       '<span style="white-space:nowrap">' + score + marque + '</span></summary>' +
       '<div style="margin-top:8px">' + carteMatch(m) + '</div></details>';
   }
+  // Une grille suivie : son bilan (le sien seulement), puis le constat, puis ses matchs repliés
   function grilleResultats(g) {
     var modele = { ok: 0, n: 0 };
     var cartes = g.matchs.map(function (m) {
       if (m.statut === 'ok' || m.statut === 'ko') { modele.n++; if (m.statut === 'ok') modele.ok++; }
       return matchCompact(m);
     }).join('');
-    var etat = g.complete ? 'grille complète' : 'résultats partiels : certains matchs ne sont pas encore publiés';
     var ton = enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)';
-    return '<section style="margin:22px 0 4px;padding:12px;border:2px solid ' + ton + ';border-radius:14px;background:var(--surface)">' +
+    var bilan = modele.n ? 'Bilan du modèle : ' + modele.ok + ' bons sur ' + modele.n + ' · ' + Math.round(100 * modele.ok / modele.n) + ' %'
+      : 'Bilan du modèle : après la publication des résultats';
+    return '<section style="margin:18px 0 4px;padding:12px;border:2px solid ' + ton + ';border-radius:14px;background:var(--surface)">' +
       entetteGrille(esc('Loto Foot ' + g.format + ' · grille N°' + g.numero + ' · ' + g.matchs.length + ' matchs'), g.cloture,
-        esc('Clôture : ' + heureCloture(g.cloture) + ' · ' + etat), g.complete) +
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px"><span class="tag">Modèle : ' + esc(modele.ok) +
-      ' bon(s) sur ' + esc(modele.n) + '</span></div>' +
-      (g.constat ? '<p class="hint" style="margin:6px 0 10px">' + esc(g.constat) + '</p>' : '') + cartes + '</section>';
+        esc('Clôture : ' + heureCloture(g.cloture)), g.complete) +
+      '<p style="font-size:17px;font-weight:700;margin:10px 0 2px">' + esc(bilan) + '</p>' +
+      (g.constat ? '<p class="hint" style="margin:4px 0 6px">' + esc(g.constat) + '</p>' : '') + cartes +
+      '<div class="actions"><button type="button" class="btn ghost petit" data-act="masquer-grille" data-cle="' +
+      esc(g.format + '|' + g.numero) + '">Masquer cette grille</button></div></section>';
   }
   // Une grille enregistrée : ce qui était prévu, match par match, et le résultat en vert ou en rouge
   function carteGrilleEnregistree(g, publies) {
@@ -2253,11 +2256,11 @@ __PWA_HEAD__
     var ton = g.cloture ? (enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)') : 'var(--line)';
     var titre = (gp ? 'Loto Foot ' + gp.format + ' · grille N°' + gp.numero : 'Loto Foot ' + g.format) + ' · ' + picks.length + ' matchs';
     var detail = esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)';
-    var bilan = connus ? '<span class="tag" style="color:' + (ok === connus ? 'var(--ok)' : 'var(--bad)') + '">Résultats : ' + ok + ' bon(s) sur ' + connus + '</span>' :
-      '<span class="tag">Résultats pas encore publiés</span>';
+    var bilan = connus ? 'Mon bilan : ' + ok + ' bons sur ' + connus + ' · ' + Math.round(100 * ok / connus) + ' %' +
+      (connus < picks.length ? ' (partiel)' : '') : 'Mon bilan : après la publication des résultats';
     return '<article style="border:2px solid ' + ton + ';border-radius:14px;padding:12px;margin:14px 0;background:var(--surface)">' +
       entetteGrille(esc(titre), g.cloture, detail, connus > 0 && connus === picks.length) +
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px">' + bilan + '</div>' + lignes + bouton + '</article>';
+      '<p style="font-size:17px;font-weight:700;margin:10px 0 2px">' + esc(bilan) + '</p>' + lignes + bouton + '</article>';
   }
   function contenuMesGrilles(publies) {
     var gs = ordreResultats(sortedGrilles(), function (g) { return g.cloture; });
@@ -2307,14 +2310,33 @@ __PWA_HEAD__
         lignes + '</section>';
     }).join('') + '<p class="hint">Ces grilles n’avaient pas de prévision enregistrée : seuls les résultats sont affichés.</p>';
   }
+  // Grilles masquées sur cet appareil (confort d’affichage : les grilles restent enregistrées)
+  var CLE_MASQUEES = 'lotofoot.masquees.v1';
+  function lireMasquees() {
+    try { var v = JSON.parse(window.localStorage.getItem(CLE_MASQUEES) || '[]'); return Array.isArray(v) ? v : []; }
+    catch (e) { return []; }
+  }
+  function masquerGrille(cle) {
+    var liste = lireMasquees();
+    if (liste.indexOf(cle) === -1) liste.push(cle);
+    try { window.localStorage.setItem(CLE_MASQUEES, JSON.stringify(liste)); } catch (e) { /* stockage indisponible : la grille reste affichée */ }
+  }
+  function reafficherGrilles() {
+    try { window.localStorage.removeItem(CLE_MASQUEES); } catch (e) { /* rien à réafficher */ }
+  }
   function viewResultats() {
     var r = S.resultats;
-    var mes = zone('ok', 1, 'Mes grilles', contenuMesGrilles(resultatsPublies()));
+    var mes = zone('ok', 1, 'Mes grilles : mon bilan par grille', contenuMesGrilles(resultatsPublies()));
     if (!r) return mes + note('Les résultats des grilles publiées ne sont pas encore disponibles.');
-    var grilles = r.grilles.length ? ordreResultats(r.grilles, function (g) { return g.cloture; }).map(grilleResultats).join('') : note('Aucune grille suivie pour l’instant.');
-    return mes + zone('info', 2, 'Bilan général du modèle', bilanResultats(r.bilan) + legendeResultats()) +
-      zone('neutre', 3, 'Grille par grille (pronostics du modèle)', grilles) +
-      (r.releves && r.releves.length ? zone('neutre', 4, 'Autres grilles relevées (sans prévision enregistrée)', relevesHtml(r.releves)) : '') +
+    var masquees = lireMasquees();
+    var visibles = r.grilles.filter(function (g) { return masquees.indexOf(g.format + '|' + g.numero) === -1; });
+    var grilles = visibles.length ? ordreResultats(visibles, function (g) { return g.cloture; }).map(grilleResultats).join('') : note('Aucune grille suivie à afficher.');
+    var nMasquees = r.grilles.length - visibles.length;
+    if (nMasquees) grilles += '<p class="hint">' + nMasquees + ' grille(s) masquée(s) sur cet appareil. <button type="button" class="btn ghost petit" data-act="reafficher-grilles">Les réafficher</button></p>';
+    return mes +
+      zone('neutre', 2, 'Grilles suivies par le modèle : bilan par grille', grilles) +
+      (r.releves && r.releves.length ? zone('neutre', 3, 'Autres grilles relevées : résultats seulement', relevesHtml(r.releves)) : '') +
+      zone('info', 4, 'Bilan cumulé de toutes les grilles (pour information)', '<details><summary class="hint">Afficher le bilan cumulé</summary>' + bilanResultats(r.bilan) + legendeResultats() + '</details>') +
       '<p class="hint">Mis à jour le ' + esc(dateFr(r.maj.slice(0, 10))) + '. « Mes grilles » reprend tes grilles enregistrées sur cet appareil. Les pronostics du modèle sont calculés sans ton jeu. Aucune cote de bookmaker.</p>';
   }
   // ---------- Cadre : onglets, en-tête, pied
@@ -2356,6 +2378,8 @@ __PWA_HEAD__
     }
     else if (action === 'copier') { copierGrille(courante()); }
     else if (action === 'charger-grille') { chargerGrille(); }
+    else if (action === 'masquer-grille') { masquerGrille(el.getAttribute('data-cle')); render(); }
+    else if (action === 'reafficher-grilles') { reafficherGrilles(); render(); }
     else if (action === 'mettre-a-jour') { mettreAJour(); }
     else if (action === 'recharger') { window.location.reload(); }
     else if (action === 'verrouiller') {
