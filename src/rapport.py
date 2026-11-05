@@ -31,6 +31,7 @@ ETIQ = {'H': '1', 'D': 'N', 'A': '2'}
 NOM_ISSUE = {'1': 'victoire à domicile', 'N': 'match nul', '2': 'victoire à l’extérieur'}
 FENETRE_JOURS = 3             # tolérance entre la date de clôture d’une grille et la date du match (football-data)
 FENETRE_PRONOSOFT_JOURS = 14  # une page Pronosoft est relevée quelques jours après le match au plus tard
+RELEVES_JOURS = 7             # résultats relevés par Pronosoft pour les grilles non suivies : sur ce nombre de jours
 VERSION_METHODE = 2          # 2 : position dans le championnat (écart de niveau entre championnats)
 MALUS_SIGNIFICATIF = -5       # un malus d’absences plus fort (en points Elo) est cité comme raison possible
 SEUIL_FAVORI = 0.5            # au-dessus de cette probabilité, le pronostic désigne un favori net
@@ -331,6 +332,38 @@ def grilles_resumees(analyses, noms):
     return liste
 
 
+def releves_pronosoft(matchs, suivies, aujourdhui):
+    """Résultats relevés par Pronosoft, par grille, pour les grilles non suivies (pas de prévision enregistrée)."""
+    limite = aujourdhui - dt.timedelta(days=RELEVES_JOURS)
+    groupes = {}
+    for m in matchs:
+        vu = dt.date.fromisoformat(m['vu'])
+        if vu < limite:
+            continue
+        try:
+            a, b = (int(x) for x in m['score'].split('-'))
+        except ValueError:
+            continue
+        issue = '1' if a > b else ('N' if a == b else '2')
+        for libelle in m.get('grilles', []):
+            parties = libelle.split()
+            if len(parties) != 4 or parties[:2] != ['Loto', 'Foot'] or not parties[3].startswith('n'):
+                continue
+            try:
+                cle_grille = (int(parties[2]), int(parties[3][1:]))
+            except ValueError:
+                continue
+            if cle_grille in suivies or cle_grille[1] in GRILLES_PRIVEES:
+                continue
+            g = groupes.setdefault(cle_grille, {'format': cle_grille[0], 'numero': cle_grille[1], 'releve': vu, 'matchs': []})
+            g['releve'] = max(g['releve'], vu)
+            g['matchs'].append({'domicile': m['domicile'], 'exterieur': m['exterieur'], 'score': '%d – %d' % (a, b), 'issue': issue})
+    liste = sorted(groupes.values(), key=lambda g: (g['releve'], g['numero']), reverse=True)[:GRILLES_AFFICHEES]
+    for g in liste:
+        g['releve'] = g['releve'].isoformat()
+    return liste
+
+
 def principal():
     maintenant = dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
     aujourdhui = maintenant.date()
@@ -340,14 +373,17 @@ def principal():
     print('grilles : %d matchs nouvellement enregistrés' % len(nouvelles))
     rows = charger_championnats()
     idx_fd = index_resultats(rows) if rows else {}
-    idx_ps = index_pronosoft(charger_pronosoft())
+    matchs_ps = charger_pronosoft()
+    idx_ps = index_pronosoft(matchs_ps)
     print('résultats : %d matchs de championnats, %d relevés Pronosoft' % (
         len(rows), sum(len(v) for v in idx_ps.values())))
     analyses = []
     for e in derniere_entree(charger_jsonl(JOURNAL_GRILLES)).values():
         res = resultat_match(e, idx_fd, idx_ps)
         analyses.append({'e': e, 'res': res, 'a': analyser(e, res)})
-    sortie = {'maj': maintenant.isoformat(), 'bilan': bilan(analyses), 'grilles': grilles_resumees(analyses, noms)}
+    suivies = {(x['e']['format'], x['e']['numero']) for x in analyses}
+    sortie = {'maj': maintenant.isoformat(), 'bilan': bilan(analyses), 'grilles': grilles_resumees(analyses, noms),
+              'releves': releves_pronosoft(matchs_ps, suivies, aujourdhui)}
     SORTIE.write_text(json.dumps(sortie, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
     b = sortie['bilan']
     print('résultats écrits : %d pronostics résolus, %d bons ; %d en attente ; %d grilles affichées' % (

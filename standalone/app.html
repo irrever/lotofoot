@@ -2272,6 +2272,20 @@ __PWA_HEAD__
       return ea ? tb - ta : ta - tb;
     });
   }
+  // Grilles relevées par Pronosoft sans prévision enregistrée : seuls les résultats sont affichés
+  function relevesHtml(liste) {
+    return liste.map(function (g) {
+      var lignes = g.matchs.map(function (m) {
+        return '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;border-top:1px solid var(--line)">' +
+          '<span style="flex:1;text-align:right">' + esc(m.domicile) + '</span>' +
+          '<strong style="min-width:52px;text-align:center">' + esc(m.score) + '</strong>' +
+          '<span style="flex:1">' + esc(m.exterieur) + '</span></div>';
+      }).join('');
+      return '<section style="margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface)">' +
+        '<p class="hint" style="margin:0 0 6px"><strong>Loto Foot ' + esc(g.format) + ' · grille N°' + esc(g.numero) + '</strong> · relevé le ' + esc(dateFr(g.releve)) + '</p>' +
+        lignes + '</section>';
+    }).join('') + '<p class="hint">Ces grilles n’avaient pas de prévision enregistrée : seuls les résultats sont affichés.</p>';
+  }
   function viewResultats() {
     var r = S.resultats;
     var mes = zone('ok', 1, 'Mes grilles', contenuMesGrilles(resultatsPublies()));
@@ -2279,6 +2293,7 @@ __PWA_HEAD__
     var grilles = r.grilles.length ? ordreResultats(r.grilles, function (g) { return g.cloture; }).map(grilleResultats).join('') : note('Aucune grille suivie pour l’instant.');
     return mes + zone('info', 2, 'Bilan général du modèle', bilanResultats(r.bilan) + legendeResultats()) +
       zone('neutre', 3, 'Grille par grille (pronostics du modèle)', grilles) +
+      (r.releves && r.releves.length ? zone('neutre', 4, 'Autres grilles relevées (sans prévision enregistrée)', relevesHtml(r.releves)) : '') +
       '<p class="hint">Mis à jour le ' + esc(dateFr(r.maj.slice(0, 10))) + '. « Mes grilles » reprend tes grilles enregistrées sur cet appareil. Les pronostics du modèle sont calculés sans ton jeu. Aucune cote de bookmaker.</p>';
   }
   // ---------- Cadre : onglets, en-tête, pied

@@ -176,5 +176,19 @@ class Bilan(unittest.TestCase):
         self.assertEqual(grilles[0]['matchs'][0]['championnat'], 'France L1')
 
 
+class Releves(unittest.TestCase):
+    def test_grilles_non_suivies_seulement(self):
+        matchs = [
+            {'domicile': 'Aston Villa', 'exterieur': 'Fulham', 'score': '1-1', 'vu': '2026-11-04', 'grilles': ['Loto Foot 15 n90']},
+            {'domicile': 'Lens', 'exterieur': 'Lille', 'score': '2-0', 'vu': '2026-11-04', 'grilles': ['Loto Foot 15 n91']},
+            {'domicile': 'Ancien', 'exterieur': 'Match', 'score': '0-1', 'vu': '2026-10-01', 'grilles': ['Loto Foot 15 n80']},
+            {'domicile': 'Perso', 'exterieur': 'Grille', 'score': '0-0', 'vu': '2026-11-04', 'grilles': ['Loto Foot 7 n153']},
+        ]
+        r = rapport.releves_pronosoft(matchs, {(15, 91)}, dt.date(2026, 11, 5))
+        self.assertEqual([(g['format'], g['numero']) for g in r], [(15, 90)])
+        self.assertEqual(r[0]['releve'], '2026-11-04')
+        self.assertEqual(r[0]['matchs'], [{'domicile': 'Aston Villa', 'exterieur': 'Fulham', 'score': '1 – 1', 'issue': 'N'}])
+
+
 if __name__ == '__main__':
     unittest.main()
