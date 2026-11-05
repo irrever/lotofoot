@@ -2,7 +2,11 @@ name: Statistiques Lotofoot
 
 on:
   schedule:
+    # Le matin, puis avant les matchs (blessés, suspendus, probabilités à jour) : 7 h 30, 13 h, 16 h et 19 h 30, heure de Paris
     - cron: '30 6 * * *'
+    - cron: '0 12 * * *'
+    - cron: '0 15 * * *'
+    - cron: '30 18 * * *'
   workflow_dispatch:
 
 permissions:
