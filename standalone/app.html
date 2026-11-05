@@ -2201,6 +2201,22 @@ __PWA_HEAD__
   // Ligne d’un match, repliée : un clic déplie son bilan (prévu, résultat, raison)
   // Libellés des issues, pour les fiches de match
   var ISSUE_LIBELLE = { '1': 'victoire à domicile', 'N': 'match nul', '2': 'victoire à l’extérieur' };
+  // Ce qui a pesé sur la prévision : les facteurs les plus forts, en points de probabilité (voir src/croise.py)
+  function listePesees(liste) {
+    return liste.length ? liste.map(function (f) {
+      var pts = Math.round(f.points);
+      return esc(f.libelle) + ' <strong>' + (pts > 0 ? '+' : '−') + Math.abs(pts) + (Math.abs(pts) > 1 ? ' pts' : ' pt') + '</strong>';
+    }).join(' · ') : '<em>rien de marquant</em>';
+  }
+  function blocPesees(m) {
+    var p = m.pesees;
+    if (!p) return '';
+    return '<p class="hint" style="margin:10px 0 0;font-weight:700">Ce qui a pesé</p>' +
+      '<p style="margin:4px 0 0">Sur le pronostic (' + esc(ISSUE_LIBELLE[m.pronostic] || '—') + ') : ' + listePesees(p.pronostic) + '</p>' +
+      (p.resultat ? '<p style="margin:4px 0 0">Sur le résultat (' + esc(ISSUE_LIBELLE[m.issue] || '—') + ') : ' + listePesees(p.resultat) + '</p>' : '') +
+      '<p class="hint" style="margin:4px 0 0">Points : variation de la probabilité si ce facteur était neutre.' +
+      (m.pesees_reconstituees ? ' Détail reconstitué : version du modèle qui reproduit exactement la prévision.' : '') + '</p>';
+  }
   // Fiche d’un match : seulement son bilan (prévu, résultat, raisons). Le titre et le score restent sur la ligne au-dessus.
   function ficheMatch(m) {
     var verdict = m.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">bon pronostic ✓</span>' :
@@ -2213,7 +2229,7 @@ __PWA_HEAD__
       '<p class="hint" style="margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Bilan du match</p>' +
       '<p style="margin:0 0 6px">Prévu : <strong>' + esc(ISSUE_LIBELLE[m.pronostic] || '—') + '</strong></p>' + barre +
       (m.issue ? '<p style="margin:8px 0 0">Résultat : <strong>' + esc(ISSUE_LIBELLE[m.issue]) + '</strong> · ' + verdict + '</p>' : '') +
-      '<p class="hint" style="margin:10px 0 0;font-weight:700">Pourquoi</p>' + raisons +
+      blocPesees(m) + '<p class="hint" style="margin:10px 0 0;font-weight:700">Pourquoi</p>' + raisons +
       (m.reconstituee ? '<p class="hint" style="margin:10px 0 0">Prévision reconstituée après coup, à partir des données d’avant le match.</p>' : '') +
       '</div>';
   }

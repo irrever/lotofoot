@@ -234,5 +234,59 @@ class Raisons(unittest.TestCase):
         self.assertTrue(any('Niveau estimé pour Bodø/Glimt' in x for x in r))
 
 
+class Pesees(unittest.TestCase):
+    def test_facteurs_les_plus_forts_pour_le_pronostic_et_le_resultat(self):
+        contrib = {'forme_dom': {'1': 8.2, 'N': -1.0, '2': -7.2}, 'absences': {'1': -5.0, 'N': 1.0, '2': 4.0},
+                   'niveau': {'1': 12.0, 'N': -3.0, '2': -9.0}, 'corners_ext': {'1': 0.2, 'N': 0.1, '2': -0.3},
+                   'tirs_dom': {'1': 1.5, 'N': 0.0, '2': -1.5}}
+        p = rapport.pesees(entree(contributions=contrib, malus={'domicile': -5, 'exterieur': 0}), '2')
+        self.assertEqual([(x['libelle'], x['points']) for x in p['pronostic']],
+                         [('l’écart de niveau (Elo)', 12.0), ('la forme de Lens', 8.2), ('les absences de Lens', -5.0)])
+        self.assertEqual([x['points'] for x in p['resultat']], [-9.0, -7.2, 4.0])
+
+    def test_resultat_identique_au_pronostic_non_repete(self):
+        p = rapport.pesees(entree(contributions={'niveau': {'1': 5.0, 'N': -2.0, '2': -3.0}}), '1')
+        self.assertIsNone(p['resultat'])
+
+    def test_sans_decomposition(self):
+        self.assertIsNone(rapport.pesees(entree(), '1'))
+
+    def test_absences_nomment_lequipe_concernee(self):
+        e = entree(contributions={'absences': {'1': 3.0, 'N': -1.0, '2': -2.0}}, malus={'domicile': 0, 'exterieur': -6})
+        self.assertEqual(rapport.pesees(e, '1')['pronostic'][0]['libelle'], 'les absences de Lille')
+        e = entree(contributions={'absences': {'1': -2.0, 'N': 0.5, '2': 1.5}}, malus={'domicile': -5, 'exterieur': -4})
+        self.assertEqual(rapport.pesees(e, '1')['pronostic'][0]['libelle'], 'les absences des deux équipes')
+
+    def test_match_resume_expose_les_pesees(self):
+        e = entree(n=2, contributions={'niveau': {'1': 5.0, 'N': -2.0, '2': -3.0}})
+        x = {'e': e, 'res': None, 'a': {'statut': 'attente', 'cause': None, 'facteurs': [], 'explication': '',
+                                        'raisons': []}}
+        r = rapport.match_resume(x, {})
+        self.assertEqual(r['pesees']['pronostic'][0]['points'], 5.0)
+        self.assertIsNone(r['pesees']['resultat'])
+        self.assertFalse(r['pesees_reconstituees'])
+
+
+class ContributionsJournal(unittest.TestCase):
+    def setUp(self):
+        self.dossier = tempfile.TemporaryDirectory()
+        self.ancien = rapport.JOURNAL_GRILLES
+        rapport.JOURNAL_GRILLES = pathlib.Path(self.dossier.name) / 'grilles.jsonl'
+
+    def tearDown(self):
+        rapport.JOURNAL_GRILLES = self.ancien
+        self.dossier.cleanup()
+
+    def test_prevision_enregistree_avec_ses_contributions(self):
+        grilles = [{'format': 7, 'numero': 91, 'cloture': CLOTURE,
+                    'matchs': [{'domicile': 'Arsenal', 'exterieur': 'Chelsea'}]}]
+        nouvelles = rapport.enregistrer_grilles(donnees_test(), grilles, 'maintenant', dt.date(2026, 11, 2))
+        e = nouvelles[0]
+        self.assertEqual(len(e['contributions']), 23)
+        self.assertEqual(set(e['contributions']['niveau']), {'1', 'N', '2'})
+        relu = rapport.derniere_entree(rapport.charger_jsonl(rapport.JOURNAL_GRILLES))[e['id']]
+        self.assertEqual(relu['contributions'], e['contributions'])
+
+
 if __name__ == '__main__':
     unittest.main()

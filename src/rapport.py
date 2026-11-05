@@ -6,6 +6,8 @@
   Pronosoft (data/resultats/pronosoft.json, alimenté par src/pronosoft.py collecter).
 - Chaque match reçoit un verdict, une explication, et, quand le pronostic est faux, une raison. Les raisons sont comptées
   dans le bilan pour voir ce qui fait échouer le modèle.
+- Chaque prévision garde aussi la contribution de chaque facteur (points de probabilité, src/croise.py) : la fiche d’un
+  match cite les plus forts, pour le pronostic et pour le résultat réel.
 
 Sortie : data/resultats.json, lu par l’onglet « Résultats ». Usage : python3 src/rapport.py (lancé par boucle.sh).
 Les probabilités reprennent la formule de l’application (src/croise.py), à partir de data/donnees_publiees.json.
@@ -35,6 +37,32 @@ RELEVES_JOURS = 7             # résultats relevés par Pronosoft pour les grill
 VERSION_METHODE = 2          # 2 : position dans le championnat (écart de niveau entre championnats)
 MALUS_SIGNIFICATIF = -5       # un malus d’absences plus fort (en points Elo) est cité comme raison possible
 SEUIL_FAVORI = 0.5            # au-dessus de cette probabilité, le pronostic désigne un favori net
+PESEES_MAX = 3                # facteurs cités pour une prévision : les plus forts, dans un sens ou dans l’autre
+PESEES_SEUIL = 1.0            # en points de probabilité : un facteur plus faible n’est pas cité
+LIBELLES_PESEES = {
+    'niveau': 'l’écart de niveau (Elo)',
+    'championnat': 'l’écart entre championnats',
+    'bilan_dom': 'le bilan à domicile de {dom}',
+    'bilan_ext': 'le bilan à l’extérieur de {ext}',
+    'forme_dom': 'la forme de {dom}',
+    'forme_ext': 'la forme de {ext}',
+    'attaque_dom': 'les buts marqués par {dom}',
+    'defense_dom': 'les buts encaissés par {dom}',
+    'attaque_ext': 'les buts marqués par {ext}',
+    'defense_ext': 'les buts encaissés par {ext}',
+    'repos_dom': 'le repos de {dom}',
+    'repos_ext': 'le repos de {ext}',
+    'charge_dom': 'le nombre de matchs récents de {dom}',
+    'charge_ext': 'le nombre de matchs récents de {ext}',
+    'tirs_dom': 'les tirs cadrés de {dom}',
+    'tirs_encaisses_dom': 'les tirs cadrés concédés par {dom}',
+    'tirs_ext': 'les tirs cadrés de {ext}',
+    'tirs_encaisses_ext': 'les tirs cadrés concédés par {ext}',
+    'corners_dom': 'les corners de {dom}',
+    'corners_ext': 'les corners de {ext}',
+    'cartons_dom': 'les cartons de {dom}',
+    'cartons_ext': 'les cartons de {ext}',
+}
 CAUSES = {
     'nul': 'Match nul, peu probable selon le modèle',
     'surprise': 'Favori battu',
@@ -93,6 +121,7 @@ def pronostic_match(donnees, domicile, exterieur):
     out = {'proba': {ETIQ[c]: round(p[c], 6) for c in ORDRE},
            'pronostic': ETIQ[max(ORDRE, key=lambda c: p[c])],
            'ecart_elo': r['ecart'], 'gap': r['gap'], 'methode': r['methode'], 'malus': r['malus']}
+    out['contributions'] = {f: {ETIQ[c]: v[c] for c in ORDRE} for f, v in r['contributions'].items()}
     if r['croise']:
         out['ligues'] = [h['ligue'], a['ligue']]
         out['notes'] = {'domicile': r['nh'], 'exterieur': r['na']}
@@ -361,6 +390,35 @@ def bilan(analyses):
             'tranches': tranches}
 
 
+def libelle_pesee(code, e):
+    """Libellé d’un facteur d’une prévision, avec l’équipe concernée."""
+    if code == 'absences':
+        mal = e.get('malus') or {}
+        dom, ext = mal.get('domicile') or 0, mal.get('exterieur') or 0
+        if dom < 0 and ext >= 0:
+            return 'les absences de %s' % e['domicile']
+        if ext < 0 and dom >= 0:
+            return 'les absences de %s' % e['exterieur']
+        return 'les absences des deux équipes' if dom < 0 and ext < 0 else 'les absences'
+    return LIBELLES_PESEES[code].format(dom=e['domicile'], ext=e['exterieur'])
+
+
+def pesees(e, issue):
+    """Facteurs qui ont le plus pesé sur la probabilité du pronostic, puis sur celle du résultat réel, en points de
+    probabilité (variation si ce facteur était neutre). None si la prévision n’a pas été décomposée."""
+    contrib = e.get('contributions')
+    if not contrib:
+        return None
+
+    def classer(etiquette):
+        pts = [(code, v[etiquette]) for code, v in contrib.items() if abs(v.get(etiquette, 0)) >= PESEES_SEUIL]
+        pts.sort(key=lambda kv: -abs(kv[1]))
+        return [{'libelle': libelle_pesee(code, e), 'points': p} for code, p in pts[:PESEES_MAX]]
+
+    return {'pronostic': classer(e['pronostic']),
+            'resultat': classer(issue) if issue and issue != e['pronostic'] else None}
+
+
 def match_resume(x, noms):
     e, res, a = x['e'], x['res'], x['a']
     if 'ligue' in e:
@@ -376,7 +434,9 @@ def match_resume(x, noms):
             'source': res['source'] if res else None,
             'statut': a['statut'], 'cause': a['cause'], 'cause_libelle': CAUSES.get(a['cause']),
             'explication': a['explication'], 'facteurs': [FACTEURS[f] for f in a['facteurs']],
-            'reconstituee': bool(e.get('reconstituee')), 'raisons': a.get('raisons', [])}
+            'reconstituee': bool(e.get('reconstituee')), 'raisons': a.get('raisons', []),
+            'pesees': pesees(e, res['issue'] if res else None),
+            'pesees_reconstituees': bool(e.get('contributions_reconstituees'))}
 
 
 def constat_grille(matchs):

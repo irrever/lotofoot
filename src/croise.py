@@ -72,12 +72,27 @@ def canon_pronosoft(nom):
     return ALIAS_PRONOSOFT.get(cle(nom), nom)
 
 
-def proba_match(h, a, modele, ecart_elo):
-    """Probabilités 1 / N / 2 : même calcul que l’application (les 25 variables du modèle, dans son ordre)."""
-    v, w = h['vec'], a['vec']
-    x = [ecart_elo / 100, v['dW'], v['dD'], v['dL'], w['eW'], w['eD'], w['eL'], v['forme'], w['forme'],
-         v['gf'], v['ga'], w['gf'], w['ga'], v['rest'], w['rest'], v['load'], w['load'],
-         v['cadF'], v['cadA'], w['cadF'], w['cadA'], v['cor'], w['cor'], v['car'], w['car']]
+# Facteurs qui expliquent une prévision. Chaque facteur regroupe des variables du modèle (indices dans le vecteur de
+# vecteur_match) qui vont ensemble ; l’écart Elo est découpé en niveau, écart entre championnats et absences.
+GROUPES_VARIABLES = [
+    ('bilan_dom', [1, 2, 3]), ('bilan_ext', [4, 5, 6]),
+    ('forme_dom', [7]), ('forme_ext', [8]),
+    ('attaque_dom', [9]), ('defense_dom', [10]), ('attaque_ext', [11]), ('defense_ext', [12]),
+    ('repos_dom', [13]), ('repos_ext', [14]), ('charge_dom', [15]), ('charge_ext', [16]),
+    ('tirs_dom', [17]), ('tirs_encaisses_dom', [18]), ('tirs_ext', [19]), ('tirs_encaisses_ext', [20]),
+    ('corners_dom', [21]), ('corners_ext', [22]), ('cartons_dom', [23]), ('cartons_ext', [24]),
+]
+
+
+def vecteur_match(v, w, ecart_elo):
+    """Les 25 variables du modèle pour « v reçoit w », dans l’ordre du modèle. v et w : statistiques des équipes."""
+    return [ecart_elo / 100, v['dW'], v['dD'], v['dL'], w['eW'], w['eD'], w['eL'], v['forme'], w['forme'],
+            v['gf'], v['ga'], w['gf'], w['ga'], v['rest'], w['rest'], v['load'], w['load'],
+            v['cadF'], v['cadA'], w['cadF'], w['cadA'], v['cor'], w['cor'], v['car'], w['car']]
+
+
+def probas_x(x, modele):
+    """Probabilités 1 / N / 2 à partir du vecteur des 25 variables : formule de l’application."""
     z = {c: modele['ordonnee'][c] + sum(modele['coef'][c][j] * (x[j] - modele['moyenne'][j]) / modele['echelle'][j]
                                        for j in range(len(x)))
          for c in ORDRE}
@@ -85,6 +100,32 @@ def proba_match(h, a, modele, ecart_elo):
     e = {c: math.exp(z[c] - haut) for c in ORDRE}
     total = sum(e.values())
     return {c: e[c] / total for c in ORDRE}
+
+
+def proba_match(h, a, modele, ecart_elo):
+    """Probabilités 1 / N / 2 : même calcul que l’application (les 25 variables du modèle, dans son ordre)."""
+    return probas_x(vecteur_match(h['vec'], a['vec'], ecart_elo), modele)
+
+
+def contributions_match(x, modele, base, gap, absences):
+    """Effet de chaque facteur sur la probabilité de chaque issue, en points de probabilité : probabilité du match moins
+    probabilité si ce facteur était neutre (écart de niveau nul, autres variables à leur moyenne). En points Elo, x[0] × 100
+    = base (niveau) + gap (championnats) + absences."""
+    p = probas_x(x, modele)
+
+    def effet(xv):
+        q = probas_x(xv, modele)
+        return {c: round(100 * (p[c] - q[c]), 1) for c in ORDRE}
+
+    out = {'niveau': effet([(gap + absences) / 100] + x[1:]),
+           'championnat': effet([(base + absences) / 100] + x[1:]),
+           'absences': effet([(base + gap) / 100] + x[1:])}
+    for code, indices in GROUPES_VARIABLES:
+        xv = list(x)
+        for j in indices:
+            xv[j] = modele['moyenne'][j]
+        out[code] = effet(xv)
+    return out
 
 
 def note_de(donnees, code):
@@ -187,7 +228,9 @@ def calcul_match(donnees, h, a):
         vh['elo'] -= moyenne_elo_ligue(donnees, h['ligue'])
         va['elo'] -= moyenne_elo_ligue(donnees, a['ligue'])
     ecart = vh['elo'] - va['elo'] + gap
-    p = proba_match({'vec': vh}, {'vec': va}, donnees['modele'], ecart)
+    absences = malus_de(h) - malus_de(a)
+    x = vecteur_match(vh, va, ecart)
+    p = probas_x(x, donnees['modele'])
     hypothese = [t['equipe'] for t in (h, a) if t.get('hypothese')]
     if not cross:
         methode = 'meme_championnat'
@@ -195,6 +238,7 @@ def calcul_match(donnees, h, a):
         methode = 'hypothese'
     else:
         methode = 'inter_championnats'
+    contributions = contributions_match(x, donnees['modele'], ecart - gap - absences, gap, absences)
     return {'p': p, 'ecart': round(ecart, 1), 'gap': round(gap, 1), 'croise': cross, 'nh': nh, 'na': na,
             'methode': methode, 'hypothese': hypothese,
-            'malus': {'domicile': malus_de(h), 'exterieur': malus_de(a)}}
+            'malus': {'domicile': malus_de(h), 'exterieur': malus_de(a)}, 'contributions': contributions}

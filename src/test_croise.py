@@ -152,5 +152,53 @@ class Calculs(unittest.TestCase):
         self.assertAlmostEqual(sum(r['p'].values()), 1.0, places=9)
 
 
+def donnees_contrib():
+    """Données de test avec des coefficients propres à chaque issue : avec MODELE (mêmes coefficients pour H, D et A),
+    aucune variable ne change les probabilités, donc aucun effet à mesurer."""
+    d = donnees_test()
+    d['modele'] = {'ordonnee': {'H': 0.0, 'D': 0.0, 'A': 0.0}, 'coef': {'H': [0.02] * 25, 'D': [0.0] * 25, 'A': [-0.02] * 25},
+                   'moyenne': [0.0] * 25, 'echelle': [1.0] * 25}
+    return d
+
+
+class Contributions(unittest.TestCase):
+    def test_tous_les_facteurs_et_les_25_variables(self):
+        d = donnees_contrib()
+        r = croise.calcul_match(d, d['equipes'][0], d['equipes'][1])
+        codes = {'niveau', 'championnat', 'absences'} | {code for code, _ in croise.GROUPES_VARIABLES}
+        self.assertEqual(set(r['contributions']), codes)
+        self.assertEqual(len(codes), 23)
+        # chaque variable du modèle (sauf l’écart Elo, découpé en trois facteurs) appartient à un seul groupe
+        self.assertEqual(sorted(j for _, indices in croise.GROUPES_VARIABLES for j in indices), list(range(1, 25)))
+
+    def test_proba_identique_a_la_decomposition(self):
+        d = donnees_contrib()
+        h, a = d['equipes'][0], d['equipes'][1]
+        r = croise.calcul_match(d, h, a)
+        x = croise.vecteur_match(croise.avec_absences(h), croise.avec_absences(a), r['ecart'])
+        self.assertEqual(croise.probas_x(x, d['modele']), r['p'])
+
+    def test_facteur_a_sa_moyenne_sans_effet(self):
+        d = donnees_contrib()
+        d['equipes'][0]['vec']['forme'] = 0.0  # moyenne du modèle de test : 0
+        r = croise.calcul_match(d, d['equipes'][0], d['equipes'][1])
+        self.assertEqual(r['contributions']['forme_dom'], {'H': 0.0, 'D': 0.0, 'A': 0.0})
+
+    def test_niveau_et_absences_dans_le_bon_sens(self):
+        d = donnees_contrib()
+        d['equipes'][0]['absences'] = {'malus': -13}  # Arsenal (1800) reçoit Chelsea (1700) : écart 100 − 13
+        r = croise.calcul_match(d, d['equipes'][0], d['equipes'][1])
+        self.assertGreater(r['contributions']['niveau']['H'], 0)
+        self.assertLess(r['contributions']['niveau']['A'], 0)
+        self.assertLess(r['contributions']['absences']['H'], 0)  # les absences d’Arsenal lui retirent de la probabilité
+        self.assertGreater(r['contributions']['absences']['A'], 0)
+
+    def test_ecart_de_championnat_separe_du_niveau(self):
+        d = donnees_contrib()
+        r = croise.calcul_match(d, d['equipes'][2], d['equipes'][0])  # Girona (SP1) reçoit Arsenal (E0) : écart −80
+        self.assertLess(r['contributions']['championnat']['H'], 0)
+        self.assertGreater(r['contributions']['championnat']['A'], 0)
+
+
 if __name__ == '__main__':
     unittest.main()
