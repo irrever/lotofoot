@@ -208,6 +208,14 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .nouveau-tag { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-line); }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
 .alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
+/* Choix du modèle, zone « Les matchs » : une ligne par match, la case retenue en couleur */
+.choix-modele { margin: 12px 0 0; padding: 12px; border: 1px solid var(--line); border-radius: var(--r-s); background: var(--surface-2); }
+.choix-titre { margin: 0 0 8px; font-weight: 700; }
+.pick-liste { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.pick-ligne { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
+.pick-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
+.pick-chips { display: inline-flex; gap: 4px; }
+.pick-chips .puce.is-off { opacity: .3; }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -1249,7 +1257,7 @@ __PWA_HEAD__
         var ouvertes = grillesOuvertes(d, format);
         if (ouvertes === null) S.form.info = 'La grille publiée n’est pas lisible : rien n’a été chargé.';
         else if (!ouvertes.length) S.form.info = 'Aucune grille ouverte pour le format ' + format + '. Les dernières sont closes, ou la suivante n’est pas encore publiée.';
-        else { S.form.choix = ouvertes; appliquerGrillePubliee(ouvertes[0]); }
+        else { S.form.choix = ouvertes; appliquerGrillePubliee(ouvertes[0]); appliquerPreference(); }
       }
       render();
     }).catch(function () {
@@ -1547,6 +1555,33 @@ __PWA_HEAD__
       zone('info', 1, 'Mes grilles', '<div class="tuiles">' + gs.map(function (x) { return tuile(x, x.id === g.id); }).join('') + '</div>', nouvelleBtn) +
       fiche + copie + erreurs + pronostics + methodeCalcul + sauvegardeHtml(4);
   }
+  // Zone « Les matchs » : ce que le modèle a choisi pour chaque match, en un coup d’œil, avec le bouton de validation
+  function choixModeleHtml(f) {
+    var rf = resoudreFormulaire(f);
+    if (!rf.ok) return '';
+    var res = calculerGrille(rf.paires, f.doubles, f.triples);
+    if (res.erreurs || !res.matchs || !res.matchs.length) return '';
+    var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
+    var lignes = res.matchs.map(function (m, i) {
+      var pick = m.pronostic || '';
+      var type = typeDe(pick);
+      var puces = ['1', 'N', '2'].map(function (k) {
+        return '<span class="puce ' + cls[k] + (pick.indexOf(k) !== -1 ? ' is-on' : ' is-off') + '">' + k + '</span>';
+      }).join('');
+      return '<li class="pick-ligne"><span class="num">' + (i + 1) + '</span>' +
+        '<span class="pick-equipes">' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</span>' +
+        '<span class="pick-chips">' + puces + '</span>' +
+        '<span class="tag' + (type === 'Simple' ? '' : ' nouveau-tag') + '">' + esc(type) + '</span></li>';
+    }).join('');
+    var nDoubles = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Double'; }).length;
+    var nTriples = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Triple'; }).length;
+    return '<div class="choix-modele">' +
+      '<p class="choix-titre">Choix du modèle : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s), prix ×' + prixDe(res.matchs) +
+      ', grille juste à ' + esc(probGrille(res.proba_grille)) + '</p>' +
+      '<ol class="pick-liste">' + lignes + '</ol>' +
+      '<div class="actions"><button type="button" class="btn primary" data-act="enregistrer" data-lock="1">Valider et verrouiller</button></div>' +
+      '</div>';
+  }
   function viewNouvelle() {
     var f = S.form || (S.form = formVide());
     var apercu = apercuHtml(f); // d’abord : marque les lignes à compléter (err) avant de les afficher
@@ -1581,7 +1616,7 @@ __PWA_HEAD__
       '</div>';
     var saisie = '<div class="btns">' + charger + '<label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
       '<input id="fichier-csv" type="file" accept=".csv,text/csv" style="display:none"></div>' +
-      choixHtml + '<div class="rows">' + lignes + '</div>' +
+      choixHtml + choixModeleHtml(f) + '<div class="rows">' + lignes + '</div>' +
       '<p class="hint">Équipe à domicile, puis équipe à l’extérieur. Les noms proposés viennent des 16 championnats suivis.</p>' +
       (f.info ? '<p class="flash" role="status">' + esc(f.info) + '</p>' : '') + datalist;
     return '<div class="page-head"><div><h2 class="page-title">Nouvelle grille</h2>' +
@@ -2591,7 +2626,7 @@ __PWA_HEAD__
     if (el.id === 'sel-ligue') { S.ligue = el.value; S.equipe = ''; render(); }
     else if (el.id === 'sel-equipe') { S.equipe = el.value; render(); }
     else if (el.id === 'format-n' && S.form) { if (changerFormat(Number(el.value))) chargerGrille(); render(); }
-    else if (el.id === 'choix-grille' && S.form) { var choisie = (S.form.choix || []).filter(function (x) { return String(x.numero) === el.value; })[0]; if (choisie) appliquerGrillePubliee(choisie); render(); }
+    else if (el.id === 'choix-grille' && S.form) { var choisie = (S.form.choix || []).filter(function (x) { return String(x.numero) === el.value; })[0]; if (choisie) { appliquerGrillePubliee(choisie); appliquerPreference(); } render(); }
     else if (el.id === 'doubles-n' && S.form) { S.form.doubles = Number(el.value); S.form.preference = null; majApercu(); }
     else if (el.id === 'triples-n' && S.form) { S.form.triples = Number(el.value); S.form.preference = null; majApercu(); }
     else if (el.id === 'fichier-csv' && S.form) {
