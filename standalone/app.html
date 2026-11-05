@@ -220,6 +220,12 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .recap-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
 .recap-choix { display: inline-flex; gap: 4px; }
 .recap-choix .puce.is-off { opacity: .22; }
+/* Chaque match de « Mes grilles » montre le choix joué, puis le résultat */
+.ligne-choix { display: grid; grid-template-columns: 20px minmax(0, 1fr) 74px 58px; gap: 8px; align-items: center; cursor: pointer; list-style: none; padding: 2px 0; }
+.ligne-choix::-webkit-details-marker { display: none; }
+.ligne-num { color: var(--muted); font-size: 13px; }
+.ligne-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
+.ligne-resultat { text-align: right; font-size: 14px; white-space: nowrap; }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -2410,6 +2416,13 @@ __PWA_HEAD__
       esc(g.format + '|' + g.numero) + '">Masquer cette grille</button></div></section>';
   }
   // Une grille enregistrée : ce qui était prévu, match par match, et le résultat en vert ou en rouge
+  // Les choix joués, comme dans la grille : 1, N, 2 ; seul le choix retenu est en couleur
+  function choixPastilles(pick) {
+    var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
+    return '<span class="recap-choix">' + ['1', 'N', '2'].map(function (k) {
+      return '<span class="puce ' + cls[k] + (pick.indexOf(k) !== -1 ? '' : ' is-off') + '">' + k + '</span>';
+    }).join('') + '</span>';
+  }
   function carteGrilleEnregistree(g, publies) {
     var bouton = '<div class="actions"><button type="button" class="btn danger petit" data-act="supprimer-grille" data-id="' + esc(g.id) + '">Supprimer cette grille</button></div>';
     var res = resultatGrille(g);
@@ -2430,9 +2443,10 @@ __PWA_HEAD__
       var marque = j.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓</span>' :
         (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '<span class="hint">—</span>');
       return '<details style="border-left:4px solid ' + couleur + ';padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
-        '<summary style="display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer;list-style:none">' +
-        '<span class="hint" style="min-width:0">' + esc(p.m.n) + ' · ' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span>' +
-        '<span style="white-space:nowrap">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</span></summary>' +
+        '<summary class="ligne-choix"><span class="ligne-num">' + esc(p.m.n) + '</span>' +
+        '<span class="ligne-equipes">' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span>' +
+        choixPastilles(p.pronostic) +
+        '<span class="ligne-resultat">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</span></summary>' +
         ficheJeu(p, pub, j) + '</details>';
     }).join('');
     var ton = g.cloture ? (enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)') : 'var(--line)';
