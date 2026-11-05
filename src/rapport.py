@@ -315,6 +315,28 @@ def match_resume(x, noms):
             'reconstituee': bool(e.get('reconstituee'))}
 
 
+def constat_grille(matchs):
+    """Constat d’une grille : bilan des pronostics résolus, raison de chaque échec, matchs sans prévision."""
+    prefixe = ('Prévisions reconstituées après coup, à partir des données d’avant la clôture. '
+               if any(m.get('reconstituee') for m in matchs) else '')
+    resolus = [m for m in matchs if m['statut'] in ('ok', 'ko')]
+    if not resolus:
+        texte = 'Pas encore de résultat à comparer.'
+    else:
+        bons = sum(1 for m in resolus if m['statut'] == 'ok')
+        texte = '%d bon(s) sur %d pronostics résolus (%d %%).' % (bons, len(resolus), round(100 * bons / len(resolus)))
+        for m in resolus:
+            if m['statut'] == 'ko':
+                raison = m['cause_libelle'] or 'raison non déterminée'
+                if m['facteurs']:
+                    raison += ' ; ' + ', '.join(m['facteurs'])
+                texte += ' Raté : %s – %s (%s).' % (m['domicile'], m['exterieur'], raison)
+    sans = sum(1 for m in matchs if m['statut'] == 'sans_pronostic')
+    if sans:
+        texte += ' %d match(s) sans prévision (équipe hors de nos championnats).' % sans
+    return prefixe + texte
+
+
 def grilles_resumees(analyses, noms):
     """Les grilles les plus récentes, avec leurs matchs dans l’ordre de la grille."""
     groupes = {}
@@ -325,10 +347,11 @@ def grilles_resumees(analyses, noms):
     for membres in recentes[:GRILLES_AFFICHEES]:
         membres.sort(key=lambda x: x['e']['n'])
         cloture = dt.date.fromisoformat(membres[0]['e']['cloture'][:10])
+        resumes = [match_resume(x, noms) for x in membres]
         liste.append({'format': membres[0]['e']['format'], 'numero': membres[0]['e']['numero'],
                       'cloture': membres[0]['e']['cloture'], 'cloture_fr': date_fr(cloture),
                       'complete': all(x['res'] is not None for x in membres),
-                      'matchs': [match_resume(x, noms) for x in membres]})
+                      'matchs': resumes, 'constat': constat_grille(resumes)})
     return liste
 
 

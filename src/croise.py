@@ -54,7 +54,7 @@ ALIAS_EQUIPES = {
 ALIAS_PRONOSOFT = {'bod/glimt': 'Bodø/Glimt', 'atl madrid': 'Ath Madrid', 'psg': 'Paris SG',
                    'fc barcelone': 'Barcelona', 'inter milan': 'Inter', 'as rome': 'Roma',
                    'aek athnes': 'AEK', 'betis sville': 'Betis', 'como 1907': 'Como', 'club bruges': 'Club Brugge',
-                   'fc porto': 'Porto', 'naples': 'Napoli'}
+                   'fc porto': 'Porto', 'naples': 'Napoli', 'parme': 'Parma', 'la corogne': 'La Coruna'}
 
 
 def norm(texte):

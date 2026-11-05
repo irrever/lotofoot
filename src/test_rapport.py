@@ -190,5 +190,29 @@ class Releves(unittest.TestCase):
         self.assertEqual(r[0]['matchs'], [{'domicile': 'Aston Villa', 'exterieur': 'Fulham', 'score': '1 – 1', 'issue': 'N'}])
 
 
+class Constat(unittest.TestCase):
+    def test_bilan_raisons_et_sans_prevision(self):
+        matchs = [
+            {'statut': 'ok', 'domicile': 'Lens', 'exterieur': 'Como', 'cause_libelle': None, 'facteurs': []},
+            {'statut': 'ko', 'domicile': 'PSV', 'exterieur': 'Bruges', 'cause_libelle': 'Favori battu', 'facteurs': ['absences']},
+            {'statut': 'ok', 'domicile': 'Dortmund', 'exterieur': 'Betis', 'cause_libelle': None, 'facteurs': []},
+            {'statut': 'sans_pronostic', 'domicile': 'Parma', 'exterieur': 'Atalanta', 'cause_libelle': None, 'facteurs': []},
+        ]
+        t = rapport.constat_grille(matchs)
+        self.assertIn('2 bon(s) sur 3 pronostics résolus (67 %).', t)
+        self.assertIn('Raté : PSV – Bruges (Favori battu ; absences).', t)
+        self.assertIn('1 match(s) sans prévision', t)
+
+    def test_prevision_reconstituee_signalee(self):
+        matchs = [{'statut': 'ko', 'domicile': 'Reims', 'exterieur': 'Sochaux', 'cause_libelle': 'Match nul',
+                   'facteurs': [], 'reconstituee': True}]
+        self.assertTrue(rapport.constat_grille(matchs).startswith('Prévisions reconstituées après coup'))
+
+    def test_pas_de_resultat(self):
+        self.assertEqual(rapport.constat_grille([{'statut': 'attente', 'domicile': 'A', 'exterieur': 'B',
+                                                  'cause_libelle': None, 'facteurs': []}]),
+                         'Pas encore de résultat à comparer.')
+
+
 if __name__ == '__main__':
     unittest.main()

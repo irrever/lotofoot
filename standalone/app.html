@@ -2190,26 +2190,39 @@ __PWA_HEAD__
     return !isNaN(v) && v <= Date.now();
   }
   // Bandeau d’en-tête d’une grille : titre et détail (déjà échappés), et un badge en cours ou à venir
-  function entetteGrille(titre, cloture, detail) {
+  function entetteGrille(titre, cloture, detail, termine) {
     var badge = '';
-    if (cloture) badge = enCoursCloture(cloture) ? '<span class="etat warn">En cours</span>' : '<span class="etat info">À venir</span>';
+    if (termine) badge = '<span class="etat ok">Terminée</span>';
+    else if (cloture) badge = enCoursCloture(cloture) ? '<span class="etat warn">En cours</span>' : '<span class="etat info">À venir</span>';
     return '<header style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;padding:10px 12px;border-radius:10px;background:var(--surface-2)">' +
       '<div style="min-width:0"><h3 style="font-size:17px;margin:0;line-height:1.25">' + titre + '</h3>' +
       '<p class="hint" style="margin:3px 0 0">' + detail + '</p></div>' + badge + '</header>';
+  }
+  // Ligne d’un match, repliée : un clic déplie son bilan (prévu, résultat, raison)
+  function matchCompact(m) {
+    var marque = m.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓</span>' :
+      (m.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '');
+    var score = m.score ? '<strong>' + esc(m.score) + '</strong> ' : '<span class="hint">à venir</span> ';
+    return '<details style="border-top:1px solid var(--line);padding:8px 0">' +
+      '<summary style="display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer;list-style:none">' +
+      '<span style="min-width:0">' + esc(m.n) + ' · ' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</span>' +
+      '<span style="white-space:nowrap">' + score + marque + '</span></summary>' +
+      '<div style="margin-top:8px">' + carteMatch(m) + '</div></details>';
   }
   function grilleResultats(g) {
     var modele = { ok: 0, n: 0 };
     var cartes = g.matchs.map(function (m) {
       if (m.statut === 'ok' || m.statut === 'ko') { modele.n++; if (m.statut === 'ok') modele.ok++; }
-      return carteMatch(m);
+      return matchCompact(m);
     }).join('');
     var etat = g.complete ? 'grille complète' : 'résultats partiels : certains matchs ne sont pas encore publiés';
     var ton = enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)';
     return '<section style="margin:22px 0 4px;padding:12px;border:2px solid ' + ton + ';border-radius:14px;background:var(--surface)">' +
       entetteGrille(esc('Loto Foot ' + g.format + ' · grille N°' + g.numero + ' · ' + g.matchs.length + ' matchs'), g.cloture,
-        esc('Clôture : ' + heureCloture(g.cloture) + ' · ' + etat)) +
+        esc('Clôture : ' + heureCloture(g.cloture) + ' · ' + etat), g.complete) +
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px"><span class="tag">Modèle : ' + esc(modele.ok) +
-      ' bon(s) sur ' + esc(modele.n) + '</span></div>' + cartes + '</section>';
+      ' bon(s) sur ' + esc(modele.n) + '</span></div>' +
+      (g.constat ? '<p class="hint" style="margin:6px 0 10px">' + esc(g.constat) + '</p>' : '') + cartes + '</section>';
   }
   // Une grille enregistrée : ce qui était prévu, match par match, et le résultat en vert ou en rouge
   function carteGrilleEnregistree(g, publies) {
@@ -2231,11 +2244,11 @@ __PWA_HEAD__
       var couleur = j.statut === 'ok' ? 'var(--ok)' : (j.statut === 'ko' ? 'var(--bad)' : 'var(--line)');
       var marque = j.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓</span>' :
         (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '<span class="hint">—</span>');
-      return '<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;border-left:4px solid ' + couleur +
-        ';padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
-        '<div style="min-width:0"><span class="hint">' + esc(p.m.n) + ' · ' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span><br>' +
-        '<span style="font-size:14px">Prévu : <strong>' + esc(j.libelle) + '</strong> (' + esc(j.type.toLowerCase()) + ')</span></div>' +
-        '<div style="text-align:right;white-space:nowrap">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</div></div>';
+      return '<details style="border-left:4px solid ' + couleur + ';padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
+        '<summary style="display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer;list-style:none">' +
+        '<span class="hint" style="min-width:0">' + esc(p.m.n) + ' · ' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span>' +
+        '<span style="white-space:nowrap">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</span></summary>' +
+        '<p style="font-size:14px;margin:6px 0 0">Prévu : <strong>' + esc(j.libelle) + '</strong> (' + esc(j.type.toLowerCase()) + ')</p></details>';
     }).join('');
     var ton = g.cloture ? (enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)') : 'var(--line)';
     var titre = (gp ? 'Loto Foot ' + gp.format + ' · grille N°' + gp.numero : 'Loto Foot ' + g.format) + ' · ' + picks.length + ' matchs';
@@ -2243,7 +2256,7 @@ __PWA_HEAD__
     var bilan = connus ? '<span class="tag" style="color:' + (ok === connus ? 'var(--ok)' : 'var(--bad)') + '">Résultats : ' + ok + ' bon(s) sur ' + connus + '</span>' :
       '<span class="tag">Résultats pas encore publiés</span>';
     return '<article style="border:2px solid ' + ton + ';border-radius:14px;padding:12px;margin:14px 0;background:var(--surface)">' +
-      entetteGrille(esc(titre), g.cloture, detail) +
+      entetteGrille(esc(titre), g.cloture, detail, connus > 0 && connus === picks.length) +
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px">' + bilan + '</div>' + lignes + bouton + '</article>';
   }
   function contenuMesGrilles(publies) {
