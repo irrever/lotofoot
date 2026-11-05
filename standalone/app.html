@@ -200,6 +200,14 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .puce.p2 { background: var(--c2); }
 .legende { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
 .tag { display: inline-flex; align-items: center; padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-2); color: var(--muted); font: 600 12px/1.4 var(--sans); white-space: nowrap; }
+/* Ce qui a changé depuis la dernière mise à jour : flèche sur le pourcentage, signal « Nouveau » sur la carte */
+.fleche { display: block; margin-top: 4px; font: 700 12px/1.2 var(--sans); }
+.fleche.up { color: var(--ok); }
+.fleche.down { color: var(--bad); }
+.match.nouveau { border-left: 4px solid var(--warn-dot); }
+.nouveau-tag { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-line); }
+.suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
+.alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -615,8 +623,13 @@ __PWA_HEAD__
     });
     return out;
   }
-  function alertesHtml(liste) {
-    return liste.map(function (t) { return '<p class="alerte">' + esc(t) + '</p>'; }).join('');
+  // Alertes ; celles qui sont apparues depuis la dernière mise à jour portent la mention « Nouveau »
+  function alertesHtml(liste, nouvelles) {
+    nouvelles = nouvelles || [];
+    return liste.map(function (t) {
+      var neuve = nouvelles.indexOf(t) >= 0;
+      return '<p class="alerte' + (neuve ? ' alerte-neuve' : '') + '">' + (neuve ? '<strong>Nouveau · </strong>' : '') + esc(t) + '</p>';
+    }).join('');
   }
   // Elo moyen d’un championnat : celui des équipes suivies, ou, pour un championnat hypothétique, 1 512 + 0,96 × note
   function moyenneElo(code) {
@@ -763,7 +776,75 @@ __PWA_HEAD__
     try { window.localStorage.setItem(STORE_KEY, JSON.stringify(liste)); return true; }
     catch (e) { return false; }
   }
-  function sauver() { S.stockage = ecrireStock(S.grilles); }
+  // Ce qui a changé depuis la dernière mise à jour : pourcentage de chaque issue (en points) et nouvelles alertes
+  // d’absences, pour les matchs des grilles enregistrées. L’état de la version précédente est gardé sur cet appareil.
+  var CLE_SUIVI = 'lotofoot.suivi.v1';
+  function lireSuivi() {
+    try { return JSON.parse(window.localStorage.getItem(CLE_SUIVI) || 'null') || {}; } catch (e) { return {}; }
+  }
+  function ecrireSuivi(s) {
+    try { window.localStorage.setItem(CLE_SUIVI, JSON.stringify(s)); } catch (e) { /* stockage indisponible : pas de signal */ }
+  }
+  function etatMatchs() {
+    var out = {};
+    (S.grilles || []).forEach(function (g) {
+      (resultatGrille(g).matchs || []).forEach(function (m) {
+        if (!m.proba) return;
+        out[clePaire(m.domicile, m.exterieur)] = { p1: m.proba['1'], pN: m.proba['N'], p2: m.proba['2'], alertes: (m.alertes || []).slice() };
+      });
+      // Alertes d’absences à jour pour toutes les paires, grilles verrouillées comprises (leurs probabilités restent figées)
+      (g.paires || []).forEach(function (p) {
+        var h = findTeam(p.dom), a = findTeam(p.ext);
+        if (!h || !a) return;
+        var cle = clePaire(h.equipe, a.equipe);
+        out[cle] = out[cle] || {};
+        out[cle].alertes = alertesAbsences(h, a);
+      });
+    });
+    return out;
+  }
+  function diffEtats(avant, apres) {
+    var out = {};
+    Object.keys(apres).forEach(function (cle) {
+      var a = avant[cle], b = apres[cle], c = {};
+      if (!a) return;
+      ['p1', 'pN', 'p2'].forEach(function (f) {
+        if (typeof a[f] === 'number' && typeof b[f] === 'number' && Math.abs((b[f] - a[f]) * 100) >= 1) {
+          c[f] = Math.round((b[f] - a[f]) * 100);
+        }
+      });
+      var anciennes = a.alertes || [];
+      var nouvelles = (b.alertes || []).filter(function (x) { return anciennes.indexOf(x) < 0; });
+      if (nouvelles.length) c.nouvelles = nouvelles;
+      if (Object.keys(c).length) out[cle] = c;
+    });
+    return out;
+  }
+  function miseAJourSuivi() {
+    var version = String(S.publieLe || S.version || '');
+    var etat = etatMatchs();
+    var stocke = lireSuivi();
+    var changements;
+    if (stocke.version === version) {
+      // Même version : les changements déjà constatés restent affichés ; les grilles ajoutées reçoivent leur état
+      changements = stocke.changements || {};
+      etat = Object.assign({}, stocke.etat || {}, etat);
+    } else {
+      changements = stocke.etat ? diffEtats(stocke.etat, etat) : {};
+    }
+    ecrireSuivi({ version: version, etat: etat, changements: changements });
+    S.changements = changements;
+  }
+  function suiviBanniere() {
+    var ch = S.changements || {}, cles = Object.keys(ch);
+    if (!cles.length) return '';
+    var pourcents = cles.filter(function (k) { return ch[k].p1 || ch[k].pN || ch[k].p2; }).length;
+    var infos = cles.reduce(function (n, k) { return n + (ch[k].nouvelles ? ch[k].nouvelles.length : 0); }, 0);
+    return '<div class="suivi-banniere" role="status">Depuis la mise à jour' + (S.publieLe ? ' du ' + esc(dateHeureFr(S.publieLe)) : '') + ' : ' +
+      (pourcents ? pourcents + ' match(s) dont le pourcentage change (▲ ou ▼)' : '') +
+      (pourcents && infos ? ' · ' : '') + (infos ? infos + ' nouvelle(s) information(s) (« Nouveau »)' : '') + '.</div>';
+  }
+  function sauver() { S.stockage = ecrireStock(S.grilles); miseAJourSuivi(); }
   function initGrilles() {
     var stock = lireStock();
     if (stock === null) {
@@ -1247,6 +1328,7 @@ __PWA_HEAD__
   }
   function appliquerDonnees(d) {
     S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.publieLe = d.publie_le || null; S.bilan = d.bilan || null; S.resultats = d.resultats || null;
+    miseAJourSuivi();
   }
   function verifierMiseAJour() {
     if (!/^https?:$/.test(location.protocol) || !window.fetch) return Promise.resolve();
@@ -1373,24 +1455,27 @@ __PWA_HEAD__
     var p = m.proba || {};
     var pick = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
+    var suivi = (S.changements || {})[clePaire(m.domicile, m.exterieur)] || {};
     function cell(k) {
-      return '<div class="prob ' + cls[k] + (pick.indexOf(k) !== -1 ? ' is-pick' : '') + '"><span>' + k + '</span><strong>' + pc(p[k], 0) + '</strong></div>';
+      var d = suivi['p' + k];
+      var fleche = d ? '<em class="fleche ' + (d > 0 ? 'up' : 'down') + '">' + (d > 0 ? '▲ +' : '▼ −') + Math.abs(d) + ' pts</em>' : '';
+      return '<div class="prob ' + cls[k] + (pick.indexOf(k) !== -1 ? ' is-pick' : '') + '"><span>' + k + '</span><strong>' + pc(p[k], 0) + '</strong>' + fleche + '</div>';
     }
     var pucesHtml = pick.split('').map(function (k) { return '<span class="puce ' + cls[k] + '">' + k + '</span>'; }).join('');
     var pronos = pick
       ? '<span class="pronos-label">Pronostic</span> <span class="pronos">' + pucesHtml + '</span> <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(m.confiance, 0) + '</span>'
       : '<span class="pronos-label">Pas de pronostic</span>';
     var det = m.source === 'hypothese' ? '' : comparaison(m);
-    return '<article class="match" data-source="' + esc(m.source || '') + '">' +
+    return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
-      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + '</div>' +
+      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + '</div>' +
       '<div class="match-equipes"><div class="equipe"><span class="equipe-role">Domicile</span><span class="equipe-nom">' + esc(m.domicile) + '</span></div>' +
       '<span class="vs">contre</span>' +
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span></div></div>' +
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
       (m.raison ? '<p class="raison">' + esc(m.raison) + '</p>' : '') +
-      (m.alertes && m.alertes.length ? alertesHtml(m.alertes) : '') +
+      (m.alertes && m.alertes.length ? alertesHtml(m.alertes, suivi.nouvelles) : '') +
       (m.hypothese_texte ? '<p class="hint">Hypothèse : ' + esc(m.hypothese_texte) + '</p>' : '') +
       (det ? '<details class="more"><summary>Statistiques des deux équipes</summary>' + det + '</details>' : '') +
       '</article>';
@@ -2419,7 +2504,7 @@ __PWA_HEAD__
     app.innerHTML = '<div class="page">' +
       '<header class="head"><div class="marque">' + LOGO + '<div><h1>Lotofoot</h1>' +
       '<p class="accroche">Pronostics par statistiques · aucune cote de bookmaker</p></div></div>' + '<div class="head-barre">' + etatDonnees() + reglagesTheme() + '</div></header>' +
-      tabs +
+      suiviBanniere() + tabs +
       '<main class="contenu" role="tabpanel" aria-labelledby="tab-' + S.tab + '">' + panel() + '</main>' +
       '<footer class="pied"><p class="foot-note">Sources : football-data.co.uk (résultats et statistiques de match). ' + esc(fraicheurDonnees()) + '. ' + esc(S.miseAJour) + '</p></footer>' +
       '</div>';
@@ -2518,6 +2603,7 @@ __PWA_HEAD__
   });
 
   initGrilles();
+  miseAJourSuivi();
   S.miseAJour = /^https?:$/.test(location.protocol) ? '' : 'Version fichier : pas de mise à jour automatique.';
   appliquerTheme(lireTheme());
   render();
