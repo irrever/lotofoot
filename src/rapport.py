@@ -357,7 +357,7 @@ def releves_pronosoft(matchs, suivies, aujourdhui):
                 continue
             g = groupes.setdefault(cle_grille, {'format': cle_grille[0], 'numero': cle_grille[1], 'releve': vu, 'matchs': []})
             g['releve'] = max(g['releve'], vu)
-            g['matchs'].append({'domicile': m['domicile'], 'exterieur': m['exterieur'], 'score': '%d – %d' % (a, b), 'issue': issue})
+            g['matchs'].append({'domicile': canon_pronosoft(m['domicile']), 'exterieur': canon_pronosoft(m['exterieur']), 'score': '%d – %d' % (a, b), 'issue': issue})
     liste = sorted(groupes.values(), key=lambda g: (g['releve'], g['numero']), reverse=True)[:GRILLES_AFFICHEES]
     for g in liste:
         g['releve'] = g['releve'].isoformat()
