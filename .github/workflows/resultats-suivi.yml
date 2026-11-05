@@ -1,0 +1,70 @@
+name: Suivi des résultats (toutes les 15 minutes)
+
+# Lancé à la demande, quand une grille est validée : relève les résultats toutes les 15 minutes
+# pendant le nombre d’heures demandé (de 1 à 5). Le relevé horaire reste dans resultats.yml.
+on:
+  workflow_dispatch:
+    inputs:
+      heures:
+        description: 'Durée du suivi, en heures (de 1 à 5)'
+        required: true
+        default: '4'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: suivi-resultats
+  cancel-in-progress: false
+
+jobs:
+  suivi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - name: Installer les dépendances
+        run: python3 -m pip install -r requirements.txt
+      - name: Relevés toutes les 15 minutes
+        env:
+          HEURES: ${{ inputs.heures }}
+        run: |
+          total=$((HEURES * 4))
+          if [ "$total" -lt 4 ] || [ "$total" -gt 20 ]; then
+            echo "Durée invalide : entre 1 et 5 heures." >&2
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for i in $(seq 1 "$total"); do
+            echo "Relevé $i sur $total"
+            # Repartir d’une copie propre de main : un relevé précédent peut avoir publié entre-temps
+            git fetch -q origin main && git reset -q --hard origin/main
+            python3 src/pronosoft.py collecter || echo "Pronosoft en échec (relevé $i)."
+            python3 -c "import sys; sys.path.insert(0, 'src'); import publier; publier.telecharger(saisons=[publier.SAISON])" || echo "Football-data en échec (relevé $i)."
+            python3 src/rapport.py || echo "Rapport en échec (relevé $i)."
+            python3 standalone/construire.py || echo "Construction du site en échec (relevé $i)."
+            cp standalone/site/index.html standalone/site/donnees.json standalone/site/sw.js \
+               standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
+            git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
+                    data/resultats/pronosoft.json data/resultats.json data/journal
+            if ! git diff --cached --quiet; then
+              git commit -q -m "Résultats : suivi"
+              envoye=0
+              for essai in 1 2 3 4; do
+                if git pull --rebase -q origin main && git push -q origin HEAD:main; then envoye=1; break; fi
+                git rebase --abort >/dev/null 2>&1 || true
+                sleep $((2 ** essai))
+              done
+              [ "$envoye" = 1 ] || echo "Envoi refusé (relevé $i)."
+            else
+              echo "Aucun changement (relevé $i)."
+            fi
+            if [ "$i" -lt "$total" ]; then sleep 900; fi
+          done
