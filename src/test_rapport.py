@@ -288,5 +288,50 @@ class ContributionsJournal(unittest.TestCase):
         self.assertEqual(relu['contributions'], e['contributions'])
 
 
+class Facteurs(unittest.TestCase):
+    CONTRIB_ERREUR = {'forme_dom': {'1': 8.2, 'N': -1.0, '2': -7.2}, 'forme_ext': {'1': 2.0, 'N': 0.0, '2': -2.0},
+                      'tirs_encaisses_ext': {'1': 3.0, 'N': -1.0, '2': -2.5}, 'niveau': {'1': -4.0, 'N': 1.0, '2': 5.0}}
+
+    def analyse(self, e, issue):
+        res = {'issue': issue, 'score': '0 – 1', 'source': 'pronosoft'}
+        return {'e': e, 'res': res, 'a': rapport.analyser(e, res)}
+
+    def test_sous_le_seuil_aucun_effectif(self):
+        erreur = self.analyse(entree(contributions=self.CONTRIB_ERREUR), '2')  # pronostic 1 raté : victoire à l’extérieur
+        juste = self.analyse(entree(contributions={'forme_dom': {'1': 4.0, 'N': -1.0, '2': -3.0}}), '1')
+        sans_detail = self.analyse(entree(), '1')
+        f = rapport.facteurs_erreurs([erreur, juste, sans_detail])
+        self.assertEqual((f['detaillees'], f['ratees'], f['sans_detail'], f['ratees_sans_detail']), (2, 1, 1, 0))
+        self.assertFalse(f['conclusion'])
+        self.assertEqual((f['vers_pronostic'], f['vers_resultat']), ([], []))
+
+    def test_familles_une_fois_par_prevision_au_seuil(self):
+        erreurs = [self.analyse(entree(contributions=self.CONTRIB_ERREUR), '2') for _ in range(2)]
+        ancien = rapport.MIN_PESEES_CONCLUSION
+        rapport.MIN_PESEES_CONCLUSION = 2
+        try:
+            f = rapport.facteurs_erreurs(erreurs)
+        finally:
+            rapport.MIN_PESEES_CONCLUSION = ancien
+        self.assertTrue(f['conclusion'])
+        # forme_dom et forme_ext comptent pour une seule famille, et une fois par prévision
+        self.assertEqual([(x['famille'], x['n']) for x in f['vers_pronostic']],
+                         [('forme', 2), ('tirs cadrés concédés', 2)])
+        self.assertEqual([(x['famille'], x['n']) for x in f['vers_resultat']], [('niveau (écart Elo)', 2)])
+
+
+class Precision(unittest.TestCase):
+    def test_log_loss_et_reference_au_hasard(self):
+        bon = {'e': entree(proba={'1': 0.5, 'N': 0.3, '2': 0.2}), 'res': {'issue': '1', 'score': '1 – 0', 'source': 'pronosoft'}}
+        mauvais = {'e': entree(pronostic='N', proba={'1': 0.25, 'N': 0.5, '2': 0.25}),
+                   'res': {'issue': '1', 'score': '1 – 0', 'source': 'pronosoft'}}
+        for x in (bon, mauvais):
+            x['a'] = rapport.analyser(x['e'], x['res'])
+        en_attente = {'e': entree(), 'res': None, 'a': rapport.analyser(entree(), None)}
+        self.assertEqual(rapport.precision_probas([bon, mauvais, en_attente]),
+                         {'n': 2, 'log_loss': 1.04, 'hasard': 1.099})  # (−ln 0,5 − ln 0,25) / 2
+        self.assertIsNone(rapport.precision_probas([en_attente]))
+
+
 if __name__ == '__main__':
     unittest.main()

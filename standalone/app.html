@@ -2318,13 +2318,31 @@ __PWA_HEAD__
     var facteurs = b.facteurs.length ? '<p style="margin:10px 0 0"><strong>Facteurs signalés chez les pronostics ratés</strong></p><ul style="margin:6px 0 0;padding-left:18px">' + b.facteurs.map(function (c) {
       return '<li>' + esc(c.libelle) + ' : <strong>' + esc(c.n) + '</strong></li>';
     }).join('') + '</ul>' : '';
+    // Facteurs qui ont poussé vers les pronostics ratés : pas de conclusion avant l’échantillon minimum (voir src/rapport.py)
+    var dec = function (x) { return String(x).replace('.', ','); };
+    var listeFamilles = function (liste) {
+      return '<ul style="margin:6px 0 0;padding-left:18px">' + liste.map(function (c) {
+        return '<li>' + esc(c.famille) + ' : <strong>' + esc(c.n) + '</strong></li>';
+      }).join('') + '</ul>';
+    };
+    var fe = b.facteurs_erreurs;
+    var detail = fe ? '<p style="margin:12px 0 0"><strong>Ce qui pèse sur les pronostics ratés</strong></p>' +
+      '<p class="hint" style="margin:4px 0 0">' + esc(fe.detaillees) + ' prévision(s) résolue(s) avec détail par facteur, dont ' +
+      esc(fe.ratees) + ' ratée(s)' + (fe.sans_detail ? ' ; ' + esc(fe.sans_detail) + ' résolue(s) n’ont pas de détail par facteur' : '') + '.</p>' +
+      (fe.conclusion ?
+        '<p style="margin:6px 0 0">Poussaient vers le pronostic raté :</p>' + (fe.vers_pronostic.length ? listeFamilles(fe.vers_pronostic) : '<p class="hint" style="margin:4px 0 0">Aucune.</p>') +
+        '<p style="margin:6px 0 0">Poussaient vers le résultat réel :</p>' + (fe.vers_resultat.length ? listeFamilles(fe.vers_resultat) : '<p class="hint" style="margin:4px 0 0">Aucune.</p>') :
+        '<p class="hint" style="margin:6px 0 0">Il faut ' + esc(fe.seuil) + ' prévisions détaillées avant de conclure sur un facteur : aucune conclusion pour l’instant.</p>') : '';
+    var proba = b.precision_probas ? '<p style="margin:12px 0 0"><strong>Précision des probabilités</strong></p>' +
+      '<p class="hint" style="margin:4px 0 0">Log-loss : ' + esc(dec(b.precision_probas.log_loss)) + ' sur ' + esc(b.precision_probas.n) +
+      ' prévisions résolues (plus bas = mieux). Des probabilités égales donneraient ' + esc(dec(b.precision_probas.hasard)) + '.</p>' : '';
     var tranches = b.tranches.filter(function (t) { return t.n; }).map(function (t) {
       return '<li>' + esc(t.libelle) + ' : ' + esc(t.ok) + ' bon(s) sur ' + esc(t.n) + '</li>';
     }).join('');
     return '<div class="kpis kpis3"><div class="kpi kpi-grand"><span class="label">Bons pronostics</span><strong>' + precision +
       '</strong></div><div class="kpi"><span class="label">En attente de résultat</span><strong>' + esc(b.en_attente) +
       '</strong></div><div class="kpi"><span class="label">Sans pronostic</span><strong>' + esc(b.sans_pronostic) + '</strong></div></div>' +
-      '<p style="margin:14px 0 0"><strong>Pourquoi les pronostics échouent</strong></p>' + causes + facteurs +
+      '<p style="margin:14px 0 0"><strong>Pourquoi les pronostics échouent</strong></p>' + causes + facteurs + detail + proba +
       (tranches ? '<p style="margin:12px 0 0"><strong>Fiabilité selon la probabilité annoncée</strong></p><ul style="margin:6px 0 0;padding-left:18px">' + tranches + '</ul>' : '');
   }
   // Grilles « en cours » (clôture passée) d’abord, la plus récente en tête ; puis les grilles « à venir », la plus proche en tête

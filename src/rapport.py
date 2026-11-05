@@ -14,6 +14,7 @@ Les probabilités reprennent la formule de l’application (src/croise.py), à p
 """
 import datetime as dt
 import json
+import math
 import pathlib
 import sys
 
@@ -39,6 +40,13 @@ MALUS_SIGNIFICATIF = -5       # un malus d’absences plus fort (en points Elo) 
 SEUIL_FAVORI = 0.5            # au-dessus de cette probabilité, le pronostic désigne un favori net
 PESEES_MAX = 3                # facteurs cités pour une prévision : les plus forts, dans un sens ou dans l’autre
 PESEES_SEUIL = 1.0            # en points de probabilité : un facteur plus faible n’est pas cité
+MIN_PESEES_CONCLUSION = 100   # prévisions résolues avec détail par facteur avant de conclure sur un facteur
+FAMILLES = {
+    'niveau': 'niveau (écart Elo)', 'championnat': 'écart entre championnats', 'absences': 'absences',
+    'bilan': 'bilan à domicile / à l’extérieur', 'forme': 'forme', 'attaque': 'buts marqués',
+    'defense': 'buts encaissés', 'repos': 'repos', 'charge': 'nombre de matchs récents', 'tirs': 'tirs cadrés',
+    'tirs_encaisses': 'tirs cadrés concédés', 'corners': 'corners', 'cartons': 'cartons',
+}
 LIBELLES_PESEES = {
     'niveau': 'l’écart de niveau (Elo)',
     'championnat': 'l’écart entre championnats',
@@ -364,6 +372,61 @@ def analyser(e, res):
     return {'statut': 'ko', 'cause': cause, 'facteurs': facteurs, 'explication': texte, 'raisons': raisons_de(e, res)}
 
 
+def famille_de(code):
+    """Famille d’un facteur : bilan_dom et bilan_ext ont la même famille, forme_dom et forme_ext aussi, etc."""
+    return code.rsplit('_', 1)[0] if code.endswith(('_dom', '_ext')) else code
+
+
+def facteurs_forts(e, etiquette):
+    """Facteurs qui pèsent au moins PESEES_SEUIL points sur la probabilité de l’issue, les plus forts d’abord."""
+    contrib = e.get('contributions') or {}
+    pts = [(code, v[etiquette]) for code, v in contrib.items() if abs(v.get(etiquette, 0)) >= PESEES_SEUIL]
+    return sorted(pts, key=lambda kv: -abs(kv[1]))
+
+
+def compter_familles(listes):
+    """Nombre de prévisions où chaque famille apparaît (une fois par prévision)."""
+    compte = {}
+    for familles in listes:
+        for f in set(familles):
+            compte[f] = compte.get(f, 0) + 1
+    return compte
+
+
+def facteurs_erreurs(analyses):
+    """Familles de facteurs qui ont poussé vers le pronostic raté, et vers le résultat réel, sur les prévisions ratées qui
+    ont un détail par facteur. Tant qu’il y a moins de MIN_PESEES_CONCLUSION prévisions détaillées, aucun effectif
+    n’est donné : un échantillon si petit ne dit pas quel facteur pèse à tort."""
+    resolues = [x for x in analyses if x['a']['statut'] in ('ok', 'ko')]
+    detaillees = [x for x in resolues if x['e'].get('contributions')]
+    ratees = [x for x in detaillees if x['a']['statut'] == 'ko']
+    vers_pronostic = compter_familles(
+        [[famille_de(c) for c, v in facteurs_forts(x['e'], x['e']['pronostic']) if v > 0] for x in ratees])
+    vers_resultat = compter_familles(
+        [[famille_de(c) for c, v in facteurs_forts(x['e'], x['res']['issue']) if v > 0] for x in ratees])
+
+    def liste(compte):
+        return [{'famille': FAMILLES.get(f, f), 'n': n} for f, n in sorted(compte.items(), key=lambda kv: (-kv[1], kv[0]))]
+
+    conclusion = len(detaillees) >= MIN_PESEES_CONCLUSION
+    return {'detaillees': len(detaillees), 'ratees': len(ratees),
+            'sans_detail': len(resolues) - len(detaillees),
+            'ratees_sans_detail': sum(1 for x in resolues if x['a']['statut'] == 'ko' and not x['e'].get('contributions')),
+            'seuil': MIN_PESEES_CONCLUSION, 'conclusion': conclusion,
+            'vers_pronostic': liste(vers_pronostic) if conclusion else [],
+            'vers_resultat': liste(vers_resultat) if conclusion else []}
+
+
+def precision_probas(analyses):
+    """Log-loss des probabilités annoncées sur les prévisions résolues : moyenne de −ln(probabilité donnée au résultat réel).
+    Plus c’est bas, mieux les probabilités collent aux résultats ; des probabilités égales (1/3) donnent ln 3."""
+    pertes = [-math.log(max(x['e']['proba'][x['res']['issue']], 1e-9)) for x in analyses
+              if x['a']['statut'] in ('ok', 'ko') and 'proba' in x['e']]
+    if not pertes:
+        return None
+    return {'n': len(pertes), 'log_loss': round(sum(pertes) / len(pertes), 3), 'hasard': round(math.log(3), 3)}
+
+
 def bilan(analyses):
     """Précision sur les matchs à pronostic résolu, raisons des erreurs, facteurs signalés, et précision par tranche
     de probabilité."""
@@ -387,7 +450,8 @@ def bilan(analyses):
                        for c, n in sorted(causes.items(), key=lambda kv: -kv[1])],
             'facteurs': [{'code': f, 'libelle': FACTEURS[f], 'n': n}
                          for f, n in sorted(facteurs.items(), key=lambda kv: -kv[1])],
-            'tranches': tranches}
+            'tranches': tranches, 'facteurs_erreurs': facteurs_erreurs(analyses),
+            'precision_probas': precision_probas(analyses)}
 
 
 def libelle_pesee(code, e):
@@ -411,9 +475,7 @@ def pesees(e, issue):
         return None
 
     def classer(etiquette):
-        pts = [(code, v[etiquette]) for code, v in contrib.items() if abs(v.get(etiquette, 0)) >= PESEES_SEUIL]
-        pts.sort(key=lambda kv: -abs(kv[1]))
-        return [{'libelle': libelle_pesee(code, e), 'points': p} for code, p in pts[:PESEES_MAX]]
+        return [{'libelle': libelle_pesee(code, e), 'points': p} for code, p in facteurs_forts(e, etiquette)[:PESEES_MAX]]
 
     return {'pronostic': classer(e['pronostic']),
             'resultat': classer(issue) if issue and issue != e['pronostic'] else None}
