@@ -40,12 +40,12 @@ def version_publiee(asof):
     return asof.isoformat() + ('.' + rev if rev else '')
 
 
-def telecharger():
-    """Retourne la liste des fichiers ajoutés ou modifiés."""
+def telecharger(saisons=None):
+    """Retourne la liste des fichiers ajoutés ou modifiés. Par défaut : toutes les saisons."""
     ctx = ssl.create_default_context(cafile=CA) if os.path.exists(CA) else ssl.create_default_context()
     RAW.mkdir(parents=True, exist_ok=True)
     modifies = []
-    for saison in [SAISON] + SAISONS_PASSEES:
+    for saison in (saisons or [SAISON] + SAISONS_PASSEES):
         for div in DIVISIONS:
             chemin = RAW / ('%s_%s.csv' % (saison, div))
             if saison != SAISON and chemin.exists():

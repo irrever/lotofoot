@@ -1,0 +1,68 @@
+name: Résultats Lotofoot
+
+on:
+  schedule:
+    # Toutes les heures, de 12 h à 2 h (heure de Paris) : un relevé peu après la fin des matchs
+    - cron: '0 11-23,0-1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Même file que la mise à jour quotidienne : les deux écrivent dans les mêmes fichiers.
+concurrency:
+  group: statistiques
+  cancel-in-progress: false
+
+jobs:
+  resultats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Partir de la dernière version de main : une mise à jour précédente peut avoir publié entre-temps.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - name: Installer les dépendances
+        run: python3 -m pip install -r requirements.txt
+      - name: Relever les scores des grilles du Loto Foot (Pronosoft)
+        continue-on-error: true
+        run: python3 src/pronosoft.py collecter
+      - name: Résultats de la saison en cours (football-data)
+        run: python3 -c "import sys; sys.path.insert(0, 'src'); import publier; publier.telecharger(saisons=[publier.SAISON])"
+      - name: Rapport des résultats et site
+        run: |
+          python3 src/rapport.py
+          python3 standalone/construire.py
+      - name: Enregistrer les résultats s'ils ont changé
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp standalone/site/index.html standalone/site/donnees.json standalone/site/sw.js \
+             standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
+          git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
+                  data/resultats/pronosoft.json data/resultats.json data/journal
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+            exit 0
+          fi
+          git commit -m "Résultats : relevé automatique"
+          delai=2
+          for essai in 1 2 3 4; do
+            if git pull --rebase -q origin main && git push -q origin HEAD:main; then
+              echo "Résultats envoyés (essai $essai)."
+              exit 0
+            fi
+            git rebase --abort >/dev/null 2>&1 || true
+            if [ "$essai" -lt 4 ]; then
+              echo "Envoi refusé (essai $essai) ; nouvel essai dans $delai s."
+              sleep "$delai"
+              delai=$((delai * 2))
+            fi
+          done
+          echo "L'envoi des résultats a échoué après 4 essais." >&2
+          exit 1

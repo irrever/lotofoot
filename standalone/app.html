@@ -1256,11 +1256,13 @@ __PWA_HEAD__
     }).then(function (d) {
       S.verifieLe = new Date();
       if (!donneesValides(d)) { S.miseAJour = 'Mise à jour ignorée : fichier incomplet.'; return; }
-      if (String(d.version) > String(S.version) || (!!d.publie_le && String(d.publie_le) > String(S.publieLe || ''))) {
+      var nouvellesDonnees = String(d.version) > String(S.version) || (!!d.publie_le && String(d.publie_le) > String(S.publieLe || ''));
+      var nouveauxResultats = !!(d.resultats && d.resultats.maj) && String(d.resultats.maj) > String((S.resultats && S.resultats.maj) || '');
+      if (nouvellesDonnees || nouveauxResultats) {
         appliquerDonnees(d);
-        S.miseAJour = 'Données mises à jour à ' + heureFr(S.verifieLe, true) + '.';
+        S.miseAJour = 'Mise à jour effectuée à ' + heureFr(S.verifieLe, true) + (heureResultats() ? ' : résultats relevés à ' + heureResultats() : '') + '.';
       } else {
-        S.miseAJour = 'Données déjà à jour (vérifiées à ' + heureFr(S.verifieLe, true) + ').';
+        S.miseAJour = 'Déjà à jour (vérifié à ' + heureFr(S.verifieLe, true) + (heureResultats() ? ', dernier relevé des résultats à ' + heureResultats() : '') + ').';
       }
     }).catch(function () {
       S.miseAJour = 'Pas de connexion : dernière version reçue.';
@@ -1268,6 +1270,11 @@ __PWA_HEAD__
   }
   // Heure d’affichage (hh:mm)
   function heureFr(d, avecSecondes) { return d ? d.toLocaleTimeString('fr-FR', avecSecondes ? { hour: '2-digit', minute: '2-digit', second: '2-digit' } : { hour: '2-digit', minute: '2-digit' }) : ''; }
+  // Heure du dernier relevé des résultats (publié avec les données)
+  function heureResultats() {
+    var m = S.resultats && S.resultats.maj;
+    return m ? heureFr(new Date(m)) : '';
+  }
   // L’application elle-même (index.html) est-elle plus récente que celle qui tourne ?
   function verifierNouvelleVersion() {
     if (!/^https?:$/.test(location.protocol) || !window.fetch) return Promise.resolve();
@@ -1326,10 +1333,11 @@ __PWA_HEAD__
   function etatDonnees() {
     if (!enLigne()) return '<span class="etat">Version fichier · ' + esc(miseAJourCourte()) + '</span>';
     if (S.nouvelleVersion) return '<span class="etat warn">Nouvelle version disponible</span> <button type="button" class="btn petit primary" data-act="recharger">Recharger</button>';
+    var etiquette = heureResultats() ? 'résultats relevés à ' + heureResultats() : miseAJourCourte();
     var verif = S.verifieLe ? ' · vérifié à ' + heureFr(S.verifieLe, true) : '';
     var bouton = '<button type="button" class="btn petit" data-act="mettre-a-jour"' + (S.miseAJourEnCours ? ' disabled' : '') + '>' + (S.miseAJourEnCours ? 'Vérification…' : 'Mettre à jour') + '</button>';
-    if (/Pas de connexion|ignorée/.test(S.miseAJour)) return '<span class="etat warn">Hors connexion · ' + esc(miseAJourCourte() + verif) + '</span> ' + bouton;
-    return '<span class="etat ok">À jour · ' + esc(miseAJourCourte() + verif) + '</span> ' + bouton;
+    if (/Pas de connexion|ignorée/.test(S.miseAJour)) return '<span class="etat warn">Hors connexion · ' + esc(etiquette + verif) + '</span> ' + bouton;
+    return '<span class="etat ok">À jour · ' + esc(etiquette + verif) + '</span> ' + bouton;
   }
   // Légende des couleurs des issues : 1 (vert), N (gris), 2 (bleu)
   function legendeHtml() {
