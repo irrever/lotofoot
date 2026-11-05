@@ -208,14 +208,14 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .nouveau-tag { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-line); }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
 .alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
-/* Choix du modèle, zone « Les matchs » : une ligne par match, la case retenue en couleur */
-.choix-modele { margin: 12px 0 0; padding: 12px; border: 1px solid var(--line); border-radius: var(--r-s); background: var(--surface-2); }
-.choix-titre { margin: 0 0 8px; font-weight: 700; }
-.pick-liste { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
-.pick-ligne { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 8px; }
-.pick-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
-.pick-chips { display: inline-flex; gap: 4px; }
-.pick-chips .puce.is-off { opacity: .3; }
+/* Choix du modèle sur les champs des équipes : vert = 1, bleu = 2, gris = nul ; un double est coupé en diagonale */
+.txtin.c-1 { border-color: var(--c1); background: var(--c1-soft); }
+.txtin.c-2 { border-color: var(--c2); background: var(--c2-soft); }
+.txtin.c-N { border-color: var(--cN); background: var(--cN-soft); }
+.txtin.c-1N { border-color: var(--c1); background: linear-gradient(to bottom right, var(--c1-soft) 50%, var(--cN-soft) 50%); }
+.txtin.c-N2 { border-color: var(--c2); background: linear-gradient(to bottom right, var(--cN-soft) 50%, var(--c2-soft) 50%); }
+.txtin.c-12 { border-color: var(--c1); background: linear-gradient(to bottom right, var(--c1-soft) 50%, var(--c2-soft) 50%); }
+.txtin.c-123 { border-color: var(--cN); background: linear-gradient(to bottom right, var(--c1-soft) 33%, var(--cN-soft) 33%, var(--cN-soft) 66%, var(--c2-soft) 66%); }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -1555,40 +1555,31 @@ __PWA_HEAD__
       zone('info', 1, 'Mes grilles', '<div class="tuiles">' + gs.map(function (x) { return tuile(x, x.id === g.id); }).join('') + '</div>', nouvelleBtn) +
       fiche + copie + erreurs + pronostics + methodeCalcul + sauvegardeHtml(4);
   }
-  // Zone « Les matchs » : ce que le modèle a choisi pour chaque match, en un coup d’œil, avec le bouton de validation
-  function choixModeleHtml(f) {
+  // Choix du modèle sur les champs des équipes : vert pour 1 (domicile), bleu pour 2 (extérieur), gris pour le nul.
+  // Un double coupe le champ en diagonale, du bas à gauche au haut à droite : 1 et nul, nul et 2.
+  function choixLignes(f) {
     var rf = resoudreFormulaire(f);
-    if (!rf.ok) return '';
+    if (!rf.ok) return null;
     var res = calculerGrille(rf.paires, f.doubles, f.triples);
-    if (res.erreurs || !res.matchs || !res.matchs.length) return '';
-    var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
-    var lignes = res.matchs.map(function (m, i) {
-      var pick = m.pronostic || '';
-      var type = typeDe(pick);
-      var puces = ['1', 'N', '2'].map(function (k) {
-        return '<span class="puce ' + cls[k] + (pick.indexOf(k) !== -1 ? ' is-on' : ' is-off') + '">' + k + '</span>';
-      }).join('');
-      return '<li class="pick-ligne"><span class="num">' + (i + 1) + '</span>' +
-        '<span class="pick-equipes">' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</span>' +
-        '<span class="pick-chips">' + puces + '</span>' +
-        '<span class="tag' + (type === 'Simple' ? '' : ' nouveau-tag') + '">' + esc(type) + '</span></li>';
-    }).join('');
-    var nDoubles = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Double'; }).length;
-    var nTriples = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Triple'; }).length;
-    return '<div class="choix-modele">' +
-      '<p class="choix-titre">Choix du modèle : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s), prix ×' + prixDe(res.matchs) +
-      ', grille juste à ' + esc(probGrille(res.proba_grille)) + '</p>' +
-      '<ol class="pick-liste">' + lignes + '</ol>' +
-      '<div class="actions"><button type="button" class="btn primary" data-act="enregistrer" data-lock="1">Valider et verrouiller</button></div>' +
-      '</div>';
+    return (res.erreurs || !res.matchs) ? null : res.matchs;
+  }
+  function classeChoix(m, cote) {
+    if (!m) return '';
+    var pick = m.pronostic || '';
+    var h1 = pick.indexOf('1') !== -1, hN = pick.indexOf('N') !== -1, h2 = pick.indexOf('2') !== -1;
+    if (h1 && hN && h2) return ' c-123'; // triple : trois couleurs en diagonale, sur les deux champs
+    if (h1 && h2) return ' c-12';        // double 1 et 2 : vert et bleu en diagonale, sur les deux champs
+    if (cote === 'dom') return h1 && hN ? ' c-1N' : h1 ? ' c-1' : hN ? ' c-N' : '';
+    return h2 && hN ? ' c-N2' : h2 ? ' c-2' : hN ? ' c-N' : '';
   }
   function viewNouvelle() {
     var f = S.form || (S.form = formVide());
     var apercu = apercuHtml(f); // d’abord : marque les lignes à compléter (err) avant de les afficher
+    var picksL = choixLignes(f);
     var lignes = f.rows.map(function (r, i) {
       return '<div class="rowform"><span class="num">' + (i + 1) + '</span>' +
-        '<input class="txtin" type="text" list="liste-equipes" autocomplete="off" data-champ="dom" data-i="' + i + '" placeholder="Domicile" aria-label="Match ' + (i + 1) + ', domicile" value="' + esc(r.dom) + '">' +
-        '<input class="txtin" type="text" list="liste-equipes" autocomplete="off" data-champ="ext" data-i="' + i + '" placeholder="Extérieur" aria-label="Match ' + (i + 1) + ', extérieur" value="' + esc(r.ext) + '">' +
+        '<input class="txtin' + classeChoix(picksL && picksL[i], 'dom') + '" type="text" list="liste-equipes" autocomplete="off" data-champ="dom" data-i="' + i + '" placeholder="Domicile" aria-label="Match ' + (i + 1) + ', domicile" value="' + esc(r.dom) + '">' +
+        '<input class="txtin' + classeChoix(picksL && picksL[i], 'ext') + '" type="text" list="liste-equipes" autocomplete="off" data-champ="ext" data-i="' + i + '" placeholder="Extérieur" aria-label="Match ' + (i + 1) + ', extérieur" value="' + esc(r.ext) + '">' +
         (r.err ? '<div class="err">' + esc(r.err) + '</div>' : '') + '</div>';
     }).join('');
     var optD = [0, 1, 2, 3, 4].map(function (k) {
@@ -1616,7 +1607,7 @@ __PWA_HEAD__
       '</div>';
     var saisie = '<div class="btns">' + charger + '<label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
       '<input id="fichier-csv" type="file" accept=".csv,text/csv" style="display:none"></div>' +
-      choixHtml + choixModeleHtml(f) + '<div class="rows">' + lignes + '</div>' +
+      choixHtml + '<div class="rows">' + lignes + '</div>' + (picksL ? '<p style="margin:10px 0 0">' + legendeHtml() + '</p>' : '') +
       '<p class="hint">Équipe à domicile, puis équipe à l’extérieur. Les noms proposés viennent des 16 championnats suivis.</p>' +
       (f.info ? '<p class="flash" role="status">' + esc(f.info) + '</p>' : '') + datalist;
     return '<div class="page-head"><div><h2 class="page-title">Nouvelle grille</h2>' +
