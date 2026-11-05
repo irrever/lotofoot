@@ -220,12 +220,25 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .recap-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
 .recap-choix { display: inline-flex; gap: 4px; }
 .recap-choix .puce.is-off { opacity: .22; }
-/* Chaque match de « Mes grilles » montre le choix joué, puis le résultat */
-.ligne-choix { display: grid; grid-template-columns: 20px minmax(0, 1fr) 74px 58px; gap: 8px; align-items: center; cursor: pointer; list-style: none; padding: 2px 0; }
+/* Résultats : chaque match montre le choix joué (cases cochées, sans couleur), puis le résultat */
+.ligne-choix { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 4px; align-items: center; cursor: pointer; list-style: none; padding: 8px 4px; }
 .ligne-choix::-webkit-details-marker { display: none; }
-.ligne-num { color: var(--muted); font-size: 13px; }
-.ligne-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
-.ligne-resultat { text-align: right; font-size: 14px; white-space: nowrap; }
+.ligne-num { color: var(--muted); font-size: 13px; align-self: start; padding-top: 1px; }
+.ligne-corps { display: block; min-width: 0; }
+.ligne-equipes { display: block; font-size: 15px; overflow-wrap: anywhere; }
+.ligne-resultat { grid-column: 2 / 4; grid-row: 2; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.ligne-cases { display: inline-flex; gap: 5px; }
+.case-chiffre { position: relative; display: flex; align-items: center; justify-content: center; width: 44px; height: 66px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--muted); }
+.case-chiffre b { font: 800 34px/1 var(--sans); }
+.case-chiffre.coche { border: 2px solid var(--fg); }
+.croix { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; transform: translate(-50%, -50%); }
+.croix path { fill: none; stroke: var(--fg); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.croix .halo { stroke: var(--surface); stroke-width: 5; }
+/* Case au-dessus du numéro : blanche, cochée en noir quand le match est couvert */
+.ligne-gauche { display: grid; justify-items: center; gap: 5px; align-self: start; }
+.ligne-gauche .ligne-num { line-height: 1; }
+.case-bilan { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border: 1.5px solid var(--fg); border-radius: 4px; background: var(--surface); }
+.case-bilan.coche::after { content: '✓'; font: 800 14px/1 var(--sans); color: var(--fg); }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -1479,9 +1492,8 @@ __PWA_HEAD__
       var fleche = d ? '<em class="fleche ' + (d > 0 ? 'up' : 'down') + '">' + (d > 0 ? '▲ +' : '▼ −') + Math.abs(d) + ' pts</em>' : '';
       return '<div class="prob ' + cls[k] + (pick.indexOf(k) !== -1 ? ' is-pick' : '') + '"><span>' + k + '</span><strong>' + pc(p[k], 0) + '</strong>' + fleche + '</div>';
     }
-    var pucesHtml = pick.split('').map(function (k) { return '<span class="puce ' + cls[k] + '">' + k + '</span>'; }).join('');
     var pronos = pick
-      ? '<span class="pronos-label">Pronostic</span> <span class="pronos">' + pucesHtml + '</span> <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(m.confiance, 0) + '</span>'
+      ? '<span class="pronos-label">Pronostic</span> ' + casesChoix(pick) + ' <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(m.confiance, 0) + '</span>'
       : '<span class="pronos-label">Pas de pronostic</span>';
     var det = m.source === 'hypothese' ? '' : comparaison(m);
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
@@ -1521,17 +1533,14 @@ __PWA_HEAD__
   }
   // Liste des choix de la grille, une ligne par match : domicile – extérieur, pastilles 1 / N / 2, type du pronostic
   function recapHtml(matchs) {
-    var couleurs = { '1': 'p1', 'N': 'pN', '2': 'p2' };
     var lignes = matchs.map(function (m) {
       var pick = m.pronostic || '';
-      var pastilles = ['1', 'N', '2'].map(function (k) {
-        return '<span class="puce ' + couleurs[k] + (pick.indexOf(k) !== -1 ? '' : ' is-off') + '">' + k + '</span>';
-      }).join('');
+      var cases = casesChoix(pick);
       var type = typeDe(pick);
       return '<li class="recap-ligne"><span class="num">' + esc(m.n) + '</span>' +
         '<span class="recap-equipes">' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</span>' +
-        '<span class="recap-choix">' + pastilles + '</span>' +
-        '<span class="tag' + (type === 'Simple' ? '' : ' nouveau-tag') + '">' + esc(type) + '</span></li>';
+        cases +
+        '<span class="tag">' + esc(type) + '</span></li>';
     }).join('');
     return '<ol class="recap">' + lignes + '</ol>';
   }
@@ -2416,11 +2425,13 @@ __PWA_HEAD__
       esc(g.format + '|' + g.numero) + '">Masquer cette grille</button></div></section>';
   }
   // Une grille enregistrée : ce qui était prévu, match par match, et le résultat en vert ou en rouge
-  // Les choix joués, comme dans la grille : 1, N, 2 ; seul le choix retenu est en couleur
-  function choixPastilles(pick) {
-    var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
-    return '<span class="recap-choix">' + ['1', 'N', '2'].map(function (k) {
-      return '<span class="puce ' + cls[k] + (pick.indexOf(k) !== -1 ? '' : ' is-off') + '">' + k + '</span>';
+  // Les choix joués : une case par issue (1, N, 2) ; la case du choix retenu est cochée, sans couleur
+  function casesChoix(pick) {
+    return '<span class="ligne-cases">' + ['1', 'N', '2'].map(function (k) {
+      var coche = pick.indexOf(k) !== -1;
+      return '<span class="case-chiffre' + (coche ? ' coche' : '') + '"><b>' + k + '</b>' +
+        (coche ? '<svg class="croix" viewBox="0 0 24 24" aria-hidden="true"><path class="halo" d="M4 12.5l5 5L20 6.5"/><path d="M4 12.5l5 5L20 6.5"/></svg>' : '') +
+        '</span>';
     }).join('') + '</span>';
   }
   function carteGrilleEnregistree(g, publies) {
@@ -2442,11 +2453,11 @@ __PWA_HEAD__
       var couleur = j.statut === 'ok' ? 'var(--ok)' : (j.statut === 'ko' ? 'var(--bad)' : 'var(--line)');
       var marque = j.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓</span>' :
         (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '<span class="hint">—</span>');
-      return '<details style="border-left:4px solid ' + couleur + ';padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
-        '<summary class="ligne-choix"><span class="ligne-num">' + esc(p.m.n) + '</span>' +
+      return '<details style="border-left:4px solid var(--line);padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
+        '<summary class="ligne-choix"><span class="ligne-gauche"><span class="case-bilan' + (pub && j.statut === 'ok' ? ' coche' : '') + '"></span><span class="ligne-num">' + esc(p.m.n) + '</span></span>' +
         '<span class="ligne-equipes">' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span>' +
-        choixPastilles(p.pronostic) +
-        '<span class="ligne-resultat">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</span></summary>' +
+        casesChoix(p.pronostic) +
+        '<span class="ligne-resultat">' + (pub ? esc(pub.score) + ' · ' + (j.statut === 'ok' ? 'couvert' : 'non couvert') : 'à venir') + '</span></summary>' +
         ficheJeu(p, pub, j) + '</details>';
     }).join('');
     var ton = g.cloture ? (enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)') : 'var(--line)';
