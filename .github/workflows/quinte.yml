@@ -2,7 +2,7 @@ name: Quinté+ du jour
 
 on:
   schedule:
-    # Toutes les dix minutes, de 10 h à minuit (heure de Paris). Le programme est relevé à 10 h, 11 h, 12 h et 13 h ;
+    # Toutes les dix minutes, de 8 h à 22 h 50 UTC, soit 9 h à 23 h 50 à Paris. Le programme est relevé vers 9 h, 10 h et 11 h (heure de Paris) ;
     # l’arrivée et les rapports sont relevés une heure après le départ, puis une fois publiés.
     - cron: '*/10 8-22 * * *'
   workflow_dispatch:
