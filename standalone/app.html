@@ -215,7 +215,9 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .mchoix.coche { background: var(--cN); color: var(--bg); font: 700 14px/1 var(--sans); }
 /* Liste des choix sous le titre d’une grille validée : une ligne par match, le choix retenu en couleur */
 .recap { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; }
-.recap-ligne { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.recap-ligne { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.recap-dom { min-width: 0; text-align: right; font-size: 14px; overflow-wrap: anywhere; }
+.recap-ext { min-width: 0; text-align: left; font-size: 14px; overflow-wrap: anywhere; }
 .recap-ligne:last-child { border-bottom: 0; }
 .recap-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
 .recap-choix { display: inline-flex; gap: 4px; }
@@ -223,22 +225,23 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 /* Résultats : chaque match montre le choix joué (cases cochées, sans couleur), puis le résultat */
 .ligne-choix { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; column-gap: 10px; row-gap: 4px; align-items: center; cursor: pointer; list-style: none; padding: 8px 4px; }
 .ligne-choix::-webkit-details-marker { display: none; }
-.ligne-num { color: var(--muted); font-size: 13px; align-self: start; padding-top: 1px; }
+.ligne-num { color: var(--fg); font-size: 14px; align-self: start; padding-top: 1px; }
 .ligne-corps { display: block; min-width: 0; }
 .ligne-equipes { display: block; font-size: 15px; overflow-wrap: anywhere; }
-.ligne-resultat { grid-column: 2 / 4; grid-row: 2; font-size: 13px; color: var(--muted); white-space: nowrap; }
-.ligne-cases { display: inline-flex; gap: 5px; }
-.case-chiffre { position: relative; display: flex; align-items: center; justify-content: center; width: 44px; height: 66px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--muted); }
-.case-chiffre b { font: 800 34px/1 var(--sans); }
-.case-chiffre.coche { border: 2px solid var(--fg); }
-.croix { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; transform: translate(-50%, -50%); }
-.croix path { fill: none; stroke: var(--fg); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.ligne-resultat { grid-column: 2 / 4; grid-row: 2; font-size: 14px; color: var(--fg); white-space: nowrap; }
+.ligne-cases { display: inline-flex; gap: 4px; }
+.case-chiffre { position: relative; display: flex; align-items: center; justify-content: center; width: 32px; height: 40px; border: 1.5px solid var(--muted); border-radius: 6px; background: var(--surface); color: var(--fg); }
+.case-chiffre b { font: 800 24px/1 var(--sans); }
+.case-chiffre.coche { border: 2px solid #e8730c; }
+.croix { position: absolute; left: 50%; top: 50%; width: 26px; height: 26px; transform: translate(-50%, -50%); }
+.croix path { fill: none; stroke: var(--fg); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .croix .halo { stroke: var(--surface); stroke-width: 5; }
 /* Case au-dessus du numéro : blanche, cochée en noir quand le match est couvert */
 .ligne-gauche { display: grid; justify-items: center; gap: 5px; align-self: start; }
 .ligne-gauche .ligne-num { line-height: 1; }
-.case-bilan { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border: 1.5px solid var(--fg); border-radius: 4px; background: var(--surface); }
-.case-bilan.coche::after { content: '✓'; font: 800 14px/1 var(--sans); color: var(--fg); }
+.case-bilan { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 2px solid var(--fg); border-radius: 4px; background: var(--surface); }
+.case-bilan.coche::after { content: '✓'; font: 800 16px/1 var(--sans); color: var(--fg); }
+.case-bilan.coche { border-color: #e8730c; }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -1538,9 +1541,9 @@ __PWA_HEAD__
       var cases = casesChoix(pick);
       var type = typeDe(pick);
       return '<li class="recap-ligne"><span class="num">' + esc(m.n) + '</span>' +
-        '<span class="recap-equipes">' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</span>' +
+        '<span class="recap-dom">' + esc(m.domicile) + '</span>' +
         cases +
-        '<span class="tag">' + esc(type) + '</span></li>';
+        '<span class="recap-ext">' + esc(m.exterieur) + '</span></li>';
     }).join('');
     return '<ol class="recap">' + lignes + '</ol>';
   }
