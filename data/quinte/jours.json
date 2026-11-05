@@ -1,0 +1,839 @@
+{
+ "2026-11-04": {
+  "arrivee": {
+   "arrivants": [
+    {
+     "nom": "Ibiscus Man",
+     "numero": 12,
+     "rang": 1
+    },
+    {
+     "nom": "Kelle Beaute",
+     "numero": 8,
+     "rang": 2
+    },
+    {
+     "nom": "Jentil Dieschoot",
+     "numero": 6,
+     "rang": 3
+    },
+    {
+     "nom": "Happy Face",
+     "numero": 3,
+     "rang": 4
+    },
+    {
+     "nom": "Karnac Wood",
+     "numero": 7,
+     "rang": 5
+    }
+   ],
+   "ordre": [
+    12,
+    8,
+    6,
+    3,
+    7
+   ],
+   "rapports": [
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3,
+      7
+     ],
+     "pari": "Quinté+",
+     "rapport": 1587.1,
+     "type": "ordre"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3,
+      7
+     ],
+     "pari": "Quinté+",
+     "rapport": 20.3,
+     "type": "désordre"
+    },
+    {
+     "combinaison": [
+      12,
+      6,
+      3,
+      7
+     ],
+     "pari": "Quinté+",
+     "rapport": 1.5,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      3,
+      7
+     ],
+     "pari": "Quinté+",
+     "rapport": 1.5,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3
+     ],
+     "pari": "Quinté+",
+     "rapport": 1.5,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      7
+     ],
+     "pari": "Quinté+",
+     "rapport": 1.5,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      8,
+      6,
+      3,
+      7
+     ],
+     "pari": "Quinté+",
+     "rapport": 1.5,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6
+     ],
+     "pari": "Quinté+",
+     "rapport": 1.4,
+     "type": "bonus3"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3
+     ],
+     "pari": "Quarté+",
+     "rapport": 411.9,
+     "type": "ordre"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3
+     ],
+     "pari": "Quarté+",
+     "rapport": 37.9,
+     "type": "désordre"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6
+     ],
+     "pari": "Quarté+",
+     "rapport": 3.6,
+     "type": "bonus3"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6
+     ],
+     "pari": "Tiercé",
+     "rapport": 87.1,
+     "type": "ordre"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6
+     ],
+     "pari": "Tiercé",
+     "rapport": 14.7,
+     "type": "désordre"
+    },
+    {
+     "combinaison": [
+      12,
+      3
+     ],
+     "pari": "2sur4",
+     "rapport": 4.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      6
+     ],
+     "pari": "2sur4",
+     "rapport": 4.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      8
+     ],
+     "pari": "2sur4",
+     "rapport": 4.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      6,
+      3
+     ],
+     "pari": "2sur4",
+     "rapport": 4.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      8,
+      3
+     ],
+     "pari": "2sur4",
+     "rapport": 4.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      8,
+      6
+     ],
+     "pari": "2sur4",
+     "rapport": 4.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      8
+     ],
+     "pari": "Couplé",
+     "rapport": 18.2,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      8,
+      6
+     ],
+     "pari": "Couplé placé",
+     "rapport": 8.0,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      8
+     ],
+     "pari": "Couplé placé",
+     "rapport": 7.1,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      6
+     ],
+     "pari": "Couplé placé",
+     "rapport": 5.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12
+     ],
+     "pari": "Simple",
+     "rapport": 3.2,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      8
+     ],
+     "pari": "Simple placé",
+     "rapport": 2.6,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      6
+     ],
+     "pari": "Simple placé",
+     "rapport": 2.2,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12
+     ],
+     "pari": "Simple placé",
+     "rapport": 1.6,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3
+     ],
+     "pari": "Mini Multi",
+     "rapport": 144.0,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3
+     ],
+     "pari": "Mini Multi",
+     "rapport": 28.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      12,
+      8,
+      6,
+      3
+     ],
+     "pari": "Mini Multi",
+     "rapport": 9.6,
+     "type": "simple"
+    }
+   ],
+   "source": "https://turfin.fr/arrivee-du-quinte/2026-11-04",
+   "vue_le": "2026-11-05T16:54:22+00:00"
+  },
+  "course": {
+   "allocation_eur": 90000,
+   "corde": "gauche",
+   "date": "2026-11-04",
+   "depart_utc": "2026-11-04T12:55+00:00",
+   "discipline": "Attelé",
+   "distance_m": 3000,
+   "heure": "13:55",
+   "hippodrome": "Nantes",
+   "liste": [
+    {
+     "nom": "Jerenal D'hameline",
+     "numero": 1
+    },
+    {
+     "nom": "Idole De Meat",
+     "numero": 2
+    },
+    {
+     "nom": "Happy Face",
+     "numero": 3
+    },
+    {
+     "nom": "Happy Danover",
+     "numero": 4
+    },
+    {
+     "nom": "Jane Aimee",
+     "numero": 5
+    },
+    {
+     "nom": "Jentil Dieschoot",
+     "numero": 6
+    },
+    {
+     "nom": "Karnac Wood",
+     "numero": 7
+    },
+    {
+     "nom": "Kelle Beaute",
+     "numero": 8
+    },
+    {
+     "nom": "Harmony La Nuit",
+     "numero": 9
+    },
+    {
+     "nom": "Je Reve Du Bois",
+     "numero": 10
+    },
+    {
+     "nom": "Horatius D'ela",
+     "numero": 11
+    },
+    {
+     "nom": "Ibiscus Man",
+     "numero": 12
+    }
+   ],
+   "nom": "Grand National Du Trot",
+   "numero": 2,
+   "partants": 12,
+   "reunion": 1,
+   "url": "https://turfin.fr/course/2026-11-04/r1c2-nantes-grand-national-du-trot"
+  }
+ },
+ "2026-11-05": {
+  "arrivee": {
+   "arrivants": [
+    {
+     "nom": "Ready Star",
+     "numero": 9,
+     "rang": 1
+    },
+    {
+     "nom": "Humanity Pellini",
+     "numero": 6,
+     "rang": 2
+    },
+    {
+     "nom": "Competivo",
+     "numero": 15,
+     "rang": 3
+    },
+    {
+     "nom": "Kotkie",
+     "numero": 1,
+     "rang": 4
+    },
+    {
+     "nom": "Every Time Winner",
+     "numero": 5,
+     "rang": 5
+    }
+   ],
+   "ordre": [
+    9,
+    6,
+    15,
+    1,
+    5
+   ],
+   "rapports": [
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1,
+      5
+     ],
+     "pari": "Quinté+",
+     "rapport": 3439.7,
+     "type": "ordre"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1,
+      5
+     ],
+     "pari": "Quinté+",
+     "rapport": 45.6,
+     "type": "désordre"
+    },
+    {
+     "combinaison": [
+      6,
+      15,
+      1,
+      5
+     ],
+     "pari": "Quinté+",
+     "rapport": 2.1,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      9,
+      15,
+      1,
+      5
+     ],
+     "pari": "Quinté+",
+     "rapport": 2.1,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      1,
+      5
+     ],
+     "pari": "Quinté+",
+     "rapport": 2.1,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1
+     ],
+     "pari": "Quinté+",
+     "rapport": 2.1,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      5
+     ],
+     "pari": "Quinté+",
+     "rapport": 2.1,
+     "type": "bonus4"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15
+     ],
+     "pari": "Quinté+",
+     "rapport": 1.8,
+     "type": "bonus3"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1
+     ],
+     "pari": "Quarté+",
+     "rapport": 739.8,
+     "type": "ordre"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1
+     ],
+     "pari": "Quarté+",
+     "rapport": 69.7,
+     "type": "désordre"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15
+     ],
+     "pari": "Quarté+",
+     "rapport": 6.1,
+     "type": "bonus3"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15
+     ],
+     "pari": "Tiercé",
+     "rapport": 98.4,
+     "type": "ordre"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15
+     ],
+     "pari": "Tiercé",
+     "rapport": 17.2,
+     "type": "désordre"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1
+     ],
+     "pari": "Multi",
+     "rapport": 357.0,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1
+     ],
+     "pari": "Multi",
+     "rapport": 71.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1
+     ],
+     "pari": "Multi",
+     "rapport": 23.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      6,
+      15,
+      1
+     ],
+     "pari": "Multi",
+     "rapport": 10.2,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      15,
+      1
+     ],
+     "pari": "2sur4",
+     "rapport": 6.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      6,
+      1
+     ],
+     "pari": "2sur4",
+     "rapport": 6.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      6,
+      15
+     ],
+     "pari": "2sur4",
+     "rapport": 6.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      1
+     ],
+     "pari": "2sur4",
+     "rapport": 6.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      15
+     ],
+     "pari": "2sur4",
+     "rapport": 6.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      6
+     ],
+     "pari": "2sur4",
+     "rapport": 6.4,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      6
+     ],
+     "pari": "Couplé",
+     "rapport": 17.8,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      6,
+      15
+     ],
+     "pari": "Couplé placé",
+     "rapport": 12.3,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      15
+     ],
+     "pari": "Couplé placé",
+     "rapport": 8.1,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9,
+      6
+     ],
+     "pari": "Couplé placé",
+     "rapport": 7.6,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9
+     ],
+     "pari": "Simple",
+     "rapport": 3.5,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      6
+     ],
+     "pari": "Simple placé",
+     "rapport": 3.6,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      15
+     ],
+     "pari": "Simple placé",
+     "rapport": 3.0,
+     "type": "simple"
+    },
+    {
+     "combinaison": [
+      9
+     ],
+     "pari": "Simple placé",
+     "rapport": 2.0,
+     "type": "simple"
+    }
+   ],
+   "source": "https://turfin.fr/arrivee-du-quinte",
+   "vue_le": "2026-11-05T16:53:42+00:00"
+  },
+  "course": {
+   "allocation_eur": 59000,
+   "corde": "gauche",
+   "date": "2026-11-05",
+   "depart_utc": "2026-11-05T12:55+00:00",
+   "discipline": "Attelé",
+   "distance_m": 2100,
+   "heure": "13:55",
+   "hippodrome": "Vincennes",
+   "liste": [
+    {
+     "nom": "Kotkie",
+     "numero": 1
+    },
+    {
+     "nom": "Isis D'herfraie",
+     "numero": 2
+    },
+    {
+     "nom": "Mateo Di Quattro",
+     "numero": 3
+    },
+    {
+     "nom": "Joker Des Chaliers",
+     "numero": 4
+    },
+    {
+     "nom": "Every Time Winner",
+     "numero": 5
+    },
+    {
+     "nom": "Humanity Pellini",
+     "numero": 6
+    },
+    {
+     "nom": "Jusseo",
+     "numero": 7
+    },
+    {
+     "nom": "Hinden",
+     "numero": 8
+    },
+    {
+     "nom": "Ready Star",
+     "numero": 9
+    },
+    {
+     "nom": "Die Hard (Ity)",
+     "numero": 10
+    },
+    {
+     "nom": "Kira Bo Face",
+     "numero": 11
+    },
+    {
+     "nom": "Kaxig In",
+     "numero": 12
+    },
+    {
+     "nom": "Knockonwood",
+     "numero": 14
+    },
+    {
+     "nom": "Competivo",
+     "numero": 15
+    },
+    {
+     "nom": "Zoom Diamant",
+     "numero": 16
+    },
+    {
+     "nom": "Niagara River",
+     "numero": 17
+    },
+    {
+     "nom": "Junkie (Swe)",
+     "numero": 18
+    }
+   ],
+   "nom": "Prix D'avranches",
+   "numero": 1,
+   "partants": 17,
+   "reunion": 1,
+   "url": "https://turfin.fr/course/2026-11-05/r1c1-vincennes-prix-d-avranches"
+  }
+ }
+}

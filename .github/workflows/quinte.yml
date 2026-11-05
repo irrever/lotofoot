@@ -1,0 +1,65 @@
+name: Quinté+ du jour
+
+on:
+  schedule:
+    # Toutes les dix minutes, de 10 h à minuit (heure de Paris). Le programme est relevé à 10 h, 11 h, 12 h et 13 h ;
+    # l’arrivée et les rapports sont relevés une heure après le départ, puis une fois publiés.
+    - cron: '*/10 8-22 * * *'
+  workflow_dispatch:
+    inputs:
+      forcer_programme:
+        description: 'Relever le programme du jour à toute heure'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+# Même file que les autres relevés : ils écrivent dans les mêmes fichiers du site, jamais en même temps.
+concurrency:
+  group: statistiques
+  cancel-in-progress: false
+
+jobs:
+  quinte:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Relever le programme et l'arrivée du Quinté+
+        env:
+          FORCER: ${{ inputs.forcer_programme && '--forcer-programme' || '' }}
+        run: python3 src/quinte.py maj $FORCER
+      - name: Construire le site et enregistrer si les données ont changé
+        run: |
+          if git diff --quiet -- data/quinte/jours.json; then
+            echo "Aucun changement."
+            exit 0
+          fi
+          python3 standalone/construire.py
+          cp standalone/site/index.html standalone/site/donnees.json standalone/site/sw.js \
+             standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png data/quinte/jours.json
+          git commit -m "Quinté+ : relevé automatique"
+          delai=2
+          for essai in 1 2 3 4; do
+            if git pull --rebase -q origin main && git push -q origin HEAD:main; then
+              echo "Quinté+ envoyé (essai $essai)."
+              exit 0
+            fi
+            git rebase --abort >/dev/null 2>&1 || true
+            if [ "$essai" -lt 4 ]; then
+              echo "Envoi refusé (essai $essai) ; nouvel essai dans $delai s."
+              sleep "$delai"
+              delai=$((delai * 2))
+            fi
+          done
+          echo "L'envoi du Quinté+ a échoué après 4 essais." >&2
+          exit 1

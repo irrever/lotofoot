@@ -2410,6 +2410,107 @@ __PWA_HEAD__
     if (S.tab === 'bilan') return viewBilan();
     return viewMethode();
   }
+  // Quinté+ du jour : programme en tête de l’application, puis arrivée et rapports une heure après le départ.
+  // Données : data/quinte/jours.json (src/quinte.py). Ce que l’on a joué reste sur cet appareil.
+  var CLE_JEU_QUINTE = 'lotofoot.quinte.jeu.v1';
+  function jourParis(instant) {
+    var v = {};
+    new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' })
+      .formatToParts(instant).forEach(function (m) { v[m.type] = m.value; });
+    return v.year + '-' + v.month + '-' + v.day;
+  }
+  function heureParis(instant) {
+    return new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit' })
+      .format(instant).replace(':', ' h ');
+  }
+  function montantEuros(x) {
+    return Number(x).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  }
+  function quinteLire(jour) {
+    try { return (JSON.parse(localStorage.getItem(CLE_JEU_QUINTE) || '{}'))[jour] || {}; } catch (err) { return {}; }
+  }
+  function quinteEcrire(jour, jeu, mise) {
+    try {
+      var t = JSON.parse(localStorage.getItem(CLE_JEU_QUINTE) || '{}');
+      t[jour] = { jeu: jeu, mise: mise };
+      localStorage.setItem(CLE_JEU_QUINTE, JSON.stringify(t));
+      return true;
+    } catch (err) { return false; }
+  }
+  // Pour chaque combinaison de 5 numéros : chevaux dans les cinq premiers, puis le rapport si la combinaison est celle de l’arrivée
+  function analyseQuinte(arrivee, jeu, mise) {
+    var ordre = arrivee.ordre;
+    return jeu.split(/\n/).map(function (l) { return l.trim(); }).filter(function (l) { return l; }).map(function (ligne) {
+      var nums = (ligne.match(/\d+/g) || []).map(Number);
+      if (nums.length !== 5) return { ligne: ligne, texte: 'il faut 5 numéros' };
+      var dans = nums.filter(function (n) { return ordre.indexOf(n) >= 0; }).length;
+      var exact = nums.join('-') === ordre.join('-');
+      var ensemble = dans === 5;
+      var base = dans + ' sur 5 dans l’arrivée';
+      if (exact || ensemble) {
+        var type = exact ? 'ordre' : 'désordre';
+        var r = (arrivee.rapports || []).filter(function (x) { return x.pari === 'Quinté+' && x.type === type; })[0];
+        if (r) return { ligne: ligne, texte: base + ' · Quinté+ ' + type + ' : ' + montantEuros(r.rapport * mise) + ' pour ' + montantEuros(mise) };
+      }
+      return { ligne: ligne, texte: base + ' · rapport non publié' };
+    });
+  }
+  function quinteAnalyseHtml(e, jour) {
+    var sauve = quinteLire(jour);
+    var mise = Number(sauve.mise) || 1;
+    var resultats = analyseQuinte(e.arrivee, sauve.jeu || '', mise);
+    var liste = resultats.length ? '<ul style="margin:8px 0 0;padding-left:18px">' + resultats.map(function (r) {
+      return '<li style="margin:4px 0">' + esc(r.ligne) + ' : ' + esc(r.texte) + '</li>';
+    }).join('') + '</ul>' : '<p class="hint" style="margin:8px 0 0">Saisissez ci-dessous ce que nous avons joué, une combinaison par ligne.</p>';
+    return '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line)">' +
+      '<p style="margin:0;font-weight:700">Ce que nous avons joué</p>' +
+      '<label class="hint" for="quinte-jeu" style="display:block;margin-top:6px">Une combinaison de 5 numéros par ligne, par exemple 9-6-15-1-5</label>' +
+      '<textarea id="quinte-jeu" rows="4" style="width:100%;box-sizing:border-box">' + esc(sauve.jeu || '') + '</textarea>' +
+      '<label class="hint" for="quinte-mise" style="display:block;margin-top:6px">Mise par combinaison (€)</label>' +
+      '<input id="quinte-mise" type="number" min="0" step="0.5" value="' + esc(mise) + '" style="width:100%;box-sizing:border-box">' +
+      '<div class="actions"><button type="button" class="btn petit" data-act="quinte-enregistrer">Enregistrer</button></div>' +
+      liste + '<p class="hint" style="margin:8px 0 0">Le rapport n’est compté que pour la combinaison exacte de l’arrivée, en ordre ou en désordre. Turfin n’affiche que les plus gros rapports : une autre combinaison reçoit « rapport non publié ». Les bonus ne sont pas calculés ici.</p></div>';
+  }
+  function quinteHtml() {
+    var maintenant = new Date();
+    var jour = jourParis(maintenant);
+    var e = (DATA.quinte || {})[jour] || null;
+    var boite = function (contenu) {
+      return '<section aria-label="Quinté+ du jour" style="margin:10px 0 0;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)">' +
+        '<p class="hint" style="margin:0 0 6px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Quinté+ du jour</p>' + contenu + '</section>';
+    };
+    if (!e || !e.course) return boite('<p class="hint" style="margin:0">Programme du jour pas encore relevé.</p>');
+    var c = e.course;
+    var depart = new Date(c.depart_utc);
+    var attente = new Date(depart.getTime() + 60 * 60 * 1000);
+    var entete = '<p style="margin:0;font-size:17px;font-weight:700">R' + esc(c.reunion) + ' · ' + esc(c.hippodrome) + ' · C' + esc(c.numero) + ' — ' + esc(c.nom) + '</p>';
+    var details = '<p style="margin:4px 0 0">Départ ' + esc(heureParis(depart)) + ' · ' + esc(String(c.discipline).toLowerCase()) +
+      ' · ' + esc(Number(c.distance_m).toLocaleString('fr-FR')) + ' m' +
+      (c.partants ? ' · ' + esc(c.partants) + ' partants' : '') +
+      (c.corde ? ' · corde à ' + esc(c.corde) : '') +
+      (c.allocation_eur ? ' · ' + esc(Number(c.allocation_eur).toLocaleString('fr-FR')) + ' € d’allocation' : '') + '</p>';
+    var partants = (c.liste && c.liste.length) ? '<details style="margin-top:8px"><summary class="hint">Partants (' + esc(c.liste.length) + ')</summary><ul style="margin:6px 0 0;padding-left:18px">' +
+      c.liste.map(function (p) { return '<li>' + esc(p.numero) + ' · ' + esc(p.nom) + '</li>'; }).join('') + '</ul></details>' : '';
+    var suite;
+    if (e.arrivee) {
+      var a = e.arrivee;
+      var rapports = (a.rapports || []).filter(function (r) { return r.pari === 'Quinté+' && (r.type === 'ordre' || r.type === 'désordre'); })
+        .map(function (r) { return esc(r.type) + ' ' + esc(montantEuros(r.rapport)); }).join(' · ');
+      suite = '<p style="margin:10px 0 0"><strong>Arrivée : ' + esc(a.ordre.join(' – ')) + '</strong></p>' +
+        '<p class="hint" style="margin:2px 0 0">' + a.arrivants.map(function (x) { return esc(x.numero) + ' ' + esc(x.nom); }).join(' · ') + '</p>' +
+        '<p style="margin:6px 0 0">Rapport Quinté+ pour 1 € : ' + rapports + '</p>' +
+        '<div class="actions"><button type="button" class="btn ghost petit" data-act="quinte-analyse">' +
+        (S.quinteAnalyse ? 'Masquer l’analyse' : 'Analyser ce que nous avons joué') + '</button></div>' +
+        (S.quinteAnalyse ? quinteAnalyseHtml(e, jour) : '');
+    } else if (e.arrivee_etat === 'introuvable') {
+      suite = '<p class="hint" style="margin:10px 0 0">Arrivée introuvable sur la source : elle n’a pas été publiée dans les trois heures suivant l’heure prévue.</p>';
+    } else if (maintenant < attente) {
+      suite = '<p class="hint" style="margin:10px 0 0">Arrivée et rapports à partir de ' + esc(heureParis(attente)) + ', une heure après le départ.</p>';
+    } else {
+      suite = '<p class="hint" style="margin:10px 0 0">Arrivée pas encore publiée : nouvel essai au prochain relevé, toutes les dix minutes.</p>';
+    }
+    return boite(entete + details + partants + suite);
+  }
   function render() {
     verrouillerEchues();
     var tabs = '<nav class="tabs" role="tablist" aria-label="Sections">' + TABS.map(function (t) {
@@ -2419,9 +2520,9 @@ __PWA_HEAD__
     app.innerHTML = '<div class="page">' +
       '<header class="head"><div class="marque">' + LOGO + '<div><h1>Lotofoot</h1>' +
       '<p class="accroche">Pronostics par statistiques · aucune cote de bookmaker</p></div></div>' + '<div class="head-barre">' + etatDonnees() + reglagesTheme() + '</div></header>' +
-      tabs +
+      quinteHtml() + tabs +
       '<main class="contenu" role="tabpanel" aria-labelledby="tab-' + S.tab + '">' + panel() + '</main>' +
-      '<footer class="pied"><p class="foot-note">Sources : football-data.co.uk (résultats et statistiques de match). ' + esc(fraicheurDonnees()) + '. ' + esc(S.miseAJour) + '</p></footer>' +
+      '<footer class="pied"><p class="foot-note">Sources : football-data.co.uk (résultats et statistiques de match). Quinté+ : turfin.fr (arrivée et rapports PMU). ' + esc(fraicheurDonnees()) + '. ' + esc(S.miseAJour) + '</p></footer>' +
       '</div>';
   }
   function agir(action, el) {
@@ -2441,6 +2542,14 @@ __PWA_HEAD__
     else if (action === 'charger-grille') { chargerGrille(); }
     else if (action === 'masquer-grille') { masquerGrille(el.getAttribute('data-cle')); render(); }
     else if (action === 'reafficher-grilles') { reafficherGrilles(); render(); }
+    else if (action === 'quinte-analyse') { S.quinteAnalyse = !S.quinteAnalyse; render(); }
+    else if (action === 'quinte-enregistrer') {
+      var jourQ = jourParis(new Date());
+      var miseQ = Number((document.getElementById('quinte-mise') || {}).value) || 1;
+      S.message = quinteEcrire(jourQ, (document.getElementById('quinte-jeu') || {}).value || '', miseQ) ? '' : 'Enregistrement impossible sur cet appareil.';
+      S.quinteAnalyse = true;
+      render();
+    }
     else if (action === 'mettre-a-jour') { mettreAJour(); }
     else if (action === 'recharger') { window.location.reload(); }
     else if (action === 'verrouiller') {
