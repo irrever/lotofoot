@@ -2199,6 +2199,33 @@ __PWA_HEAD__
       '<p class="hint" style="margin:3px 0 0">' + detail + '</p></div>' + badge + '</header>';
   }
   // Ligne d’un match, repliée : un clic déplie son bilan (prévu, résultat, raison)
+  // Libellés des issues, pour les fiches de match
+  var ISSUE_LIBELLE = { '1': 'victoire à domicile', 'N': 'match nul', '2': 'victoire à l’extérieur' };
+  // Fiche d’un match : seulement son bilan (prévu, résultat, raisons). Le titre et le score restent sur la ligne au-dessus.
+  function ficheMatch(m) {
+    var verdict = m.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">bon pronostic ✓</span>' :
+      (m.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">pronostic raté ✗</span>' : '');
+    var raisons = (m.raisons && m.raisons.length) ? '<ul style="margin:6px 0 0;padding-left:18px">' + m.raisons.map(function (r) {
+      return '<li style="margin:5px 0">' + esc(r) + '</li>';
+    }).join('') + '</ul>' : '<p class="hint" style="margin:6px 0 0">Rien de particulier à signaler.</p>';
+    var barre = m.pourcent ? barreHtml(m.pourcent['1'] / 100, m.pourcent['N'] / 100, m.pourcent['2'] / 100) : '';
+    return '<div style="margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2)">' +
+      '<p class="hint" style="margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Bilan du match</p>' +
+      '<p style="margin:0 0 6px">Prévu : <strong>' + esc(ISSUE_LIBELLE[m.pronostic] || '—') + '</strong></p>' + barre +
+      (m.issue ? '<p style="margin:8px 0 0">Résultat : <strong>' + esc(ISSUE_LIBELLE[m.issue]) + '</strong> · ' + verdict + '</p>' : '') +
+      '<p class="hint" style="margin:10px 0 0;font-weight:700">Pourquoi</p>' + raisons +
+      (m.reconstituee ? '<p class="hint" style="margin:10px 0 0">Prévision reconstituée après coup, à partir des données d’avant le match.</p>' : '') +
+      '</div>';
+  }
+  // Un de mes choix (grille enregistrée) : ce que j’ai joué, s’il est couvert, puis le bilan du modèle sur ce match
+  function ficheJeu(p, pub, j) {
+    var verdict = j.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">couvert ✓</span>' :
+      (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">non couvert ✗</span>' : '<span class="hint">résultat pas encore publié</span>');
+    return '<div style="margin-top:8px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--surface)">' +
+      '<p class="hint" style="margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:.04em">Mon choix</p>' +
+      '<p style="margin:0">Joué : <strong>' + esc(j.libelle) + '</strong> (' + esc(j.type.toLowerCase()) + ') · ' + verdict + '</p></div>' +
+      (pub ? ficheMatch(pub) : '<p class="hint" style="margin:8px 0 0">Pas de prévision du modèle enregistrée pour ce match.</p>');
+  }
   function matchCompact(m) {
     var marque = m.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓</span>' :
       (m.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '');
@@ -2206,8 +2233,8 @@ __PWA_HEAD__
     return '<details style="border-top:1px solid var(--line);padding:8px 0">' +
       '<summary style="display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer;list-style:none">' +
       '<span style="min-width:0">' + esc(m.n) + ' · ' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</span>' +
-      '<span style="white-space:nowrap">' + score + marque + '</span></summary>' +
-      '<div style="margin-top:8px">' + carteMatch(m) + '</div></details>';
+      '<span style="white-space:nowrap">' + score + marque + ' <span class="hint" style="font-size:12px">▾ bilan</span></span></summary>' +
+      ficheMatch(m) + '</details>';
   }
   // Une grille suivie : son bilan (le sien seulement), puis le constat, puis ses matchs repliés
   function grilleResultats(g) {
@@ -2251,7 +2278,7 @@ __PWA_HEAD__
         '<summary style="display:flex;justify-content:space-between;gap:10px;align-items:center;cursor:pointer;list-style:none">' +
         '<span class="hint" style="min-width:0">' + esc(p.m.n) + ' · ' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span>' +
         '<span style="white-space:nowrap">' + (pub ? '<strong>' + esc(pub.score) + '</strong> ' : '<span class="hint">à venir</span> ') + marque + '</span></summary>' +
-        '<p style="font-size:14px;margin:6px 0 0">Prévu : <strong>' + esc(j.libelle) + '</strong> (' + esc(j.type.toLowerCase()) + ')</p></details>';
+        ficheJeu(p, pub, j) + '</details>';
     }).join('');
     var ton = g.cloture ? (enCoursCloture(g.cloture) ? 'var(--warn)' : 'var(--info)') : 'var(--line)';
     var titre = (gp ? 'Loto Foot ' + gp.format + ' · grille N°' + gp.numero : 'Loto Foot ' + g.format) + ' · ' + picks.length + ' matchs';

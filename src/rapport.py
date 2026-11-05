@@ -258,17 +258,81 @@ def raison_erreur(e, res):
     return cause, texte, facteurs
 
 
+def raisons_de(e, res):
+    """Ce que le modèle retenait pour ce match, et ce qui l’a contredit : écart de niveau, marge entre les issues,
+    absences, niveau estimé. Chaque raison est une phrase précise, tirée des données enregistrées. Le score n’est pas
+    répété : il reste sur la ligne du match."""
+    prono, issue, p = e['pronostic'], res['issue'], e['proba']
+    a, b = (int(x) for x in res['score'].split('–'))
+    ecart = abs(float(e.get('ecart_elo') or 0))
+    equipe = e['domicile'] if prono == '1' else (e['exterieur'] if prono == '2' else None)
+    marge = (p[prono] - max(v for k, v in p.items() if k != prono)) * 100
+    raisons = []
+    if prono == issue:
+        if equipe and ecart >= 40:
+            raisons.append('L’écart de niveau (%d points Elo) allait dans le sens de %s : le modèle a bien lu le niveau.'
+                           % (ecart, equipe))
+        else:
+            raisons.append('L’écart de niveau était faible (%d points Elo) : le bon résultat tient à la marge du modèle '
+                           '(%d points).' % (ecart, marge))
+        if abs(a - b) >= 2:
+            raisons.append('Victoire nette : le résultat n’a pas été serré.')
+    elif issue == 'N':
+        if ecart < 60:
+            raisons.append('Équipes proches : écart de %d points Elo seulement, un nul était plausible.' % ecart)
+        else:
+            raisons.append('L’écart de %d points Elo allait dans le sens du pronostic, mais le match s’est fermé : le niveau '
+                           'mesuré ne suffit pas à prévoir un nul.' % ecart)
+        raisons.append('Le modèle donnait %s %% au nul, contre %s %% au pronostic.' % (pct(p['N']), pct(p[prono])))
+    elif p[prono] >= SEUIL_FAVORI:
+        raisons.append('%s était favori à %s %% et a perdu.' % (equipe or 'Le nul', pct(p[prono])))
+        if ecart >= 100:
+            raisons.append('L’écart de %d points Elo était fort : le résultat contredit le niveau mesuré. Cause probable hors '
+                           'modèle : forme récente, blessures non signalées, contexte du match.' % ecart)
+        elif ecart >= 40:
+            raisons.append('L’écart de %d points Elo était modéré : une défaite restait plausible.' % ecart)
+        else:
+            raisons.append('L’écart de niveau n’était que de %d points Elo : le favori tenait surtout à la marge du modèle '
+                           '(%d points).' % (ecart, marge))
+    else:
+        raisons.append('Aucune issue nette : %s à %s %%, %s à %s %%, soit une marge de %d points.'
+                       % (NOM_ISSUE[prono], pct(p[prono]), NOM_ISSUE[issue], pct(p[issue]), marge))
+        if ecart < 40:
+            raisons.append('Écart de niveau de %d points Elo seulement : le modèle n’avait pas de raison forte de trancher.'
+                           % ecart)
+        else:
+            raisons.append('Écart de %d points Elo, mais la marge entre les issues était trop faible pour trancher.' % ecart)
+    if issue not in (prono, 'N'):
+        if abs(a - b) >= 2:
+            raisons.append('Défaite nette : l’erreur est franche, ce n’est pas un détail de match.')
+        else:
+            raisons.append('Un seul but d’écart : un match qui aurait pu basculer.')
+    mal = (e.get('malus') or {}).get('domicile' if prono == '1' else 'exterieur') if prono in ('1', '2') else None
+    if equipe and mal and mal <= MALUS_SIGNIFICATIF:
+        raisons.append('Absences signalées chez %s (malus de %d points Elo) : prises en compte, mais leur effet a pu être '
+                       'sous-estimé.' % (equipe, -mal))
+    if e.get('hypothese'):
+        raisons.append('Niveau estimé pour %s, club hors des 16 championnats : c’est une source d’erreur probable.'
+                       % ' et '.join(e['hypothese']))
+    if len(set(e.get('ligues') or [])) > 1:
+        raisons.append('Match entre championnats (%s et %s) : l’écart de niveau entre eux est une estimation.'
+                       % tuple(e['ligues']))
+    return raisons
+
+
 def analyser(e, res):
-    """Statut, cause principale, facteurs et explication d’un match de grille."""
+    """Statut, cause principale, facteurs, explication et raisons d’un match de grille."""
     if 'proba' not in e:
-        return {'statut': 'sans_pronostic', 'cause': None, 'facteurs': [],
+        return {'statut': 'sans_pronostic', 'cause': None, 'facteurs': [], 'raisons': [],
                 'explication': 'Pas de pronostic : %s.' % e.get('non_prevu', 'donnée manquante')}
     if res is None:
-        return {'statut': 'attente', 'cause': None, 'facteurs': [], 'explication': 'Résultat pas encore publié.'}
+        return {'statut': 'attente', 'cause': None, 'facteurs': [], 'raisons': [],
+                'explication': 'Résultat pas encore publié.'}
     if e['pronostic'] == res['issue']:
-        return {'statut': 'ok', 'cause': None, 'facteurs': facteurs_de(e), 'explication': explication_ok(e)}
+        return {'statut': 'ok', 'cause': None, 'facteurs': facteurs_de(e), 'explication': explication_ok(e),
+                'raisons': raisons_de(e, res)}
     cause, texte, facteurs = raison_erreur(e, res)
-    return {'statut': 'ko', 'cause': cause, 'facteurs': facteurs, 'explication': texte}
+    return {'statut': 'ko', 'cause': cause, 'facteurs': facteurs, 'explication': texte, 'raisons': raisons_de(e, res)}
 
 
 def bilan(analyses):
@@ -312,7 +376,7 @@ def match_resume(x, noms):
             'source': res['source'] if res else None,
             'statut': a['statut'], 'cause': a['cause'], 'cause_libelle': CAUSES.get(a['cause']),
             'explication': a['explication'], 'facteurs': [FACTEURS[f] for f in a['facteurs']],
-            'reconstituee': bool(e.get('reconstituee'))}
+            'reconstituee': bool(e.get('reconstituee')), 'raisons': a.get('raisons', [])}
 
 
 def constat_grille(matchs):

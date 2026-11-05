@@ -214,5 +214,25 @@ class Constat(unittest.TestCase):
                          'Pas encore de résultat à comparer.')
 
 
+class Raisons(unittest.TestCase):
+    def test_favori_battu_avec_ecart_fort(self):
+        r = rapport.raisons_de(entree(ecart_elo=150), {'issue': '2', 'score': '0 – 1'})
+        self.assertIn('Lens était favori à 60 % et a perdu.', r)
+        self.assertTrue(any('écart de 150 points Elo était fort' in x for x in r))
+        self.assertFalse(any('(0 – 1)' in x or '0–1' in x for x in r))  # le score reste sur la ligne du match
+
+    def test_nul_entre_equipes_proches(self):
+        e = entree(ecart_elo=20, pronostic='1', proba={'1': 0.4, 'N': 0.3, '2': 0.3})
+        r = rapport.raisons_de(e, {'issue': 'N', 'score': '1 – 1'})
+        self.assertIn('Équipes proches : écart de 20 points Elo seulement, un nul était plausible.', r)
+        self.assertIn('Le modèle donnait 30 % au nul, contre 40 % au pronostic.', r)
+
+    def test_absences_et_niveau_estime(self):
+        e = entree(ecart_elo=60, malus={'domicile': -13, 'exterieur': 0}, hypothese=['Bodø/Glimt'])
+        r = rapport.raisons_de(e, {'issue': '2', 'score': '0 – 1'})
+        self.assertTrue(any('Absences signalées chez Lens (malus de 13 points Elo)' in x for x in r))
+        self.assertTrue(any('Niveau estimé pour Bodø/Glimt' in x for x in r))
+
+
 if __name__ == '__main__':
     unittest.main()
