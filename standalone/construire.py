@@ -35,9 +35,6 @@ donnees['bilan'] = dernier_bilan()
 RESULTATS = ROOT / 'data/resultats.json'   # matchs de la veille et précision des grilles (src/rapport.py)
 if RESULTATS.exists():
     donnees['resultats'] = json.load(open(RESULTATS, encoding='utf-8'))
-QUINTE = ROOT / 'data/quinte/jours.json'   # Quinté+ du jour : programme, arrivée et rapports (src/quinte.py)
-if QUINTE.exists():
-    donnees['quinte'] = json.load(open(QUINTE, encoding='utf-8'))
 embarque = None
 if GRILLE_PERSONNELLE.exists():
     embarque = dict(donnees, grilles=[json.load(open(GRILLE_PERSONNELLE, encoding='utf-8'))])
