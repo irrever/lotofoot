@@ -2,8 +2,10 @@ name: Résultats Lotofoot
 
 on:
   schedule:
-    # Toutes les heures, de 12 h à 2 h (heure de Paris) : un relevé peu après la fin des matchs
-    - cron: '0 11-23,0-1 * * *'
+    # Toutes les heures de 12 h à 18 h, toutes les 15 minutes de 18 h à 0 h 45, puis toutes les heures jusqu’à 2 h (heure de Paris)
+    - cron: '0 11-16 * * *'
+    - cron: '*/15 17-23 * * *'
+    - cron: '0 0-1 * * *'
   workflow_dispatch:
 
 permissions:
