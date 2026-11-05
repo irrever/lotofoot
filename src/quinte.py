@@ -31,7 +31,7 @@ JETON_ROBOTS = 'lotofoot-quinte'
 FUSEAU = zoneinfo.ZoneInfo('Europe/Paris')
 DELAI_ARRIVEE = dt.timedelta(hours=1)    # résultats relevés une heure après le départ
 FIN_RECHERCHE = dt.timedelta(hours=3)    # au-delà, sans arrivée publiée, la course est notée « introuvable »
-HEURES_PROGRAMME_UTC = (8, 9, 10)        # heures UTC, soit 9 h, 10 h et 11 h à Paris : le programme du jour y est relevé, une fois par heure au plus
+HEURES_PROGRAMME_UTC = (8, 9, 10)        # le programme du jour est relevé à ces heures (une fois par heure au plus)
 JOURS_CONSERVES = 14
 MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre',
         'décembre']
