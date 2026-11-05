@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-04",
+ "maj": "2026-11-05",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "matchs": [
   {
@@ -36,7 +36,8 @@
    "score": "0-2",
    "vu": "2026-11-04",
    "grilles": [
-    "Loto Foot 7 n137"
+    "Loto Foot 7 n137",
+    "Loto Foot 15 n91"
    ]
   },
   {
@@ -45,7 +46,8 @@
    "score": "0-0",
    "vu": "2026-11-04",
    "grilles": [
-    "Loto Foot 7 n137"
+    "Loto Foot 7 n137",
+    "Loto Foot 15 n91"
    ]
   },
   {
@@ -73,7 +75,8 @@
    "score": "3-0",
    "vu": "2026-11-04",
    "grilles": [
-    "Loto Foot 7 n137"
+    "Loto Foot 7 n137",
+    "Loto Foot 15 n91"
    ]
   },
   {
@@ -82,7 +85,8 @@
    "score": "0-3",
    "vu": "2026-11-04",
    "grilles": [
-    "Loto Foot 7 n137"
+    "Loto Foot 7 n137",
+    "Loto Foot 15 n91"
    ]
   },
   {
@@ -138,7 +142,8 @@
    "score": "4-0",
    "vu": "2026-11-04",
    "grilles": [
-    "Loto Foot 7 n137"
+    "Loto Foot 7 n137",
+    "Loto Foot 15 n91"
    ]
   },
   {
@@ -188,7 +193,8 @@
    "score": "3-2",
    "vu": "2026-11-04",
    "grilles": [
-    "Loto Foot 7 n137"
+    "Loto Foot 7 n137",
+    "Loto Foot 15 n91"
    ]
   },
   {
@@ -304,7 +310,88 @@
    "score": "0-6",
    "vu": "2026-11-04",
    "grilles": [
-    "Loto Foot 7 n137"
+    "Loto Foot 7 n137",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "AEK Athnes",
+   "exterieur": "Real Madrid",
+   "score": "2-3",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "Dortmund",
+   "exterieur": "Betis Sville",
+   "score": "2-1",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "FC Porto",
+   "exterieur": "Naples",
+   "score": "4-1",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "Fenerbahce",
+   "exterieur": "Liverpool",
+   "score": "3-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "Lens",
+   "exterieur": "Como 1907",
+   "score": "1-9",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "PSV Eindhoven",
+   "exterieur": "Club Bruges",
+   "score": "1-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "RB Leipzig",
+   "exterieur": "Man. City",
+   "score": "2-3",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "Slavia Prague",
+   "exterieur": "Arsenal",
+   "score": "1-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 8 n153",
+    "Loto Foot 15 n91"
    ]
   }
  ]
