@@ -130,10 +130,10 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .form-grille .large { grid-column: 1 / -1; }
 @media (min-width: 680px) { .form-grille { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .rows { display: grid; gap: 10px; margin-top: 16px; }
-.rowform { display: grid; grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: center; }
-.rowform .num { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface-2); font: 600 14px/1 var(--mono); }
-.rowform .txtin { min-height: 44px; }
-.rowform .err { grid-column: 2 / 4; }
+.rowform { display: grid; grid-template-columns: 24px minmax(0, 1fr) 26px minmax(0, 1fr); gap: 3px; align-items: center; }
+.rowform .num { display: grid; place-items: center; width: 24px; height: 24px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface-2); font: 600 14px/1 var(--mono); }
+.rowform .txtin { min-height: 44px; padding-left: 8px; padding-right: 8px; }
+.rowform .err { grid-column: 2 / 5; }
 
 /* Grilles enregistrées : une tuile par grille, couleur selon l’état */
 .tuiles { display: grid; gap: 10px; }
@@ -208,14 +208,18 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .nouveau-tag { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-line); }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
 .alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
-/* Choix du modèle sur les champs des équipes : vert = 1, bleu = 2, gris = nul ; un double est coupé en diagonale */
-.txtin.c-1 { border-color: var(--c1); background: var(--c1-soft); }
-.txtin.c-2 { border-color: var(--c2); background: var(--c2-soft); }
-.txtin.c-N { border-color: var(--cN); background: var(--cN-soft); }
-.txtin.c-1N { border-color: var(--c1); background: linear-gradient(to bottom right, var(--c1-soft) 50%, var(--cN-soft) 50%); }
-.txtin.c-N2 { border-color: var(--c2); background: linear-gradient(to bottom right, var(--cN-soft) 50%, var(--c2-soft) 50%); }
-.txtin.c-12 { border-color: var(--c1); background: linear-gradient(to bottom right, var(--c1-soft) 50%, var(--c2-soft) 50%); }
-.txtin.c-123 { border-color: var(--cN); background: linear-gradient(to bottom right, var(--c1-soft) 33%, var(--cN-soft) 33%, var(--cN-soft) 66%, var(--c2-soft) 66%); }
+/* Choix du modèle entre les deux équipes : un 1 ou un 2 colore l’équipe concernée ; la case du milieu n’existe que pour un match nul, cochée */
+.txtin.m-1 { border-color: var(--c1); background: color-mix(in srgb, var(--c1) 30%, var(--surface)); }
+.txtin.m-2 { border-color: var(--c2); background: color-mix(in srgb, var(--c2) 30%, var(--surface)); }
+.mchoix { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 32px; border-radius: 7px; }
+.mchoix.coche { background: var(--cN); color: var(--bg); font: 700 14px/1 var(--sans); }
+/* Liste des choix sous le titre d’une grille validée : une ligne par match, le choix retenu en couleur */
+.recap { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 6px; }
+.recap-ligne { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.recap-ligne:last-child { border-bottom: 0; }
+.recap-equipes { min-width: 0; overflow-wrap: anywhere; font-size: 14px; }
+.recap-choix { display: inline-flex; gap: 4px; }
+.recap-choix .puce.is-off { opacity: .22; }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -1509,6 +1513,22 @@ __PWA_HEAD__
       '<span class="tuile-proba"><span class="label">Grille juste</span><strong>' + esc(probGrille(res.proba_grille)) + '</strong></span>' +
       '</button>';
   }
+  // Liste des choix de la grille, une ligne par match : domicile – extérieur, pastilles 1 / N / 2, type du pronostic
+  function recapHtml(matchs) {
+    var couleurs = { '1': 'p1', 'N': 'pN', '2': 'p2' };
+    var lignes = matchs.map(function (m) {
+      var pick = m.pronostic || '';
+      var pastilles = ['1', 'N', '2'].map(function (k) {
+        return '<span class="puce ' + couleurs[k] + (pick.indexOf(k) !== -1 ? '' : ' is-off') + '">' + k + '</span>';
+      }).join('');
+      var type = typeDe(pick);
+      return '<li class="recap-ligne"><span class="num">' + esc(m.n) + '</span>' +
+        '<span class="recap-equipes">' + esc(m.domicile) + ' – ' + esc(m.exterieur) + '</span>' +
+        '<span class="recap-choix">' + pastilles + '</span>' +
+        '<span class="tag' + (type === 'Simple' ? '' : ' nouveau-tag') + '">' + esc(type) + '</span></li>';
+    }).join('');
+    return '<ol class="recap">' + lignes + '</ol>';
+  }
   function viewGrille() {
     if (S.nouvelle) return viewNouvelle();
     var gs = sortedGrilles();
@@ -1536,6 +1556,7 @@ __PWA_HEAD__
       '<p class="hint">Sur téléphone, le menu d’envoi s’ouvre : choisis « Enregistrer dans Fichiers » pour garder le fichier. « Copier le texte » permet de coller la grille dans une note ou un message.</p>';
     var fiche = zone(g.verrouillee ? 'ok' : 'warn', 2, esc(g.nom),
       '<p class="hint">' + esc(formatDe(g)) + ' matchs · créée le ' + esc(dateFr(g.creee)) + '</p>' +
+      (matchs.length ? recapHtml(matchs) : '') +
       '<div class="kpis"><div class="kpi kpi-grand"><span class="label">Grille complète juste</span><strong>' + esc(probGrille(res.proba_grille)) + '</strong></div>' +
       '<div class="kpi"><span class="label">Prix</span><strong>' + (matchs.length ? '×' + prixDe(matchs) : '—') + '</strong></div>' +
       '<div class="kpi"><span class="label">Doubles · triples</span><strong>' + nDoubles + ' · ' + nTriples + '</strong></div></div>' +
@@ -1555,22 +1576,28 @@ __PWA_HEAD__
       zone('info', 1, 'Mes grilles', '<div class="tuiles">' + gs.map(function (x) { return tuile(x, x.id === g.id); }).join('') + '</div>', nouvelleBtn) +
       fiche + copie + erreurs + pronostics + methodeCalcul + sauvegardeHtml(4);
   }
-  // Choix du modèle sur les champs des équipes : vert pour 1 (domicile), bleu pour 2 (extérieur), gris pour le nul.
-  // Un double coupe le champ en diagonale, du bas à gauche au haut à droite : 1 et nul, nul et 2.
+  // Choix du modèle de chaque match, pour les équipes et la case du milieu
   function choixLignes(f) {
     var rf = resoudreFormulaire(f);
     if (!rf.ok) return null;
     var res = calculerGrille(rf.paires, f.doubles, f.triples);
     return (res.erreurs || !res.matchs) ? null : res.matchs;
   }
+  // Un 1 colore l’équipe à domicile, un 2 colore l’équipe à l’extérieur, double ou non
   function classeChoix(m, cote) {
-    if (!m) return '';
-    var pick = m.pronostic || '';
-    var h1 = pick.indexOf('1') !== -1, hN = pick.indexOf('N') !== -1, h2 = pick.indexOf('2') !== -1;
-    if (h1 && hN && h2) return ' c-123'; // triple : trois couleurs en diagonale, sur les deux champs
-    if (h1 && h2) return ' c-12';        // double 1 et 2 : vert et bleu en diagonale, sur les deux champs
-    if (cote === 'dom') return h1 && hN ? ' c-1N' : h1 ? ' c-1' : hN ? ' c-N' : '';
-    return h2 && hN ? ' c-N2' : h2 ? ' c-2' : hN ? ' c-N' : '';
+    var pick = (m && m.pronostic) || '';
+    if (cote === 'dom') return pick.indexOf('1') !== -1 ? ' m-1' : '';
+    return pick.indexOf('2') !== -1 ? ' m-2' : '';
+  }
+  // La case du milieu n’existe que pour un match nul ; elle est cochée quand le nul fait partie du choix
+  function centreChoix(m) {
+    var pick = (m && m.pronostic) || '';
+    if (pick.indexOf('N') === -1) return '<span class="mchoix" aria-hidden="true"></span>';
+    return '<span class="mchoix coche" aria-label="Match nul retenu">✓</span>';
+  }
+  // Légende de la saisie : la case cochée correspond au match nul
+  function legendeChoixHtml() {
+    return '<span class="legende"><span class="puce p1">1</span> domicile <span class="mchoix coche">✓</span> match nul <span class="puce p2">2</span> extérieur</span>';
   }
   function viewNouvelle() {
     var f = S.form || (S.form = formVide());
@@ -1579,6 +1606,7 @@ __PWA_HEAD__
     var lignes = f.rows.map(function (r, i) {
       return '<div class="rowform"><span class="num">' + (i + 1) + '</span>' +
         '<input class="txtin' + classeChoix(picksL && picksL[i], 'dom') + '" type="text" list="liste-equipes" autocomplete="off" data-champ="dom" data-i="' + i + '" placeholder="Domicile" aria-label="Match ' + (i + 1) + ', domicile" value="' + esc(r.dom) + '">' +
+        centreChoix(picksL && picksL[i]) +
         '<input class="txtin' + classeChoix(picksL && picksL[i], 'ext') + '" type="text" list="liste-equipes" autocomplete="off" data-champ="ext" data-i="' + i + '" placeholder="Extérieur" aria-label="Match ' + (i + 1) + ', extérieur" value="' + esc(r.ext) + '">' +
         (r.err ? '<div class="err">' + esc(r.err) + '</div>' : '') + '</div>';
     }).join('');
@@ -1607,7 +1635,7 @@ __PWA_HEAD__
       '</div>';
     var saisie = '<div class="btns">' + charger + '<label class="btn" for="fichier-csv">Importer un fichier CSV</label>' +
       '<input id="fichier-csv" type="file" accept=".csv,text/csv" style="display:none"></div>' +
-      choixHtml + '<div class="rows">' + lignes + '</div>' + (picksL ? '<p style="margin:10px 0 0">' + legendeHtml() + '</p>' : '') +
+      choixHtml + '<div class="rows">' + lignes + '</div>' + (picksL ? '<p style="margin:10px 0 0">' + legendeChoixHtml() + '</p>' : '') +
       '<p class="hint">Équipe à domicile, puis équipe à l’extérieur. Les noms proposés viennent des 16 championnats suivis.</p>' +
       (f.info ? '<p class="flash" role="status">' + esc(f.info) + '</p>' : '') + datalist;
     return '<div class="page-head"><div><h2 class="page-title">Nouvelle grille</h2>' +
