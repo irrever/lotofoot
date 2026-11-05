@@ -325,6 +325,54 @@
    ]
   },
   {
+   "domicile": "AZ Alkmaar",
+   "exterieur": "Juventus Turin",
+   "score": "1-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 7 n138",
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
+   "domicile": "Anderlecht",
+   "exterieur": "Salzbourg",
+   "score": "2-0",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
+   "domicile": "Celta Vigo",
+   "exterieur": "Saint-Gilloise",
+   "score": "1-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 7 n138",
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
+   "domicile": "Celtic",
+   "exterieur": "Besiktas",
+   "score": "3-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 7 n138",
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
+   "domicile": "Crystal Palace",
+   "exterieur": "Hoffenheim",
+   "score": "1-1",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
    "domicile": "Dortmund",
    "exterieur": "Betis Sville",
    "score": "2-1",
@@ -355,6 +403,16 @@
    ]
   },
   {
+   "domicile": "Getafe",
+   "exterieur": "Brighton Hove",
+   "score": "0-1",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 7 n138",
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
    "domicile": "Lens",
    "exterieur": "Como 1907",
    "score": "1-9",
@@ -362,6 +420,35 @@
    "grilles": [
     "Loto Foot 8 n153",
     "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "Leverkusen",
+   "exterieur": "Marseille",
+   "score": "0-1",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 7 n138",
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
+   "domicile": "Milan AC",
+   "exterieur": "Ferencvaros",
+   "score": "0-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
+   "domicile": "Monaco",
+   "exterieur": "Nordsjaelland",
+   "score": "2-0",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 7 n138",
+    "Loto Foot 12 n96"
    ]
   },
   {
@@ -385,6 +472,15 @@
    ]
   },
   {
+   "domicile": "Real Sociedad",
+   "exterieur": "Lyon",
+   "score": "1-1",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
    "domicile": "Slavia Prague",
    "exterieur": "Arsenal",
    "score": "1-2",
@@ -392,6 +488,25 @@
    "grilles": [
     "Loto Foot 8 n153",
     "Loto Foot 15 n91"
+   ]
+  },
+  {
+   "domicile": "Sparta Prague",
+   "exterieur": "Bournemouth",
+   "score": "1-3",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 12 n96"
+   ]
+  },
+  {
+   "domicile": "Sunderland",
+   "exterieur": "Dinamo Zagreb",
+   "score": "0-2",
+   "vu": "2026-11-05",
+   "grilles": [
+    "Loto Foot 7 n138",
+    "Loto Foot 12 n96"
    ]
   }
  ]
