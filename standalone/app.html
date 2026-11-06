@@ -208,6 +208,7 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .nouveau-tag { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-line); }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
 .alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
+.alerte.alerte-surprise { border-left-color: #c62828; box-shadow: inset 0 0 0 2px #c62828; }
 /* Choix du modèle entre les deux équipes : un 1 ou un 2 colore l’équipe concernée ; la case du milieu n’existe que pour un match nul, cochée */
 .txtin.m-1 { border-color: var(--c1); background: color-mix(in srgb, var(--c1) 30%, var(--surface)); }
 .txtin.m-2 { border-color: var(--c2); background: color-mix(in srgb, var(--c2) 30%, var(--surface)); }
@@ -1498,6 +1499,10 @@ __PWA_HEAD__
     var pronos = pick
       ? '<span class="pronos-label">Pronostic</span> ' + casesChoix(pick) + ' <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(m.confiance, 0) + '</span>'
       : '<span class="pronos-label">Pas de pronostic</span>';
+    var favori = Math.max(p['1'] || 0, p['2'] || 0);
+    var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
+    var pubM = resultatsPublies()[clePaire(m.domicile, m.exterieur)];
+    var surprise = pubM && pubM.issue === out && ((p[fav] || 0) - (p[out] || 0)) >= 0.3 ? pubM : null;
     var det = m.source === 'hypothese' ? '' : comparaison(m);
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
@@ -1507,6 +1512,7 @@ __PWA_HEAD__
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span></div></div>' +
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
+      (surprise ? '<div class="alerte alerte-surprise">Surprise du jour : le favori à ' + pc(favori, 0) + ' a perdu (' + esc(surprise.score) + ').</div>' : (favori >= 0.6 ? '<div class="alerte">Méfiance : favori à ' + pc(favori, 0) + ', il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') + '</div>' : '')) +
       (m.raison ? '<p class="raison">' + esc(m.raison) + '</p>' : '') +
       (m.alertes && m.alertes.length ? alertesHtml(m.alertes, suivi.nouvelles) : '') +
       (m.hypothese_texte ? '<p class="hint">Hypothèse : ' + esc(m.hypothese_texte) + '</p>' : '') +
