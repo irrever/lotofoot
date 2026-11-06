@@ -2469,6 +2469,7 @@ __PWA_HEAD__
         entetteGrille(esc(g.nom), g.cloture, esc('Grille à vérifier : ' + (res && res.erreurs ? res.erreurs.join(' ') : 'données incomplètes'))) + bouton + '</article>';
     }
     var picks = res.matchs.map(function (m) { return { cle: clePaire(m.domicile, m.exterieur), pronostic: m.pronostic, m: m }; });
+    var cand = candidatSurprise(res.matchs);
     var gp = grillePubliee(picks, g.format);
     var nDoubles = picks.filter(function (p) { return p.pronostic.length === 2; }).length;
     var nTriples = picks.filter(function (p) { return p.pronostic.length === 3; }).length;
@@ -2482,7 +2483,7 @@ __PWA_HEAD__
         (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '<span class="hint">—</span>');
       return '<details style="border-left:4px solid var(--line);padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
         '<summary class="ligne-choix"><span class="ligne-gauche"><span class="case-bilan' + (pub && j.statut === 'ok' ? ' coche' : '') + '"></span><span class="ligne-num">' + esc(p.m.n) + '</span></span>' +
-        '<span class="ligne-equipes">' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + '</span>' +
+        '<span class="ligne-equipes">' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + (p.m === cand ? ' <span class="tag surprise-tag">Match surprise</span>' : '') + '</span>' +
         casesChoix(p.pronostic) +
         '<span class="ligne-resultat">' + (pub ? esc(pub.score) + ' · ' + (j.statut === 'ok' ? 'couvert' : 'non couvert') : 'à venir') + '</span></summary>' +
         ficheJeu(p, pub, j) + '</details>';
