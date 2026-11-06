@@ -1592,7 +1592,7 @@ __PWA_HEAD__
     var sf = st[nomCanonique(tf.equipe)] || {}, so = st[nomCanonique(to.equipe)] || {};
     if (!Object.keys(sf).length && !Object.keys(so).length) return null;
     var scf = scoreEurope(tf, sf), sco = scoreEurope(to, so), ecart = scf - sco;
-    return { fav: fav, out: out, nomFav: tf.equipe, nomOut: to.equipe, scf: scf, sco: sco, ecart: ecart, contre: ecart <= -2, couvre: p[out] || 0 };
+    return { fav: fav, out: out, nomFav: tf.equipe, nomOut: to.equipe, scf: scf, sco: sco, ecart: ecart, contre: ecart <= -2, couvre: p[out] || 0, probas: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 } };
   }
   function europeLigneHtml(m, pick) {
     var d = europeDiag(m);
@@ -1600,9 +1600,19 @@ __PWA_HEAD__
     var fmt = function (x) { return (x > 0 ? '+' : '') + x; };
     var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
       (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : ' : seuil non atteint, pas de contre-pronostic.');
-    var choix = d.contre
-      ? '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' · <span class="pronos-label">Intervertie</span> ' + casesContre(d.out) + ' <span class="hint">' + d.out + ', couvre ' + pc(d.couvre, 0) + '</span></div>'
-      : '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">(pas de contre-pronostic)</span></div>';
+    var cle = clePaire(m.domicile, m.exterieur), choixValide = lireContre()[cle] || '', pr = d.probas;
+    var lettres = function (c) { return ['1', 'N', '2'].filter(function (k) { return c.indexOf(k) !== -1; }).join(''); };
+    var choix;
+    if (!d.contre) {
+      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">(pas de contre-pronostic)</span></div>';
+    } else if (choixValide) {
+      var couv = choixValide.split('').reduce(function (acc, k) { return acc + (pr[k] || 0); }, 0);
+      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' · <span class="pronos-label">Contre-pronostic validé</span> ' + casesContre(choixValide) + ' <span class="hint">' + esc(choixValide) + ', couvre ' + pc(couv, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="">Retirer</button></div>';
+    } else {
+      var opts = [['N', pr.N], [d.out, pr[d.out]], [lettres('N' + d.out), pr.N + pr[d.out]]];
+      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">Contre-pronostic :</span> ' +
+        opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[0]) + ' (' + pc(o[1], 0) + ')</button>'; }).join(' ') + '</div>';
+    }
     return '<div class="eu-diag">' + esc(txt) + '</div>' + choix;
   }
   function europeEquipeHtml(nomAffiche, t, uid) {
@@ -1646,6 +1656,14 @@ __PWA_HEAD__
       var s = st[el.getAttribute('data-team')] || {}, champ = el.getAttribute('data-champ');
       el.checked = el.type === 'checkbox' ? !!s[champ] : s[champ] === el.value;
     });
+  }
+  // Contre-pronostic : affiché seulement après validation sur la grille (gardé sur cet appareil)
+  var STORE_CONTRE = 'lotofoot.contre.v1';
+  function lireContre() { try { return JSON.parse(localStorage.getItem(STORE_CONTRE)) || {}; } catch (e) { return {}; } }
+  function basculerContre(cle, choix) {
+    var d = lireContre();
+    if (!choix || d[cle] === choix) delete d[cle]; else d[cle] = choix;
+    try { localStorage.setItem(STORE_CONTRE, JSON.stringify(d)); } catch (e) { /* stockage indisponible */ }
   }
   function matchHtml(m, estSurprise, repere) {
     var p = m.proba || {};
@@ -2798,7 +2816,9 @@ __PWA_HEAD__
     render();
   }
   app.addEventListener('click', function (e) {
-    if (e.target.closest && e.target.closest('.europe-details')) return;
+    var bc = e.target.closest && e.target.closest('[data-contre]');
+    if (bc) { basculerContre(bc.getAttribute('data-contre'), bc.getAttribute('data-choix')); majEuropeTout(); return; }
+    if (e.target.closest && (e.target.closest('.europe-details') || e.target.closest('.eu-zone'))) return;
     var th = e.target.closest('[data-theme-choix]');
     if (th) { appliquerTheme(th.getAttribute('data-theme-choix')); render(); return; }
     var t = e.target.closest('[data-tab]');
