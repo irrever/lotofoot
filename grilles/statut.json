@@ -1,16 +1,12 @@
 {
- "verifie_le": "2026-11-05T19:23:35Z",
+ "verifie_le": "2026-11-06T01:40:35Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    138,
     139
    ],
-   "equipes_inconnues": [
-    "Dinamo Zagreb",
-    "Nordsjaelland"
-   ],
+   "equipes_inconnues": [],
    "erreur": null
   },
   "8": {
