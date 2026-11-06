@@ -44,12 +44,25 @@ class Fusion(unittest.TestCase):
         self.assertEqual((ancien['vu'], ancien['grilles']), ('2026-11-04', ['Loto Foot 15 n90', 'Loto Foot 7 n137']))
         self.assertEqual(next(m for m in matchs if m['domicile'] == 'Bod/Glimt')['vu'], '2026-11-05')
 
+    def test_grilles_gardent_le_numero_et_l_ordre(self):
+        grilles = pronosoft.grilles_par_numero(pronosoft.lire_loto(PAGE), '2026-11-05')
+        self.assertIn('7-137', grilles)
+        vill = [m for m in grilles['7-137']['matchs'] if m['domicile'] == 'Villarreal']
+        self.assertEqual([(m['score'], m['issue']) for m in vill], [('0-6', '2')])
+
+    def test_fusion_garde_les_grilles_absentes_de_la_page(self):
+        fusion = pronosoft.fusionner_grilles({'7-1': {'maj': 'ancien'}}, {'7-2': {'maj': 'nouveau'}})
+        self.assertEqual(sorted(fusion), ['7-1', '7-2'])
+        self.assertEqual(pronosoft.fusionner_grilles({'7-1': {'maj': 'ancien'}}, {'7-1': {'maj': 'nouveau'}})['7-1']['maj'], 'nouveau')
+
     def test_collecte_ecrit_le_fichier(self):
         with tempfile.TemporaryDirectory() as dossier:
             sortie = pathlib.Path(dossier) / 'pronosoft.json'
             pronosoft.collecter(FauxLecteur(), sortie=sortie, aujourdhui=dt.date(2026, 11, 5))
             contenu = json.loads(sortie.read_text(encoding='utf-8'))
             self.assertEqual((contenu['maj'], len(contenu['matchs'])), ('2026-11-05', 2))
+            grilles = json.loads((pathlib.Path(dossier) / 'grilles_pronosoft.json').read_text(encoding='utf-8'))
+            self.assertIn('7-137', grilles['grilles'])
 
 
 if __name__ == '__main__':

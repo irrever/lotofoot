@@ -24,6 +24,7 @@ PAUSE = 7
 PAGE_LOTO = '/fr/lotofoot/resultats-et-rapports.php'
 SORTIE_LOTO = pathlib.Path(__file__).resolve().parent.parent / 'data' / 'resultats' / 'pronosoft.json'
 SCORE_DANS_TEXTE = re.compile(r'\d{1,2}\s*[-–]\s*\d{1,2}')
+LIBELLE_GRILLE = re.compile(r'Loto Foot (\d+) n(\d+)')
 
 
 class Lecteur:
@@ -148,6 +149,26 @@ def fusionner_loto(existants, grilles, aujourdhui):
     return sorted(par_cle.values(), key=lambda m: (m['vu'], m['domicile'], m['exterieur'])), nouveaux
 
 
+def grilles_par_numero(grilles, jour):
+    """Grilles lues sur la page, par numéro (« 7-138 »). Chaque match garde sa position dans la grille : le résultat
+    est retrouvé par le numéro de la grille et la position, pas par les noms des équipes."""
+    par_numero = {}
+    for g in grilles:
+        m = LIBELLE_GRILLE.search(g['libelle'])
+        if not m:
+            continue
+        par_numero['%s-%s' % (m.group(1), m.group(2))] = {
+            'libelle': g['libelle'], 'maj': jour,
+            'matchs': [{'domicile': x['domicile'], 'exterieur': x['exterieur'], 'score': x['score'],
+                        'issue': x['issue']} for x in g['matchs']]}
+    return par_numero
+
+
+def fusionner_grilles(existantes, relevees):
+    """Une grille relue remplace sa version précédente ; une grille absente de la page garde ses résultats."""
+    return {**existantes, **relevees}
+
+
 def collecter(lecteur, sortie=SORTIE_LOTO, aujourdhui=None):
     """Relève la page « Résultats et rapports » du Loto Foot et ajoute les scores au fichier de relevés."""
     jour = (aujourdhui or dt.datetime.now(dt.timezone.utc).date()).isoformat()
@@ -157,7 +178,14 @@ def collecter(lecteur, sortie=SORTIE_LOTO, aujourdhui=None):
     sortie.parent.mkdir(parents=True, exist_ok=True)
     sortie.write_text(json.dumps({'maj': jour, 'source': 'Pronosoft, Loto Foot, résultats et rapports',
                                   'matchs': matchs}, ensure_ascii=False, indent=1), encoding='utf-8')
-    print('Pronosoft : %d grilles lues, %d matchs enregistrés, %d nouveaux' % (len(grilles), len(matchs), nouveaux))
+    # Résultats par grille : le fichier garde les grilles déjà relevées, même quand elles ont quitté la page
+    grilles_sortie = sortie.with_name('grilles_pronosoft.json')
+    anciennes = json.loads(grilles_sortie.read_text(encoding='utf-8'))['grilles'] if grilles_sortie.exists() else {}
+    par_numero = fusionner_grilles(anciennes, grilles_par_numero(grilles, jour))
+    grilles_sortie.write_text(json.dumps({'maj': jour, 'source': 'Pronosoft, Loto Foot, résultats et rapports',
+                                          'grilles': par_numero}, ensure_ascii=False, indent=1), encoding='utf-8')
+    print('Pronosoft : %d grilles lues, %d matchs enregistrés, %d nouveaux, %d grilles numérotées' % (
+        len(grilles), len(matchs), nouveaux, len(par_numero)))
     return grilles
 
 

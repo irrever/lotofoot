@@ -26,6 +26,7 @@ DONNEES = RACINE / 'data'
 GRILLES = RACINE / 'grilles'
 JOURNAL_GRILLES = DONNEES / 'journal' / 'grilles.jsonl'
 PRONOSOFT = DONNEES / 'resultats' / 'pronosoft.json'
+PRONOSOFT_GRILLES = DONNEES / 'resultats' / 'grilles_pronosoft.json'
 SORTIE = DONNEES / 'resultats.json'
 GRILLES_PRIVEES = {153}       # grille personnelle : exclue de toutes les sorties (demande initiale)
 GRILLES_AFFICHEES = 12        # les grilles les plus récentes dans l’onglet
@@ -183,59 +184,31 @@ def charger_championnats():
         return []
 
 
-def index_resultats(rows):
-    """(ligue, domicile, extérieur) -> liste de (date, résultat, buts domicile, buts extérieur)."""
-    idx = {}
-    for r in rows:
-        if r['result'] in ORDRE and r['hg'] not in (None, '') and r['ag'] not in (None, ''):
-            idx.setdefault((r['league'], r['home'], r['away']), []).append(
-                (r['date'], r['result'], int(r['hg']), int(r['ag'])))
-    return idx
-
-
-def resultat_de(idx, ligue, domicile, exterieur, date_ref):
-    """Résultat du match joué à moins de FENETRE_JOURS jours de date_ref : (date, résultat, buts, buts) ou None."""
-    meilleur = None
-    for d, res, hg, ag in idx.get((ligue, domicile, exterieur), []):
-        ecart = abs((d - date_ref).days)
-        if ecart <= FENETRE_JOURS and (meilleur is None or ecart < meilleur[0]):
-            meilleur = (ecart, d, res, hg, ag)
-    return meilleur[1:] if meilleur else None
-
-
 def charger_pronosoft():
     if not PRONOSOFT.exists():
         return []
     return json.loads(PRONOSOFT.read_text(encoding='utf-8')).get('matchs', [])
 
 
-def index_pronosoft(matchs):
-    """(domicile, extérieur) normalisés -> relevés (score, date du relevé)."""
-    idx = {}
-    for m in matchs:
-        cles = (cle(canon_pronosoft(m['domicile'])), cle(canon_pronosoft(m['exterieur'])))
-        idx.setdefault(cles, []).append({'score': m['score'], 'vu': dt.date.fromisoformat(m['vu'])})
-    return idx
+def charger_grilles_pronosoft():
+    """Résultats relevés par Pronosoft, par grille (« 7-138 »), avec l’ordre des matchs."""
+    if not PRONOSOFT_GRILLES.exists():
+        return {}
+    return json.loads(PRONOSOFT_GRILLES.read_text(encoding='utf-8')).get('grilles', {})
 
 
-def resultat_match(e, idx_fd, idx_ps):
-    """Résultat d’un match de grille : source, date, score et issue (1, N ou 2), ou None si pas encore publié."""
-    date_cloture = dt.date.fromisoformat(e['cloture'][:10])
-    if 'ligue' in e and idx_fd:
-        res = resultat_de(idx_fd, e['ligue'], e['domicile'], e['exterieur'], date_cloture)
-        if res is not None:
-            d, issue, hg, ag = res
-            return {'source': 'football-data', 'date': d.isoformat(), 'score': '%d – %d' % (hg, ag),
-                    'issue': ETIQ[issue]}
-    cles = (cle(canon_pronosoft(e['domicile'])), cle(canon_pronosoft(e['exterieur'])))
-    fin = date_cloture + dt.timedelta(days=FENETRE_PRONOSOFT_JOURS)
-    releves = [r for r in idx_ps.get(cles, []) if date_cloture <= r['vu'] <= fin]
-    if releves:
-        r = min(releves, key=lambda r: r['vu'])
-        a, b = (int(x) for x in r['score'].split('-'))
-        issue = '1' if a > b else ('N' if a == b else '2')
-        return {'source': 'pronosoft', 'date': r['vu'].isoformat(), 'score': '%d – %d' % (a, b), 'issue': issue}
-    return None
+def resultat_grille(e, grilles):
+    """Résultat d’un match de grille : le numéro de la grille et la position du match suffisent (pas les noms).
+    Renvoie source, date du relevé, score et issue (1, N ou 2), ou None si le score n’est pas encore relevé."""
+    g = grilles.get('%d-%d' % (e['format'], e['numero']))
+    if g is None or not 1 <= e['n'] <= len(g['matchs']):
+        return None
+    m = g['matchs'][e['n'] - 1]
+    if not m.get('score'):
+        return None
+    a, b = (int(x) for x in m['score'].split('-'))
+    issue = '1' if a > b else ('N' if a == b else '2')
+    return {'source': 'pronosoft', 'date': g['maj'], 'score': '%d – %d' % (a, b), 'issue': issue}
 
 
 def explication_ok(e):
@@ -580,15 +553,12 @@ def principal():
     noms = {t['ligue']: t.get('ligue_nom', t['ligue']) for t in donnees['equipes']}
     nouvelles = enregistrer_grilles(donnees, charger_grilles(), maintenant.isoformat(), aujourdhui)
     print('grilles : %d matchs nouvellement enregistrés' % len(nouvelles))
-    rows = charger_championnats()
-    idx_fd = index_resultats(rows) if rows else {}
     matchs_ps = charger_pronosoft()
-    idx_ps = index_pronosoft(matchs_ps)
-    print('résultats : %d matchs de championnats, %d relevés Pronosoft' % (
-        len(rows), sum(len(v) for v in idx_ps.values())))
+    grilles_ps = charger_grilles_pronosoft()
+    print('résultats : %d grilles relevées par Pronosoft' % len(grilles_ps))
     analyses = []
     for e in derniere_entree(charger_jsonl(JOURNAL_GRILLES)).values():
-        res = resultat_match(e, idx_fd, idx_ps)
+        res = resultat_grille(e, grilles_ps)
         analyses.append({'e': e, 'res': res, 'a': analyser(e, res)})
     suivies = {(x['e']['format'], x['e']['numero']) for x in analyses}
     sortie = {'maj': maintenant.isoformat(), 'bilan': bilan(analyses), 'grilles': grilles_resumees(analyses, noms),

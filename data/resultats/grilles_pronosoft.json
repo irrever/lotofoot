@@ -1,0 +1,60 @@
+{
+ "maj": "2026-11-06",
+ "source": "Pronosoft, Loto Foot, résultats et rapports (résultats déjà relevés, repris par numéro de grille)",
+ "grilles": {
+  "8-152": {
+   "libelle": "Loto Foot 8 n152",
+   "maj": "2026-11-06",
+   "matchs": [
+    {
+     "domicile": "Atalanta",
+     "exterieur": "Parma",
+     "score": "0-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Gil Vicente",
+     "exterieur": "Guimaraes",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "La Coruna",
+     "exterieur": "Osasuna",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Lorient",
+     "exterieur": "Brest",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Newcastle",
+     "exterieur": "Everton",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Red Star",
+     "exterieur": "Nancy",
+     "score": "1-4",
+     "issue": "2"
+    },
+    {
+     "domicile": "Reims",
+     "exterieur": "Sochaux",
+     "score": "2-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Sassuolo",
+     "exterieur": "Fiorentina",
+     "score": "2-4",
+     "issue": "2"
+    }
+   ]
+  }
+ }
+}

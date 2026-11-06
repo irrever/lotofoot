@@ -45,7 +45,7 @@ jobs:
           cp standalone/site/index.html standalone/site/donnees.json standalone/site/sw.js \
              standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
           git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
-                  data/resultats/pronosoft.json data/resultats.json data/journal
+                  data/resultats/pronosoft.json data/resultats/grilles_pronosoft.json data/resultats.json data/journal
           if git diff --cached --quiet; then
             echo "Aucun changement."
             exit 0
