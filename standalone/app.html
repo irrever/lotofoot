@@ -207,6 +207,8 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .match.nouveau { border-left: 4px solid var(--warn-dot); }
 .nouveau-tag { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-line); }
 .surprise-tag { color: #c62828; border-color: #c62828; font-weight: 700; }
+.tag.absence-tag { color: #8a5a00; border-color: #c98a00; background: #fff4df; font-weight: 700; }
+.alerte.alerte-absence { border-left-color: #c98a00; }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
 .alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
 .alerte.alerte-surprise { border-left-color: #c62828; box-shadow: inset 0 0 0 2px #c62828; }
@@ -1490,6 +1492,20 @@ __PWA_HEAD__
   // Carte d’un match : équipes en grand, barre et probabilités, pronostic
   // Un match surprise par grille, toujours : celui dont le côté le moins favori (nul exclu) a la plus forte chance de gagner.
   // Le choix ne dépend pas des résultats : le repère ne change pas de match pendant le week-end.
+  // Absence clé : meilleur buteur ou meilleur passeur de la saison absent (proposition à valider)
+  function absenceCle(t) {
+    var s = t && t.absences;
+    return !!s && (!!s.buteur || !!s.passeur);
+  }
+  // Repère : le favori (au moins 50 %) a une absence clé, donc le nul devient plausible
+  function repereAbsence(m) {
+    var p = m.proba;
+    if (!p) return null;
+    var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2';
+    var equipe = trouverEquipe(fav === '1' ? m.domicile : m.exterieur);
+    if (!absenceCle(equipe) || (p[fav] || 0) < 0.5) return null;
+    return { fav: fav, nom: fav === '1' ? m.domicile : m.exterieur, couvre: (p[fav] || 0) + (p['N'] || 0) };
+  }
   function candidatSurprise(matchs) {
     var choisi = null, meilleure = -1;
     matchs.forEach(function (m) {
@@ -1501,9 +1517,11 @@ __PWA_HEAD__
   }
   function cartesMatchs(matchs) {
     var cand = candidatSurprise(matchs);
-    return matchs.map(function (m) { return matchHtml(m, m === cand); }).join('');
+    var nAbs = matchs.filter(function (m) { return repereAbsence(m); }).length;
+    var compte = nAbs ? '<p class="hint">Vigilance : ' + nAbs + ' match' + (nAbs > 1 ? 's' : '') + ' avec une absence clé chez le favori.</p>' : '';
+    return compte + matchs.map(function (m) { return matchHtml(m, m === cand, repereAbsence(m)); }).join('');
   }
-  function matchHtml(m, estSurprise) {
+  function matchHtml(m, estSurprise, repere) {
     var p = m.proba || {};
     var pick = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
@@ -1523,12 +1541,13 @@ __PWA_HEAD__
     var det = m.source === 'hypothese' ? '' : comparaison(m);
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
-      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + '</div>' +
+      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + (repere ? '<span class="tag absence-tag">Absence clé</span>' : '') + '</div>' +
       '<div class="match-equipes"><div class="equipe"><span class="equipe-role">Domicile</span><span class="equipe-nom">' + esc(m.domicile) + '</span></div>' +
       '<span class="vs">contre</span>' +
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span></div></div>' +
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
+      (repere ? '<div class="alerte alerte-absence">Absence clé chez ' + esc(repere.nom) + ' : le nul devient plausible. Double conseillé : ' + (repere.fav === '1' ? '1 et N' : 'N et 2') + ' (couvre ' + pc(repere.couvre, 0) + ').</div>' : '') +
       (surprise ? '<div class="alerte alerte-surprise">Surprise du jour : le favori à ' + pc(favori, 0) + ' a perdu (' + esc(surprise.score) + ').</div>' : (favori >= 0.6 ? '<div class="alerte">Méfiance : favori à ' + pc(favori, 0) + ', il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') + '</div>' : '')) +
       (m.raison ? '<p class="raison">' + esc(m.raison) + '</p>' : '') +
       (m.alertes && m.alertes.length ? alertesHtml(m.alertes, suivi.nouvelles) : '') +
@@ -1856,7 +1875,7 @@ __PWA_HEAD__
         '<p>Sur des matchs d’un même championnat, le modèle fait mieux que les probabilités moyennes de l’historique. Il n’a pas été testé sur des matchs entre championnats.</p>', false) +
       section('Limites',
         '<ul><li>Le Lotofoot ne tient compte que du score à la fin du temps réglementaire : prolongations et tirs au but ne comptent pas.</li>' +
-        '<li>Les blessures, compositions d’équipe et absences de dernière minute ne sont pas prises en compte.</li>' +
+        '<li>Les absences connues du jour (buteurs, passeurs, blessés ou suspendus) entrent dans le calcul avec un malus limité. Les compositions d’équipe et les absences de dernière minute ne sont pas prises en compte.</li>' +
         '<li>Les gains ne sont pas estimés, car les rapports des grilles ne sont pas disponibles.</li>' +
         '<li>On ne sait pas quels pronostics les autres joueurs choisissent. Quand un pronostic est très choisi, le gain se partage entre plus de gagnants.</li></ul>', true) +
       section('Responsabilité',
