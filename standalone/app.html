@@ -175,6 +175,7 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .equipe.ext { text-align: right; }
 .equipe-role { display: block; font: 600 12px/1.3 var(--sans); color: var(--muted); }
 .equipe-nom { display: block; font: 700 18px/1.25 var(--sans); overflow-wrap: anywhere; }
+.equipe-rang { display: block; font: 500 12px/1.3 var(--sans); color: var(--muted); }
 .vs { font: 600 13px/1 var(--sans); color: var(--muted); }
 .barre { display: flex; height: 10px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-2); }
 .seg { display: block; height: 100%; }
@@ -218,7 +219,6 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .europe-grille { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
 @media (max-width: 380px) { .europe-grille { grid-template-columns: 1fr; } }
 .europe-equipe > b { display: block; margin-bottom: 4px; }
-.europe-rang { margin: -2px 0 6px; font-size: 12px; color: var(--muted); }
 .europe-equipe label { display: block; margin: 3px 0; }
 .europe-ligne { margin: 4px 0; }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
@@ -1618,11 +1618,11 @@ __PWA_HEAD__
     }
     return '<div class="eu-diag">' + esc(txt) + '</div>' + choix;
   }
-  // Rang de l’équipe dans le classement de son championnat, sous son nom
-  function rangHtml(t) {
-    var r = t && rangClassement(t);
-    if (!r) return '<div class="europe-rang">Classement : non disponible</div>';
-    return '<div class="europe-rang">Classement de ' + esc(t.ligue_nom || t.ligue) + ' : ' + (r.rang === 1 ? '1er' : r.rang + 'e') + ' sur ' + r.n + '</div>';
+  // Rang de l’équipe dans le classement de son championnat, affiché sous son nom sur la carte du match (rien si inconnu)
+  function rangHtml(nom) {
+    var t = trouverEquipe(nom), r = t && rangClassement(t);
+    if (!r) return '';
+    return '<span class="equipe-rang">' + (r.rang === 1 ? '1er' : r.rang + 'e') + ' sur ' + r.n + ' en ' + esc(t.ligue_nom || t.ligue).replace(/ ([^ ]*)$/, ' $1') + '</span>';
   }
   function europeEquipeHtml(nomAffiche, t, uid) {
     var cle0 = nomCanonique(nomAffiche), s = lireEurope()[cle0] || {};
@@ -1634,7 +1634,7 @@ __PWA_HEAD__
     var cb = function (champ, libelle) {
       return '<label><input type="checkbox" data-team="' + esc(cle0) + '" data-champ="' + champ + '"' + (s[champ] ? ' checked' : '') + '> ' + libelle + '</label>';
     };
-    return '<div class="europe-equipe"><b>' + esc(t ? t.equipe : nomAffiche) + '</b>' + rangHtml(t) +
+    return '<div class="europe-equipe"><b>' + esc(t ? t.equipe : nomAffiche) + '</b>' +
       cb('joue', 'A joué en Europe cette semaine') +
       cb('fatigue', 'Fatigue (matchs rapprochés, voyage)') +
       '<div class="europe-ligne">Résultat : ' + rad('res', ['gagné', 'nul', 'perdu']) + '</div>' +
@@ -1731,9 +1731,9 @@ __PWA_HEAD__
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
       (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + (repere ? '<span class="tag absence-tag">Absence clé</span>' : '') + '</div>' +
-      '<div class="match-equipes"><div class="equipe"><span class="equipe-role">Domicile</span><span class="equipe-nom">' + esc(m.domicile) + '</span></div>' +
+      '<div class="match-equipes"><div class="equipe"><span class="equipe-role">Domicile</span><span class="equipe-nom">' + esc(m.domicile) + '</span>' + rangHtml(m.domicile) + '</div>' +
       '<span class="vs">contre</span>' +
-      '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span></div></div>' +
+      '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span>' + rangHtml(m.exterieur) + '</div></div>' +
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
       euZone +
