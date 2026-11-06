@@ -508,6 +508,78 @@
     "Loto Foot 7 n138",
     "Loto Foot 12 n96"
    ]
+  },
+  {
+   "domicile": "Boulogne",
+   "exterieur": "Annecy FC",
+   "score": "3-0",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
+  },
+  {
+   "domicile": "Dijon",
+   "exterieur": "Red Star",
+   "score": "1-0",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
+  },
+  {
+   "domicile": "Dunkerque",
+   "exterieur": "Guingamp",
+   "score": "3-0",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
+  },
+  {
+   "domicile": "FC Sville",
+   "exterieur": "Alaves",
+   "score": "0-0",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
+  },
+  {
+   "domicile": "Grenoble",
+   "exterieur": "Reims",
+   "score": "3-2",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
+  },
+  {
+   "domicile": "Montpellier",
+   "exterieur": "Metz",
+   "score": "2-3",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
+  },
+  {
+   "domicile": "Nancy",
+   "exterieur": "Sochaux",
+   "score": "1-0",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
+  },
+  {
+   "domicile": "Toulouse",
+   "exterieur": "Strasbourg",
+   "score": "3-1",
+   "vu": "2026-11-06",
+   "grilles": [
+    "Loto Foot 8 n154"
+   ]
   }
  ]
 }
