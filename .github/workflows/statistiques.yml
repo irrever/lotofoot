@@ -52,7 +52,7 @@ jobs:
           cp standalone/site/index.html standalone/site/donnees.json standalone/site/sw.js \
              standalone/site/manifest.webmanifest standalone/site/icone-192.png standalone/site/icone-512.png .
           git add index.html donnees.json sw.js manifest.webmanifest icone-192.png icone-512.png \
-                  data/donnees_publiees.json data/model_state.json data/historique data/bilan data/journal data/resultats.json
+                  data/donnees_publiees.json data/model_state.json data/historique data/bilan data/journal data/resultats.json data/classements.json
           if [ -d rapports ]; then git add rapports; fi
           if [ -d data/resultats ]; then git add data/resultats; fi
           for f in data/absences/du_jour.json data/absences/chemins_footactu.json; do

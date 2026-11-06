@@ -35,6 +35,9 @@ donnees['bilan'] = dernier_bilan()
 RESULTATS = ROOT / 'data/resultats.json'   # matchs de la veille et précision des grilles (src/rapport.py)
 if RESULTATS.exists():
     donnees['resultats'] = json.load(open(RESULTATS, encoding='utf-8'))
+CLASSEMENTS = ROOT / 'data/classements.json'   # classement par points, par championnat (src/classement.py)
+if CLASSEMENTS.exists():
+    donnees['classements'] = json.load(open(CLASSEMENTS, encoding='utf-8'))['par_championnat']
 embarque = None
 if GRILLE_PERSONNELLE.exists():
     embarque = dict(donnees, grilles=[json.load(open(GRILLE_PERSONNELLE, encoding='utf-8'))])

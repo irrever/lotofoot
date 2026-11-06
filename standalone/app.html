@@ -422,7 +422,7 @@ __PWA_HEAD__
     grilles: [], grilleId: null, stockage: true, nouvelle: false, form: null, message: '', texteCopie: '',
     ligue: '', equipe: '', dom: '', ext: '', q: '',
     rech: { dom: { texte: '', championnat: '', note: '', niveau: 'haut' }, ext: { texte: '', championnat: '', note: '', niveau: 'haut' } },
-    version: DATA.version, derniere: DATA.derniere_date, publieLe: DATA.publie_le || null, miseAJour: '', bilan: DATA.bilan || null, resultats: DATA.resultats || null
+    version: DATA.version, derniere: DATA.derniere_date, publieLe: DATA.publie_le || null, miseAJour: '', bilan: DATA.bilan || null, resultats: DATA.resultats || null, classements: DATA.classements || null
   };
   var app = document.getElementById('app');
 
@@ -1366,7 +1366,7 @@ __PWA_HEAD__
     return ['H', 'D', 'A'].every(function (c) { return Array.isArray(m.coef[c]) && m.coef[c].length === 25; });
   }
   function appliquerDonnees(d) {
-    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.publieLe = d.publie_le || null; S.bilan = d.bilan || null; S.resultats = d.resultats || null;
+    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.publieLe = d.publie_le || null; S.bilan = d.bilan || null; S.resultats = d.resultats || null; S.classements = d.classements || null;
     miseAJourSuivi();
   }
   function verifierMiseAJour() {
@@ -1490,8 +1490,8 @@ __PWA_HEAD__
       '</tbody></table></div>';
   }
   // Carte d’un match : équipes en grand, barre et probabilités, pronostic
-  // Un match surprise par grille, toujours : celui dont le côté le moins favori (nul exclu) a la plus forte chance de gagner.
-  // Le choix ne dépend pas des résultats : le repère ne change pas de match pendant le week-end.
+  // Match surprise : un favori haut de son championnat (premier tiers du classement par points) face à un outsider bas (dernier tiers).
+  // Retenu : la probabilité du favori la plus élevée parmi ces matchs. À défaut dans la grille : le match où le favori domine le plus.
   // Absence clé : meilleur buteur ou meilleur passeur de la saison absent (proposition à valider)
   function absenceCle(t) {
     var s = t && t.absences;
@@ -1506,14 +1506,30 @@ __PWA_HEAD__
     if (!absenceCle(equipe) || (p[fav] || 0) < 0.5) return null;
     return { fav: fav, nom: fav === '1' ? m.domicile : m.exterieur, couvre: (p[fav] || 0) + (p['N'] || 0) };
   }
+  // Rang d'une équipe dans le classement par points de son championnat, et taille du championnat
+  function rangClassement(t) {
+    var table = t && S.classements && S.classements[t.ligue];
+    if (!table) return null;
+    for (var i = 0; i < table.length; i++) {
+      if (table[i].equipe === t.equipe) return { rang: table[i].rang, n: table.length };
+    }
+    return null;
+  }
   function candidatSurprise(matchs) {
-    var choisi = null, meilleure = -1;
+    var meilleur = null, meilleurP = -1, repli = null, repliEcart = -1;
     matchs.forEach(function (m) {
-      if (!m.proba) return;
-      var out = Math.min(m.proba['1'] || 0, m.proba['2'] || 0);
-      if (out > meilleure) { meilleure = out; choisi = m; }
+      var p = m.proba;
+      if (!p) return;
+      var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
+      var ecart = (p[fav] || 0) - (p[out] || 0);
+      if (ecart > repliEcart) { repliEcart = ecart; repli = m; }
+      var tf = trouverEquipe(fav === '1' ? m.domicile : m.exterieur), to = trouverEquipe(fav === '1' ? m.exterieur : m.domicile);
+      if (!tf || !to || tf.ligue !== to.ligue) return;
+      var rf = rangClassement(tf), ro = rangClassement(to);
+      if (!rf || !ro) return;
+      if (rf.rang <= rf.n / 3 && ro.rang > 2 * ro.n / 3 && (p[fav] || 0) > meilleurP) { meilleurP = p[fav] || 0; meilleur = m; }
     });
-    return choisi;
+    return meilleur || repli;
   }
   function cartesMatchs(matchs) {
     var cand = candidatSurprise(matchs);

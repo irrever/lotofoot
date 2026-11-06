@@ -7,6 +7,8 @@
 set -e
 cd "$(dirname "$0")"
 python3 publier.py "$@"
+# Classement par points de la saison (haut et bas du tableau, match surprise)
+python3 classement.py
 python3 journal.py
 python3 bilan.py
 # Résultats des matchs de grille : pronostic, verdict et raison (onglet Résultats de l’application)
