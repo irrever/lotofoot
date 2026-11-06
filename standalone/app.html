@@ -218,6 +218,7 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .europe-grille { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
 @media (max-width: 380px) { .europe-grille { grid-template-columns: 1fr; } }
 .europe-equipe > b { display: block; margin-bottom: 4px; }
+.europe-rang { margin: -2px 0 6px; font-size: 12px; color: var(--muted); }
 .europe-equipe label { display: block; margin: 3px 0; }
 .europe-ligne { margin: 4px 0; }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
@@ -788,7 +789,7 @@ __PWA_HEAD__
       else paires.push({ dom: h, ext: a });
     });
     if (erreurs.length) return { erreurs: erreurs, matchs: [], proba_grille: null };
-    return calculerGrille(paires, g.doubles || 0, g.triples || 0);
+    return appliquerContres(calculerGrille(paires, g.doubles || 0, g.triples || 0));
   }
   function nouvelleGrille(nom, paires, nd, nt, validite) {
     return {
@@ -1027,7 +1028,7 @@ __PWA_HEAD__
         '<div class="actions"><button type="button" class="btn primary" disabled style="opacity:.45;cursor:not-allowed">Enregistrer et verrouiller</button>' +
         '<button type="button" class="btn" disabled style="opacity:.45;cursor:not-allowed">Enregistrer sans verrouiller</button></div>');
     }
-    var res = calculerGrille(rf.paires, f.doubles, f.triples);
+    var res = appliquerContres(calculerGrille(rf.paires, f.doubles, f.triples));
     if (res.erreurs) {
       return zone('bad', 3, 'Aperçu avant enregistrement', entete + '<ul class="list err">' + res.erreurs.map(function (e) {
         return '<li>' + esc(e) + '</li>';
@@ -1168,26 +1169,14 @@ __PWA_HEAD__
   }
   // Texte de la grille, à coller dans une note ou un message
   function texteGrille(g, res) {
-    var contres = lireContre();
-    var matchs = (res.matchs || []).map(function (m) {
-      var v = contres[clePaire(m.domicile, m.exterieur)];
-      if (!v) return m;
-      var c = {};
-      Object.keys(m).forEach(function (k) { c[k] = m[k]; });
-      c.modele = m.pronostic;
-      c.pronostic = v;
-      c.confiance = v.split('').reduce(function (acc, k) { return acc + ((m.proba && m.proba[k]) || 0); }, 0);
-      return c;
-    });
-    var valides = matchs.filter(function (m) { return m.modele; }).length;
+    var matchs = res.matchs || [];
     var lignes = [g.nom, 'Loto Foot ' + formatDe(g) + ' · créée le ' + dateFr(g.creee), ''];
     matchs.forEach(function (m) {
       lignes.push(m.n + '. ' + m.domicile + ' – ' + m.exterieur + ' : ' + (LIBELLE_PRONO[m.pronostic] || m.pronostic) + ' (' + pc(m.confiance, 0) + ')' +
         (m.modele ? ' · contre-pronostic validé (modèle : ' + (LIBELLE_PRONO[m.modele] || m.modele) + ')' : ''));
     });
     lignes.push('');
-    var probaFinale = valides ? matchs.reduce(function (acc, m) { return acc * (m.confiance || 0); }, 1) : res.proba_grille;
-    lignes.push('Grille complète juste : ' + probGrille(probaFinale));
+    lignes.push('Grille complète juste : ' + probGrille(res.proba_grille));
     if (matchs.length) lignes.push('Prix : ×' + prixDe(matchs));
     lignes.push(g.verrouillee ? 'Verrouillée le ' + dateHeureFr(g.verrouillee_le) : 'Non verrouillée : données jusqu’au ' + dateFr(S.derniere));
     if (g.validite) lignes.push('Validation : ' + g.validite);
@@ -1555,11 +1544,11 @@ __PWA_HEAD__
     });
     return meilleur || repli;
   }
-  function cartesMatchs(matchs) {
+  function cartesMatchs(matchs, fige) {
     var cand = candidatSurprise(matchs);
     var nAbs = matchs.filter(function (m) { return repereAbsence(m); }).length;
     var compte = nAbs ? '<p class="hint">Vigilance : ' + nAbs + ' match' + (nAbs > 1 ? 's' : '') + ' avec une absence clé chez le favori.</p>' : '';
-    return compte + matchs.map(function (m) { return matchHtml(m, m === cand, repereAbsence(m)); }).join('');
+    return compte + matchs.map(function (m) { return matchHtml(m, m === cand, repereAbsence(m), fige); }).join('');
   }
   // Coupes d'Europe : cases cochées à la main pour chaque équipe, gardées sur cet appareil (lotofoot.europe.v1)
   var STORE_EUROPE = 'lotofoot.europe.v1';
@@ -1578,10 +1567,11 @@ __PWA_HEAD__
     if (a.passeur) txt += ', meilleur passeur absent';
     return txt;
   }
-  // Un point négatif par signal : a joué en Europe, défaite lourde en Europe, absence signalée ; +1 pour une victoire à l'extérieur contre un gros
+  // Un point négatif par signal : a joué en Europe, fatigue, défaite lourde en Europe, absence signalée ; +1 pour une victoire à l'extérieur contre un gros
   function scoreEurope(t, st) {
     var s = 0;
     if (st.joue) s -= 1;
+    if (st.fatigue) s -= 1;
     if (st.res === 'perdu' && st.lourde) s -= 1;
     if (st.res === 'gagné' && st.lieu === 'extérieur' && st.adv === 'gros') s += 1;
     if (absenceAlerte(t)) s -= 1;
@@ -1612,14 +1602,14 @@ __PWA_HEAD__
     if (!d) return '';
     var fmt = function (x) { return (x > 0 ? '+' : '') + x; };
     var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
-      (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : ' : seuil non atteint, pas de contre-pronostic.');
+      (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : (lireContre()[clePaire(m.domicile, m.exterieur)] ? ' : seuil non atteint, contre-pronostic validé à la main.' : ' : seuil non atteint, pas de contre-pronostic.'));
     var cle = clePaire(m.domicile, m.exterieur), choixValide = lireContre()[cle] || '', pr = d.probas;
     var choix;
-    if (!d.contre) {
-      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">(pas de contre-pronostic)</span></div>';
-    } else if (choixValide) {
+    if (choixValide) {
       var couv = choixValide.split('').reduce(function (acc, k) { return acc + (pr[k] || 0); }, 0);
       choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' · <span class="pronos-label">Contre-pronostic validé</span> ' + casesContre(choixValide) + ' <span class="hint">' + esc(LIBELLE_PRONO[choixValide] || choixValide) + ', couvre ' + pc(couv, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="">Retirer</button></div>';
+    } else if (!d.contre) {
+      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">(pas de contre-pronostic)</span></div>';
     } else {
       var doub = d.out === '1' ? '1N' : '2N';
       var opts = [['N', 'N', pr.N], [d.out, d.out, pr[d.out]], [doub, LIBELLE_PRONO[doub], pr.N + pr[d.out]]];
@@ -1627,6 +1617,12 @@ __PWA_HEAD__
         opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[1]) + ' (' + pc(o[2], 0) + ')</button>'; }).join(' ') + '</div>';
     }
     return '<div class="eu-diag">' + esc(txt) + '</div>' + choix;
+  }
+  // Rang de l’équipe dans le classement de son championnat, sous son nom
+  function rangHtml(t) {
+    var r = t && rangClassement(t);
+    if (!r) return '<div class="europe-rang">Classement : non disponible</div>';
+    return '<div class="europe-rang">Classement de ' + esc(t.ligue_nom || t.ligue) + ' : ' + (r.rang === 1 ? '1er' : r.rang + 'e') + ' sur ' + r.n + '</div>';
   }
   function europeEquipeHtml(nomAffiche, t, uid) {
     var cle0 = nomCanonique(nomAffiche), s = lireEurope()[cle0] || {};
@@ -1638,17 +1634,18 @@ __PWA_HEAD__
     var cb = function (champ, libelle) {
       return '<label><input type="checkbox" data-team="' + esc(cle0) + '" data-champ="' + champ + '"' + (s[champ] ? ' checked' : '') + '> ' + libelle + '</label>';
     };
-    return '<div class="europe-equipe"><b>' + esc(t ? t.equipe : nomAffiche) + '</b>' +
+    return '<div class="europe-equipe"><b>' + esc(t ? t.equipe : nomAffiche) + '</b>' + rangHtml(t) +
       cb('joue', 'A joué en Europe cette semaine') +
+      cb('fatigue', 'Fatigue (matchs rapprochés, voyage)') +
       '<div class="europe-ligne">Résultat : ' + rad('res', ['gagné', 'nul', 'perdu']) + '</div>' +
-      cb('lourde', 'Défaite lourde (3 buts ou plus)') +
+      cb('lourde', 'Défaite lourde (2 buts d’écart)') +
       '<div class="europe-ligne">Adversaire : ' + rad('adv', ['gros', 'petit']) + '</div>' +
       '<div class="europe-ligne">Lieu : ' + rad('lieu', ['domicile', 'extérieur']) + '</div>' +
       '<div class="europe-ligne hint">Absences (automatique) : ' + esc(resumeAbsences(t)) + '</div></div>';
   }
   function europePanelHtml(m) {
     var uid = 'eu' + Math.floor(Math.random() * 1e9);
-    return '<details class="europe-details"><summary>Coupes d’Europe cette semaine (à cocher)</summary><div class="europe-grille">' +
+    return '<details class="europe-details" data-cle="' + esc(clePaire(m.domicile, m.exterieur)) + '"><summary>Coupes d’Europe cette semaine (à cocher)</summary><div class="europe-grille">' +
       europeEquipeHtml(m.domicile, trouverEquipe(m.domicile), uid + 'd') + europeEquipeHtml(m.exterieur, trouverEquipe(m.exterieur), uid + 'e') +
       '</div></details>';
   }
@@ -1684,7 +1681,32 @@ __PWA_HEAD__
     if (!choix || d[cle] === choix) delete d[cle]; else d[cle] = choix;
     try { localStorage.setItem(STORE_CONTRE, JSON.stringify(d)); } catch (e) { /* stockage indisponible */ }
   }
-  function matchHtml(m, estSurprise, repere) {
+  // Le choix validé remplace le pronostic du modèle, gardé dans « modele » : la grille, son bilan et sa probabilité suivent ce choix
+  function appliquerContres(res) {
+    if (!res || res.erreurs || !res.matchs) return res;
+    var contres = lireContre(), change = false;
+    var matchs = res.matchs.map(function (m) {
+      var v = contres[clePaire(m.domicile, m.exterieur)];
+      if (!v || v === m.pronostic) return m;
+      change = true;
+      var c = {};
+      Object.keys(m).forEach(function (k) { c[k] = m[k]; });
+      c.modele = m.pronostic;
+      c.pronostic = v;
+      c.confiance = arrondir(v.split('').reduce(function (acc, k) { return acc + ((m.proba && m.proba[k]) || 0); }, 0), 4);
+      return c;
+    });
+    if (!change) return res;
+    return { erreurs: null, matchs: matchs, proba_grille: arrondir(matchs.reduce(function (acc, m) { return acc * m.confiance; }, 1), 6) };
+  }
+  // Après un choix validé, la page est redessinée ; les volets « Coupes d’Europe » déjà ouverts le restent
+  function rendreEnGardantEurope() {
+    var ouverts = {};
+    document.querySelectorAll('details.europe-details[open]').forEach(function (d) { ouverts[d.getAttribute('data-cle')] = true; });
+    render();
+    document.querySelectorAll('details.europe-details').forEach(function (d) { if (ouverts[d.getAttribute('data-cle')]) d.setAttribute('open', ''); });
+  }
+  function matchHtml(m, estSurprise, repere, fige) {
     var p = m.proba || {};
     var pick = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
@@ -1695,14 +1717,16 @@ __PWA_HEAD__
       return '<div class="prob ' + cls[k] + (pick.indexOf(k) !== -1 ? ' is-pick' : '') + '"><span>' + k + '</span><strong>' + pc(p[k], 0) + '</strong>' + fleche + '</div>';
     }
     var pronos = pick
-      ? '<span class="pronos-label">Pronostic</span> ' + casesChoix(pick) + ' <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(m.confiance, 0) + '</span>'
+      ? '<span class="pronos-label">Pronostic</span> ' + casesChoix(pick) + ' <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(m.confiance, 0) +
+        (fige && m.modele ? ' · contre-pronostic validé (modèle : ' + esc(LIBELLE_PRONO[m.modele] || m.modele) + ')' : '') + '</span>'
       : '<span class="pronos-label">Pas de pronostic</span>';
     var favori = Math.max(p['1'] || 0, p['2'] || 0);
     var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
     var pubM = resultatsPublies()[clePaire(m.domicile, m.exterieur)];
     var surprise = pubM && pubM.issue === out && ((p[fav] || 0) - (p[out] || 0)) >= 0.3 ? pubM : null;
-    var euZone = m.proba ? '<div class="eu-zone" data-eu="' + esc(JSON.stringify({ d: m.domicile, e: m.exterieur, p: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 }, pick: pick })) + '">' + europeLigneHtml(m, pick) + '</div>' : '';
-    var euPanel = m.proba ? europePanelHtml(m) : '';
+    var pickModele = m.modele || pick;
+    var euZone = (m.proba && !fige) ? '<div class="eu-zone" data-eu="' + esc(JSON.stringify({ d: m.domicile, e: m.exterieur, p: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 }, pick: pickModele })) + '">' + europeLigneHtml(m, pickModele) + '</div>' : '';
+    var euPanel = (m.proba && !fige) ? europePanelHtml(m) : '';
     var det = m.source === 'hypothese' ? '' : comparaison(m);
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
@@ -1797,7 +1821,7 @@ __PWA_HEAD__
     }).join('') + '</ul>') : '';
     var copie = S.texteCopie ? zone('info', 0, 'Texte de la grille', '<p class="hint">Maintiens le doigt sur le texte, puis choisis « Tout sélectionner », puis « Copier ».</p>' +
       '<textarea class="txtin" readonly style="box-sizing:border-box;min-height:240px;line-height:1.5">' + esc(S.texteCopie) + '</textarea>') : '';
-    var pronostics = matchs.length ? zone('info', 3, 'Pronostics match par match', '<div class="matchs-liste">' + cartesMatchs(matchs) + '</div>', legendeHtml()) : '';
+    var pronostics = matchs.length ? zone('info', 3, 'Pronostics match par match', '<div class="matchs-liste">' + cartesMatchs(matchs, g.verrouillee) + '</div>', legendeHtml()) : '';
     var methodeCalcul = g.note ? zone('neutre', 0, 'Méthode de calcul', '<p class="hint">' + esc(g.note) + '</p>') : '';
     return haut + avert +
       zone('info', 1, 'Mes grilles', '<div class="tuiles">' + gs.map(function (x) { return tuile(x, x.id === g.id); }).join('') + '</div>', nouvelleBtn) +
@@ -1807,7 +1831,7 @@ __PWA_HEAD__
   function choixLignes(f) {
     var rf = resoudreFormulaire(f);
     if (!rf.ok) return null;
-    var res = calculerGrille(rf.paires, f.doubles, f.triples);
+    var res = appliquerContres(calculerGrille(rf.paires, f.doubles, f.triples));
     return (res.erreurs || !res.matchs) ? null : res.matchs;
   }
   // Un 1 colore l’équipe à domicile, un 2 colore l’équipe à l’extérieur, double ou non
@@ -2836,7 +2860,7 @@ __PWA_HEAD__
   }
   app.addEventListener('click', function (e) {
     var bc = e.target.closest && e.target.closest('[data-contre]');
-    if (bc) { basculerContre(bc.getAttribute('data-contre'), bc.getAttribute('data-choix')); majEuropeTout(); return; }
+    if (bc) { basculerContre(bc.getAttribute('data-contre'), bc.getAttribute('data-choix')); rendreEnGardantEurope(); return; }
     if (e.target.closest && (e.target.closest('.europe-details') || e.target.closest('.eu-zone'))) return;
     var th = e.target.closest('[data-theme-choix]');
     if (th) { appliquerTheme(th.getAttribute('data-theme-choix')); render(); return; }
