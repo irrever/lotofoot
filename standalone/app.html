@@ -2005,7 +2005,8 @@ __PWA_HEAD__
     var recurrents = b.facteurs_recurrents || { ecarts: 0, items: [] };
     var tags = recurrents.items.map(function (x) { return '<span class="tag">' + esc(x[0]) + ' · ' + x[1] + '</span>'; }).join('');
     var z1 = zone('ok', 1, 'Résultat global',
-      '<p class="hint">Saison ' + esc(m.saison_libelle) + ' · ' + nb(r.matchs) + ' matchs évalués sur ' + m.journees + ' journées · données jusqu’au ' + esc(dateFr(m.date_donnees)) + '.</p>' + alerte +
+      '<p class="hint">Saison ' + esc(m.saison_libelle) + ' · ' + nb(r.matchs) + ' matchs évalués sur ' + m.journees + ' journées.</p>' +
+      '<p class="hint">' + (m.genere_le ? 'Bilan rédigé le ' + esc(dateFr(m.genere_le)) + ' · ' : '') + 'dernier match pris en compte : ' + esc(dateFr(m.date_donnees)) + '.</p>' + alerte +
       '<div class="kpis">' +
         '<div class="kpi kpi-grand"><span class="label">Précision : le résultat le plus probable s’est réalisé</span><strong>' + esc(pc(r.precision, 1)) + '</strong><span class="hint">Au hasard : 33 %.</span></div>' +
         '<div class="kpi"><span class="label">Erreur du modèle</span><strong>' + fr(r.log_loss, 3) + '</strong><span class="hint">log-loss, plus bas = mieux</span></div>' +
