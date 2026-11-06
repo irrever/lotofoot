@@ -209,6 +209,17 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .surprise-tag { color: #c62828; border-color: #c62828; font-weight: 700; }
 .tag.absence-tag { color: #8a5a00; border-color: #c98a00; background: #fff4df; font-weight: 700; }
 .alerte.alerte-absence { border-left-color: #c98a00; }
+.case-chiffre.contre { border: 2px solid #c62828; }
+.croix-rouge path:not(.halo) { stroke: #c62828; }
+.choix-ligne { margin-top: 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 14px; }
+.eu-diag { margin: 10px 0 0; font-weight: 600; font-size: 14px; }
+.europe-details { margin-top: 10px; border: 1px dashed var(--line); border-radius: 10px; padding: 8px 12px; background: var(--bg); font-size: 13px; }
+.europe-details summary { cursor: pointer; font-weight: 700; }
+.europe-grille { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+@media (max-width: 380px) { .europe-grille { grid-template-columns: 1fr; } }
+.europe-equipe > b { display: block; margin-bottom: 4px; }
+.europe-equipe label { display: block; margin: 3px 0; }
+.europe-ligne { margin: 4px 0; }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
 .alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
 .alerte.alerte-surprise { border-left-color: #c62828; box-shadow: inset 0 0 0 2px #c62828; }
@@ -1537,6 +1548,105 @@ __PWA_HEAD__
     var compte = nAbs ? '<p class="hint">Vigilance : ' + nAbs + ' match' + (nAbs > 1 ? 's' : '') + ' avec une absence clé chez le favori.</p>' : '';
     return compte + matchs.map(function (m) { return matchHtml(m, m === cand, repereAbsence(m)); }).join('');
   }
+  // Coupes d'Europe : cases cochées à la main pour chaque équipe, gardées sur cet appareil (lotofoot.europe.v1)
+  var STORE_EUROPE = 'lotofoot.europe.v1';
+  function lireEurope() { try { return JSON.parse(localStorage.getItem(STORE_EUROPE)) || {}; } catch (e) { return {}; } }
+  function ecrireEurope(d) { try { localStorage.setItem(STORE_EUROPE, JSON.stringify(d)); } catch (e) { /* stockage indisponible : rien n'est gardé */ } }
+  // Absence signalée dans le diagnostic : meilleur buteur ou meilleur passeur absent, ou au moins cinq absents
+  function absenceAlerte(t) {
+    var a = t && t.absences;
+    return !!a && (!!a.buteur || !!a.passeur || (a.nombre || 0) >= 5);
+  }
+  function resumeAbsences(t) {
+    var a = t && t.absences;
+    if (!a || !a.nombre) return 'aucune signalée';
+    var txt = a.nombre + (a.nombre > 1 ? ' blessés ou suspendus' : ' blessé ou suspendu');
+    if (a.buteur) txt += ', meilleur buteur absent';
+    if (a.passeur) txt += ', meilleur passeur absent';
+    return txt;
+  }
+  // Un point négatif par signal : a joué en Europe, défaite lourde en Europe, absence signalée ; +1 pour une victoire à l'extérieur contre un gros
+  function scoreEurope(t, st) {
+    var s = 0;
+    if (st.joue) s -= 1;
+    if (st.res === 'perdu' && st.lourde) s -= 1;
+    if (st.res === 'gagné' && st.lieu === 'extérieur' && st.adv === 'gros') s += 1;
+    if (absenceAlerte(t)) s -= 1;
+    return s;
+  }
+  function casesContre(choix) {
+    return '<span class="ligne-cases">' + ['1', 'N', '2'].map(function (k) {
+      var coche = choix.indexOf(k) !== -1;
+      var svg = '<svg class="croix croix-rouge" viewBox="0 0 24 24" aria-hidden="true"><path class="halo" d="M4 12.5l5 5L20 6.5"/><path d="M4 12.5l5 5L20 6.5"/></svg>';
+      return '<span class="case-chiffre' + (coche ? ' contre' : '') + '"><b>' + k + '</b>' + (coche ? svg : '') + '</span>';
+    }).join('') + '</span>';
+  }
+  // Diagnostic du match : le favori et l'outsider ; null tant que rien n'est coché pour ses deux équipes
+  function europeDiag(m) {
+    var p = m.proba;
+    if (!p) return null;
+    var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
+    var tf = trouverEquipe(fav === '1' ? m.domicile : m.exterieur), to = trouverEquipe(fav === '1' ? m.exterieur : m.domicile);
+    if (!tf || !to) return null;
+    var st = lireEurope();
+    var sf = st[nomCanonique(tf.equipe)] || {}, so = st[nomCanonique(to.equipe)] || {};
+    if (!Object.keys(sf).length && !Object.keys(so).length) return null;
+    var scf = scoreEurope(tf, sf), sco = scoreEurope(to, so), ecart = scf - sco;
+    return { fav: fav, out: out, nomFav: tf.equipe, nomOut: to.equipe, scf: scf, sco: sco, ecart: ecart, contre: ecart <= -2, couvre: p[out] || 0 };
+  }
+  function europeLigneHtml(m, pick) {
+    var d = europeDiag(m);
+    if (!d) return '';
+    var fmt = function (x) { return (x > 0 ? '+' : '') + x; };
+    var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
+      (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : ' : seuil non atteint, pas de contre-pronostic.');
+    var choix = d.contre
+      ? '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' · <span class="pronos-label">Intervertie</span> ' + casesContre(d.out) + ' <span class="hint">' + d.out + ', couvre ' + pc(d.couvre, 0) + '</span></div>'
+      : '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">(pas de contre-pronostic)</span></div>';
+    return '<div class="eu-diag">' + esc(txt) + '</div>' + choix;
+  }
+  function europeEquipeHtml(nomAffiche, t, uid) {
+    var cle0 = nomCanonique(nomAffiche), s = lireEurope()[cle0] || {};
+    var rad = function (champ, opts) {
+      return opts.map(function (o) {
+        return '<label><input type="radio" name="' + uid + '-' + champ + '" data-team="' + esc(cle0) + '" data-champ="' + champ + '" value="' + esc(o) + '"' + (s[champ] === o ? ' checked' : '') + '> ' + esc(o) + '</label>';
+      }).join(' ');
+    };
+    var cb = function (champ, libelle) {
+      return '<label><input type="checkbox" data-team="' + esc(cle0) + '" data-champ="' + champ + '"' + (s[champ] ? ' checked' : '') + '> ' + libelle + '</label>';
+    };
+    return '<div class="europe-equipe"><b>' + esc(t ? t.equipe : nomAffiche) + '</b>' +
+      cb('joue', 'A joué en Europe cette semaine') +
+      '<div class="europe-ligne">Résultat : ' + rad('res', ['gagné', 'nul', 'perdu']) + '</div>' +
+      cb('lourde', 'Défaite lourde (3 buts ou plus)') +
+      '<div class="europe-ligne">Adversaire : ' + rad('adv', ['gros', 'petit']) + '</div>' +
+      '<div class="europe-ligne">Lieu : ' + rad('lieu', ['domicile', 'extérieur']) + '</div>' +
+      '<div class="europe-ligne hint">Absences (automatique) : ' + esc(resumeAbsences(t)) + '</div></div>';
+  }
+  function europePanelHtml(m) {
+    var uid = 'eu' + Math.floor(Math.random() * 1e9);
+    return '<details class="europe-details"><summary>Coupes d’Europe cette semaine (à cocher)</summary><div class="europe-grille">' +
+      europeEquipeHtml(m.domicile, trouverEquipe(m.domicile), uid + 'd') + europeEquipeHtml(m.exterieur, trouverEquipe(m.exterieur), uid + 'e') +
+      '</div></details>';
+  }
+  function enregistrerEurope(el) {
+    var st = lireEurope(), t = el.getAttribute('data-team'), champ = el.getAttribute('data-champ');
+    st[t] = st[t] || {};
+    st[t][champ] = el.type === 'checkbox' ? el.checked : el.value;
+    ecrireEurope(st);
+  }
+  // Met à jour, sans reconstruire la page, les diagnostics et les cases de toutes les équipes concernées
+  function majEuropeTout() {
+    document.querySelectorAll('.eu-zone').forEach(function (z) {
+      var d = JSON.parse(z.getAttribute('data-eu'));
+      z.innerHTML = europeLigneHtml({ domicile: d.d, exterieur: d.e, proba: d.p }, d.pick);
+    });
+    var st = lireEurope();
+    document.querySelectorAll('input[data-team][data-champ]').forEach(function (el) {
+      var s = st[el.getAttribute('data-team')] || {}, champ = el.getAttribute('data-champ');
+      el.checked = el.type === 'checkbox' ? !!s[champ] : s[champ] === el.value;
+    });
+  }
   function matchHtml(m, estSurprise, repere) {
     var p = m.proba || {};
     var pick = m.pronostic || '';
@@ -1554,6 +1664,8 @@ __PWA_HEAD__
     var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
     var pubM = resultatsPublies()[clePaire(m.domicile, m.exterieur)];
     var surprise = pubM && pubM.issue === out && ((p[fav] || 0) - (p[out] || 0)) >= 0.3 ? pubM : null;
+    var euZone = m.proba ? '<div class="eu-zone" data-eu="' + esc(JSON.stringify({ d: m.domicile, e: m.exterieur, p: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 }, pick: pick })) + '">' + europeLigneHtml(m, pick) + '</div>' : '';
+    var euPanel = m.proba ? europePanelHtml(m) : '';
     var det = m.source === 'hypothese' ? '' : comparaison(m);
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
@@ -1563,6 +1675,8 @@ __PWA_HEAD__
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span></div></div>' +
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
+      euZone +
+      euPanel +
       (repere ? '<div class="alerte alerte-absence">Absence clé chez ' + esc(repere.nom) + ' : le nul devient plausible. Double conseillé : ' + (repere.fav === '1' ? '1 et N' : 'N et 2') + ' (couvre ' + pc(repere.couvre, 0) + ').</div>' : '') +
       (surprise ? '<div class="alerte alerte-surprise">Surprise du jour : le favori à ' + pc(favori, 0) + ' a perdu (' + esc(surprise.score) + ').</div>' : (favori >= 0.6 ? '<div class="alerte">Méfiance : favori à ' + pc(favori, 0) + ', il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') + '</div>' : '')) +
       (m.raison ? '<p class="raison">' + esc(m.raison) + '</p>' : '') +
@@ -2684,6 +2798,7 @@ __PWA_HEAD__
     render();
   }
   app.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.europe-details')) return;
     var th = e.target.closest('[data-theme-choix]');
     if (th) { appliquerTheme(th.getAttribute('data-theme-choix')); render(); return; }
     var t = e.target.closest('[data-tab]');
@@ -2705,6 +2820,7 @@ __PWA_HEAD__
     }
   });
   app.addEventListener('input', function (e) {
+    if (e.target.closest && e.target.closest('.europe-details')) return;
     var el = e.target;
     var rc = el.getAttribute('data-rech'), rch = el.getAttribute('data-rech-champ'), rn = el.getAttribute('data-rech-note');
     if (rc || rch || rn) {
@@ -2728,6 +2844,7 @@ __PWA_HEAD__
     }
   });
   app.addEventListener('change', function (e) {
+    if (e.target.closest && e.target.closest('.europe-details')) { enregistrerEurope(e.target); majEuropeTout(); return; }
     var el = e.target;
     if (el.getAttribute('data-rech-niveau')) { rechercheSaisie(el, el.getAttribute('data-rech-niveau'), 'niveau'); return; }
     if (el.id === 'sel-ligue') { S.ligue = el.value; S.equipe = ''; render(); }
