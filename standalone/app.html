@@ -206,6 +206,7 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 .fleche.down { color: var(--bad); }
 .match.nouveau { border-left: 4px solid var(--warn-dot); }
 .nouveau-tag { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-line); }
+.surprise-tag { color: #c62828; border-color: #c62828; font-weight: 700; }
 .suivi-banniere { margin: 12px 0 0; padding: 10px 14px; border-left: 4px solid var(--warn-dot); border-radius: var(--r-s); background: var(--warn-soft); color: var(--warn); font-size: 14px; font-weight: 600; }
 .alerte.alerte-neuve { box-shadow: inset 0 0 0 2px var(--warn-dot); }
 .alerte.alerte-surprise { border-left-color: #c62828; box-shadow: inset 0 0 0 2px #c62828; }
@@ -406,7 +407,8 @@ __PWA_HEAD__
   var ALIAS = {
     'como 1907': 'Como', 'betis seville': 'Betis', 'fc porto': 'Porto', 'naples': 'Napoli',
     'club bruges': 'Club Brugge', 'aek athenes': 'AEK', 'manchester city': 'Man City', 'psg': 'Paris SG',
-    'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava', 'milan ac': 'Milan', 'real sociedad': 'Sociedad', 'cologne': 'FC Koln'
+    'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava', 'milan ac': 'Milan', 'real sociedad': 'Sociedad', 'cologne': 'FC Koln',
+    'pau': 'Pau FC', 'nottingham f': "Nott'm Forest", 'werder breme': 'Werder Bremen'
   };
   var SOURCE_TAG = {
     modele_stats: '<span class="tag">Stats, sans cotes</span>',
@@ -1031,7 +1033,7 @@ __PWA_HEAD__
         (f.cloture ? '<p class="hint">Clôture : ' + esc(dateHeureFr(f.cloture)) + '.</p>' : '') +
         '<div class="actions"><button type="button" class="btn primary" data-act="enregistrer" data-lock="1">Enregistrer et verrouiller</button>' +
         '<button type="button" class="btn" data-act="enregistrer" data-lock="0">Enregistrer sans verrouiller</button></div>') +
-      zone('info', 4, 'Pronostics match par match', '<div class="matchs-liste">' + res.matchs.map(matchHtml).join('') + '</div>', legendeHtml());
+      zone('info', 4, 'Pronostics match par match', '<div class="matchs-liste">' + cartesMatchs(res.matchs) + '</div>', legendeHtml());
   }
   function majApercu() {
     var zone = document.getElementById('apercu-zone');
@@ -1486,7 +1488,22 @@ __PWA_HEAD__
       '</tbody></table></div>';
   }
   // Carte d’un match : équipes en grand, barre et probabilités, pronostic
-  function matchHtml(m) {
+  // Un match surprise par grille, toujours : celui dont le côté le moins favori (nul exclu) a la plus forte chance de gagner.
+  // Le choix ne dépend pas des résultats : le repère ne change pas de match pendant le week-end.
+  function candidatSurprise(matchs) {
+    var choisi = null, meilleure = -1;
+    matchs.forEach(function (m) {
+      if (!m.proba) return;
+      var out = Math.min(m.proba['1'] || 0, m.proba['2'] || 0);
+      if (out > meilleure) { meilleure = out; choisi = m; }
+    });
+    return choisi;
+  }
+  function cartesMatchs(matchs) {
+    var cand = candidatSurprise(matchs);
+    return matchs.map(function (m) { return matchHtml(m, m === cand); }).join('');
+  }
+  function matchHtml(m, estSurprise) {
     var p = m.proba || {};
     var pick = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
@@ -1506,7 +1523,7 @@ __PWA_HEAD__
     var det = m.source === 'hypothese' ? '' : comparaison(m);
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
-      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + '</div>' +
+      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + '</div>' +
       '<div class="match-equipes"><div class="equipe"><span class="equipe-role">Domicile</span><span class="equipe-nom">' + esc(m.domicile) + '</span></div>' +
       '<span class="vs">contre</span>' +
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span></div></div>' +
@@ -1594,7 +1611,7 @@ __PWA_HEAD__
     }).join('') + '</ul>') : '';
     var copie = S.texteCopie ? zone('info', 0, 'Texte de la grille', '<p class="hint">Maintiens le doigt sur le texte, puis choisis « Tout sélectionner », puis « Copier ».</p>' +
       '<textarea class="txtin" readonly style="box-sizing:border-box;min-height:240px;line-height:1.5">' + esc(S.texteCopie) + '</textarea>') : '';
-    var pronostics = matchs.length ? zone('info', 3, 'Pronostics match par match', '<div class="matchs-liste">' + matchs.map(matchHtml).join('') + '</div>', legendeHtml()) : '';
+    var pronostics = matchs.length ? zone('info', 3, 'Pronostics match par match', '<div class="matchs-liste">' + cartesMatchs(matchs) + '</div>', legendeHtml()) : '';
     var methodeCalcul = g.note ? zone('neutre', 0, 'Méthode de calcul', '<p class="hint">' + esc(g.note) + '</p>') : '';
     return haut + avert +
       zone('info', 1, 'Mes grilles', '<div class="tuiles">' + gs.map(function (x) { return tuile(x, x.id === g.id); }).join('') + '</div>', nouvelleBtn) +
