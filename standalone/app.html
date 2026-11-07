@@ -1597,6 +1597,22 @@ __PWA_HEAD__
     var scf = scoreEurope(tf, sf), sco = scoreEurope(to, so), ecart = scf - sco;
     return { fav: fav, out: out, nomFav: tf.equipe, nomOut: to.equipe, scf: scf, sco: sco, ecart: ecart, contre: ecart <= -2, couvre: p[out] || 0, probas: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 } };
   }
+  // « Je jouerais » : le choix que l’application retient quand le contre-pronostic est déclenché.
+  // Il se décide d’après la checklist seulement, jamais d’après les pourcentages.
+  function choixSuggere(d) {
+    if (d.out === '2') {
+      var sOut = lireEurope()[nomCanonique(d.nomOut)] || {};
+      var niveau = !!(sOut.joue && sOut.res === 'gagné' && sOut.lieu === 'extérieur' && sOut.adv === 'gros');
+      return niveau
+        ? { choix: '2', raison: 'Le favori n’est pas en forme, mais l’outsider a gagné à l’extérieur contre un gros.' }
+        : { choix: 'N', raison: 'Le favori n’est pas en forme, et l’outsider joue à l’extérieur sans victoire à l’extérieur contre un gros.' };
+    }
+    return { choix: '1', raison: 'Le favori n’est pas en forme, et l’outsider joue à domicile.' };
+  }
+  function recoHtml(d) {
+    var r = choixSuggere(d);
+    return '<div class="choix-ligne"><span class="pronos-label">Je jouerais</span> <b>' + esc(LIBELLE_PRONO[r.choix] || r.choix) + '</b> <span class="hint">' + esc(r.raison) + '</span></div>';
+  }
   function europeLigneHtml(m, pick) {
     var d = europeDiag(m);
     if (!d) return '';
@@ -1604,8 +1620,7 @@ __PWA_HEAD__
     var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
       (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : (lireContre()[clePaire(m.domicile, m.exterieur)] ? ' : seuil non atteint, contre-pronostic validé à la main.' : ' : seuil non atteint, pas de contre-pronostic.'));
     var cle = clePaire(m.domicile, m.exterieur), choixValide = lireContre()[cle] || '', pr = d.probas;
-    var couvModele = (pick || '').split('').reduce(function (acc, k) { return acc + (pr[k] || 0); }, 0);
-    var modele = '<span class="pronos-label">Le modèle joue</span> ' + esc(LIBELLE_PRONO[pick] || pick) + ' (' + pc(couvModele, 0) + ')';
+    var modele = '<span class="pronos-label">Logique</span> ' + esc(pick);
     var choix;
     if (choixValide) {
       var couv = choixValide.split('').reduce(function (acc, k) { return acc + (pr[k] || 0); }, 0);
@@ -1618,7 +1633,7 @@ __PWA_HEAD__
       choix = '<div class="choix-ligne">' + modele + ' <span class="hint">Contre-pronostic :</span> ' +
         opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[1]) + ' (' + pc(o[2], 0) + ')</button>'; }).join(' ') + '</div>';
     }
-    return '<div class="eu-diag">' + esc(txt) + '</div>' + choix;
+    return '<div class="eu-diag">' + esc(txt) + '</div>' + (d.contre ? recoHtml(d) : '') + choix;
   }
   // Rang de l’équipe dans le classement de son championnat, affiché sous son nom sur la carte du match (rien si inconnu)
   function rangHtml(nom) {
