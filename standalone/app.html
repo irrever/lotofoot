@@ -1611,8 +1611,8 @@ __PWA_HEAD__
     } else if (!d.contre) {
       choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">(pas de contre-pronostic)</span></div>';
     } else {
-      var doub = d.out === '1' ? '1N' : '2N';
-      var opts = [['N', 'N', pr.N], [d.out, d.out, pr[d.out]], [doub, LIBELLE_PRONO[doub], pr.N + pr[d.out]]];
+      var doub = d.out === '1' ? '1N' : '2N', doubFav = d.fav === '1' ? '1N' : '2N';
+      var opts = [['N', 'N', pr.N], [d.out, d.out, pr[d.out]], [doub, LIBELLE_PRONO[doub], pr.N + pr[d.out]], [doubFav, LIBELLE_PRONO[doubFav], pr.N + pr[d.fav]]];
       choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">Contre-pronostic :</span> ' +
         opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[1]) + ' (' + pc(o[2], 0) + ')</button>'; }).join(' ') + '</div>';
     }
