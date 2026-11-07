@@ -1567,12 +1567,12 @@ __PWA_HEAD__
     if (a.passeur) txt += ', meilleur passeur absent';
     return txt;
   }
-  // Un point négatif par signal : a joué en Europe, fatigue, défaite lourde en Europe, absence signalée ; +1 pour une victoire à l'extérieur contre un gros, si l'équipe a joué en Europe
+  // Un point négatif par signal : a joué en Europe, fatigue, absence signalée, défaite lourde en Europe ; +1 pour une victoire à l'extérieur contre un gros. Défaite lourde et victoire ne comptent que si l'équipe a joué en Europe
   function scoreEurope(t, st) {
     var s = 0;
     if (st.joue) s -= 1;
     if (st.fatigue) s -= 1;
-    if (st.res === 'perdu' && st.lourde) s -= 1;
+    if (st.joue && st.res === 'perdu' && st.lourde) s -= 1;
     if (st.joue && st.res === 'gagné' && st.lieu === 'extérieur' && st.adv === 'gros') s += 1;
     if (absenceAlerte(t)) s -= 1;
     return s;
