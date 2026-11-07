@@ -1,5 +1,5 @@
 {
- "date": "2026-11-06",
+ "date": "2026-11-07",
  "source": "foot-actu.com",
  "regles": {
   "buteur": -10,
@@ -366,8 +366,8 @@
   "F1": {
    "blessures_clubs": 18,
    "blessures_joueurs": 61,
-   "buteurs": 123,
-   "passeurs": 105
+   "buteurs": 124,
+   "passeurs": 113
   }
  }
 }
