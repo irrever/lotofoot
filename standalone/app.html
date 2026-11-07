@@ -255,9 +255,6 @@ select:focus, .txtin:focus { outline: none; border-color: var(--ok); box-shadow:
 /* Case au-dessus du numéro : blanche, cochée en noir quand le match est couvert */
 .ligne-gauche { display: grid; justify-items: center; gap: 5px; align-self: start; }
 .ligne-gauche .ligne-num { line-height: 1; }
-.case-bilan { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 2px solid var(--fg); border-radius: 4px; background: var(--surface); }
-.case-bilan.coche::after { content: '✓'; font: 800 16px/1 var(--sans); color: var(--fg); }
-.case-bilan.coche { border-color: #e8730c; }
 .tag.hyp { color: var(--hyp); background: var(--hyp-soft); border-color: var(--hyp-line); }
 .tag.bad { color: var(--bad); background: var(--bad-soft); border-color: var(--bad-line); }
 details.more { margin-top: 2px; }
@@ -2708,8 +2705,8 @@ __PWA_HEAD__
       var couleur = j.statut === 'ok' ? 'var(--ok)' : (j.statut === 'ko' ? 'var(--bad)' : 'var(--line)');
       var marque = j.statut === 'ok' ? '<span style="color:var(--ok);font-weight:700">✓</span>' :
         (j.statut === 'ko' ? '<span style="color:var(--bad);font-weight:700">✗</span>' : '<span class="hint">—</span>');
-      return '<details style="border-left:4px solid var(--line);padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
-        '<summary class="ligne-choix"><span class="ligne-gauche"><span class="case-bilan' + (pub && j.statut === 'ok' ? ' coche' : '') + '"></span><span class="ligne-num">' + esc(p.m.n) + '</span></span>' +
+      return '<details style="border-left:4px solid ' + couleur + ';padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)">' +
+        '<summary class="ligne-choix"><span class="ligne-gauche"><span class="ligne-num">' + esc(p.m.n) + '</span></span>' +
         '<span class="ligne-equipes">' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + (p.m === cand ? ' <span class="tag surprise-tag">Match surprise</span>' : '') + '</span>' +
         casesChoix(p.pronostic) +
         '<span class="ligne-resultat">' + (pub ? esc(pub.score) + ' · ' + (j.statut === 'ok' ? 'couvert' : 'non couvert') : 'à venir') + '</span></summary>' +
