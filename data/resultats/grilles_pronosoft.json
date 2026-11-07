@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-06",
+ "maj": "2026-11-07",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "grilles": {
   "8-152": {
@@ -58,7 +58,7 @@
   },
   "7-138": {
    "libelle": "Loto Foot 7 n138",
-   "maj": "2026-11-06",
+   "maj": "2026-11-07",
    "matchs": [
     {
      "domicile": "Leverkusen",
@@ -106,7 +106,7 @@
   },
   "12-96": {
    "libelle": "Loto Foot 12 n96",
-   "maj": "2026-11-06",
+   "maj": "2026-11-07",
    "matchs": [
     {
      "domicile": "Leverkusen",
@@ -184,7 +184,7 @@
   },
   "8-153": {
    "libelle": "Loto Foot 8 n153",
-   "maj": "2026-11-06",
+   "maj": "2026-11-07",
    "matchs": [
     {
      "domicile": "Lens",
@@ -238,7 +238,7 @@
   },
   "15-91": {
    "libelle": "Loto Foot 15 n91",
-   "maj": "2026-11-06",
+   "maj": "2026-11-07",
    "matchs": [
     {
      "domicile": "Villarreal",
@@ -382,7 +382,7 @@
   },
   "8-154": {
    "libelle": "Loto Foot 8 n154",
-   "maj": "2026-11-06",
+   "maj": "2026-11-07",
    "matchs": [
     {
      "domicile": "Toulouse",
