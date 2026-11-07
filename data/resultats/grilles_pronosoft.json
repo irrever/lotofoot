@@ -433,6 +433,60 @@
      "issue": "N"
     }
    ]
+  },
+  "8-155": {
+   "libelle": "Loto Foot 8 n155",
+   "maj": "2026-11-07",
+   "matchs": [
+    {
+     "domicile": "Auxerre",
+     "exterieur": "Paris FC",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Paris SG",
+     "exterieur": "Troyes",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "St Etienne",
+     "exterieur": "Laval",
+     "score": "2-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Pau",
+     "exterieur": "Nantes",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Nottingham F.",
+     "exterieur": "Man. City",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Stuttgart",
+     "exterieur": "Werder Brme",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "AS Rome",
+     "exterieur": "Sassuolo",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "CF Valence",
+     "exterieur": "Real Madrid",
+     "score": "0-3",
+     "issue": "2"
+    }
+   ]
   }
  }
 }
