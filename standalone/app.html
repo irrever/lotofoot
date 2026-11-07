@@ -411,6 +411,10 @@ details.sect > .corps { padding: 0 0 16px; }
 .info-surprise { border-left-color: var(--bad); }
 .info-raison, .info-stats { border-left-color: var(--info); }
 .info-hypothese { border-left-color: var(--muted); }
+.info-corps p { margin: 0 0 6px; }
+.reco { margin-top: 8px; font-size: 13px; }
+.reco ol { margin: 4px 0 0; padding-left: 18px; }
+.reco li { margin: 3px 0; }
 </style>
 __PWA_HEAD__
 </head>
@@ -1556,7 +1560,8 @@ __PWA_HEAD__
     var cand = candidatSurprise(matchs);
     var nAbs = matchs.filter(function (m) { return repereAbsence(m); }).length;
     var compte = nAbs ? '<p class="hint">Vigilance : ' + nAbs + ' match' + (nAbs > 1 ? 's' : '') + ' avec une absence clé chez le favori.</p>' : '';
-    return compte + matchs.map(function (m) { return matchHtml(m, m === cand, repereAbsence(m), fige); }).join('');
+    var ctx = contexteDoubles(matchs);
+    return compte + matchs.map(function (m) { return matchHtml(m, m === cand, repereAbsence(m), fige, ctx); }).join('');
   }
   // Coupes d'Europe : cases cochées à la main pour chaque équipe, gardées sur cet appareil (lotofoot.europe.v1)
   var STORE_EUROPE = 'lotofoot.europe.v1';
@@ -1605,21 +1610,117 @@ __PWA_HEAD__
     var scf = scoreEurope(tf, sf), sco = scoreEurope(to, so), ecart = scf - sco;
     return { fav: fav, out: out, nomFav: tf.equipe, nomOut: to.equipe, scf: scf, sco: sco, ecart: ecart, contre: ecart <= -2, couvre: p[out] || 0, probas: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 } };
   }
-  // « Je jouerais » : le choix que l’application retient quand le contre-pronostic est déclenché.
-  // Il se décide d’après la checklist seulement, jamais d’après les pourcentages.
-  function choixSuggere(d) {
+  // Contre-pronostic : le choix retenu, d’après la checklist seulement (jamais les pourcentages)
+  function choixSuggere(d, dO) {
     if (d.out === '2') {
-      var sOut = lireEurope()[nomCanonique(d.nomOut)] || {};
-      var niveau = !!(sOut.joue && sOut.res === 'gagné' && sOut.lieu === 'extérieur' && sOut.adv === 'gros');
+      var niveau = dO.some(function (e) { return e.v > 0; });
       return niveau
-        ? { choix: '2', raison: 'Le favori n’est pas en forme, mais l’outsider a gagné à l’extérieur contre un gros.' }
-        : { choix: 'N', raison: 'Le favori n’est pas en forme, et l’outsider joue à l’extérieur sans victoire à l’extérieur contre un gros.' };
+        ? { choix: '2', texte: esc(d.nomOut) + ' joue à l’extérieur et a gagné à l’extérieur contre un gros : il a un signe de niveau. Je joue ' + esc(d.nomOut) + '.' }
+        : { choix: 'N', texte: esc(d.nomOut) + ' joue à l’extérieur sans victoire à l’extérieur contre un gros : pas de signe de niveau. Je joue le nul.' };
     }
-    return { choix: '1', raison: 'Le favori n’est pas en forme, et l’outsider joue à domicile.' };
+    return { choix: '1', texte: esc(d.nomOut) + ' joue à domicile. Je joue ' + esc(d.nomOut) + '.' };
+  }
+  // Checklist d’une équipe, signal par signal, avec ses points
+  function detailEurope(t, st) {
+    var lst = [];
+    if (st.joue) lst.push({ txt: 'a joué en Europe', v: -1 });
+    if (st.fatigue) lst.push({ txt: 'fatigue', v: -1 });
+    if (st.joue && st.res === 'perdu' && st.lourde) lst.push({ txt: 'défaite lourde', v: -1 });
+    if (absenceAlerte(t)) lst.push({ txt: 'absence signalée, ' + resumeAbsences(t), v: -1 });
+    if (st.joue && st.res === 'gagné' && st.lieu === 'extérieur' && st.adv === 'gros') lst.push({ txt: 'victoire à l’extérieur contre un gros', v: 1 });
+    return lst;
   }
   function recoHtml(d) {
-    var r = choixSuggere(d);
-    return '<div class="choix-ligne"><span class="pronos-label">Je jouerais</span> <b>' + esc(LIBELLE_PRONO[r.choix] || r.choix) + '</b> <span class="hint">' + esc(r.raison) + '</span></div>';
+    var tf = trouverEquipe(d.nomFav), to = trouverEquipe(d.nomOut);
+    var df = detailEurope(tf, lireEurope()[nomCanonique(d.nomFav)] || {});
+    var dO = detailEurope(to, lireEurope()[nomCanonique(d.nomOut)] || {});
+    var r = choixSuggere(d, dO);
+    var fmt = function (v) { return (v >= 0 ? '+' : '−') + Math.abs(v); };
+    var liste = function (lst) { return lst.length ? ' (' + lst.map(function (e) { return esc(e.txt) + ' ' + fmt(e.v); }).join(' ; ') + ')' : ''; };
+    var nomChoix = r.choix === 'N' ? 'le nul' : esc(d.nomOut);
+    return '<div class="reco"><p><b>Je jouerais ' + nomChoix + '.</b></p><ol>' +
+      '<li>Checklist : ' + esc(d.nomFav) + ' ' + fmt(d.scf) + liste(df) + ' ; ' + esc(d.nomOut) + ' ' + fmt(d.sco) + liste(dO) + '.</li>' +
+      '<li>Écart de ' + Math.abs(d.ecart) + ' points : le seuil de 2 est atteint, le favori n’est pas en forme.</li>' +
+      '<li>' + r.texte + '</li></ol></div>';
+  }
+  // Poids de chaque facteur sur la probabilité de chaque issue, en points : on retire le facteur et on mesure la variation
+  var GROUPES_EFFET = [
+    { nom: 'niveau Elo', idx: [0] },
+    { nom: 'bilan dom./ext.', idx: [1, 2, 3, 4, 5, 6] },
+    { nom: 'forme', idx: [7, 8] },
+    { nom: 'buts marqués', idx: [9, 11] },
+    { nom: 'buts encaissés', idx: [10, 12] },
+    { nom: 'repos', idx: [13, 14] },
+    { nom: 'charge sur 30 jours', idx: [15, 16] },
+    { nom: 'tirs cadrés', idx: [17, 19] },
+    { nom: 'tirs cadrés concédés', idx: [18, 20] },
+    { nom: 'corners', idx: [21, 22] },
+    { nom: 'cartons', idx: [23, 24] }
+  ];
+  function probsVecteur(x) {
+    var M = S.modele, z = {};
+    ['H', 'D', 'A'].forEach(function (c) {
+      var s = M.ordonnee[c];
+      for (var j = 0; j < x.length; j++) { s += M.coef[c][j] * ((x[j] - M.moyenne[j]) / M.echelle[j]); }
+      z[c] = s;
+    });
+    var mx = Math.max(z.H, z.D, z.A), eH = Math.exp(z.H - mx), eD = Math.exp(z.D - mx), eA = Math.exp(z.A - mx), t = eH + eD + eA;
+    return { H: eH / t, D: eD / t, A: eA / t };
+  }
+  function effetsFacteurs(r) {
+    var M = S.modele, x = vecteurX(r.hv, r.av, r.gap), base = probsVecteur(x);
+    return GROUPES_EFFET.map(function (g) {
+      var xn = x.slice();
+      g.idx.forEach(function (j) { xn[j] = M.moyenne[j]; });
+      var pn = probsVecteur(xn);
+      return { nom: g.nom, H: 100 * (base.H - pn.H), D: 100 * (base.D - pn.D), A: 100 * (base.A - pn.A) };
+    });
+  }
+  // Pourquoi cette issue : ce qui la pousse, ce qui freine l’issue la plus proche
+  function explicationMatch(m) {
+    var h = trouverEquipe(m.domicile), a = trouverEquipe(m.exterieur);
+    if (!h || !a) return '';
+    var r = calculMatch(h, a);
+    if (r.erreur || !r.p) return '';
+    var p = r.p, best = issueFavorite(p);
+    var ordre = ['H', 'D', 'A'].slice().sort(function (u, v) { return p[v] - p[u]; });
+    var voisine = ordre[1];
+    var nom = function (c) { return c === 'H' ? esc(m.domicile) : (c === 'A' ? esc(m.exterieur) : 'le nul'); };
+    var effets = effetsFacteurs(r);
+    var fmt = function (v) { return (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1).replace('.', ','); };
+    var pousse = effets.filter(function (e) { return e[best] >= 0.5; }).sort(function (u, v) { return v[best] - u[best]; }).slice(0, 2);
+    var freine = effets.filter(function (e) { return e[voisine] <= -0.5; }).sort(function (u, v) { return u[voisine] - v[voisine]; }).slice(0, 2);
+    var liste = function (lst, c) { return lst.map(function (e) { return esc(e.nom) + ' ' + fmt(e[c]) + ' pts'; }).join(' ; '); };
+    var lettres = (m.pronostic || '').split('');
+    var cle = { '1': 'H', 'N': 'D', '2': 'A' };
+    var nomL = function (k) { return k === '1' ? esc(m.domicile) : (k === '2' ? esc(m.exterieur) : 'le nul'); };
+    var entete = lettres.length === 2
+      ? '<p>Le double couvre <b>' + nomL(lettres[0]) + '</b> et <b>' + nomL(lettres[1]) + '</b> : ce sont les deux issues les plus probables (' + pc(p[cle[lettres[0]]]) + ' + ' + pc(p[cle[lettres[1]]]) + ').</p>'
+      : (lettres.length === 3 ? '<p>Le triple couvre les trois issues.</p>'
+      : '<p><b>' + nom(best) + '</b> est retenu : c’est l’issue la plus probable (' + pc(p[best]) + '), devant ' + nom(voisine) + ' (' + pc(p[voisine]) + ').</p>');
+    return entete +
+      '<p>Ce qui pousse ' + nom(best) + ' : ' + (pousse.length ? liste(pousse, best) : 'aucun facteur ne le pousse nettement') + '.</p>' +
+      '<p>Ce qui freine ' + (voisine === 'D' ? 'le nul' : nom(voisine)) + ' : ' + (freine.length ? liste(freine, voisine) : 'aucun facteur ne le freine nettement') + '.</p>';
+  }
+  // Simple ou double : la grille place ses doubles là où le gain est le plus grand
+  function gainDouble(p) {
+    var ordre = ['1', 'N', '2'].slice().sort(function (u, v) { return p[v] - p[u]; });
+    return (p[ordre[0]] + p[ordre[1]]) / p[ordre[0]];
+  }
+  function contexteDoubles(matchs) {
+    var gains = matchs.filter(function (m) { return m.proba && !m.modele && m.pronostic && m.pronostic.length === 2; })
+      .map(function (m) { return gainDouble(m.proba); });
+    return { nd: gains.length, gMin: gains.length ? Math.min.apply(null, gains) : 0 };
+  }
+  function typeGrilleTexte(m, ctx) {
+    if (!m.proba || !m.pronostic) return '';
+    ctx = ctx || { nd: 0, gMin: 0 };
+    if (m.modele) return 'Choix validé à la main : le modèle jouait ' + esc(LIBELLE_PRONO[m.modele] || m.modele) + '.';
+    var g = gainDouble(m.proba).toFixed(1).replace('.', ',');
+    if (m.pronostic.length === 3) return 'Triple : toutes les issues sont jouées.';
+    if (m.pronostic.length === 2) return 'Double : son gain est ×' + g + ', parmi les ' + ctx.nd + ' plus grands de la grille.';
+    if (!ctx.nd) return 'Simple : la grille n’a aucun double. Un double ici ferait gagner ×' + g + '.';
+    return 'Simple : un double ici ferait gagner ×' + g + ', moins que le plus petit gain des ' + ctx.nd + ' doubles de la grille (×' + ctx.gMin.toFixed(1).replace('.', ',') + ').';
   }
   function europeLigneHtml(m, pick) {
     var d = europeDiag(m);
@@ -1731,7 +1832,7 @@ __PWA_HEAD__
     render();
     document.querySelectorAll('details.europe-details, details.info').forEach(function (d) { if (ouverts[d.getAttribute('data-cle')]) d.setAttribute('open', ''); });
   }
-  function matchHtml(m, estSurprise, repere, fige) {
+  function matchHtml(m, estSurprise, repere, fige, ctx) {
     var p = m.proba || {};
     var pick = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
@@ -1758,7 +1859,9 @@ __PWA_HEAD__
     if (repere) infos.push({ ton: 'absence', titre: 'Absence clé chez ' + repere.nom, corps: 'Le nul devient plausible. Double conseillé : ' + (repere.fav === '1' ? '1 et N' : 'N et 2') + ' (couvre ' + pc(repere.couvre, 0) + ').' });
     if (surprise) infos.push({ ton: 'surprise', titre: 'Surprise du jour', corps: 'Le favori à ' + pc(favori, 0) + ' a perdu (' + esc(surprise.score) + ').' });
     else if (favori >= 0.6) infos.push({ ton: 'mefiance', titre: 'Méfiance : favori à ' + pc(favori, 0), corps: 'Il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') });
-    if (m.raison) infos.push({ ton: 'raison', titre: 'Pourquoi ce pronostic', corps: m.raison });
+    var raisonHtml = explicationMatch(m) || (m.raison ? '<p>' + esc(m.raison) + '</p>' : '');
+    var typeTxt = typeGrilleTexte(m, ctx);
+    if (raisonHtml || typeTxt) infos.push({ ton: 'raison', titre: 'Pourquoi ce pronostic', corps: raisonHtml + (typeTxt ? '<p>' + typeTxt + '</p>' : ''), html: true });
     if (m.alertes && m.alertes.length) infos.push({ ton: 'absences', titre: 'Absences signalées (' + m.alertes.length + ')', corps: alertesHtml(m.alertes, suivi.nouvelles), html: true });
     if (m.hypothese_texte) infos.push({ ton: 'hypothese', titre: 'Hypothèse', corps: m.hypothese_texte });
     if (det) infos.push({ ton: 'stats', titre: 'Statistiques des deux équipes', corps: det, html: true });
