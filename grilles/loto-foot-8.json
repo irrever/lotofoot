@@ -2,52 +2,102 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 155,
-   "nom": "Loto Foot 8 · grille N°155",
-   "cloture": "2026-11-07T18:25:00+01:00",
-   "validite": "samedi 7 novembre 2026 à 18 h 25",
+   "numero": 156,
+   "nom": "Loto Foot 8 · grille N°156",
+   "cloture": "2026-11-09T18:55:00+01:00",
+   "validite": "lundi 9 novembre 2026 à 18 h 55",
    "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-155-2026.html",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-156-2026.html",
    "matchs": [
     {
-     "domicile": "Auxerre",
-     "exterieur": "Paris FC",
-     "libelle": "Auxerre – Paris FC"
+     "domicile": "Sabadell",
+     "exterieur": "Realsociedad B",
+     "libelle": "Sabadell – Realsociedad B"
     },
     {
-     "domicile": "Paris SG",
-     "exterieur": "Troyes",
-     "libelle": "Paris SG – Troyes"
+     "domicile": "FC Botosani",
+     "exterieur": "Otelul Galati",
+     "libelle": "FC Botosani – Otelul Galati"
     },
     {
-     "domicile": "St Etienne",
-     "exterieur": "Laval",
-     "libelle": "St Etienne – Laval"
+     "domicile": "Torreense",
+     "exterieur": "Uniao Leiria",
+     "libelle": "Torreense – Uniao Leiria"
     },
     {
-     "domicile": "Pau",
-     "exterieur": "Nantes",
-     "libelle": "Pau – Nantes"
+     "domicile": "Mushuc Runa",
+     "exterieur": "Delfin SC",
+     "libelle": "Mushuc Runa – Delfin SC"
     },
     {
-     "domicile": "Nottingham F.",
-     "exterieur": "Man City",
-     "libelle": "Nottingham F. – Man. City"
+     "domicile": "Tecnico Uni.",
+     "exterieur": "Manta FC",
+     "libelle": "Tecnico Uni. – Manta FC"
     },
     {
-     "domicile": "Stuttgart",
-     "exterieur": "Werder Brême",
-     "libelle": "Stuttgart – Werder Brême"
+     "domicile": "San Lorenzo",
+     "exterieur": "Rubio Nu",
+     "libelle": "San Lorenzo – Rubio Nu"
     },
     {
-     "domicile": "Roma",
-     "exterieur": "Sassuolo",
-     "libelle": "AS Rome – Sassuolo"
+     "domicile": "Sp.Luqueno",
+     "exterieur": "Club 2 De Mayo",
+     "libelle": "Sp.Luqueno – Club 2 De Mayo"
     },
     {
-     "domicile": "Valencia",
-     "exterieur": "Real Madrid",
-     "libelle": "CF Valence – Real Madrid"
+     "domicile": "Junior FC",
+     "exterieur": "Cucuta",
+     "libelle": "Junior FC – Cucuta"
+    }
+   ]
+  },
+  {
+   "numero": 157,
+   "nom": "Loto Foot 8 · grille N°157",
+   "cloture": "2026-11-13T20:40:00+01:00",
+   "validite": "vendredi 13 novembre 2026 à 20 h 40",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-157-2026.html",
+   "matchs": [
+    {
+     "domicile": "Serbie",
+     "exterieur": "Allemagne",
+     "libelle": "Serbie – Allemagne"
+    },
+    {
+     "domicile": "Pays-Bas",
+     "exterieur": "Grèce",
+     "libelle": "Pays-Bas – Grèce"
+    },
+    {
+     "domicile": "Slovénie",
+     "exterieur": "Suisse",
+     "libelle": "Slovénie – Suisse"
+    },
+    {
+     "domicile": "Luxembourg",
+     "exterieur": "Estonie",
+     "libelle": "Luxembourg – Estonie"
+    },
+    {
+     "domicile": "Bulgarie",
+     "exterieur": "Islande",
+     "libelle": "Bulgarie – Islande"
+    },
+    {
+     "domicile": "Slovaquie",
+     "exterieur": "I.Féroé",
+     "libelle": "Slovaquie – I.Féroé"
+    },
+    {
+     "domicile": "Ecosse",
+     "exterieur": "Macédoineduno.",
+     "libelle": "Ecosse – Macédoineduno."
+    },
+    {
+     "domicile": "Andorre",
+     "exterieur": "Gibraltar",
+     "libelle": "Andorre – Gibraltar"
     }
    ]
   }

@@ -1,23 +1,48 @@
 {
- "verifie_le": "2026-11-07T13:21:19Z",
+ "verifie_le": "2026-11-07T19:14:02Z",
  "formats": {
   "7": {
-   "ok": true,
-   "grilles_ouvertes": [
-    139
-   ],
-   "equipes_inconnues": [],
-   "erreur": null
+   "ok": false,
+   "erreur": "4 matchs trouvés pour un format de 7"
   },
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    155
+    156,
+    157
    ],
    "equipes_inconnues": [
-    "Pau",
-    "Nottingham F.",
-    "Werder Brême"
+    "Realsociedad B",
+    "FC Botosani",
+    "Otelul Galati",
+    "Torreense",
+    "Uniao Leiria",
+    "Mushuc Runa",
+    "Delfin SC",
+    "Tecnico Uni.",
+    "Manta FC",
+    "San Lorenzo",
+    "Rubio Nu",
+    "Sp.Luqueno",
+    "Club 2 De Mayo",
+    "Junior FC",
+    "Cucuta",
+    "Serbie",
+    "Allemagne",
+    "Pays-Bas",
+    "Grèce",
+    "Slovénie",
+    "Suisse",
+    "Luxembourg",
+    "Estonie",
+    "Bulgarie",
+    "Islande",
+    "Slovaquie",
+    "I.Féroé",
+    "Ecosse",
+    "Macédoineduno.",
+    "Andorre",
+    "Gibraltar"
    ],
    "erreur": null
   },
@@ -35,9 +60,41 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    92
+    92,
+    93
    ],
-   "equipes_inconnues": [],
+   "equipes_inconnues": [
+    "Italie",
+    "France",
+    "Angleterre",
+    "Croatie",
+    "Turquie",
+    "Belgique",
+    "Monténégro",
+    "Lettonie",
+    "Arménie",
+    "Chypre",
+    "Albanie",
+    "Finlande",
+    "Rép.Tchèque",
+    "Espagne",
+    "San Marin",
+    "Biélorussie",
+    "Moldavie",
+    "Kazakhstan",
+    "Luxembourg",
+    "Estonie",
+    "Ecosse",
+    "Macédoineduno.",
+    "Bulgarie",
+    "Islande",
+    "Slovénie",
+    "Suisse",
+    "Pays-Bas",
+    "Grèce",
+    "Serbie",
+    "Allemagne"
+   ],
    "erreur": null
   }
  }
