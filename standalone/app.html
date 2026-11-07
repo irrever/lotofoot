@@ -1604,16 +1604,18 @@ __PWA_HEAD__
     var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
       (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : (lireContre()[clePaire(m.domicile, m.exterieur)] ? ' : seuil non atteint, contre-pronostic validé à la main.' : ' : seuil non atteint, pas de contre-pronostic.'));
     var cle = clePaire(m.domicile, m.exterieur), choixValide = lireContre()[cle] || '', pr = d.probas;
+    var couvModele = (pick || '').split('').reduce(function (acc, k) { return acc + (pr[k] || 0); }, 0);
+    var modele = '<span class="pronos-label">Le modèle joue</span> ' + esc(LIBELLE_PRONO[pick] || pick) + ' (' + pc(couvModele, 0) + ')';
     var choix;
     if (choixValide) {
       var couv = choixValide.split('').reduce(function (acc, k) { return acc + (pr[k] || 0); }, 0);
-      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' · <span class="pronos-label">Contre-pronostic validé</span> ' + casesContre(choixValide) + ' <span class="hint">' + esc(LIBELLE_PRONO[choixValide] || choixValide) + ', couvre ' + pc(couv, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="">Retirer</button></div>';
+      choix = '<div class="choix-ligne">' + modele + ' · <span class="pronos-label">Contre-pronostic validé</span> ' + casesContre(choixValide) + ' <span class="hint">' + esc(LIBELLE_PRONO[choixValide] || choixValide) + ', couvre ' + pc(couv, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="">Retirer</button></div>';
     } else if (!d.contre) {
-      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">(pas de contre-pronostic)</span></div>';
+      choix = '<div class="choix-ligne">' + modele + ' <span class="hint">(pas de contre-pronostic)</span></div>';
     } else {
       var doub = d.out === '1' ? '1N' : '2N', doubFav = d.fav === '1' ? '1N' : '2N';
       var opts = [['N', 'N', pr.N], [d.out, d.out, pr[d.out]], [doub, LIBELLE_PRONO[doub], pr.N + pr[d.out]], [doubFav, LIBELLE_PRONO[doubFav], pr.N + pr[d.fav]]];
-      choix = '<div class="choix-ligne"><span class="pronos-label">Logique</span> ' + esc(pick) + ' <span class="hint">Contre-pronostic :</span> ' +
+      choix = '<div class="choix-ligne">' + modele + ' <span class="hint">Contre-pronostic :</span> ' +
         opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[1]) + ' (' + pc(o[2], 0) + ')</button>'; }).join(' ') + '</div>';
     }
     return '<div class="eu-diag">' + esc(txt) + '</div>' + choix;
