@@ -400,6 +400,17 @@ details.sect > .corps { padding: 0 0 16px; }
 @media (prefers-reduced-motion: reduce) {
   .btn, .tuile, .tabs button { transition: none; }
 }
+.infos { margin-top: 10px; border-top: 1px solid var(--line); }
+.info { border-bottom: 1px solid var(--line); border-left: 4px solid var(--line); padding-left: 10px; }
+.info > summary { cursor: pointer; list-style: none; padding: 10px 26px 10px 2px; position: relative; font: 600 14px/1.35 var(--sans); }
+.info > summary::-webkit-details-marker { display: none; }
+.info > summary::after { content: '▸'; position: absolute; right: 4px; top: 9px; color: var(--muted); }
+.info[open] > summary::after { content: '▾'; }
+.info-corps { padding: 0 2px 12px; font-size: 14px; }
+.info-absence, .info-mefiance, .info-absences { border-left-color: var(--warn); }
+.info-surprise { border-left-color: var(--bad); }
+.info-raison, .info-stats { border-left-color: var(--info); }
+.info-hypothese { border-left-color: var(--muted); }
 </style>
 __PWA_HEAD__
 </head>
@@ -1716,9 +1727,9 @@ __PWA_HEAD__
   // Après un choix validé, la page est redessinée ; les volets « Coupes d’Europe » déjà ouverts le restent
   function rendreEnGardantEurope() {
     var ouverts = {};
-    document.querySelectorAll('details.europe-details[open]').forEach(function (d) { ouverts[d.getAttribute('data-cle')] = true; });
+    document.querySelectorAll('details.europe-details[open], details.info[open]').forEach(function (d) { ouverts[d.getAttribute('data-cle')] = true; });
     render();
-    document.querySelectorAll('details.europe-details').forEach(function (d) { if (ouverts[d.getAttribute('data-cle')]) d.setAttribute('open', ''); });
+    document.querySelectorAll('details.europe-details, details.info').forEach(function (d) { if (ouverts[d.getAttribute('data-cle')]) d.setAttribute('open', ''); });
   }
   function matchHtml(m, estSurprise, repere, fige) {
     var p = m.proba || {};
@@ -1742,6 +1753,16 @@ __PWA_HEAD__
     var euZone = (m.proba && !fige) ? '<div class="eu-zone" data-eu="' + esc(JSON.stringify({ d: m.domicile, e: m.exterieur, p: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 }, pick: pickModele })) + '">' + europeLigneHtml(m, pickModele) + '</div>' : '';
     var euPanel = (m.proba && !fige) ? europePanelHtml(m) : '';
     var det = m.source === 'hypothese' ? '' : comparaison(m);
+    // Informations du match, repliées une par une : on clique sur une ligne pour la lire
+    var infos = [];
+    if (repere) infos.push({ ton: 'absence', titre: 'Absence clé chez ' + repere.nom, corps: 'Le nul devient plausible. Double conseillé : ' + (repere.fav === '1' ? '1 et N' : 'N et 2') + ' (couvre ' + pc(repere.couvre, 0) + ').' });
+    if (surprise) infos.push({ ton: 'surprise', titre: 'Surprise du jour', corps: 'Le favori à ' + pc(favori, 0) + ' a perdu (' + esc(surprise.score) + ').' });
+    else if (favori >= 0.6) infos.push({ ton: 'mefiance', titre: 'Méfiance : favori à ' + pc(favori, 0), corps: 'Il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') });
+    if (m.raison) infos.push({ ton: 'raison', titre: 'Pourquoi ce pronostic', corps: m.raison });
+    if (m.alertes && m.alertes.length) infos.push({ ton: 'absences', titre: 'Absences signalées (' + m.alertes.length + ')', corps: alertesHtml(m.alertes, suivi.nouvelles), html: true });
+    if (m.hypothese_texte) infos.push({ ton: 'hypothese', titre: 'Hypothèse', corps: m.hypothese_texte });
+    if (det) infos.push({ ton: 'stats', titre: 'Statistiques des deux équipes', corps: det, html: true });
+    var infosHtml = infos.length ? '<div class="infos">' + infos.map(function (i) { return '<details class="info info-' + i.ton + '" data-cle="' + esc(clePaire(m.domicile, m.exterieur) + '|' + i.ton) + '"><summary>' + esc(i.titre) + '</summary><div class="info-corps">' + (i.html ? i.corps : esc(i.corps)) + '</div></details>'; }).join('') + '</div>' : '';
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
       (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + (repere ? '<span class="tag absence-tag">Absence clé</span>' : '') + '</div>' +
@@ -1752,12 +1773,7 @@ __PWA_HEAD__
       '<div class="match-foot">' + pronos + '</div>' +
       euZone +
       euPanel +
-      (repere ? '<div class="alerte alerte-absence">Absence clé chez ' + esc(repere.nom) + ' : le nul devient plausible. Double conseillé : ' + (repere.fav === '1' ? '1 et N' : 'N et 2') + ' (couvre ' + pc(repere.couvre, 0) + ').</div>' : '') +
-      (surprise ? '<div class="alerte alerte-surprise">Surprise du jour : le favori à ' + pc(favori, 0) + ' a perdu (' + esc(surprise.score) + ').</div>' : (favori >= 0.6 ? '<div class="alerte">Méfiance : favori à ' + pc(favori, 0) + ', il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') + '</div>' : '')) +
-      (m.raison ? '<p class="raison">' + esc(m.raison) + '</p>' : '') +
-      (m.alertes && m.alertes.length ? alertesHtml(m.alertes, suivi.nouvelles) : '') +
-      (m.hypothese_texte ? '<p class="hint">Hypothèse : ' + esc(m.hypothese_texte) + '</p>' : '') +
-      (det ? '<details class="more"><summary>Statistiques des deux équipes</summary>' + det + '</details>' : '') +
+      infosHtml +
       '</article>';
   }
   function sauvegardeHtml(num) {
