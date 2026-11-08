@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-07T19:14:02Z",
+ "verifie_le": "2026-11-08T01:37:56Z",
  "formats": {
   "7": {
    "ok": false,
@@ -60,7 +60,6 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    92,
     93
    ],
    "equipes_inconnues": [
