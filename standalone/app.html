@@ -1598,9 +1598,13 @@ __PWA_HEAD__
     }).join('') + '</span>';
   }
   // Diagnostic du match : le favori et l'outsider ; null tant que rien n'est coché pour ses deux équipes
+  // Match équilibré : moins de 3 points de probabilité entre les deux équipes. Pas de favori, donc pas de contre-pronostic.
+  function equilibre(p) {
+    return !!p && Math.abs((p['1'] || 0) - (p['2'] || 0)) < 0.03;
+  }
   function europeDiag(m) {
     var p = m.proba;
-    if (!p) return null;
+    if (!p || equilibre(p)) return null;
     var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
     var tf = trouverEquipe(fav === '1' ? m.domicile : m.exterieur), to = trouverEquipe(fav === '1' ? m.exterieur : m.domicile);
     if (!tf || !to) return null;
@@ -1723,6 +1727,11 @@ __PWA_HEAD__
     return 'Simple : un double ici ferait gagner ×' + g + ', moins que le plus petit gain des ' + ctx.nd + ' doubles de la grille (×' + ctx.gMin.toFixed(1).replace('.', ',') + ').';
   }
   function europeLigneHtml(m, pick) {
+    if (equilibre(m.proba)) {
+      var ecart = Math.round(Math.abs((m.proba['1'] || 0) - (m.proba['2'] || 0)) * 100);
+      return '<div class="eu-diag">Match équilibré : ' + esc(m.domicile) + ' ' + pc(m.proba['1']) + ', ' + esc(m.exterieur) + ' ' + pc(m.proba['2']) +
+        ', à ' + ecart + (ecart > 1 ? ' points' : ' point') + ' près. Pas de favori, donc pas de contre-pronostic.</div>';
+    }
     var d = europeDiag(m);
     if (!d) return '';
     var fmt = function (x) { return (x > 0 ? '+' : '') + x; };
@@ -1868,7 +1877,7 @@ __PWA_HEAD__
     var infosHtml = infos.length ? '<div class="infos">' + infos.map(function (i) { return '<details class="info info-' + i.ton + '" data-cle="' + esc(clePaire(m.domicile, m.exterieur) + '|' + i.ton) + '"><summary>' + esc(i.titre) + '</summary><div class="info-corps">' + (i.html ? i.corps : esc(i.corps)) + '</div></details>'; }).join('') + '</div>' : '';
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
-      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + (repere ? '<span class="tag absence-tag">Absence clé</span>' : '') + '</div>' +
+      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + (repere ? '<span class="tag absence-tag">Absence clé</span>' : '') + (m.proba && equilibre(m.proba) ? '<span class="tag">Match équilibré</span>' : '') + '</div>' +
       '<div class="match-equipes"><div class="equipe"><span class="equipe-role">Domicile</span><span class="equipe-nom">' + esc(m.domicile) + '</span>' + rangHtml(m.domicile) + '</div>' +
       '<span class="vs">contre</span>' +
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span>' + rangHtml(m.exterieur) + '</div></div>' +
