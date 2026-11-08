@@ -415,6 +415,8 @@ details.sect > .corps { padding: 0 0 16px; }
 .reco { margin-top: 8px; font-size: 13px; }
 .reco ol { margin: 4px 0 0; padding-left: 18px; }
 .reco li { margin: 3px 0; }
+.case-choix { width: 38px; height: 40px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--fg); font: 800 16px/1 var(--sans); margin: 0 2px; }
+.case-choix.coche { border: 2px solid var(--ok); background: var(--ok-soft); color: var(--ok); }
 .inchanges { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 </style>
 __PWA_HEAD__
@@ -1729,23 +1731,59 @@ __PWA_HEAD__
     if (!ctx.nd) return 'Simple : la grille n’a aucun double. Un double ici ferait gagner ×' + g + '.';
     return 'Simple : un double ici ferait gagner ×' + g + ', moins que le plus petit gain des ' + ctx.nd + ' doubles de la grille (×' + ctx.gMin.toFixed(1).replace('.', ',') + ').';
   }
+  // Choix libre : une case par issue (1, N, 2). Le brouillon reste en mémoire le temps de cocher, puis il est validé.
+  var BROUILLON_CHOIX = {};
+  function canonique(lettres) {
+    return ['1', '2', 'N'].filter(function (k) { return lettres.indexOf(k) !== -1; }).join('');
+  }
+  function basculerCase(cle, lettre) {
+    var b = BROUILLON_CHOIX[cle] || '';
+    b = b.indexOf(lettre) !== -1 ? b.split('').filter(function (k) { return k !== lettre; }).join('') : canonique(b + lettre);
+    if (b) BROUILLON_CHOIX[cle] = b; else delete BROUILLON_CHOIX[cle];
+  }
+  function validerChoix(cle) {
+    var b = BROUILLON_CHOIX[cle] || '';
+    if (b.length !== 1 && b.length !== 2) return;
+    var d = lireContre();
+    d[cle] = canonique(b);
+    try { localStorage.setItem(STORE_CONTRE, JSON.stringify(d)); } catch (e) { /* stockage indisponible : rien n’est gardé */ }
+    delete BROUILLON_CHOIX[cle];
+  }
+  function casesChoixLibre(m, cle) {
+    var b = BROUILLON_CHOIX[cle] || '', p = m.proba || {};
+    var boites = ['1', 'N', '2'].map(function (k) {
+      return '<button type="button" class="case-choix' + (b.indexOf(k) !== -1 ? ' coche' : '') + '" data-case="' + esc(cle) + '" data-lettre="' + k + '">' + k + '</button>';
+    }).join('');
+    var valide = b.length === 1 || b.length === 2;
+    var couv = b.split('').reduce(function (acc, k) { return acc + (p[k] || 0); }, 0);
+    var bouton = valide
+      ? '<button type="button" class="btn petit" data-valider="' + esc(cle) + '">Valider ' + esc(LIBELLE_PRONO[canonique(b)] || b) + ' (' + pc(couv, 0) + ')</button>'
+      : '<button type="button" class="btn petit" disabled style="opacity:.45">Valider</button>';
+    return '<div class="choix-ligne"><span class="pronos-label">Ton choix</span> ' + boites + ' ' + bouton + '</div>';
+  }
+  function ligneValidee(m, cle, choixValide, modele) {
+    var p = m.proba || {};
+    var couv = choixValide.split('').reduce(function (acc, k) { return acc + (p[k] || 0); }, 0);
+    return '<div class="choix-ligne">' + modele + ' · <span class="pronos-label">Contre-pronostic validé</span> ' + casesContre(choixValide) + ' <span class="hint">' + esc(LIBELLE_PRONO[choixValide] || choixValide) + ', couvre ' + pc(couv, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="">Retirer</button></div>';
+  }
   function europeLigneHtml(m, pick) {
+    var cle = clePaire(m.domicile, m.exterieur), choixValide = lireContre()[cle] || '';
+    var modele = '<span class="pronos-label">Logique</span> ' + esc(pick);
+    var cases = casesChoixLibre(m, cle);
     if (equilibre(m.proba)) {
       var ecart = Math.round(Math.abs((m.proba['1'] || 0) - (m.proba['2'] || 0)) * 100);
       return '<div class="eu-diag">Match équilibré : ' + esc(m.domicile) + ' ' + pc(m.proba['1']) + ', ' + esc(m.exterieur) + ' ' + pc(m.proba['2']) +
-        ', à ' + ecart + (ecart > 1 ? ' points' : ' point') + ' près. Pas de favori, donc pas de contre-pronostic.</div>';
+        ', à ' + ecart + (ecart > 1 ? ' points' : ' point') + ' près. Pas de favori, donc pas de contre-pronostic.</div>' +
+        (choixValide ? ligneValidee(m, cle, choixValide, modele) : '') + cases;
     }
     var d = europeDiag(m);
-    if (!d) return '';
+    if (!d) return choixValide ? ligneValidee(m, cle, choixValide, modele) + cases : '';
     var fmt = function (x) { return (x > 0 ? '+' : '') + x; };
     var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
-      (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : (lireContre()[clePaire(m.domicile, m.exterieur)] ? ' : seuil non atteint, contre-pronostic validé à la main.' : ' : seuil non atteint, pas de contre-pronostic.'));
-    var cle = clePaire(m.domicile, m.exterieur), choixValide = lireContre()[cle] || '', pr = d.probas;
-    var modele = '<span class="pronos-label">Logique</span> ' + esc(pick);
-    var choix;
+      (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : (choixValide ? ' : seuil non atteint, contre-pronostic validé à la main.' : ' : seuil non atteint, pas de contre-pronostic.'));
+    var pr = d.probas, choix;
     if (choixValide) {
-      var couv = choixValide.split('').reduce(function (acc, k) { return acc + (pr[k] || 0); }, 0);
-      choix = '<div class="choix-ligne">' + modele + ' · <span class="pronos-label">Contre-pronostic validé</span> ' + casesContre(choixValide) + ' <span class="hint">' + esc(LIBELLE_PRONO[choixValide] || choixValide) + ', couvre ' + pc(couv, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="">Retirer</button></div>';
+      choix = ligneValidee(m, cle, choixValide, modele);
     } else if (!d.contre) {
       choix = '<div class="choix-ligne">' + modele + ' <span class="hint">(pas de contre-pronostic)</span></div>';
     } else {
@@ -1754,7 +1792,7 @@ __PWA_HEAD__
       choix = '<div class="choix-ligne">' + modele + ' <span class="hint">Contre-pronostic :</span> ' +
         opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[1]) + ' (' + pc(o[2], 0) + ')</button>'; }).join(' ') + '</div>';
     }
-    return '<div class="eu-diag">' + esc(txt) + '</div>' + (d.contre ? recoHtml(d) : '') + choix;
+    return '<div class="eu-diag">' + esc(txt) + '</div>' + (d.contre ? recoHtml(d) : '') + choix + cases;
   }
   // Rang de l’équipe dans le classement de son championnat, affiché sous son nom sur la carte du match (rien si inconnu)
   function rangHtml(nom) {
@@ -3005,6 +3043,10 @@ __PWA_HEAD__
     render();
   }
   app.addEventListener('click', function (e) {
+    var bcase = e.target.closest && e.target.closest('[data-case]');
+    if (bcase) { basculerCase(bcase.getAttribute('data-case'), bcase.getAttribute('data-lettre')); majEuropeTout(); return; }
+    var bval = e.target.closest && e.target.closest('[data-valider]');
+    if (bval) { validerChoix(bval.getAttribute('data-valider')); rendreEnGardantEurope(); return; }
     var bc = e.target.closest && e.target.closest('[data-contre]');
     if (bc) { basculerContre(bc.getAttribute('data-contre'), bc.getAttribute('data-choix')); rendreEnGardantEurope(); return; }
     if (e.target.closest && (e.target.closest('.europe-details') || e.target.closest('.eu-zone'))) return;
