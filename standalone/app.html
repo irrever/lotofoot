@@ -415,6 +415,7 @@ details.sect > .corps { padding: 0 0 16px; }
 .reco { margin-top: 8px; font-size: 13px; }
 .reco ol { margin: 4px 0 0; padding-left: 18px; }
 .reco li { margin: 3px 0; }
+.inchanges { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
 </style>
 __PWA_HEAD__
 </head>
@@ -895,8 +896,10 @@ __PWA_HEAD__
     } else {
       changements = stocke.etat ? diffEtats(stocke.etat, etat) : {};
     }
-    ecrireSuivi({ version: version, etat: etat, changements: changements });
+    var depuis = (stocke.version !== version && Object.keys(changements).length) ? version : (stocke.depuis || version);
+    ecrireSuivi({ version: version, etat: etat, changements: changements, depuis: depuis });
     S.changements = changements;
+    S.depuis = depuis;
   }
   function suiviBanniere() {
     var ch = S.changements || {}, cles = Object.keys(ch);
@@ -1882,6 +1885,7 @@ __PWA_HEAD__
       '<span class="vs">contre</span>' +
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span>' + rangHtml(m.exterieur) + '</div></div>' +
       (m.proba ? barreHtml(p['1'], p['N'], p['2']) + '<div class="probs">' + cell('1') + cell('N') + cell('2') + '</div>' : '') +
+      (m.proba && !(suivi.p1 || suivi.pN || suivi.p2) && (lireSuivi().etat || {})[clePaire(m.domicile, m.exterieur)] ? '<p class="inchanges">Pourcentages inchangés depuis le ' + esc(dateHeureFr(S.depuis || S.publieLe)) + '</p>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
       euZone +
       euPanel +
