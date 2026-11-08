@@ -1596,13 +1596,6 @@ __PWA_HEAD__
     if (absenceAlerte(t)) s -= 1;
     return s;
   }
-  function casesContre(choix) {
-    return '<span class="ligne-cases">' + ['1', 'N', '2'].map(function (k) {
-      var coche = choix.indexOf(k) !== -1;
-      var svg = '<svg class="croix croix-rouge" viewBox="0 0 24 24" aria-hidden="true"><path class="halo" d="M4 12.5l5 5L20 6.5"/><path d="M4 12.5l5 5L20 6.5"/></svg>';
-      return '<span class="case-chiffre' + (coche ? ' contre' : '') + '"><b>' + k + '</b>' + (coche ? svg : '') + '</span>';
-    }).join('') + '</span>';
-  }
   // Diagnostic du match : le favori et l'outsider ; null tant que rien n'est coché pour ses deux équipes
   // Match équilibré : moins de 3 points de probabilité entre les deux équipes. Pas de favori, donc pas de contre-pronostic.
   function equilibre(p) {
@@ -1759,39 +1752,33 @@ __PWA_HEAD__
     var couv = b.split('').reduce(function (acc, k) { return acc + (p[k] || 0); }, 0);
     var bouton = valide
       ? '<button type="button" class="btn petit" data-valider="' + esc(cle) + '">Valider ' + esc(LIBELLE_PRONO[canonique(b)] || b) + ' (' + pc(couv, 0) + ')</button>'
-      : '<button type="button" class="btn petit" disabled style="opacity:.45">Valider</button>';
+      : '';
     return '<div class="choix-ligne"><span class="pronos-label">Ton choix</span> ' + boites + ' ' + bouton + '</div>';
-  }
-  function ligneValidee(m, cle, choixValide, modele) {
-    var p = m.proba || {};
-    var couv = choixValide.split('').reduce(function (acc, k) { return acc + (p[k] || 0); }, 0);
-    return '<div class="choix-ligne">' + modele + ' · <span class="pronos-label">Contre-pronostic validé</span> ' + casesContre(choixValide) + ' <span class="hint">' + esc(LIBELLE_PRONO[choixValide] || choixValide) + ', couvre ' + pc(couv, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="">Retirer</button></div>';
   }
   function europeLigneHtml(m, pick) {
     var cle = clePaire(m.domicile, m.exterieur), choixValide = lireContre()[cle] || '';
-    var modele = '<span class="pronos-label">Logique</span> ' + esc(pick);
+    var modele = '<span class="pronos-label">Logique</span> ' + esc(LIBELLE_PRONO[pick] || pick);
     var cases = casesChoixLibre(m, cle);
     if (equilibre(m.proba)) {
       var ecart = Math.round(Math.abs((m.proba['1'] || 0) - (m.proba['2'] || 0)) * 100);
       return '<div class="eu-diag">Match équilibré : ' + esc(m.domicile) + ' ' + pc(m.proba['1']) + ', ' + esc(m.exterieur) + ' ' + pc(m.proba['2']) +
-        ', à ' + ecart + (ecart > 1 ? ' points' : ' point') + ' près. Pas de favori, donc pas de contre-pronostic.</div>' +
-        (choixValide ? ligneValidee(m, cle, choixValide, modele) : '') + cases;
+        ', à ' + ecart + (ecart > 1 ? ' points' : ' point') + ' près. Pas de favori, donc pas de contre-pronostic.</div>' + cases;
     }
     var d = europeDiag(m);
-    if (!d) return (choixValide ? ligneValidee(m, cle, choixValide, modele) : '') + cases;
+    if (!d) return cases;
     var fmt = function (x) { return (x > 0 ? '+' : '') + x; };
     var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
-      (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : (choixValide ? ' : seuil non atteint, contre-pronostic validé à la main.' : ' : seuil non atteint, pas de contre-pronostic.'));
-    var pr = d.probas, choix;
-    if (choixValide) {
-      choix = ligneValidee(m, cle, choixValide, modele);
-    } else if (!d.contre) {
-      choix = '<div class="choix-ligne">' + modele + ' <span class="hint">(pas de contre-pronostic)</span></div>';
-    } else {
-      var doub = d.out === '1' ? '1N' : '2N', doubFav = d.fav === '1' ? '1N' : '2N';
-      var opts = [['N', 'N', pr.N], [d.out, d.out, pr[d.out]], [doub, LIBELLE_PRONO[doub], pr.N + pr[d.out]], [doubFav, LIBELLE_PRONO[doubFav], pr.N + pr[d.fav]]];
-      choix = '<div class="choix-ligne">' + modele + ' <span class="hint">Contre-pronostic :</span> ' +
-        opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[1]) + ' (' + pc(o[2], 0) + ')</button>'; }).join(' ') + '</div>';
+      (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : ' : seuil non atteint, pas de contre-pronostic.');
+    var pr = d.probas, choix = '';
+    if (!choixValide) {
+      if (!d.contre) {
+        choix = '<div class="choix-ligne">' + modele + ' <span class="hint">(pas de contre-pronostic)</span></div>';
+      } else {
+        var doub = d.out === '1' ? '1N' : '2N', doubFav = d.fav === '1' ? '1N' : '2N';
+        var opts = [['N', 'N', pr.N], [d.out, d.out, pr[d.out]], [doub, LIBELLE_PRONO[doub], pr.N + pr[d.out]], [doubFav, LIBELLE_PRONO[doubFav], pr.N + pr[d.fav]]];
+        choix = '<div class="choix-ligne">' + modele + ' <span class="hint">Contre-pronostic :</span> ' +
+          opts.map(function (o) { return '<button type="button" class="btn petit" data-contre="' + esc(cle) + '" data-choix="' + esc(o[0]) + '">Valider ' + esc(o[1]) + ' (' + pc(o[2], 0) + ')</button>'; }).join(' ') + '</div>';
+      }
     }
     return '<div class="eu-diag">' + esc(txt) + '</div>' + (d.contre ? recoHtml(d) : '') + choix + cases;
   }
@@ -1897,7 +1884,7 @@ __PWA_HEAD__
     var couvModele = m.modele ? m.modele.split('').reduce(function (acc, k) { return acc + (p[k] || 0); }, 0) : m.confiance;
     var pronos = pick
       ? '<span class="pronos-label">Pronostic</span> ' + casesChoix(pick) + ' <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(couvModele, 0) + '</span>' +
-        (m.modele ? '<div class="mon-choix"><span class="pronos-label">Mon choix</span> ' + casesChoix(jeu) + ' <span class="hint">' + esc(LIBELLE_PRONO[jeu] || jeu) + ', couvre ' + pc(m.confiance, 0) + '</span></div>' : '')
+        (lireContre()[clePaire(m.domicile, m.exterieur)] ? '<div class="mon-choix"><span class="pronos-label">Mon choix</span> ' + casesChoix(jeu) + ' <span class="hint">' + esc(LIBELLE_PRONO[jeu] || jeu) + ', couvre ' + pc(m.confiance, 0) + '</span> <button type="button" class="btn petit" data-contre="' + esc(clePaire(m.domicile, m.exterieur)) + '" data-choix="">Retirer</button></div>' : '')
       : '<span class="pronos-label">Pas de pronostic</span>';
     var favori = Math.max(p['1'] || 0, p['2'] || 0);
     var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
