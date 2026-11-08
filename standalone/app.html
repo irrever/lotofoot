@@ -415,6 +415,7 @@ details.sect > .corps { padding: 0 0 16px; }
 .reco { margin-top: 8px; font-size: 13px; }
 .reco ol { margin: 4px 0 0; padding-left: 18px; }
 .reco li { margin: 3px 0; }
+.mon-choix { margin-top: 6px; font-size: 14px; }
 .case-choix { width: 38px; height: 40px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--fg); font: 800 16px/1 var(--sans); margin: 0 2px; }
 .case-choix.coche { border: 2px solid var(--ok); background: var(--ok-soft); color: var(--ok); }
 .inchanges { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
@@ -1777,7 +1778,7 @@ __PWA_HEAD__
         (choixValide ? ligneValidee(m, cle, choixValide, modele) : '') + cases;
     }
     var d = europeDiag(m);
-    if (!d) return choixValide ? ligneValidee(m, cle, choixValide, modele) + cases : '';
+    if (!d) return (choixValide ? ligneValidee(m, cle, choixValide, modele) : '') + cases;
     var fmt = function (x) { return (x > 0 ? '+' : '') + x; };
     var txt = 'Diagnostic : ' + d.nomFav + ' ' + fmt(d.scf) + ' · ' + d.nomOut + ' ' + fmt(d.sco) + ' · écart ' + Math.abs(d.ecart) +
       (d.contre ? ' : seuil de 2 atteint, on intervertit la cote, ' + d.nomOut + '.' : (choixValide ? ' : seuil non atteint, contre-pronostic validé à la main.' : ' : seuil non atteint, pas de contre-pronostic.'));
@@ -1884,7 +1885,8 @@ __PWA_HEAD__
   }
   function matchHtml(m, estSurprise, repere, fige, ctx) {
     var p = m.proba || {};
-    var pick = m.pronostic || '';
+    var pick = m.modele || m.pronostic || '';
+    var jeu = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
     var suivi = (S.changements || {})[clePaire(m.domicile, m.exterieur)] || {};
     function cell(k) {
@@ -1892,9 +1894,10 @@ __PWA_HEAD__
       var fleche = d ? '<em class="fleche ' + (d > 0 ? 'up' : 'down') + '">' + (d > 0 ? '▲ +' : '▼ −') + Math.abs(d) + ' pts</em>' : '';
       return '<div class="prob ' + cls[k] + (pick.indexOf(k) !== -1 ? ' is-pick' : '') + '"><span>' + k + '</span><strong>' + pc(p[k], 0) + '</strong>' + fleche + '</div>';
     }
+    var couvModele = m.modele ? m.modele.split('').reduce(function (acc, k) { return acc + (p[k] || 0); }, 0) : m.confiance;
     var pronos = pick
-      ? '<span class="pronos-label">Pronostic</span> ' + casesChoix(pick) + ' <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(m.confiance, 0) +
-        (fige && m.modele ? ' · contre-pronostic validé (modèle : ' + esc(LIBELLE_PRONO[m.modele] || m.modele) + ')' : '') + '</span>'
+      ? '<span class="pronos-label">Pronostic</span> ' + casesChoix(pick) + ' <span class="hint">' + esc(typeDe(pick)) + ', couvre ' + pc(couvModele, 0) + '</span>' +
+        (m.modele ? '<div class="mon-choix"><span class="pronos-label">Mon choix</span> ' + casesChoix(jeu) + ' <span class="hint">' + esc(LIBELLE_PRONO[jeu] || jeu) + ', couvre ' + pc(m.confiance, 0) + '</span></div>' : '')
       : '<span class="pronos-label">Pas de pronostic</span>';
     var favori = Math.max(p['1'] || 0, p['2'] || 0);
     var fav = (p['1'] || 0) >= (p['2'] || 0) ? '1' : '2', out = fav === '1' ? '2' : '1';
