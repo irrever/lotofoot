@@ -70,6 +70,76 @@
      "libelle": "Crystal Palace – Liverpool"
     }
    ]
+  },
+  {
+   "numero": 98,
+   "nom": "Loto Foot 12 · grille N°98",
+   "cloture": "2026-11-13T20:25:00+01:00",
+   "validite": "vendredi 13 novembre 2026 à 20 h 25",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-12/numero-12-98-2026.html",
+   "matchs": [
+    {
+     "domicile": "Serbie",
+     "exterieur": "Allemagne",
+     "libelle": "Serbie – Allemagne"
+    },
+    {
+     "domicile": "Pays-Bas",
+     "exterieur": "Grèce",
+     "libelle": "Pays-Bas – Grèce"
+    },
+    {
+     "domicile": "Slovénie",
+     "exterieur": "Suisse",
+     "libelle": "Slovénie – Suisse"
+    },
+    {
+     "domicile": "Luxembourg",
+     "exterieur": "Estonie",
+     "libelle": "Luxembourg – Estonie"
+    },
+    {
+     "domicile": "Bulgarie",
+     "exterieur": "Islande",
+     "libelle": "Bulgarie – Islande"
+    },
+    {
+     "domicile": "Slovaquie",
+     "exterieur": "I.Féroé",
+     "libelle": "Slovaquie – I.Féroé"
+    },
+    {
+     "domicile": "Ecosse",
+     "exterieur": "Macédoineduno.",
+     "libelle": "Ecosse – Macédoineduno."
+    },
+    {
+     "domicile": "Andorre",
+     "exterieur": "Gibraltar",
+     "libelle": "Andorre – Gibraltar"
+    },
+    {
+     "domicile": "Liechtenstein",
+     "exterieur": "Azerbaïdjan",
+     "libelle": "Liechtenstein – Azerbaïdjan"
+    },
+    {
+     "domicile": "CD Leganes",
+     "exterieur": "Burgos CF",
+     "libelle": "CD Leganes – Burgos CF"
+    },
+    {
+     "domicile": "Colombie",
+     "exterieur": "Chili",
+     "libelle": "Colombie – Chili"
+    },
+    {
+     "domicile": "Argentine",
+     "exterieur": "Uruguay",
+     "libelle": "Argentine – Uruguay"
+    }
+   ]
   }
  ]
 }

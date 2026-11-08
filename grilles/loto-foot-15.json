@@ -85,6 +85,91 @@
      "libelle": "Serbie – Allemagne"
     }
    ]
+  },
+  {
+   "numero": 94,
+   "nom": "Loto Foot 15 · grille N°94",
+   "cloture": "2026-11-14T17:55:00+01:00",
+   "validite": "samedi 14 novembre 2026 à 17 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-94-2026.html",
+   "matchs": [
+    {
+     "domicile": "Portugal",
+     "exterieur": "Danemark",
+     "libelle": "Portugal – Danemark"
+    },
+    {
+     "domicile": "Norvège",
+     "exterieur": "Pays De Galles",
+     "libelle": "Norvège – Pays De Galles"
+    },
+    {
+     "domicile": "Autriche",
+     "exterieur": "Rép.Irlande",
+     "libelle": "Autriche – Rép.Irlande"
+    },
+    {
+     "domicile": "Irlandedunord",
+     "exterieur": "Ukraine",
+     "libelle": "Irlandedunord – Ukraine"
+    },
+    {
+     "domicile": "Géorgie",
+     "exterieur": "Hongrie",
+     "libelle": "Géorgie – Hongrie"
+    },
+    {
+     "domicile": "Roumanie",
+     "exterieur": "Pologne",
+     "libelle": "Roumanie – Pologne"
+    },
+    {
+     "domicile": "Suède",
+     "exterieur": "Bosnie Herzég.",
+     "libelle": "Suède – Bosnie Herzég."
+    },
+    {
+     "domicile": "Chypre",
+     "exterieur": "Monténégro",
+     "libelle": "Chypre – Monténégro"
+    },
+    {
+     "domicile": "Lettonie",
+     "exterieur": "Arménie",
+     "libelle": "Lettonie – Arménie"
+    },
+    {
+     "domicile": "Biélorussie",
+     "exterieur": "Albanie",
+     "libelle": "Biélorussie – Albanie"
+    },
+    {
+     "domicile": "Finlande",
+     "exterieur": "San Marin",
+     "libelle": "Finlande – San Marin"
+    },
+    {
+     "domicile": "Croatie",
+     "exterieur": "Rép.Tchèque",
+     "libelle": "Croatie – Rép.Tchèque"
+    },
+    {
+     "domicile": "Belgique",
+     "exterieur": "Italie",
+     "libelle": "Belgique – Italie"
+    },
+    {
+     "domicile": "Espagne",
+     "exterieur": "Angleterre",
+     "libelle": "Espagne – Angleterre"
+    },
+    {
+     "domicile": "France",
+     "exterieur": "Turquie",
+     "libelle": "France – Turquie"
+    }
+   ]
   }
  ]
 }

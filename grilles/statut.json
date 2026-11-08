@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-08T07:30:37Z",
+ "verifie_le": "2026-11-08T13:21:15Z",
  "formats": {
   "7": {
    "ok": false,
@@ -49,18 +49,44 @@
   "12": {
    "ok": true,
    "grilles_ouvertes": [
-    97
+    97,
+    98
    ],
    "equipes_inconnues": [
     "Cologne",
-    "Milan AC"
+    "Milan AC",
+    "Serbie",
+    "Allemagne",
+    "Pays-Bas",
+    "Grèce",
+    "Slovénie",
+    "Suisse",
+    "Luxembourg",
+    "Estonie",
+    "Bulgarie",
+    "Islande",
+    "Slovaquie",
+    "I.Féroé",
+    "Ecosse",
+    "Macédoineduno.",
+    "Andorre",
+    "Gibraltar",
+    "Liechtenstein",
+    "Azerbaïdjan",
+    "CD Leganes",
+    "Burgos CF",
+    "Colombie",
+    "Chili",
+    "Argentine",
+    "Uruguay"
    ],
    "erreur": null
   },
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    93
+    93,
+    94
    ],
    "equipes_inconnues": [
     "Italie",
@@ -92,7 +118,21 @@
     "Pays-Bas",
     "Grèce",
     "Serbie",
-    "Allemagne"
+    "Allemagne",
+    "Portugal",
+    "Danemark",
+    "Norvège",
+    "Pays De Galles",
+    "Autriche",
+    "Rép.Irlande",
+    "Irlandedunord",
+    "Ukraine",
+    "Géorgie",
+    "Hongrie",
+    "Roumanie",
+    "Pologne",
+    "Suède",
+    "Bosnie Herzég."
    ],
    "erreur": null
   }
