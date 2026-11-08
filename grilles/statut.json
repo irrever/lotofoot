@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-08T13:21:15Z",
+ "verifie_le": "2026-11-08T19:13:28Z",
  "formats": {
   "7": {
    "ok": false,
@@ -49,12 +49,9 @@
   "12": {
    "ok": true,
    "grilles_ouvertes": [
-    97,
     98
    ],
    "equipes_inconnues": [
-    "Cologne",
-    "Milan AC",
     "Serbie",
     "Allemagne",
     "Pays-Bas",
