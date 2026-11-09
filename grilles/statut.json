@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-09T07:52:26Z",
+ "verifie_le": "2026-11-09T13:41:38Z",
  "formats": {
   "7": {
    "ok": false,
@@ -36,14 +36,17 @@
   "12": {
    "ok": true,
    "grilles_ouvertes": [
-    98
+    98,
+    99
    ],
    "equipes_inconnues": [
     "I.Féroé",
     "Ecosse",
     "Macédoineduno.",
     "CD Leganes",
-    "Burgos CF"
+    "Burgos CF",
+    "Rép.Tchèque",
+    "Malte"
    ],
    "erreur": null
   },

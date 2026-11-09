@@ -70,6 +70,76 @@
      "libelle": "Argentine – Uruguay"
     }
    ]
+  },
+  {
+   "numero": 99,
+   "nom": "Loto Foot 12 · grille N°99",
+   "cloture": "2026-11-15T20:40:00+01:00",
+   "validite": "dimanche 15 novembre 2026 à 20 h 40",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-12/numero-12-99-2026.html",
+   "matchs": [
+    {
+     "domicile": "France",
+     "exterieur": "Turquie",
+     "libelle": "France – Turquie"
+    },
+    {
+     "domicile": "Espagne",
+     "exterieur": "Angleterre",
+     "libelle": "Espagne – Angleterre"
+    },
+    {
+     "domicile": "Belgique",
+     "exterieur": "Italie",
+     "libelle": "Belgique – Italie"
+    },
+    {
+     "domicile": "Croatie",
+     "exterieur": "Rép.Tchèque",
+     "libelle": "Croatie – Rép.Tchèque"
+    },
+    {
+     "domicile": "Estonie",
+     "exterieur": "Bulgarie",
+     "libelle": "Estonie – Bulgarie"
+    },
+    {
+     "domicile": "I.Féroé",
+     "exterieur": "Moldavie",
+     "libelle": "I.Féroé – Moldavie"
+    },
+    {
+     "domicile": "Gibraltar",
+     "exterieur": "Malte",
+     "libelle": "Gibraltar – Malte"
+    },
+    {
+     "domicile": "Macédoineduno.",
+     "exterieur": "Slovénie",
+     "libelle": "Macédoineduno. – Slovénie"
+    },
+    {
+     "domicile": "Kazakhstan",
+     "exterieur": "Slovaquie",
+     "libelle": "Kazakhstan – Slovaquie"
+    },
+    {
+     "domicile": "Grèce",
+     "exterieur": "Serbie",
+     "libelle": "Grèce – Serbie"
+    },
+    {
+     "domicile": "Suisse",
+     "exterieur": "Ecosse",
+     "libelle": "Suisse – Ecosse"
+    },
+    {
+     "domicile": "Allemagne",
+     "exterieur": "Pays-Bas",
+     "libelle": "Allemagne – Pays-Bas"
+    }
+   ]
   }
  ]
 }
