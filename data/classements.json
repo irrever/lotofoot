@@ -6,553 +6,553 @@
    {
     "rang": 1,
     "equipe": "Arsenal",
-    "points": 24,
-    "matchs": 9,
-    "diff": 9
-   },
-   {
-    "rang": 2,
-    "equipe": "Man City",
-    "points": 21,
-    "matchs": 9,
+    "points": 27,
+    "matchs": 10,
     "diff": 10
    },
    {
-    "rang": 3,
+    "rang": 2,
     "equipe": "Brighton",
-    "points": 19,
-    "matchs": 9,
-    "diff": 17
+    "points": 22,
+    "matchs": 10,
+    "diff": 19
+   },
+   {
+    "rang": 3,
+    "equipe": "Man City",
+    "points": 21,
+    "matchs": 10,
+    "diff": 8
    },
    {
     "rang": 4,
-    "equipe": "Chelsea",
-    "points": 16,
-    "matchs": 9,
+    "equipe": "Liverpool",
+    "points": 18,
+    "matchs": 10,
     "diff": 4
    },
    {
     "rang": 5,
-    "equipe": "Liverpool",
-    "points": 15,
-    "matchs": 9,
-    "diff": 2
+    "equipe": "Chelsea",
+    "points": 16,
+    "matchs": 10,
+    "diff": 3
    },
    {
     "rang": 6,
-    "equipe": "Brentford",
-    "points": 14,
-    "matchs": 9,
-    "diff": 7
+    "equipe": "Everton",
+    "points": 16,
+    "matchs": 10,
+    "diff": 2
    },
    {
     "rang": 7,
-    "equipe": "Everton",
-    "points": 13,
-    "matchs": 9,
-    "diff": 0
+    "equipe": "Bournemouth",
+    "points": 15,
+    "matchs": 10,
+    "diff": 2
    },
    {
     "rang": 8,
-    "equipe": "Bournemouth",
-    "points": 12,
-    "matchs": 9,
-    "diff": 1
+    "equipe": "Brentford",
+    "points": 14,
+    "matchs": 10,
+    "diff": 5
    },
    {
     "rang": 9,
-    "equipe": "Tottenham",
-    "points": 12,
-    "matchs": 9,
-    "diff": 0
+    "equipe": "Leeds",
+    "points": 14,
+    "matchs": 10,
+    "diff": 2
    },
    {
     "rang": 10,
     "equipe": "Aston Villa",
-    "points": 12,
-    "matchs": 9,
+    "points": 13,
+    "matchs": 10,
     "diff": -3
    },
    {
     "rang": 11,
-    "equipe": "Hull",
-    "points": 11,
-    "matchs": 9,
-    "diff": 1
+    "equipe": "Tottenham",
+    "points": 12,
+    "matchs": 10,
+    "diff": -1
    },
    {
     "rang": 12,
-    "equipe": "Leeds",
-    "points": 11,
-    "matchs": 9,
-    "diff": 1
+    "equipe": "Newcastle",
+    "points": 12,
+    "matchs": 10,
+    "diff": -3
    },
    {
     "rang": 13,
-    "equipe": "Newcastle",
+    "equipe": "Hull",
     "points": 11,
-    "matchs": 9,
-    "diff": -3
+    "matchs": 10,
+    "diff": 0
    },
    {
     "rang": 14,
     "equipe": "Ipswich",
     "points": 11,
-    "matchs": 9,
-    "diff": -4
+    "matchs": 10,
+    "diff": -5
    },
    {
     "rang": 15,
     "equipe": "Fulham",
-    "points": 9,
-    "matchs": 9,
+    "points": 10,
+    "matchs": 10,
     "diff": -2
    },
    {
     "rang": 16,
-    "equipe": "Coventry",
+    "equipe": "Nott'm Forest",
     "points": 9,
-    "matchs": 9,
-    "diff": -7
+    "matchs": 10,
+    "diff": -4
    },
    {
     "rang": 17,
-    "equipe": "Man United",
-    "points": 7,
-    "matchs": 9,
-    "diff": -5
+    "equipe": "Coventry",
+    "points": 9,
+    "matchs": 10,
+    "diff": -9
    },
    {
     "rang": 18,
-    "equipe": "Crystal Palace",
-    "points": 7,
-    "matchs": 9,
-    "diff": -12
+    "equipe": "Man United",
+    "points": 8,
+    "matchs": 10,
+    "diff": -5
    },
    {
     "rang": 19,
-    "equipe": "Nott'm Forest",
-    "points": 6,
-    "matchs": 9,
-    "diff": -6
+    "equipe": "Sunderland",
+    "points": 8,
+    "matchs": 10,
+    "diff": -9
    },
    {
     "rang": 20,
-    "equipe": "Sunderland",
-    "points": 5,
-    "matchs": 9,
-    "diff": -10
+    "equipe": "Crystal Palace",
+    "points": 7,
+    "matchs": 10,
+    "diff": -14
    }
   ],
   "E1": [
    {
     "rang": 1,
-    "equipe": "Southampton",
-    "points": 28,
-    "matchs": 14,
-    "diff": 15
+    "equipe": "Birmingham",
+    "points": 29,
+    "matchs": 15,
+    "diff": 14
    },
    {
     "rang": 2,
     "equipe": "Middlesbrough",
-    "points": 28,
-    "matchs": 14,
+    "points": 29,
+    "matchs": 15,
     "diff": 11
    },
    {
     "rang": 3,
-    "equipe": "Wolves",
-    "points": 27,
-    "matchs": 14,
-    "diff": 8
+    "equipe": "Stoke",
+    "points": 29,
+    "matchs": 15,
+    "diff": 6
    },
    {
     "rang": 4,
-    "equipe": "Birmingham",
-    "points": 26,
-    "matchs": 14,
-    "diff": 13
+    "equipe": "Southampton",
+    "points": 28,
+    "matchs": 15,
+    "diff": 14
    },
    {
     "rang": 5,
-    "equipe": "Stoke",
-    "points": 26,
-    "matchs": 14,
-    "diff": 5
+    "equipe": "Wolves",
+    "points": 28,
+    "matchs": 15,
+    "diff": 8
    },
    {
     "rang": 6,
-    "equipe": "Swansea",
-    "points": 26,
-    "matchs": 14,
-    "diff": 5
+    "equipe": "West Brom",
+    "points": 28,
+    "matchs": 15,
+    "diff": 8
    },
    {
     "rang": 7,
-    "equipe": "West Brom",
-    "points": 25,
-    "matchs": 14,
-    "diff": 5
+    "equipe": "Swansea",
+    "points": 26,
+    "matchs": 15,
+    "diff": 4
    },
    {
     "rang": 8,
-    "equipe": "West Ham",
-    "points": 23,
-    "matchs": 14,
-    "diff": 15
+    "equipe": "QPR",
+    "points": 24,
+    "matchs": 15,
+    "diff": 6
    },
    {
     "rang": 9,
-    "equipe": "Sheffield United",
-    "points": 22,
-    "matchs": 14,
-    "diff": 3
+    "equipe": "West Ham",
+    "points": 23,
+    "matchs": 15,
+    "diff": 14
    },
    {
     "rang": 10,
-    "equipe": "Portsmouth",
+    "equipe": "Sheffield United",
     "points": 22,
-    "matchs": 14,
-    "diff": 3
+    "matchs": 15,
+    "diff": 2
    },
    {
     "rang": 11,
-    "equipe": "QPR",
-    "points": 21,
-    "matchs": 14,
-    "diff": 5
+    "equipe": "Portsmouth",
+    "points": 22,
+    "matchs": 15,
+    "diff": 2
    },
    {
     "rang": 12,
     "equipe": "Norwich",
-    "points": 18,
-    "matchs": 14,
-    "diff": 3
+    "points": 21,
+    "matchs": 15,
+    "diff": 8
    },
    {
     "rang": 13,
-    "equipe": "Millwall",
-    "points": 18,
-    "matchs": 14,
+    "equipe": "Blackburn",
+    "points": 21,
+    "matchs": 15,
     "diff": -1
    },
    {
     "rang": 14,
-    "equipe": "Blackburn",
+    "equipe": "Cardiff",
     "points": 18,
-    "matchs": 14,
-    "diff": -2
+    "matchs": 15,
+    "diff": 0
    },
    {
     "rang": 15,
-    "equipe": "Bristol City",
-    "points": 18,
-    "matchs": 14,
-    "diff": -3
-   },
-   {
-    "rang": 16,
     "equipe": "Wrexham",
-    "points": 17,
-    "matchs": 14,
+    "points": 18,
+    "matchs": 15,
     "diff": -2
    },
    {
+    "rang": 16,
+    "equipe": "Millwall",
+    "points": 18,
+    "matchs": 15,
+    "diff": -4
+   },
+   {
     "rang": 17,
-    "equipe": "Bolton",
-    "points": 17,
-    "matchs": 14,
-    "diff": -7
+    "equipe": "Bristol City",
+    "points": 18,
+    "matchs": 15,
+    "diff": -8
    },
    {
     "rang": 18,
-    "equipe": "Cardiff",
-    "points": 15,
-    "matchs": 14,
-    "diff": -1
+    "equipe": "Bolton",
+    "points": 17,
+    "matchs": 15,
+    "diff": -9
    },
    {
     "rang": 19,
-    "equipe": "Lincoln",
-    "points": 15,
-    "matchs": 14,
+    "equipe": "Charlton",
+    "points": 17,
+    "matchs": 15,
     "diff": -10
    },
    {
     "rang": 20,
     "equipe": "Watford",
-    "points": 14,
-    "matchs": 14,
+    "points": 15,
+    "matchs": 15,
     "diff": -10
    },
    {
     "rang": 21,
-    "equipe": "Charlton",
-    "points": 14,
-    "matchs": 14,
+    "equipe": "Lincoln",
+    "points": 15,
+    "matchs": 15,
     "diff": -11
    },
    {
     "rang": 22,
     "equipe": "Burnley",
     "points": 10,
-    "matchs": 14,
-    "diff": -8
+    "matchs": 15,
+    "diff": -9
    },
    {
     "rang": 23,
     "equipe": "Derby",
-    "points": 7,
-    "matchs": 14,
-    "diff": -18
+    "points": 10,
+    "matchs": 15,
+    "diff": -16
    },
    {
     "rang": 24,
     "equipe": "Preston",
-    "points": 5,
-    "matchs": 14,
-    "diff": -18
+    "points": 8,
+    "matchs": 15,
+    "diff": -17
    }
   ],
   "SP1": [
    {
     "rang": 1,
     "equipe": "Barcelona",
-    "points": 30,
-    "matchs": 11,
-    "diff": 34
+    "points": 33,
+    "matchs": 12,
+    "diff": 35
    },
    {
     "rang": 2,
-    "equipe": "Ath Madrid",
-    "points": 28,
-    "matchs": 11,
-    "diff": 14
+    "equipe": "Real Madrid",
+    "points": 30,
+    "matchs": 12,
+    "diff": 21
    },
    {
     "rang": 3,
-    "equipe": "Real Madrid",
-    "points": 27,
-    "matchs": 11,
-    "diff": 18
+    "equipe": "Ath Madrid",
+    "points": 28,
+    "matchs": 12,
+    "diff": 13
    },
    {
     "rang": 4,
     "equipe": "Betis",
-    "points": 23,
-    "matchs": 11,
-    "diff": 3
+    "points": 26,
+    "matchs": 12,
+    "diff": 5
    },
    {
     "rang": 5,
     "equipe": "Sociedad",
-    "points": 19,
-    "matchs": 11,
-    "diff": 0
+    "points": 22,
+    "matchs": 12,
+    "diff": 1
    },
    {
     "rang": 6,
     "equipe": "Sevilla",
-    "points": 17,
-    "matchs": 11,
+    "points": 18,
+    "matchs": 12,
     "diff": -2
    },
    {
     "rang": 7,
     "equipe": "Ath Bilbao",
-    "points": 15,
-    "matchs": 10,
+    "points": 16,
+    "matchs": 11,
     "diff": 4
    },
    {
     "rang": 8,
-    "equipe": "La Coruna",
-    "points": 14,
-    "matchs": 11,
-    "diff": 1
+    "equipe": "Villarreal",
+    "points": 15,
+    "matchs": 12,
+    "diff": 2
    },
    {
     "rang": 9,
-    "equipe": "Villarreal",
-    "points": 12,
-    "matchs": 11,
-    "diff": 0
+    "equipe": "La Coruna",
+    "points": 15,
+    "matchs": 12,
+    "diff": 1
    },
    {
     "rang": 10,
-    "equipe": "Celta",
-    "points": 12,
-    "matchs": 11,
-    "diff": 0
+    "equipe": "Santander",
+    "points": 14,
+    "matchs": 12,
+    "diff": -13
    },
    {
     "rang": 11,
-    "equipe": "Alaves",
-    "points": 12,
-    "matchs": 11,
-    "diff": -2
+    "equipe": "Celta",
+    "points": 13,
+    "matchs": 12,
+    "diff": 0
    },
    {
     "rang": 12,
-    "equipe": "Vallecano",
-    "points": 12,
-    "matchs": 10,
-    "diff": -5
+    "equipe": "Alaves",
+    "points": 13,
+    "matchs": 12,
+    "diff": -2
    },
    {
     "rang": 13,
-    "equipe": "Getafe",
-    "points": 12,
-    "matchs": 11,
-    "diff": -8
-   },
-   {
-    "rang": 14,
     "equipe": "Espanol",
-    "points": 11,
-    "matchs": 11,
+    "points": 12,
+    "matchs": 12,
     "diff": -1
    },
    {
-    "rang": 15,
-    "equipe": "Osasuna",
-    "points": 11,
+    "rang": 14,
+    "equipe": "Vallecano",
+    "points": 12,
     "matchs": 11,
-    "diff": -11
+    "diff": -6
+   },
+   {
+    "rang": 15,
+    "equipe": "Getafe",
+    "points": 12,
+    "matchs": 12,
+    "diff": -10
    },
    {
     "rang": 16,
-    "equipe": "Santander",
-    "points": 11,
-    "matchs": 11,
-    "diff": -14
+    "equipe": "Osasuna",
+    "points": 12,
+    "matchs": 12,
+    "diff": -11
    },
    {
     "rang": 17,
-    "equipe": "Elche",
-    "points": 10,
-    "matchs": 11,
-    "diff": -4
+    "equipe": "Levante",
+    "points": 11,
+    "matchs": 12,
+    "diff": -5
    },
    {
     "rang": 18,
-    "equipe": "Levante",
+    "equipe": "Elche",
     "points": 10,
-    "matchs": 11,
-    "diff": -5
+    "matchs": 12,
+    "diff": -6
    },
    {
     "rang": 19,
     "equipe": "Valencia",
     "points": 9,
-    "matchs": 11,
-    "diff": -9
+    "matchs": 12,
+    "diff": -12
    },
    {
     "rang": 20,
     "equipe": "Malaga",
     "points": 5,
-    "matchs": 11,
-    "diff": -13
+    "matchs": 12,
+    "diff": -14
    }
   ],
   "SP2": [
    {
     "rang": 1,
+    "equipe": "Almeria",
+    "points": 29,
+    "matchs": 13,
+    "diff": 14
+   },
+   {
+    "rang": 2,
     "equipe": "Castellon",
     "points": 27,
     "matchs": 12,
     "diff": 18
    },
    {
-    "rang": 2,
-    "equipe": "Almeria",
-    "points": 26,
-    "matchs": 12,
-    "diff": 13
+    "rang": 3,
+    "equipe": "Burgos",
+    "points": 24,
+    "matchs": 13,
+    "diff": 5
    },
    {
-    "rang": 3,
+    "rang": 4,
     "equipe": "Eibar",
     "points": 23,
     "matchs": 12,
     "diff": 7
    },
    {
-    "rang": 4,
+    "rang": 5,
     "equipe": "Granada",
     "points": 23,
     "matchs": 12,
     "diff": 6
    },
    {
-    "rang": 5,
+    "rang": 6,
     "equipe": "Mallorca",
     "points": 22,
     "matchs": 12,
     "diff": 8
    },
    {
-    "rang": 6,
+    "rang": 7,
     "equipe": "Sp Gijon",
     "points": 22,
-    "matchs": 12,
-    "diff": 0
-   },
-   {
-    "rang": 7,
-    "equipe": "Girona",
-    "points": 21,
-    "matchs": 12,
-    "diff": 11
+    "matchs": 13,
+    "diff": -1
    },
    {
     "rang": 8,
-    "equipe": "Burgos",
+    "equipe": "Girona",
     "points": 21,
-    "matchs": 12,
-    "diff": 4
+    "matchs": 13,
+    "diff": 10
    },
    {
     "rang": 9,
     "equipe": "Oviedo",
-    "points": 18,
-    "matchs": 12,
-    "diff": 2
+    "points": 21,
+    "matchs": 13,
+    "diff": 3
    },
    {
     "rang": 10,
+    "equipe": "Cordoba",
+    "points": 19,
+    "matchs": 13,
+    "diff": 0
+   },
+   {
+    "rang": 11,
+    "equipe": "Valladolid",
+    "points": 18,
+    "matchs": 13,
+    "diff": 2
+   },
+   {
+    "rang": 12,
     "equipe": "Sabadell",
     "points": 17,
     "matchs": 12,
     "diff": 1
    },
    {
-    "rang": 11,
+    "rang": 13,
     "equipe": "Las Palmas",
     "points": 17,
     "matchs": 12,
     "diff": -4
    },
    {
-    "rang": 12,
-    "equipe": "Cordoba",
-    "points": 16,
-    "matchs": 12,
-    "diff": -3
-   },
-   {
-    "rang": 13,
-    "equipe": "Valladolid",
-    "points": 15,
-    "matchs": 12,
-    "diff": 1
-   },
-   {
     "rang": 14,
     "equipe": "Tenerife",
-    "points": 14,
-    "matchs": 11,
+    "points": 15,
+    "matchs": 12,
     "diff": -2
    },
    {
@@ -566,973 +566,973 @@
     "rang": 16,
     "equipe": "Celta B",
     "points": 13,
-    "matchs": 12,
-    "diff": -5
+    "matchs": 13,
+    "diff": -6
    },
    {
     "rang": 17,
     "equipe": "Leganes",
     "points": 12,
-    "matchs": 12,
-    "diff": -10
+    "matchs": 13,
+    "diff": -12
    },
    {
     "rang": 18,
+    "equipe": "Andorra",
+    "points": 11,
+    "matchs": 12,
+    "diff": -5
+   },
+   {
+    "rang": 19,
     "equipe": "Sociedad B",
     "points": 11,
     "matchs": 12,
     "diff": -7
    },
    {
-    "rang": 19,
+    "rang": 20,
     "equipe": "Cadiz",
     "points": 10,
-    "matchs": 12,
-    "diff": -1
-   },
-   {
-    "rang": 20,
-    "equipe": "Andorra",
-    "points": 10,
-    "matchs": 11,
-    "diff": -5
+    "matchs": 13,
+    "diff": -2
    },
    {
     "rang": 21,
     "equipe": "Albacete",
-    "points": 7,
-    "matchs": 12,
-    "diff": -13
+    "points": 10,
+    "matchs": 13,
+    "diff": -11
    },
    {
     "rang": 22,
     "equipe": "Ceuta",
     "points": 5,
-    "matchs": 12,
-    "diff": -17
+    "matchs": 13,
+    "diff": -20
    }
   ],
   "I1": [
    {
     "rang": 1,
     "equipe": "Lazio",
-    "points": 28,
-    "matchs": 10,
+    "points": 29,
+    "matchs": 11,
     "diff": 16
    },
    {
     "rang": 2,
     "equipe": "Inter",
-    "points": 25,
-    "matchs": 10,
-    "diff": 13
+    "points": 28,
+    "matchs": 11,
+    "diff": 15
    },
    {
     "rang": 3,
     "equipe": "Roma",
-    "points": 24,
-    "matchs": 10,
-    "diff": 18
+    "points": 27,
+    "matchs": 11,
+    "diff": 21
    },
    {
     "rang": 4,
-    "equipe": "Como",
-    "points": 23,
-    "matchs": 10,
+    "equipe": "Milan",
+    "points": 24,
+    "matchs": 11,
     "diff": 10
    },
    {
     "rang": 5,
-    "equipe": "Milan",
-    "points": 21,
-    "matchs": 10,
-    "diff": 9
+    "equipe": "Como",
+    "points": 23,
+    "matchs": 11,
+    "diff": 8
    },
    {
     "rang": 6,
     "equipe": "Frosinone",
     "points": 20,
-    "matchs": 10,
-    "diff": 10
+    "matchs": 11,
+    "diff": 9
    },
    {
     "rang": 7,
     "equipe": "Juventus",
-    "points": 17,
-    "matchs": 10,
+    "points": 18,
+    "matchs": 11,
     "diff": 3
    },
    {
     "rang": 8,
-    "equipe": "Napoli",
-    "points": 14,
-    "matchs": 10,
-    "diff": 4
+    "equipe": "Bologna",
+    "points": 17,
+    "matchs": 11,
+    "diff": 2
    },
    {
     "rang": 9,
-    "equipe": "Bologna",
-    "points": 14,
-    "matchs": 10,
-    "diff": 1
+    "equipe": "Cagliari",
+    "points": 16,
+    "matchs": 11,
+    "diff": -5
    },
    {
     "rang": 10,
-    "equipe": "Torino",
-    "points": 13,
-    "matchs": 10,
-    "diff": -2
+    "equipe": "Napoli",
+    "points": 15,
+    "matchs": 11,
+    "diff": 4
    },
    {
     "rang": 11,
-    "equipe": "Genoa",
-    "points": 13,
-    "matchs": 10,
-    "diff": -4
+    "equipe": "Torino",
+    "points": 14,
+    "matchs": 11,
+    "diff": -2
    },
    {
     "rang": 12,
-    "equipe": "Cagliari",
-    "points": 13,
-    "matchs": 10,
-    "diff": -6
+    "equipe": "Atalanta",
+    "points": 14,
+    "matchs": 11,
+    "diff": -3
    },
    {
     "rang": 13,
-    "equipe": "Atalanta",
-    "points": 11,
-    "matchs": 10,
-    "diff": -4
+    "equipe": "Genoa",
+    "points": 13,
+    "matchs": 11,
+    "diff": -5
    },
    {
     "rang": 14,
     "equipe": "Lecce",
-    "points": 9,
-    "matchs": 10,
+    "points": 10,
+    "matchs": 11,
     "diff": -10
    },
    {
     "rang": 15,
-    "equipe": "Parma",
-    "points": 8,
-    "matchs": 10,
-    "diff": -7
+    "equipe": "Fiorentina",
+    "points": 9,
+    "matchs": 11,
+    "diff": -8
    },
    {
     "rang": 16,
-    "equipe": "Fiorentina",
+    "equipe": "Parma",
     "points": 8,
-    "matchs": 10,
+    "matchs": 11,
     "diff": -8
    },
    {
     "rang": 17,
     "equipe": "Sassuolo",
     "points": 8,
-    "matchs": 10,
-    "diff": -10
+    "matchs": 11,
+    "diff": -13
    },
    {
     "rang": 18,
     "equipe": "Monza",
     "points": 7,
-    "matchs": 10,
-    "diff": -7
+    "matchs": 11,
+    "diff": -8
    },
    {
     "rang": 19,
-    "equipe": "Udinese",
-    "points": 5,
-    "matchs": 10,
-    "diff": -12
+    "equipe": "Venezia",
+    "points": 6,
+    "matchs": 11,
+    "diff": -13
    },
    {
     "rang": 20,
-    "equipe": "Venezia",
-    "points": 3,
-    "matchs": 10,
-    "diff": -14
+    "equipe": "Udinese",
+    "points": 5,
+    "matchs": 11,
+    "diff": -13
    }
   ],
   "I2": [
    {
     "rang": 1,
     "equipe": "Palermo",
-    "points": 26,
-    "matchs": 10,
+    "points": 27,
+    "matchs": 11,
     "diff": 12
    },
    {
     "rang": 2,
     "equipe": "Modena",
-    "points": 20,
-    "matchs": 10,
-    "diff": 8
+    "points": 23,
+    "matchs": 11,
+    "diff": 10
    },
    {
     "rang": 3,
     "equipe": "Ascoli",
-    "points": 19,
-    "matchs": 10,
+    "points": 20,
+    "matchs": 11,
     "diff": 10
    },
    {
     "rang": 4,
     "equipe": "Mantova",
-    "points": 18,
-    "matchs": 10,
+    "points": 19,
+    "matchs": 11,
     "diff": 4
    },
    {
     "rang": 5,
     "equipe": "Verona",
-    "points": 15,
-    "matchs": 10,
+    "points": 16,
+    "matchs": 11,
     "diff": 6
    },
    {
     "rang": 6,
     "equipe": "Avellino",
-    "points": 15,
-    "matchs": 10,
+    "points": 16,
+    "matchs": 11,
     "diff": 5
    },
    {
     "rang": 7,
     "equipe": "Benevento",
-    "points": 15,
-    "matchs": 10,
+    "points": 16,
+    "matchs": 11,
     "diff": 4
    },
    {
     "rang": 8,
     "equipe": "Pisa",
-    "points": 15,
-    "matchs": 10,
+    "points": 16,
+    "matchs": 11,
     "diff": 3
    },
    {
     "rang": 9,
-    "equipe": "Sudtirol",
-    "points": 14,
-    "matchs": 10,
+    "equipe": "Juve Stabia",
+    "points": 16,
+    "matchs": 11,
     "diff": 1
    },
    {
     "rang": 10,
-    "equipe": "Padova",
-    "points": 14,
-    "matchs": 10,
-    "diff": -1
+    "equipe": "Cremonese",
+    "points": 15,
+    "matchs": 11,
+    "diff": 2
    },
    {
     "rang": 11,
-    "equipe": "Juve Stabia",
-    "points": 13,
-    "matchs": 10,
-    "diff": 0
+    "equipe": "Sudtirol",
+    "points": 15,
+    "matchs": 11,
+    "diff": 1
    },
    {
     "rang": 12,
-    "equipe": "Cremonese",
-    "points": 12,
-    "matchs": 10,
+    "equipe": "Padova",
+    "points": 15,
+    "matchs": 11,
     "diff": -1
    },
    {
     "rang": 13,
     "equipe": "Cesena",
-    "points": 12,
-    "matchs": 10,
-    "diff": -3
+    "points": 15,
+    "matchs": 11,
+    "diff": -2
    },
    {
     "rang": 14,
-    "equipe": "Arezzo",
+    "equipe": "Sampdoria",
     "points": 11,
-    "matchs": 10,
-    "diff": -10
+    "matchs": 11,
+    "diff": -7
    },
    {
     "rang": 15,
-    "equipe": "Virtus Entella",
-    "points": 10,
-    "matchs": 10,
-    "diff": -1
+    "equipe": "Arezzo",
+    "points": 11,
+    "matchs": 11,
+    "diff": -11
    },
    {
     "rang": 16,
-    "equipe": "Carrarese",
+    "equipe": "Virtus Entella",
     "points": 10,
-    "matchs": 10,
-    "diff": -4
+    "matchs": 11,
+    "diff": -3
    },
    {
     "rang": 17,
-    "equipe": "Vicenza",
-    "points": 9,
-    "matchs": 10,
-    "diff": -7
+    "equipe": "Carrarese",
+    "points": 10,
+    "matchs": 11,
+    "diff": -5
    },
    {
     "rang": 18,
     "equipe": "Empoli",
-    "points": 8,
-    "matchs": 10,
+    "points": 9,
+    "matchs": 11,
     "diff": -7
    },
    {
     "rang": 19,
-    "equipe": "Sampdoria",
-    "points": 8,
-    "matchs": 10,
-    "diff": -8
+    "equipe": "Vicenza",
+    "points": 9,
+    "matchs": 11,
+    "diff": -10
    },
    {
     "rang": 20,
     "equipe": "Catanzaro",
     "points": 6,
-    "matchs": 10,
-    "diff": -11
+    "matchs": 11,
+    "diff": -12
    }
   ],
   "D1": [
    {
     "rang": 1,
     "equipe": "Bayern Munich",
-    "points": 18,
-    "matchs": 8,
-    "diff": 19
+    "points": 21,
+    "matchs": 9,
+    "diff": 20
    },
    {
     "rang": 2,
     "equipe": "Dortmund",
-    "points": 18,
-    "matchs": 8,
-    "diff": 8
+    "points": 21,
+    "matchs": 9,
+    "diff": 9
    },
    {
     "rang": 3,
     "equipe": "Freiburg",
-    "points": 16,
-    "matchs": 8,
-    "diff": 8
+    "points": 19,
+    "matchs": 9,
+    "diff": 10
    },
    {
     "rang": 4,
     "equipe": "RB Leipzig",
-    "points": 15,
-    "matchs": 8,
-    "diff": 11
+    "points": 18,
+    "matchs": 9,
+    "diff": 14
    },
    {
     "rang": 5,
-    "equipe": "Werder Bremen",
-    "points": 15,
-    "matchs": 8,
+    "equipe": "Leverkusen",
+    "points": 16,
+    "matchs": 9,
     "diff": 3
    },
    {
     "rang": 6,
-    "equipe": "Leverkusen",
-    "points": 13,
-    "matchs": 8,
+    "equipe": "Werder Bremen",
+    "points": 15,
+    "matchs": 9,
     "diff": 2
    },
    {
     "rang": 7,
     "equipe": "Elversberg",
     "points": 13,
-    "matchs": 8,
-    "diff": 0
-   },
-   {
-    "rang": 8,
-    "equipe": "Ein Frankfurt",
-    "points": 11,
-    "matchs": 8,
-    "diff": -5
-   },
-   {
-    "rang": 9,
-    "equipe": "Mainz",
-    "points": 10,
-    "matchs": 8,
-    "diff": 0
-   },
-   {
-    "rang": 10,
-    "equipe": "Augsburg",
-    "points": 9,
-    "matchs": 8,
-    "diff": 3
-   },
-   {
-    "rang": 11,
-    "equipe": "Stuttgart",
-    "points": 9,
-    "matchs": 8,
+    "matchs": 9,
     "diff": -1
    },
    {
-    "rang": 12,
+    "rang": 8,
+    "equipe": "Stuttgart",
+    "points": 12,
+    "matchs": 9,
+    "diff": 0
+   },
+   {
+    "rang": 9,
     "equipe": "Hoffenheim",
-    "points": 9,
-    "matchs": 8,
-    "diff": -2
+    "points": 12,
+    "matchs": 9,
+    "diff": -1
+   },
+   {
+    "rang": 10,
+    "equipe": "Ein Frankfurt",
+    "points": 12,
+    "matchs": 9,
+    "diff": -5
+   },
+   {
+    "rang": 11,
+    "equipe": "Hamburg",
+    "points": 12,
+    "matchs": 9,
+    "diff": -10
+   },
+   {
+    "rang": 12,
+    "equipe": "Mainz",
+    "points": 10,
+    "matchs": 9,
+    "diff": -1
    },
    {
     "rang": 13,
-    "equipe": "FC Koln",
-    "points": 9,
-    "matchs": 8,
+    "equipe": "Paderborn",
+    "points": 10,
+    "matchs": 9,
     "diff": -3
    },
    {
     "rang": 14,
-    "equipe": "Paderborn",
+    "equipe": "Augsburg",
     "points": 9,
-    "matchs": 8,
-    "diff": -3
+    "matchs": 9,
+    "diff": 0
    },
    {
     "rang": 15,
-    "equipe": "Hamburg",
+    "equipe": "FC Koln",
     "points": 9,
-    "matchs": 8,
-    "diff": -12
+    "matchs": 9,
+    "diff": -4
    },
    {
     "rang": 16,
     "equipe": "Union Berlin",
     "points": 7,
-    "matchs": 8,
-    "diff": -12
+    "matchs": 9,
+    "diff": -14
    },
    {
     "rang": 17,
     "equipe": "Schalke 04",
     "points": 6,
-    "matchs": 8,
-    "diff": -5
+    "matchs": 9,
+    "diff": -6
    },
    {
     "rang": 18,
     "equipe": "M'gladbach",
     "points": 4,
-    "matchs": 8,
-    "diff": -11
+    "matchs": 9,
+    "diff": -13
    }
   ],
   "D2": [
    {
     "rang": 1,
     "equipe": "Hertha",
-    "points": 28,
-    "matchs": 10,
-    "diff": 15
+    "points": 31,
+    "matchs": 11,
+    "diff": 16
    },
    {
     "rang": 2,
     "equipe": "Nurnberg",
-    "points": 21,
-    "matchs": 10,
-    "diff": 11
+    "points": 24,
+    "matchs": 11,
+    "diff": 13
    },
    {
     "rang": 3,
-    "equipe": "Wolfsburg",
-    "points": 19,
-    "matchs": 10,
-    "diff": 11
+    "equipe": "Kaiserslautern",
+    "points": 21,
+    "matchs": 11,
+    "diff": 3
    },
    {
     "rang": 4,
-    "equipe": "Kaiserslautern",
-    "points": 18,
-    "matchs": 10,
-    "diff": 2
+    "equipe": "Magdeburg",
+    "points": 20,
+    "matchs": 11,
+    "diff": 11
    },
    {
     "rang": 5,
-    "equipe": "Magdeburg",
-    "points": 17,
-    "matchs": 10,
-    "diff": 8
+    "equipe": "Wolfsburg",
+    "points": 19,
+    "matchs": 11,
+    "diff": 10
    },
    {
     "rang": 6,
-    "equipe": "Heidenheim",
-    "points": 15,
-    "matchs": 10,
-    "diff": -1
+    "equipe": "Bielefeld",
+    "points": 17,
+    "matchs": 11,
+    "diff": 2
    },
    {
     "rang": 7,
-    "equipe": "Bielefeld",
-    "points": 14,
-    "matchs": 10,
-    "diff": 1
+    "equipe": "Heidenheim",
+    "points": 16,
+    "matchs": 11,
+    "diff": -1
    },
    {
     "rang": 8,
-    "equipe": "St Pauli",
-    "points": 12,
-    "matchs": 10,
-    "diff": 0
+    "equipe": "Bochum",
+    "points": 14,
+    "matchs": 11,
+    "diff": -2
    },
    {
     "rang": 9,
-    "equipe": "Greuther Furth",
+    "equipe": "St Pauli",
     "points": 12,
-    "matchs": 10,
+    "matchs": 11,
     "diff": -3
    },
    {
     "rang": 10,
-    "equipe": "Osnabruck",
-    "points": 11,
-    "matchs": 10,
-    "diff": -3
-   },
-   {
-    "rang": 11,
-    "equipe": "Bochum",
-    "points": 11,
-    "matchs": 10,
-    "diff": -3
-   },
-   {
-    "rang": 12,
-    "equipe": "Hannover",
-    "points": 11,
-    "matchs": 10,
+    "equipe": "Greuther Furth",
+    "points": 12,
+    "matchs": 11,
     "diff": -6
    },
    {
-    "rang": 13,
-    "equipe": "Karlsruhe",
+    "rang": 11,
+    "equipe": "Hannover",
+    "points": 12,
+    "matchs": 11,
+    "diff": -6
+   },
+   {
+    "rang": 12,
+    "equipe": "Cottbus",
     "points": 11,
-    "matchs": 10,
-    "diff": -8
+    "matchs": 11,
+    "diff": -2
+   },
+   {
+    "rang": 13,
+    "equipe": "Braunschweig",
+    "points": 11,
+    "matchs": 11,
+    "diff": -2
    },
    {
     "rang": 14,
-    "equipe": "Cottbus",
-    "points": 10,
-    "matchs": 10,
-    "diff": -2
+    "equipe": "Osnabruck",
+    "points": 11,
+    "matchs": 11,
+    "diff": -4
    },
    {
     "rang": 15,
-    "equipe": "Braunschweig",
-    "points": 10,
-    "matchs": 10,
-    "diff": -2
+    "equipe": "Dresden",
+    "points": 11,
+    "matchs": 11,
+    "diff": -5
    },
    {
     "rang": 16,
-    "equipe": "Darmstadt",
-    "points": 9,
-    "matchs": 10,
-    "diff": -10
+    "equipe": "Karlsruhe",
+    "points": 11,
+    "matchs": 11,
+    "diff": -9
    },
    {
     "rang": 17,
-    "equipe": "Holstein Kiel",
-    "points": 8,
-    "matchs": 10,
-    "diff": -2
+    "equipe": "Darmstadt",
+    "points": 9,
+    "matchs": 11,
+    "diff": -12
    },
    {
     "rang": 18,
-    "equipe": "Dresden",
+    "equipe": "Holstein Kiel",
     "points": 8,
-    "matchs": 10,
-    "diff": -8
+    "matchs": 11,
+    "diff": -3
    }
   ],
   "F1": [
    {
     "rang": 1,
     "equipe": "Paris SG",
-    "points": 20,
-    "matchs": 9,
-    "diff": 11
+    "points": 23,
+    "matchs": 10,
+    "diff": 12
    },
    {
     "rang": 2,
     "equipe": "Lille",
-    "points": 18,
-    "matchs": 9,
-    "diff": 6
+    "points": 21,
+    "matchs": 10,
+    "diff": 7
    },
    {
     "rang": 3,
-    "equipe": "Lyon",
-    "points": 17,
-    "matchs": 9,
-    "diff": 8
+    "equipe": "Paris FC",
+    "points": 20,
+    "matchs": 10,
+    "diff": 7
    },
    {
     "rang": 4,
-    "equipe": "Paris FC",
-    "points": 17,
-    "matchs": 9,
-    "diff": 6
+    "equipe": "Marseille",
+    "points": 18,
+    "matchs": 10,
+    "diff": 8
    },
    {
     "rang": 5,
-    "equipe": "Rennes",
-    "points": 16,
-    "matchs": 9,
-    "diff": 1
+    "equipe": "Lyon",
+    "points": 17,
+    "matchs": 10,
+    "diff": 6
    },
    {
     "rang": 6,
-    "equipe": "Marseille",
-    "points": 15,
-    "matchs": 9,
-    "diff": 7
+    "equipe": "Nice",
+    "points": 17,
+    "matchs": 10,
+    "diff": 3
    },
    {
     "rang": 7,
     "equipe": "Monaco",
-    "points": 15,
-    "matchs": 9,
+    "points": 16,
+    "matchs": 10,
     "diff": 2
    },
    {
     "rang": 8,
-    "equipe": "Nice",
-    "points": 14,
-    "matchs": 9,
-    "diff": 1
+    "equipe": "Rennes",
+    "points": 16,
+    "matchs": 10,
+    "diff": 0
    },
    {
     "rang": 9,
-    "equipe": "Lens",
-    "points": 13,
-    "matchs": 9,
-    "diff": 3
+    "equipe": "Brest",
+    "points": 15,
+    "matchs": 10,
+    "diff": 6
    },
    {
     "rang": 10,
-    "equipe": "Brest",
-    "points": 12,
-    "matchs": 9,
-    "diff": 4
+    "equipe": "Lorient",
+    "points": 15,
+    "matchs": 10,
+    "diff": 1
    },
    {
     "rang": 11,
-    "equipe": "Lorient",
-    "points": 12,
-    "matchs": 9,
-    "diff": -1
+    "equipe": "Lens",
+    "points": 13,
+    "matchs": 10,
+    "diff": 2
    },
    {
     "rang": 12,
     "equipe": "Toulouse",
-    "points": 10,
-    "matchs": 9,
-    "diff": -1
+    "points": 13,
+    "matchs": 10,
+    "diff": 1
    },
    {
     "rang": 13,
     "equipe": "Strasbourg",
     "points": 10,
-    "matchs": 9,
-    "diff": -2
+    "matchs": 10,
+    "diff": -4
    },
    {
     "rang": 14,
     "equipe": "Auxerre",
     "points": 10,
-    "matchs": 9,
-    "diff": -10
+    "matchs": 10,
+    "diff": -11
    },
    {
     "rang": 15,
-    "equipe": "Angers",
+    "equipe": "Le Mans",
     "points": 8,
-    "matchs": 9,
-    "diff": -8
+    "matchs": 10,
+    "diff": -7
    },
    {
     "rang": 16,
-    "equipe": "Troyes",
+    "equipe": "Angers",
     "points": 8,
-    "matchs": 9,
-    "diff": -9
+    "matchs": 10,
+    "diff": -10
    },
    {
     "rang": 17,
-    "equipe": "Le Mans",
-    "points": 7,
-    "matchs": 9,
-    "diff": -7
+    "equipe": "Troyes",
+    "points": 8,
+    "matchs": 10,
+    "diff": -10
    },
    {
     "rang": 18,
     "equipe": "Le Havre",
     "points": 2,
-    "matchs": 9,
-    "diff": -11
+    "matchs": 10,
+    "diff": -13
    }
   ],
   "F2": [
    {
     "rang": 1,
     "equipe": "St Etienne",
-    "points": 25,
-    "matchs": 11,
-    "diff": 12
+    "points": 28,
+    "matchs": 12,
+    "diff": 14
    },
    {
     "rang": 2,
-    "equipe": "Montpellier",
-    "points": 24,
-    "matchs": 11,
-    "diff": 10
+    "equipe": "Nancy",
+    "points": 25,
+    "matchs": 12,
+    "diff": 8
    },
    {
     "rang": 3,
-    "equipe": "Nancy",
-    "points": 22,
-    "matchs": 11,
-    "diff": 7
+    "equipe": "Montpellier",
+    "points": 24,
+    "matchs": 12,
+    "diff": 9
    },
    {
     "rang": 4,
     "equipe": "Reims",
     "points": 21,
-    "matchs": 11,
-    "diff": 10
+    "matchs": 12,
+    "diff": 9
    },
    {
     "rang": 5,
     "equipe": "Pau FC",
     "points": 20,
-    "matchs": 11,
-    "diff": 5
+    "matchs": 12,
+    "diff": 3
    },
    {
     "rang": 6,
-    "equipe": "Red Star",
-    "points": 17,
-    "matchs": 11,
-    "diff": -2
+    "equipe": "Dijon",
+    "points": 18,
+    "matchs": 12,
+    "diff": 2
    },
    {
     "rang": 7,
-    "equipe": "Annecy",
-    "points": 16,
-    "matchs": 11,
-    "diff": -1
+    "equipe": "Metz",
+    "points": 17,
+    "matchs": 12,
+    "diff": 1
    },
    {
     "rang": 8,
-    "equipe": "Dijon",
-    "points": 15,
-    "matchs": 11,
-    "diff": 1
+    "equipe": "Red Star",
+    "points": 17,
+    "matchs": 12,
+    "diff": -3
    },
    {
     "rang": 9,
-    "equipe": "Guingamp",
-    "points": 14,
-    "matchs": 11,
-    "diff": 1
+    "equipe": "Annecy",
+    "points": 16,
+    "matchs": 12,
+    "diff": -4
    },
    {
     "rang": 10,
-    "equipe": "Metz",
-    "points": 14,
-    "matchs": 11,
+    "equipe": "Dunkerque",
+    "points": 15,
+    "matchs": 12,
     "diff": 0
    },
    {
     "rang": 11,
-    "equipe": "Rodez",
-    "points": 13,
-    "matchs": 11,
-    "diff": -5
+    "equipe": "Guingamp",
+    "points": 14,
+    "matchs": 12,
+    "diff": -2
    },
    {
     "rang": 12,
-    "equipe": "Dunkerque",
-    "points": 12,
-    "matchs": 11,
-    "diff": -3
+    "equipe": "Boulogne",
+    "points": 13,
+    "matchs": 12,
+    "diff": 2
    },
    {
     "rang": 13,
-    "equipe": "Sochaux",
-    "points": 11,
-    "matchs": 11,
+    "equipe": "Rodez",
+    "points": 13,
+    "matchs": 12,
     "diff": -6
    },
    {
     "rang": 14,
-    "equipe": "Boulogne",
-    "points": 10,
-    "matchs": 11,
-    "diff": -1
+    "equipe": "Nantes",
+    "points": 12,
+    "matchs": 12,
+    "diff": -4
    },
    {
     "rang": 15,
-    "equipe": "Nantes",
-    "points": 9,
-    "matchs": 11,
-    "diff": -6
+    "equipe": "Clermont",
+    "points": 11,
+    "matchs": 12,
+    "diff": -4
    },
    {
     "rang": 16,
-    "equipe": "Laval",
-    "points": 9,
-    "matchs": 11,
+    "equipe": "Sochaux",
+    "points": 11,
+    "matchs": 12,
     "diff": -7
    },
    {
     "rang": 17,
-    "equipe": "Clermont",
-    "points": 8,
-    "matchs": 11,
-    "diff": -5
+    "equipe": "Grenoble",
+    "points": 11,
+    "matchs": 12,
+    "diff": -9
    },
    {
     "rang": 18,
-    "equipe": "Grenoble",
-    "points": 8,
-    "matchs": 11,
-    "diff": -10
+    "equipe": "Laval",
+    "points": 9,
+    "matchs": 12,
+    "diff": -9
    }
   ],
   "N1": [
    {
     "rang": 1,
-    "equipe": "Feyenoord",
-    "points": 25,
-    "matchs": 11,
-    "diff": 21
+    "equipe": "PSV Eindhoven",
+    "points": 26,
+    "matchs": 12,
+    "diff": 25
    },
    {
     "rang": 2,
-    "equipe": "Ajax",
-    "points": 24,
-    "matchs": 11,
-    "diff": 17
+    "equipe": "Feyenoord",
+    "points": 25,
+    "matchs": 12,
+    "diff": 19
    },
    {
     "rang": 3,
-    "equipe": "PSV Eindhoven",
-    "points": 23,
-    "matchs": 11,
-    "diff": 22
+    "equipe": "Ajax",
+    "points": 25,
+    "matchs": 12,
+    "diff": 17
    },
    {
     "rang": 4,
     "equipe": "Twente",
-    "points": 23,
-    "matchs": 11,
+    "points": 24,
+    "matchs": 12,
     "diff": 18
    },
    {
     "rang": 5,
     "equipe": "AZ Alkmaar",
-    "points": 20,
-    "matchs": 11,
-    "diff": 7
+    "points": 23,
+    "matchs": 12,
+    "diff": 8
    },
    {
     "rang": 6,
-    "equipe": "For Sittard",
-    "points": 19,
-    "matchs": 11,
-    "diff": 0
+    "equipe": "Heerenveen",
+    "points": 21,
+    "matchs": 12,
+    "diff": 8
    },
    {
     "rang": 7,
-    "equipe": "Heerenveen",
-    "points": 18,
-    "matchs": 11,
-    "diff": 6
+    "equipe": "For Sittard",
+    "points": 20,
+    "matchs": 12,
+    "diff": 0
    },
    {
     "rang": 8,
-    "equipe": "Groningen",
-    "points": 15,
-    "matchs": 11,
-    "diff": 2
+    "equipe": "Go Ahead Eagles",
+    "points": 17,
+    "matchs": 12,
+    "diff": -3
    },
    {
     "rang": 9,
-    "equipe": "Cambuur",
+    "equipe": "Groningen",
     "points": 15,
-    "matchs": 11,
+    "matchs": 12,
     "diff": 1
    },
    {
     "rang": 10,
-    "equipe": "Go Ahead Eagles",
-    "points": 14,
-    "matchs": 11,
-    "diff": -4
-   },
-   {
-    "rang": 11,
-    "equipe": "Sparta Rotterdam",
-    "points": 12,
-    "matchs": 11,
-    "diff": -6
-   },
-   {
-    "rang": 12,
-    "equipe": "Utrecht",
-    "points": 12,
-    "matchs": 11,
-    "diff": -12
-   },
-   {
-    "rang": 13,
-    "equipe": "Nijmegen",
-    "points": 11,
-    "matchs": 11,
+    "equipe": "Cambuur",
+    "points": 15,
+    "matchs": 12,
     "diff": -2
    },
    {
-    "rang": 14,
+    "rang": 11,
+    "equipe": "Nijmegen",
+    "points": 14,
+    "matchs": 12,
+    "diff": -1
+   },
+   {
+    "rang": 12,
+    "equipe": "Sparta Rotterdam",
+    "points": 12,
+    "matchs": 12,
+    "diff": -8
+   },
+   {
+    "rang": 13,
     "equipe": "Zwolle",
-    "points": 11,
-    "matchs": 11,
+    "points": 12,
+    "matchs": 12,
     "diff": -11
+   },
+   {
+    "rang": 14,
+    "equipe": "Utrecht",
+    "points": 12,
+    "matchs": 12,
+    "diff": -13
    },
    {
     "rang": 15,
     "equipe": "Excelsior",
     "points": 11,
-    "matchs": 11,
-    "diff": -12
+    "matchs": 12,
+    "diff": -13
    },
    {
     "rang": 16,
     "equipe": "Telstar",
-    "points": 9,
-    "matchs": 11,
+    "points": 10,
+    "matchs": 12,
     "diff": -7
    },
    {
     "rang": 17,
     "equipe": "Den Haag",
-    "points": 6,
-    "matchs": 11,
-    "diff": -11
+    "points": 9,
+    "matchs": 12,
+    "diff": -9
    },
    {
     "rang": 18,
     "equipe": "Willem II",
-    "points": 2,
-    "matchs": 11,
+    "points": 3,
+    "matchs": 12,
     "diff": -29
    }
   ],
@@ -1540,121 +1540,121 @@
    {
     "rang": 1,
     "equipe": "Porto",
-    "points": 30,
-    "matchs": 10,
-    "diff": 21
+    "points": 33,
+    "matchs": 11,
+    "diff": 22
    },
    {
     "rang": 2,
     "equipe": "Benfica",
-    "points": 25,
-    "matchs": 10,
-    "diff": 19
+    "points": 28,
+    "matchs": 11,
+    "diff": 20
    },
    {
     "rang": 3,
     "equipe": "Sp Lisbon",
-    "points": 21,
-    "matchs": 10,
-    "diff": 12
+    "points": 24,
+    "matchs": 11,
+    "diff": 13
    },
    {
     "rang": 4,
     "equipe": "Santa Clara",
     "points": 21,
-    "matchs": 10,
-    "diff": 9
+    "matchs": 11,
+    "diff": 8
    },
    {
     "rang": 5,
     "equipe": "Arouca",
     "points": 20,
-    "matchs": 10,
-    "diff": 6
+    "matchs": 11,
+    "diff": 5
    },
    {
     "rang": 6,
     "equipe": "Academico Viseu",
     "points": 20,
-    "matchs": 10,
-    "diff": 3
+    "matchs": 11,
+    "diff": 2
    },
    {
     "rang": 7,
     "equipe": "Gil Vicente",
-    "points": 15,
-    "matchs": 10,
-    "diff": 1
+    "points": 18,
+    "matchs": 11,
+    "diff": 2
    },
    {
     "rang": 8,
     "equipe": "Sp Braga",
-    "points": 14,
-    "matchs": 10,
-    "diff": 1
+    "points": 17,
+    "matchs": 11,
+    "diff": 2
    },
    {
     "rang": 9,
     "equipe": "Moreirense",
     "points": 14,
-    "matchs": 10,
-    "diff": -4
+    "matchs": 11,
+    "diff": -5
    },
    {
     "rang": 10,
-    "equipe": "Alverca",
-    "points": 11,
-    "matchs": 10,
-    "diff": -1
+    "equipe": "Famalicao",
+    "points": 13,
+    "matchs": 11,
+    "diff": 1
    },
    {
     "rang": 11,
-    "equipe": "Famalicao",
-    "points": 10,
-    "matchs": 10,
-    "diff": 0
+    "equipe": "Alverca",
+    "points": 12,
+    "matchs": 11,
+    "diff": -1
    },
    {
     "rang": 12,
     "equipe": "Estrela",
     "points": 10,
-    "matchs": 10,
-    "diff": -4
+    "matchs": 11,
+    "diff": -5
    },
    {
     "rang": 13,
-    "equipe": "Guimaraes",
-    "points": 9,
-    "matchs": 10,
-    "diff": 0
+    "equipe": "Nacional",
+    "points": 10,
+    "matchs": 11,
+    "diff": -8
    },
    {
     "rang": 14,
+    "equipe": "Guimaraes",
+    "points": 9,
+    "matchs": 11,
+    "diff": -1
+   },
+   {
+    "rang": 15,
     "equipe": "Maritimo",
     "points": 8,
     "matchs": 10,
     "diff": -12
    },
    {
-    "rang": 15,
-    "equipe": "Nacional",
-    "points": 7,
-    "matchs": 10,
-    "diff": -9
-   },
-   {
     "rang": 16,
-    "equipe": "Rio Ave",
-    "points": 7,
-    "matchs": 10,
+    "equipe": "Casa Pia",
+    "points": 8,
+    "matchs": 11,
     "diff": -14
    },
    {
     "rang": 17,
-    "equipe": "Casa Pia",
+    "equipe": "Rio Ave",
     "points": 7,
-    "matchs": 10,
-    "diff": -14
+    "matchs": 11,
+    "diff": -15
    },
    {
     "rang": 18,
@@ -1667,443 +1667,443 @@
   "B1": [
    {
     "rang": 1,
-    "equipe": "Club Brugge",
-    "points": 27,
-    "matchs": 10,
-    "diff": 18
+    "equipe": "St. Gilloise",
+    "points": 29,
+    "matchs": 11,
+    "diff": 23
    },
    {
     "rang": 2,
-    "equipe": "St. Gilloise",
-    "points": 26,
-    "matchs": 10,
-    "diff": 22
+    "equipe": "Club Brugge",
+    "points": 28,
+    "matchs": 11,
+    "diff": 18
    },
    {
     "rang": 3,
     "equipe": "Gent",
-    "points": 25,
-    "matchs": 10,
-    "diff": 13
+    "points": 28,
+    "matchs": 11,
+    "diff": 14
    },
    {
     "rang": 4,
     "equipe": "Charleroi",
-    "points": 24,
-    "matchs": 10,
-    "diff": 9
+    "points": 27,
+    "matchs": 11,
+    "diff": 13
    },
    {
     "rang": 5,
     "equipe": "Anderlecht",
-    "points": 19,
-    "matchs": 10,
+    "points": 20,
+    "matchs": 11,
     "diff": 2
    },
    {
     "rang": 6,
-    "equipe": "Genk",
-    "points": 15,
-    "matchs": 10,
-    "diff": 4
-   },
-   {
-    "rang": 7,
     "equipe": "Lommel SK",
-    "points": 15,
-    "matchs": 10,
+    "points": 16,
+    "matchs": 11,
     "diff": 2
    },
    {
+    "rang": 7,
+    "equipe": "Genk",
+    "points": 15,
+    "matchs": 11,
+    "diff": 3
+   },
+   {
     "rang": 8,
-    "equipe": "Westerlo",
-    "points": 14,
-    "matchs": 10,
-    "diff": 0
+    "equipe": "Standard",
+    "points": 15,
+    "matchs": 11,
+    "diff": 2
    },
    {
     "rang": 9,
-    "equipe": "Standard",
-    "points": 12,
-    "matchs": 10,
-    "diff": -1
+    "equipe": "Westerlo",
+    "points": 14,
+    "matchs": 11,
+    "diff": -4
    },
    {
     "rang": 10,
-    "equipe": "Mechelen",
+    "equipe": "Oud-Heverlee Leuven",
     "points": 12,
-    "matchs": 10,
+    "matchs": 11,
     "diff": -5
    },
    {
     "rang": 11,
-    "equipe": "Waregem",
-    "points": 11,
-    "matchs": 10,
-    "diff": -4
-   },
-   {
-    "rang": 12,
-    "equipe": "Antwerp",
-    "points": 10,
-    "matchs": 10,
-    "diff": -6
-   },
-   {
-    "rang": 13,
-    "equipe": "Beveren",
-    "points": 10,
-    "matchs": 10,
+    "equipe": "Mechelen",
+    "points": 12,
+    "matchs": 11,
     "diff": -7
    },
    {
+    "rang": 12,
+    "equipe": "St Truiden",
+    "points": 11,
+    "matchs": 11,
+    "diff": 0
+   },
+   {
+    "rang": 13,
+    "equipe": "Antwerp",
+    "points": 11,
+    "matchs": 11,
+    "diff": -6
+   },
+   {
     "rang": 14,
-    "equipe": "Oud-Heverlee Leuven",
-    "points": 9,
-    "matchs": 10,
+    "equipe": "Waregem",
+    "points": 11,
+    "matchs": 11,
     "diff": -7
    },
    {
     "rang": 15,
-    "equipe": "St Truiden",
-    "points": 8,
-    "matchs": 10,
-    "diff": -3
-   },
-   {
-    "rang": 16,
-    "equipe": "RAAL La Louviere",
-    "points": 7,
-    "matchs": 10,
+    "equipe": "Beveren",
+    "points": 10,
+    "matchs": 11,
     "diff": -10
    },
    {
-    "rang": 17,
+    "rang": 16,
     "equipe": "Cercle Brugge",
-    "points": 6,
-    "matchs": 10,
-    "diff": -9
+    "points": 9,
+    "matchs": 11,
+    "diff": -8
+   },
+   {
+    "rang": 17,
+    "equipe": "RAAL La Louviere",
+    "points": 7,
+    "matchs": 11,
+    "diff": -11
    },
    {
     "rang": 18,
     "equipe": "Kortrijk",
     "points": 4,
-    "matchs": 10,
-    "diff": -18
+    "matchs": 11,
+    "diff": -19
    }
   ],
   "T1": [
    {
     "rang": 1,
     "equipe": "Galatasaray",
-    "points": 25,
-    "matchs": 10,
-    "diff": 11
+    "points": 28,
+    "matchs": 11,
+    "diff": 12
    },
    {
     "rang": 2,
-    "equipe": "Amedspor",
-    "points": 23,
-    "matchs": 10,
-    "diff": 14
+    "equipe": "Trabzonspor",
+    "points": 25,
+    "matchs": 11,
+    "diff": 18
    },
    {
     "rang": 3,
-    "equipe": "Trabzonspor",
-    "points": 22,
-    "matchs": 10,
-    "diff": 16
+    "equipe": "Amedspor",
+    "points": 23,
+    "matchs": 11,
+    "diff": 13
    },
    {
     "rang": 4,
     "equipe": "Besiktas",
-    "points": 19,
-    "matchs": 10,
-    "diff": 8
+    "points": 22,
+    "matchs": 11,
+    "diff": 11
    },
    {
     "rang": 5,
     "equipe": "Kasimpasa",
-    "points": 17,
-    "matchs": 10,
-    "diff": 4
+    "points": 20,
+    "matchs": 11,
+    "diff": 6
    },
    {
     "rang": 6,
     "equipe": "Fenerbahce",
-    "points": 16,
-    "matchs": 10,
-    "diff": 14
+    "points": 19,
+    "matchs": 11,
+    "diff": 19
    },
    {
     "rang": 7,
-    "equipe": "Corum",
-    "points": 16,
-    "matchs": 10,
-    "diff": 5
+    "equipe": "Kocaelispor",
+    "points": 19,
+    "matchs": 11,
+    "diff": 4
    },
    {
     "rang": 8,
-    "equipe": "Kocaelispor",
-    "points": 16,
-    "matchs": 10,
+    "equipe": "Buyuksehyr",
+    "points": 17,
+    "matchs": 11,
     "diff": 2
    },
    {
     "rang": 9,
-    "equipe": "Goztep",
-    "points": 15,
-    "matchs": 10,
-    "diff": 4
+    "equipe": "Corum",
+    "points": 16,
+    "matchs": 11,
+    "diff": 0
    },
    {
     "rang": 10,
-    "equipe": "Buyuksehyr",
-    "points": 14,
-    "matchs": 10,
-    "diff": 1
+    "equipe": "Goztep",
+    "points": 15,
+    "matchs": 11,
+    "diff": 3
    },
    {
     "rang": 11,
-    "equipe": "Erzurumspor",
+    "equipe": "Rizespor",
     "points": 14,
-    "matchs": 10,
-    "diff": -6
+    "matchs": 11,
+    "diff": -3
    },
    {
     "rang": 12,
-    "equipe": "Alanyaspor",
-    "points": 12,
-    "matchs": 10,
+    "equipe": "Erzurumspor",
+    "points": 14,
+    "matchs": 11,
     "diff": -7
    },
    {
     "rang": 13,
-    "equipe": "Rizespor",
-    "points": 11,
-    "matchs": 10,
-    "diff": -4
+    "equipe": "Alanyaspor",
+    "points": 12,
+    "matchs": 11,
+    "diff": -9
    },
    {
     "rang": 14,
     "equipe": "Genclerbirligi",
     "points": 11,
-    "matchs": 10,
-    "diff": -6
+    "matchs": 11,
+    "diff": -9
    },
    {
     "rang": 15,
     "equipe": "Konyaspor",
     "points": 8,
-    "matchs": 10,
-    "diff": -7
+    "matchs": 11,
+    "diff": -8
    },
    {
     "rang": 16,
     "equipe": "Gaziantep",
     "points": 8,
-    "matchs": 10,
-    "diff": -8
+    "matchs": 11,
+    "diff": -10
    },
    {
     "rang": 17,
     "equipe": "Samsunspor",
-    "points": 4,
-    "matchs": 10,
-    "diff": -16
+    "points": 7,
+    "matchs": 11,
+    "diff": -15
    },
    {
     "rang": 18,
     "equipe": "Eyupspor",
     "points": 3,
-    "matchs": 10,
-    "diff": -25
+    "matchs": 11,
+    "diff": -27
    }
   ],
   "SC0": [
    {
     "rang": 1,
     "equipe": "Celtic",
-    "points": 28,
-    "matchs": 12,
-    "diff": 17
+    "points": 31,
+    "matchs": 13,
+    "diff": 18
    },
    {
     "rang": 2,
     "equipe": "Rangers",
-    "points": 24,
-    "matchs": 11,
-    "diff": 10
+    "points": 27,
+    "matchs": 12,
+    "diff": 12
    },
    {
     "rang": 3,
-    "equipe": "Hearts",
-    "points": 20,
-    "matchs": 11,
-    "diff": 7
+    "equipe": "Falkirk",
+    "points": 21,
+    "matchs": 13,
+    "diff": 6
    },
    {
     "rang": 4,
-    "equipe": "Falkirk",
-    "points": 18,
+    "equipe": "Hearts",
+    "points": 20,
     "matchs": 12,
-    "diff": 3
+    "diff": 4
    },
    {
     "rang": 5,
     "equipe": "Dundee",
     "points": 17,
-    "matchs": 11,
-    "diff": 4
+    "matchs": 12,
+    "diff": 3
    },
    {
     "rang": 6,
     "equipe": "Dundee United",
-    "points": 16,
-    "matchs": 11,
+    "points": 17,
+    "matchs": 12,
     "diff": 0
    },
    {
     "rang": 7,
     "equipe": "St Johnstone",
-    "points": 14,
-    "matchs": 12,
-    "diff": -4
+    "points": 17,
+    "matchs": 13,
+    "diff": -3
    },
    {
     "rang": 8,
     "equipe": "St Mirren",
     "points": 14,
-    "matchs": 12,
-    "diff": -8
+    "matchs": 13,
+    "diff": -10
    },
    {
     "rang": 9,
     "equipe": "Motherwell",
-    "points": 12,
-    "matchs": 12,
+    "points": 13,
+    "matchs": 13,
     "diff": -6
    },
    {
     "rang": 10,
-    "equipe": "Aberdeen",
+    "equipe": "Hibernian",
     "points": 11,
-    "matchs": 11,
+    "matchs": 12,
     "diff": -2
    },
    {
     "rang": 11,
-    "equipe": "Kilmarnock",
-    "points": 9,
+    "equipe": "Aberdeen",
+    "points": 11,
     "matchs": 12,
-    "diff": -15
+    "diff": -6
    },
    {
     "rang": 12,
-    "equipe": "Hibernian",
-    "points": 8,
-    "matchs": 11,
-    "diff": -6
+    "equipe": "Kilmarnock",
+    "points": 9,
+    "matchs": 13,
+    "diff": -16
    }
   ],
   "G1": [
    {
     "rang": 1,
     "equipe": "Panathinaikos",
-    "points": 24,
-    "matchs": 9,
-    "diff": 16
+    "points": 27,
+    "matchs": 10,
+    "diff": 17
    },
    {
     "rang": 2,
     "equipe": "Olympiakos",
-    "points": 22,
-    "matchs": 9,
+    "points": 23,
+    "matchs": 10,
     "diff": 11
    },
    {
     "rang": 3,
-    "equipe": "PAOK",
-    "points": 18,
+    "equipe": "AEK",
+    "points": 20,
     "matchs": 9,
-    "diff": 6
+    "diff": 17
    },
    {
     "rang": 4,
-    "equipe": "AEK",
-    "points": 17,
-    "matchs": 8,
-    "diff": 16
+    "equipe": "PAOK",
+    "points": 19,
+    "matchs": 10,
+    "diff": 6
    },
    {
     "rang": 5,
-    "equipe": "OFI Crete",
-    "points": 16,
-    "matchs": 9,
-    "diff": 2
+    "equipe": "Aris",
+    "points": 19,
+    "matchs": 10,
+    "diff": -1
    },
    {
     "rang": 6,
-    "equipe": "Aris",
-    "points": 16,
-    "matchs": 9,
-    "diff": -4
+    "equipe": "OFI Crete",
+    "points": 17,
+    "matchs": 10,
+    "diff": 2
    },
    {
     "rang": 7,
     "equipe": "Kifisia",
-    "points": 11,
-    "matchs": 9,
-    "diff": -2
+    "points": 14,
+    "matchs": 10,
+    "diff": 0
    },
    {
     "rang": 8,
     "equipe": "Kalamata",
-    "points": 11,
-    "matchs": 9,
+    "points": 12,
+    "matchs": 10,
     "diff": -4
    },
    {
     "rang": 9,
     "equipe": "Iraklis",
     "points": 10,
-    "matchs": 9,
-    "diff": -2
+    "matchs": 10,
+    "diff": -3
    },
    {
     "rang": 10,
     "equipe": "Panetolikos",
     "points": 9,
-    "matchs": 9,
-    "diff": -9
+    "matchs": 10,
+    "diff": -12
    },
    {
     "rang": 11,
-    "equipe": "Levadeiakos",
-    "points": 6,
-    "matchs": 9,
-    "diff": -8
-   },
-   {
-    "rang": 12,
     "equipe": "Asteras Tripolis",
-    "points": 6,
-    "matchs": 9,
+    "points": 7,
+    "matchs": 10,
     "diff": -9
    },
    {
-    "rang": 13,
+    "rang": 12,
     "equipe": "Atromitos",
-    "points": 5,
-    "matchs": 8,
+    "points": 6,
+    "matchs": 9,
     "diff": -3
+   },
+   {
+    "rang": 13,
+    "equipe": "Levadeiakos",
+    "points": 6,
+    "matchs": 10,
+    "diff": -9
    },
    {
     "rang": 14,
     "equipe": "Volos NFC",
     "points": 3,
-    "matchs": 9,
-    "diff": -10
+    "matchs": 10,
+    "diff": -12
    }
   ]
  }
