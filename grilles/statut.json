@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-09T13:41:38Z",
+ "verifie_le": "2026-11-09T19:25:09Z",
  "formats": {
   "7": {
    "ok": false,
@@ -8,28 +8,15 @@
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    156,
-    157
+    157,
+    158
    ],
    "equipes_inconnues": [
-    "Realsociedad B",
-    "FC Botosani",
-    "Otelul Galati",
-    "Torreense",
-    "Uniao Leiria",
-    "Mushuc Runa",
-    "Delfin SC",
-    "Tecnico Uni.",
-    "Manta FC",
-    "San Lorenzo",
-    "Rubio Nu",
-    "Sp.Luqueno",
-    "Club 2 De Mayo",
-    "Junior FC",
-    "Cucuta",
     "I.Féroé",
     "Ecosse",
-    "Macédoineduno."
+    "Macédoineduno.",
+    "San Marin",
+    "Rép.Tchèque"
    ],
    "erreur": null
   },
