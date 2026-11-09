@@ -50,6 +50,15 @@
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+.gauche { text-align: left; }
+.res-chip { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--line); color: var(--muted, #5b6b62); }
+.res-chip.v { color: var(--ok); }
+.res-chip.d { color: var(--bad); }
+.sel-matchs td { padding: 6px 4px; }
+.sous-titre { font-weight: 700; margin: 12px 0 2px; }
+.sel-tab { table-layout: fixed; }
+.sel-tab th:first-child, .sel-tab td:first-child { width: 40%; }
+.sel-tab td, .sel-matchs td { font-family: inherit; }
 :focus-visible { outline: 3px solid var(--info); outline-offset: 2px; }
 .page { max-width: 1040px; margin: 0 auto; padding: 0 16px 112px; }
 .ico { display: block; flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -438,7 +447,7 @@ __PWA_HEAD__
     'como 1907': 'Como', 'betis seville': 'Betis', 'fc porto': 'Porto', 'naples': 'Napoli',
     'club bruges': 'Club Brugge', 'aek athenes': 'AEK', 'manchester city': 'Man City', 'psg': 'Paris SG',
     'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava', 'milan ac': 'Milan', 'real sociedad': 'Sociedad', 'cologne': 'FC Koln',
-    'pau': 'Pau FC', 'nottingham f': "Nott'm Forest", 'werder breme': 'Werder Bremen'
+    'pau': 'Pau FC', 'nottingham f': "Nott'm Forest", 'werder breme': 'Werder Bremen', 'reptcheque': 'Tchéquie', 'repirlande': 'Irlande', 'iferoe': 'Îles Féroé', 'irlandedunord': 'Irlande du Nord', 'macedoineduno': 'Macédoine du Nord', 'san marin': 'Saint-Marin', 'bosnie herzeg': 'Bosnie-Herzégovine'
   };
   var SOURCE_TAG = {
     modele_stats: '<span class="tag">Stats, sans cotes</span>',
@@ -450,7 +459,7 @@ __PWA_HEAD__
     grilles: [], grilleId: null, stockage: true, nouvelle: false, form: null, message: '', texteCopie: '',
     ligue: '', equipe: '', dom: '', ext: '', q: '',
     rech: { dom: { texte: '', championnat: '', note: '', niveau: 'haut' }, ext: { texte: '', championnat: '', note: '', niveau: 'haut' } },
-    version: DATA.version, derniere: DATA.derniere_date, publieLe: DATA.publie_le || null, miseAJour: '', bilan: DATA.bilan || null, resultats: DATA.resultats || null, classements: DATA.classements || null
+    version: DATA.version, derniere: DATA.derniere_date, publieLe: DATA.publie_le || null, miseAJour: '', bilan: DATA.bilan || null, resultats: DATA.resultats || null, classements: DATA.classements || null, selections: DATA.selections || null
   };
   var app = document.getElementById('app');
 
@@ -604,7 +613,7 @@ __PWA_HEAD__
     var out = {};
     ['dW', 'dD', 'dL', 'eW', 'eD', 'eL', 'forme', 'gf', 'ga', 'rest', 'load', 'cadF', 'cadA', 'cor', 'car'].forEach(function (k) {
       var s = 0, n = 0;
-      S.equipes.forEach(function (t) { if (t.vec && typeof t.vec[k] === 'number') { s += t.vec[k]; n++; } });
+      S.equipes.forEach(function (t) { if (t.ligue !== 'SEL' && t.vec && typeof t.vec[k] === 'number') { s += t.vec[k]; n++; } });
       out[k] = n ? s / n : 0;
     });
     vecMoyenCache = out;
@@ -640,7 +649,7 @@ __PWA_HEAD__
   }
   function moyenneChampionnat(code) {
     var ts = S.equipes.filter(function (t) { return t.ligue === code; });
-    return moyenneDe(ts.length ? ts : S.equipes);
+    return moyenneDe(ts.length ? ts : S.equipes.filter(function (x) { return x.ligue !== 'SEL'; }));
   }
   function niveauAjuste(vec, ownCode, oppCode) {
     var out = {};
@@ -704,6 +713,15 @@ __PWA_HEAD__
     if (ts.length) return ts.reduce(function (s, t) { return s + t.vec.elo; }, 0) / ts.length;
     return 1512 + 0.96 * noteDe(code);
   }
+  // Équipes nationales : repos, charge, tirs, corners et cartons ne sont pas disponibles : ils restent à la moyenne du modèle, par rôle
+  var NEUTRE_DOM = { rest: 13, load: 15, cadF: 17, cadA: 18, cor: 21, car: 23 };
+  var NEUTRE_EXT = { rest: 14, load: 16, cadF: 19, cadA: 20, cor: 22, car: 24 };
+  function neutreSelection(v, idx) {
+    var o = {};
+    Object.keys(v).forEach(function (k) { o[k] = v[k]; });
+    Object.keys(idx).forEach(function (k) { o[k] = S.modele.moyenne[idx[k]]; });
+    return o;
+  }
   function calculMatch(h, a) {
     if (!h.vec || !a.vec || !S.modele) return { erreur: 'Données indisponibles pour cette équipe.' };
     var cross = h.ligue !== a.ligue, gap = 0, nh = null, na = null;
@@ -719,6 +737,7 @@ __PWA_HEAD__
       hv.elo -= moyenneElo(h.ligue);
       av.elo -= moyenneElo(a.ligue);
     }
+    if (h.ligue === 'SEL' && a.ligue === 'SEL') { hv = neutreSelection(hv, NEUTRE_DOM); av = neutreSelection(av, NEUTRE_EXT); }
     return { p: probMatch(hv, av, gap), gap: gap, hv: hv, av: av, cross: cross, nh: nh, na: na };
   }
   // Doubles et triples : toutes les répartitions possibles sont comparées ; on garde celle qui donne
@@ -1397,7 +1416,7 @@ __PWA_HEAD__
     return ['H', 'D', 'A'].every(function (c) { return Array.isArray(m.coef[c]) && m.coef[c].length === 25; });
   }
   function appliquerDonnees(d) {
-    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.publieLe = d.publie_le || null; S.bilan = d.bilan || null; S.resultats = d.resultats || null; S.classements = d.classements || null;
+    S.equipes = d.equipes; S.stats = d.stats; S.modele = d.modele; S.version = d.version; S.derniere = d.derniere_date; S.publieLe = d.publie_le || null; S.bilan = d.bilan || null; S.resultats = d.resultats || null; S.classements = d.classements || null; S.selections = d.selections || null;
     miseAJourSuivi();
   }
   function verifierMiseAJour() {
@@ -1870,8 +1889,50 @@ __PWA_HEAD__
     render();
     document.querySelectorAll('details.europe-details, details.info').forEach(function (d) { if (ouverts[d.getAttribute('data-cle')]) d.setAttribute('open', ''); });
   }
+  // ---------- Équipes nationales (estimation) : chiffres, derniers matchs et notes
+  function estSelection(m) {
+    var h = trouverEquipe(m.domicile), a = trouverEquipe(m.exterieur);
+    return !!h && !!a && h.ligue === 'SEL' && a.ligue === 'SEL';
+  }
+  function dateCourte(iso, annee) {
+    var g = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    if (!g) return String(iso || '');
+    return new Date(Number(g[1]), Number(g[2]) - 1, Number(g[3])).toLocaleDateString('fr-FR', annee ? { day: 'numeric', month: 'short', year: 'numeric' } : { day: 'numeric', month: 'short' });
+  }
+  function derniersSelectionHtml(liste) {
+    if (!liste || !liste.length) return '<p class="hint">Aucun match enregistré.</p>';
+    return '<table class="sel-matchs"><tbody>' + liste.map(function (x) {
+      var cls = { V: 'v', N: 'n', D: 'd' }[x.res] || 'n';
+      return '<tr><td class="gauche">' + esc(dateCourte(x.date)) + '</td>' +
+        '<td class="gauche">' + esc(x.adv) + ' <span class="hint">(' + esc(x.lieu) + ')</span><br><span class="hint">' + esc(x.tournoi) + '</span></td>' +
+        '<td>' + esc(x.score) + '</td><td><span class="res-chip ' + cls + '">' + esc(x.res) + '</span></td></tr>';
+    }).join('') + '</tbody></table>';
+  }
+  function ficheSelectionsHtml(m) {
+    var h = trouverEquipe(m.domicile), a = trouverEquipe(m.exterieur);
+    var sm = (S.selections && S.selections.matchs) || {};
+    var sh = sm[h.equipe] || {}, sa = sm[a.equipe] || {};
+    var vh = h.vec, va = a.vec;
+    function ligne(nom, x, y) {
+      return '<tr><td class="gauche">' + esc(nom) + '</td><td>' + esc(x) + '</td><td>' + esc(y) + '</td></tr>';
+    }
+    return '<div class="scroll"><table class="sel-tab"><thead><tr><th class="gauche">Indicateur</th><th>' + esc(h.equipe) + '</th><th>' + esc(a.equipe) + '</th></tr></thead><tbody>' +
+      ligne('Niveau Elo', String(Math.round(vh.elo)), String(Math.round(va.elo))) +
+      ligne('Forme, 5 derniers matchs (points par match)', fr(vh.forme, 1), fr(va.forme, 1)) +
+      ligne('Buts marqués / encaissés par match, 10 derniers', fr(vh.gf, 1) + ' / ' + fr(vh.ga, 1), fr(va.gf, 1) + ' / ' + fr(va.ga, 1)) +
+      ligne('Victoires, 20 derniers matchs dans ce rôle', pc(vh.dW, 0), pc(va.eW, 0)) +
+      ligne('Dernier match joué', dateCourte(sh.derniere, true), dateCourte(sa.derniere, true)) +
+      '</tbody></table></div>' +
+      '<p class="hint">Victoires : ' + esc(h.equipe) + ' à domicile, ' + esc(a.equipe) + ' à l’extérieur. Buts et victoires sont lissés vers la moyenne quand une équipe a peu de matchs.</p>' +
+      '<p class="sous-titre">' + esc(h.equipe) + '</p>' + derniersSelectionHtml(sh.derniers) +
+      '<p class="sous-titre">' + esc(a.equipe) + '</p>' + derniersSelectionHtml(sa.derniers) +
+      '<p class="hint">V : victoire · N : nul · D : défaite. Les matchs amicaux comptent comme les autres.</p>' +
+      '<p class="hint">Repos et charge ne sont pas pris en compte pour les sélections : elles jouent peu, et ces valeurs ne disent rien de leur état. Tirs, corners et cartons ne sont pas disponibles : même traitement.</p>' +
+      '<p class="hint">Les coefficients viennent du modèle des clubs, qui n’a pas encore été testé sur des matchs de sélections passés. Données arrêtées au ' + esc(dateFr(S.selections && S.selections.asof)) + '.</p>';
+  }
   function matchHtml(m, estSurprise, repere, fige, ctx) {
     var p = m.proba || {};
+    var sel = estSelection(m);
     var pick = m.modele || m.pronostic || '';
     var jeu = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
@@ -1892,23 +1953,23 @@ __PWA_HEAD__
     var surprise = pubM && pubM.issue === out && ((p[fav] || 0) - (p[out] || 0)) >= 0.3 ? pubM : null;
     var pickModele = m.modele || pick;
     var euZone = (m.proba && !fige) ? '<div class="eu-zone" data-eu="' + esc(JSON.stringify({ d: m.domicile, e: m.exterieur, p: { '1': p['1'] || 0, 'N': p['N'] || 0, '2': p['2'] || 0 }, pick: pickModele })) + '">' + europeLigneHtml(m, pickModele) + '</div>' : '';
-    var euPanel = (m.proba && !fige) ? europePanelHtml(m) : '';
-    var det = m.source === 'hypothese' ? '' : comparaison(m);
+    var euPanel = (m.proba && !fige && !sel) ? europePanelHtml(m) : '';
+    var det = sel ? ficheSelectionsHtml(m) : (m.source === 'hypothese' ? '' : comparaison(m));
     // Informations du match, repliées une par une : on clique sur une ligne pour la lire
     var infos = [];
     if (repere) infos.push({ ton: 'absence', titre: 'Absence clé chez ' + repere.nom, corps: 'Le nul devient plausible. Double conseillé : ' + (repere.fav === '1' ? '1 et N' : 'N et 2') + ' (couvre ' + pc(repere.couvre, 0) + ').' });
     if (surprise) infos.push({ ton: 'surprise', titre: 'Surprise du jour', corps: 'Le favori à ' + pc(favori, 0) + ' a perdu (' + esc(surprise.score) + ').' });
-    else if (favori >= 0.6) infos.push({ ton: 'mefiance', titre: 'Méfiance : favori à ' + pc(favori, 0), corps: 'Il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') });
+    else if (favori >= 0.6 && !sel) infos.push({ ton: 'mefiance', titre: 'Méfiance : favori à ' + pc(favori, 0), corps: 'Il perd environ 1 fois sur 4 dans cette situation.' + (m.ligue === 'UE' ? ' Écart de niveau entre deux championnats : estimation, moins sûre.' : '') });
     var raisonHtml = explicationMatch(m) || (m.raison ? '<p>' + esc(m.raison) + '</p>' : '');
     var typeTxt = typeGrilleTexte(m, ctx);
     if (raisonHtml || typeTxt) infos.push({ ton: 'raison', titre: 'Pourquoi ce pronostic', corps: raisonHtml + (typeTxt ? '<p>' + typeTxt + '</p>' : ''), html: true });
     if (m.alertes && m.alertes.length) infos.push({ ton: 'absences', titre: 'Absences signalées (' + m.alertes.length + ')', corps: alertesHtml(m.alertes, suivi.nouvelles), html: true });
     if (m.hypothese_texte) infos.push({ ton: 'hypothese', titre: 'Hypothèse', corps: m.hypothese_texte });
-    if (det) infos.push({ ton: 'stats', titre: 'Statistiques des deux équipes', corps: det, html: true });
+    if (det) infos.push({ ton: 'stats', titre: sel ? 'Chiffres des deux sélections' : 'Statistiques des deux équipes', corps: det, html: true });
     var infosHtml = infos.length ? '<div class="infos">' + infos.map(function (i) { return '<details class="info info-' + i.ton + '" data-cle="' + esc(clePaire(m.domicile, m.exterieur) + '|' + i.ton) + '"><summary>' + esc(i.titre) + '</summary><div class="info-corps">' + (i.html ? i.corps : esc(i.corps)) + '</div></details>'; }).join('') + '</div>' : '';
     return '<article class="match' + (suivi.nouvelles ? ' nouveau' : '') + '" data-source="' + esc(m.source || '') + '">' +
       '<div class="match-top"><span class="match-num">' + esc(m.n) + '</span><span class="match-ligue">' + esc(m.ligue_nom || m.ligue || '') + '</span>' +
-      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + (repere ? '<span class="tag absence-tag">Absence clé</span>' : '') + (m.proba && equilibre(m.proba) ? '<span class="tag">Match équilibré</span>' : '') + '</div>' +
+      (SOURCE_TAG[m.source] || SOURCE_TAG.aucune) + (suivi.nouvelles ? '<span class="tag nouveau-tag">Nouveau</span>' : '') + (estSurprise ? '<span class="tag surprise-tag">Match surprise</span>' : '') + (repere ? '<span class="tag absence-tag">Absence clé</span>' : '') + (m.proba && equilibre(m.proba) ? '<span class="tag">Match équilibré</span>' : '') + (sel ? '<span class="tag hyp">Estimation</span>' : '') + '</div>' +
       '<div class="match-equipes"><div class="equipe"><span class="equipe-role">Domicile</span><span class="equipe-nom">' + esc(m.domicile) + '</span>' + rangHtml(m.domicile) + '</div>' +
       '<span class="vs">contre</span>' +
       '<div class="equipe ext"><span class="equipe-role">Extérieur</span><span class="equipe-nom">' + esc(m.exterieur) + '</span>' + rangHtml(m.exterieur) + '</div></div>' +

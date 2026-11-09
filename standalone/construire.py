@@ -32,6 +32,11 @@ pub = json.load(open(ROOT / 'data/donnees_publiees.json', encoding='utf-8'))
 donnees = {'version': pub['version'], 'derniere_date': pub['derniere_date'], 'equipes': pub['equipes'],
            'stats': pub['stats'], 'modele': pub['modele'], 'publie_le': pub.get('publie_le')}
 donnees['bilan'] = dernier_bilan()
+SELECTIONS = ROOT / 'data/selections.json'   # équipes nationales, estimation (src/selections.py)
+if SELECTIONS.exists():
+    _sel = json.load(open(SELECTIONS, encoding='utf-8'))
+    donnees['equipes'] = donnees['equipes'] + _sel['equipes']
+    donnees['selections'] = {'asof': _sel['asof'], 'source': _sel['source'], 'matchs': _sel['matchs']}
 RESULTATS = ROOT / 'data/resultats.json'   # matchs de la veille et précision des grilles (src/rapport.py)
 if RESULTATS.exists():
     donnees['resultats'] = json.load(open(RESULTATS, encoding='utf-8'))

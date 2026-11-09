@@ -7,6 +7,8 @@
 set -e
 cd "$(dirname "$0")"
 python3 publier.py "$@"
+# Équipes nationales : chiffres des sélections (estimation), avant la reconstruction de l’application
+python3 selections.py || echo "Sélections : mise à jour ignorée."
 # Classement par points de la saison (haut et bas du tableau, match surprise)
 python3 classement.py
 python3 journal.py
