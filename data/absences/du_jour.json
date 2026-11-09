@@ -252,7 +252,7 @@
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 2,
-    "passeurs_cles": 1,
+    "passeurs_cles": 0,
     "malus": -8
    },
    "Lorient": {
@@ -367,7 +367,7 @@
    "blessures_clubs": 18,
    "blessures_joueurs": 61,
    "buteurs": 128,
-   "passeurs": 113
+   "passeurs": 116
   }
  }
 }
