@@ -1,0 +1,3676 @@
+{
+ "meta": {
+  "saison": "2627",
+  "saison_libelle": "2026-27",
+  "date_donnees": "2026-11-09",
+  "genere_le": "2026-11-10",
+  "journees": 82
+ },
+ "resume": {
+  "matchs": 1685,
+  "precision": 0.5026706231454006,
+  "brier": 0.5914472153764943,
+  "log_loss": 0.9930537974027663,
+  "log_loss_elo": 0.997318694194199,
+  "log_loss_reference": 1.0708262679081921,
+  "competence": 0.07262846722778904,
+  "competence_elo": 0.06864565795307453,
+  "ecart_reference": {
+   "moyenne": 0.0777724705054258,
+   "bas": 0.05897191287141491,
+   "haut": 0.09657302813943669,
+   "matchs": 1685
+  },
+  "ecart_elo": {
+   "moyenne": 0.004264896791432746,
+   "bas": -0.0020837398747971777,
+   "haut": 0.01061353345766267,
+   "matchs": 1685
+  },
+  "prevue": {
+   "H": 0.4310581169776089,
+   "D": 0.25781824583734697,
+   "A": 0.3111236371850442
+  },
+  "observee": {
+   "H": 0.4373887240356083,
+   "D": 0.23620178041543027,
+   "A": 0.3264094955489614
+  }
+ },
+ "semaines": [
+  {
+   "semaine": "2026-07-27",
+   "matchs": 5,
+   "precision": 0.0,
+   "log_loss": 1.4397547115571572,
+   "log_loss_cumule": 1.4397547115571572,
+   "log_loss_reference_cumule": 1.081084763209949,
+   "log_loss_elo_cumule": 1.431394048120003,
+   "precision_cumulee": 0.0,
+   "competence_cumulee": -0.33176857222762823
+  },
+  {
+   "semaine": "2026-08-03",
+   "matchs": 51,
+   "precision": 0.5294117647058824,
+   "log_loss": 0.9833632127984079,
+   "log_loss_cumule": 1.0241124537590105,
+   "log_loss_reference_cumule": 1.0642310613457489,
+   "log_loss_elo_cumule": 1.0282594633347375,
+   "precision_cumulee": 0.48214285714285715,
+   "competence_cumulee": 0.037697271808630806
+  },
+  {
+   "semaine": "2026-08-10",
+   "matchs": 76,
+   "precision": 0.40789473684210525,
+   "log_loss": 1.0689617081472247,
+   "log_loss_cumule": 1.0499347517401034,
+   "log_loss_reference_cumule": 1.0841895018555128,
+   "log_loss_elo_cumule": 1.06557391052639,
+   "precision_cumulee": 0.4393939393939394,
+   "competence_cumulee": 0.03159479966996992
+  },
+  {
+   "semaine": "2026-08-17",
+   "matchs": 113,
+   "precision": 0.49557522123893805,
+   "log_loss": 0.9896839333257043,
+   "log_loss_cumule": 1.0221455987571357,
+   "log_loss_reference_cumule": 1.0804705968946793,
+   "log_loss_elo_cumule": 1.023347977283462,
+   "precision_cumulee": 0.46530612244897956,
+   "competence_cumulee": 0.05398110629310249
+  },
+  {
+   "semaine": "2026-08-24",
+   "matchs": 149,
+   "precision": 0.4563758389261745,
+   "log_loss": 1.0028067680074857,
+   "log_loss_cumule": 1.014832183067547,
+   "log_loss_reference_cumule": 1.079966659549507,
+   "log_loss_elo_cumule": 1.013966678466908,
+   "precision_cumulee": 0.4619289340101523,
+   "competence_cumulee": 0.060311562311682665
+  },
+  {
+   "semaine": "2026-08-31",
+   "matchs": 171,
+   "precision": 0.5263157894736842,
+   "log_loss": 0.9768290722301156,
+   "log_loss_cumule": 1.003330356601705,
+   "log_loss_reference_cumule": 1.0862127674955406,
+   "log_loss_elo_cumule": 1.0086436189901753,
+   "precision_cumulee": 0.4814159292035398,
+   "competence_cumulee": 0.07630402935231173
+  },
+  {
+   "semaine": "2026-09-07",
+   "matchs": 159,
+   "precision": 0.44025157232704404,
+   "log_loss": 1.0335895793677183,
+   "log_loss_cumule": 1.0099756831483848,
+   "log_loss_reference_cumule": 1.0867021707329316,
+   "log_loss_elo_cumule": 1.0131420080916296,
+   "precision_cumulee": 0.4723756906077348,
+   "competence_cumulee": 0.07060489032868889
+  },
+  {
+   "semaine": "2026-09-14",
+   "matchs": 173,
+   "precision": 0.4624277456647399,
+   "log_loss": 1.0291825917448576,
+   "log_loss_cumule": 1.01368002560902,
+   "log_loss_reference_cumule": 1.0840583077010533,
+   "log_loss_elo_cumule": 1.016130741393564,
+   "precision_cumulee": 0.47045707915273133,
+   "competence_cumulee": 0.0649211224083357
+  },
+  {
+   "semaine": "2026-09-21",
+   "matchs": 10,
+   "precision": 0.5,
+   "log_loss": 0.9883828800502708,
+   "log_loss_cumule": 1.0134011155146567,
+   "log_loss_reference_cumule": 1.083173299946449,
+   "log_loss_elo_cumule": 1.0154387971866106,
+   "precision_cumulee": 0.47078280044101434,
+   "competence_cumulee": 0.06441460884905648
+  },
+  {
+   "semaine": "2026-09-28",
+   "matchs": 11,
+   "precision": 0.36363636363636365,
+   "log_loss": 1.1143056275880274,
+   "log_loss_cumule": 1.0146102109752309,
+   "log_loss_reference_cumule": 1.08355118001302,
+   "log_loss_elo_cumule": 1.0166921764870445,
+   "precision_cumulee": 0.46949891067538124,
+   "competence_cumulee": 0.06362502326559294
+  },
+  {
+   "semaine": "2026-10-05",
+   "matchs": 136,
+   "precision": 0.5588235294117647,
+   "log_loss": 0.9139443314481425,
+   "log_loss_cumule": 1.0016210652298,
+   "log_loss_reference_cumule": 1.0790317674930399,
+   "log_loss_elo_cumule": 1.002331037317497,
+   "precision_cumulee": 0.4810246679316888,
+   "competence_cumulee": 0.07174089271077844
+  },
+  {
+   "semaine": "2026-10-12",
+   "matchs": 146,
+   "precision": 0.5616438356164384,
+   "log_loss": 1.0046058211763762,
+   "log_loss_cumule": 1.0019842105366334,
+   "log_loss_reference_cumule": 1.0772290577883674,
+   "log_loss_elo_cumule": 1.0054981772132237,
+   "precision_cumulee": 0.49083333333333334,
+   "competence_cumulee": 0.06985036906284103
+  },
+  {
+   "semaine": "2026-10-19",
+   "matchs": 148,
+   "precision": 0.49324324324324326,
+   "log_loss": 1.010606015381369,
+   "log_loss_cumule": 1.00293081819021,
+   "log_loss_reference_cumule": 1.0760733299764107,
+   "log_loss_elo_cumule": 1.0077660229477436,
+   "precision_cumulee": 0.4910979228486647,
+   "competence_cumulee": 0.06797167976257179
+  },
+  {
+   "semaine": "2026-10-26",
+   "matchs": 164,
+   "precision": 0.5670731707317073,
+   "log_loss": 0.9557306631052112,
+   "log_loss_cumule": 0.9978112246492443,
+   "log_loss_reference_cumule": 1.071234185958375,
+   "log_loss_elo_cumule": 1.0013500053738533,
+   "precision_cumulee": 0.49933862433862436,
+   "competence_cumulee": 0.06854053228654489
+  },
+  {
+   "semaine": "2026-11-02",
+   "matchs": 171,
+   "precision": 0.5321637426900585,
+   "log_loss": 0.9509673300079191,
+   "log_loss_cumule": 0.9930516845519974,
+   "log_loss_reference_cumule": 1.0708159724147743,
+   "log_loss_elo_cumule": 0.9974341641732252,
+   "precision_cumulee": 0.5026737967914439,
+   "competence_cumulee": 0.07262152402098776
+  },
+  {
+   "semaine": "2026-11-09",
+   "matchs": 2,
+   "precision": 0.5,
+   "log_loss": 0.994831761324781,
+   "log_loss_cumule": 0.9930537974027663,
+   "log_loss_reference_cumule": 1.0708262679081921,
+   "log_loss_elo_cumule": 0.997318694194199,
+   "precision_cumulee": 0.5026706231454006,
+   "competence_cumulee": 0.07262846722778904
+  }
+ ],
+ "calibration": [
+  {
+   "resultat": "H",
+   "de": 0.0,
+   "a": 0.2,
+   "matchs": 157,
+   "prevue": 0.13481542602376242,
+   "observee": 0.1337579617834395
+  },
+  {
+   "resultat": "H",
+   "de": 0.2,
+   "a": 0.3,
+   "matchs": 229,
+   "prevue": 0.25547593435427784,
+   "observee": 0.28820960698689957
+  },
+  {
+   "resultat": "H",
+   "de": 0.3,
+   "a": 0.4,
+   "matchs": 341,
+   "prevue": 0.35364142339127,
+   "observee": 0.39002932551319647
+  },
+  {
+   "resultat": "H",
+   "de": 0.4,
+   "a": 0.5,
+   "matchs": 407,
+   "prevue": 0.44637779678143813,
+   "observee": 0.4226044226044226
+  },
+  {
+   "resultat": "H",
+   "de": 0.5,
+   "a": 0.6,
+   "matchs": 271,
+   "prevue": 0.5438299941661305,
+   "observee": 0.5239852398523985
+  },
+  {
+   "resultat": "H",
+   "de": 0.6,
+   "a": 1.0,
+   "matchs": 280,
+   "prevue": 0.7036339256032886,
+   "observee": 0.725
+  },
+  {
+   "resultat": "D",
+   "de": 0.0,
+   "a": 0.2,
+   "matchs": 184,
+   "prevue": 0.16535502593768267,
+   "observee": 0.11956521739130435
+  },
+  {
+   "resultat": "D",
+   "de": 0.2,
+   "a": 0.3,
+   "matchs": 1305,
+   "prevue": 0.2627160269199628,
+   "observee": 0.2482758620689655
+  },
+  {
+   "resultat": "D",
+   "de": 0.3,
+   "a": 0.4,
+   "matchs": 196,
+   "prevue": 0.3120102261879822,
+   "observee": 0.2653061224489796
+  },
+  {
+   "resultat": "A",
+   "de": 0.0,
+   "a": 0.2,
+   "matchs": 422,
+   "prevue": 0.1283224891410899,
+   "observee": 0.13033175355450238
+  },
+  {
+   "resultat": "A",
+   "de": 0.2,
+   "a": 0.3,
+   "matchs": 479,
+   "prevue": 0.2518930047332249,
+   "observee": 0.2964509394572025
+  },
+  {
+   "resultat": "A",
+   "de": 0.3,
+   "a": 0.4,
+   "matchs": 357,
+   "prevue": 0.34543015414468614,
+   "observee": 0.3445378151260504
+  },
+  {
+   "resultat": "A",
+   "de": 0.4,
+   "a": 0.5,
+   "matchs": 209,
+   "prevue": 0.44656973168015673,
+   "observee": 0.4019138755980861
+  },
+  {
+   "resultat": "A",
+   "de": 0.5,
+   "a": 0.6,
+   "matchs": 113,
+   "prevue": 0.540860324276407,
+   "observee": 0.5398230088495575
+  },
+  {
+   "resultat": "A",
+   "de": 0.6,
+   "a": 1.0,
+   "matchs": 105,
+   "prevue": 0.6825298416952865,
+   "observee": 0.8095238095238095
+  }
+ ],
+ "ligues": [
+  {
+   "ligue": "E1",
+   "nom": "Angleterre Championship",
+   "matchs": 180,
+   "precision": 0.43333333333333335,
+   "brier": 0.6520508913449474,
+   "log_loss": 1.0781937155124628,
+   "log_loss_elo": 1.1061366024761612,
+   "log_loss_reference": 1.074707575017226,
+   "competence": -0.0032438037809316977,
+   "competence_elo": -0.02924425973124034,
+   "ecart_reference": {
+    "moyenne": -0.003486140495236825,
+    "bas": -0.053120698669991855,
+    "haut": 0.04614841767951821,
+    "matchs": 180
+   },
+   "ecart_elo": {
+    "moyenne": 0.027942886963698284,
+    "bas": 0.007661739838783155,
+    "haut": 0.048224034088613414,
+    "matchs": 180
+   },
+   "prevue": {
+    "H": 0.4301391475222012,
+    "D": 0.25859028558961017,
+    "A": 0.31127056688818866
+   },
+   "observee": {
+    "H": 0.43333333333333335,
+    "D": 0.25555555555555554,
+    "A": 0.3111111111111111
+   }
+  },
+  {
+   "ligue": "SP2",
+   "nom": "Espagne Liga 2",
+   "matchs": 140,
+   "precision": 0.5,
+   "brier": 0.6143345809748011,
+   "log_loss": 1.0213680372425469,
+   "log_loss_elo": 1.0210745182935157,
+   "log_loss_reference": 1.06419495187728,
+   "competence": 0.04024348598833771,
+   "competence_elo": 0.040519299126253294,
+   "ecart_reference": {
+    "moyenne": 0.04282691463473327,
+    "bas": 6.76944721924519e-05,
+    "haut": 0.08558613479727409,
+    "matchs": 140
+   },
+   "ecart_elo": {
+    "moyenne": -0.00029351894903121846,
+    "bas": -0.022692388120438826,
+    "haut": 0.02210535022237639,
+    "matchs": 140
+   },
+   "prevue": {
+    "H": 0.4319221823050284,
+    "D": 0.2887173884367884,
+    "A": 0.27936042925818316
+   },
+   "observee": {
+    "H": 0.45,
+    "D": 0.22142857142857142,
+    "A": 0.32857142857142857
+   }
+  },
+  {
+   "ligue": "SP1",
+   "nom": "Espagne Liga",
+   "matchs": 119,
+   "precision": 0.5378151260504201,
+   "brier": 0.5501389169403571,
+   "log_loss": 0.9363259470563722,
+   "log_loss_elo": 0.9339557701674673,
+   "log_loss_reference": 1.0738817011772914,
+   "competence": 0.1280920924251876,
+   "competence_elo": 0.13029920414550689,
+   "ecart_reference": {
+    "moyenne": 0.1375557541209192,
+    "bas": 0.06798933781896375,
+    "haut": 0.20712217042287462,
+    "matchs": 119
+   },
+   "ecart_elo": {
+    "moyenne": -0.0023701768889048316,
+    "bas": -0.024556194829284957,
+    "haut": 0.01981584105147529,
+    "matchs": 119
+   },
+   "prevue": {
+    "H": 0.4367124936978151,
+    "D": 0.25802067155701575,
+    "A": 0.30526683474516914
+   },
+   "observee": {
+    "H": 0.4369747899159664,
+    "D": 0.2605042016806723,
+    "A": 0.3025210084033613
+   }
+  },
+  {
+   "ligue": "I1",
+   "nom": "Italie Serie A",
+   "matchs": 110,
+   "precision": 0.6090909090909091,
+   "brier": 0.5124505651359387,
+   "log_loss": 0.8851863108119722,
+   "log_loss_elo": 0.9004914824242294,
+   "log_loss_reference": 1.0530293873949181,
+   "competence": 0.1593906861404616,
+   "competence_elo": 0.1448562659282009,
+   "ecart_reference": {
+    "moyenne": 0.16784307658294595,
+    "bas": 0.08928790771458417,
+    "haut": 0.24639824545130773,
+    "matchs": 110
+   },
+   "ecart_elo": {
+    "moyenne": 0.015305171612257218,
+    "bas": -0.011814103235788397,
+    "haut": 0.042424446460302835,
+    "matchs": 110
+   },
+   "prevue": {
+    "H": 0.4228329020620392,
+    "D": 0.252323891097326,
+    "A": 0.3248432068406348
+   },
+   "observee": {
+    "H": 0.4636363636363636,
+    "D": 0.17272727272727273,
+    "A": 0.36363636363636365
+   }
+  },
+  {
+   "ligue": "I2",
+   "nom": "Italie Serie B",
+   "matchs": 110,
+   "precision": 0.39090909090909093,
+   "brier": 0.6618123239829594,
+   "log_loss": 1.0960205476653468,
+   "log_loss_elo": 1.090272881985954,
+   "log_loss_reference": 1.1093573765559472,
+   "competence": 0.012022121250056639,
+   "competence_elo": 0.017203197971461637,
+   "ecart_reference": {
+    "moyenne": 0.013336828890600299,
+    "bas": -0.0334567972425539,
+    "haut": 0.06013045502375449,
+    "matchs": 110
+   },
+   "ecart_elo": {
+    "moyenne": -0.005747665679392794,
+    "bas": -0.030105873305093383,
+    "haut": 0.018610541946307794,
+    "matchs": 110
+   },
+   "prevue": {
+    "H": 0.4236240963979153,
+    "D": 0.290791781202573,
+    "A": 0.2855841223995117
+   },
+   "observee": {
+    "H": 0.36363636363636365,
+    "D": 0.3181818181818182,
+    "A": 0.3181818181818182
+   }
+  },
+  {
+   "ligue": "F2",
+   "nom": "France L2",
+   "matchs": 108,
+   "precision": 0.42592592592592593,
+   "brier": 0.6469832401881495,
+   "log_loss": 1.0699139987837603,
+   "log_loss_elo": 1.0908867758080663,
+   "log_loss_reference": 1.0897897325355217,
+   "competence": 0.01823813636555216,
+   "competence_elo": -0.001006655907825671,
+   "ecart_reference": {
+    "moyenne": 0.0198757337517615,
+    "bas": -0.03454394908471011,
+    "haut": 0.0742954165882331,
+    "matchs": 108
+   },
+   "ecart_elo": {
+    "moyenne": 0.020972777024306003,
+    "bas": -0.000426495046822576,
+    "haut": 0.042372049095434586,
+    "matchs": 108
+   },
+   "prevue": {
+    "H": 0.41924792845952585,
+    "D": 0.27879707071412796,
+    "A": 0.3019550008263462
+   },
+   "observee": {
+    "H": 0.39814814814814814,
+    "D": 0.26851851851851855,
+    "A": 0.3333333333333333
+   }
+  },
+  {
+   "ligue": "N1",
+   "nom": "Pays-Bas Eredivisie",
+   "matchs": 108,
+   "precision": 0.5185185185185185,
+   "brier": 0.595682831301034,
+   "log_loss": 0.9974361680654041,
+   "log_loss_elo": 1.0088223245360834,
+   "log_loss_reference": 1.1125714175643673,
+   "competence": 0.10348571577635557,
+   "competence_elo": 0.09325162537018117,
+   "ecart_reference": {
+    "moyenne": 0.11513524949896314,
+    "bas": 0.009070216516586363,
+    "haut": 0.22120028248133994,
+    "matchs": 108
+   },
+   "ecart_elo": {
+    "moyenne": 0.011386156470679308,
+    "bas": -0.021072193904431075,
+    "haut": 0.043844506845789694,
+    "matchs": 108
+   },
+   "prevue": {
+    "H": 0.43483681854397893,
+    "D": 0.21688423756611697,
+    "A": 0.34827894388990405
+   },
+   "observee": {
+    "H": 0.3425925925925926,
+    "D": 0.2777777777777778,
+    "A": 0.37962962962962965
+   }
+  },
+  {
+   "ligue": "E0",
+   "nom": "Angleterre PL",
+   "matchs": 100,
+   "precision": 0.46,
+   "brier": 0.6124708794673815,
+   "log_loss": 1.0198482491404572,
+   "log_loss_elo": 1.021430241944242,
+   "log_loss_reference": 1.0816056609207239,
+   "competence": 0.05709789992010139,
+   "competence_elo": 0.05563526629960225,
+   "ecart_reference": {
+    "moyenne": 0.06175741178026667,
+    "bas": -0.009775924387253138,
+    "haut": 0.13329074794778648,
+    "matchs": 100
+   },
+   "ecart_elo": {
+    "moyenne": 0.0015819928037848889,
+    "bas": -0.02472165809966676,
+    "haut": 0.027885643707236542,
+    "matchs": 100
+   },
+   "prevue": {
+    "H": 0.4320769767415002,
+    "D": 0.2542339742512842,
+    "A": 0.3136890490072156
+   },
+   "observee": {
+    "H": 0.42,
+    "D": 0.27,
+    "A": 0.31
+   }
+  },
+  {
+   "ligue": "B1",
+   "nom": "Belgique Pro League",
+   "matchs": 99,
+   "precision": 0.6060606060606061,
+   "brier": 0.532523778156876,
+   "log_loss": 0.9077676759261115,
+   "log_loss_elo": 0.8890757438573298,
+   "log_loss_reference": 1.0342136795643977,
+   "competence": 0.1222629386332853,
+   "competence_elo": 0.14033650741131065,
+   "ecart_reference": {
+    "moyenne": 0.126446003638286,
+    "bas": 0.044477975288808674,
+    "haut": 0.20841403198776334,
+    "matchs": 99
+   },
+   "ecart_elo": {
+    "moyenne": -0.018691932068781798,
+    "bas": -0.045881547370123066,
+    "haut": 0.00849768323255947,
+    "matchs": 99
+   },
+   "prevue": {
+    "H": 0.43721319611329285,
+    "D": 0.24400481816791927,
+    "A": 0.3187819857187878
+   },
+   "observee": {
+    "H": 0.5151515151515151,
+    "D": 0.18181818181818182,
+    "A": 0.30303030303030304
+   }
+  },
+  {
+   "ligue": "D2",
+   "nom": "Allemagne 2. Bundesliga",
+   "matchs": 99,
+   "precision": 0.43434343434343436,
+   "brier": 0.6364979448700793,
+   "log_loss": 1.055331415918345,
+   "log_loss_elo": 1.0516289897488895,
+   "log_loss_reference": 1.060908799414382,
+   "competence": 0.005257175262487923,
+   "competence_elo": 0.008747038077745128,
+   "ecart_reference": {
+    "moyenne": 0.005577383496037106,
+    "bas": -0.03956462621082228,
+    "haut": 0.05071939320289649,
+    "matchs": 99
+   },
+   "ecart_elo": {
+    "moyenne": -0.0037024261694552753,
+    "bas": -0.028807202936814272,
+    "haut": 0.021402350597903724,
+    "matchs": 99
+   },
+   "prevue": {
+    "H": 0.4341149368599876,
+    "D": 0.26557918024170984,
+    "A": 0.3003058828983026
+   },
+   "observee": {
+    "H": 0.47474747474747475,
+    "D": 0.2727272727272727,
+    "A": 0.25252525252525254
+   }
+  },
+  {
+   "ligue": "T1",
+   "nom": "Turquie Super Lig",
+   "matchs": 99,
+   "precision": 0.5353535353535354,
+   "brier": 0.5660987174205453,
+   "log_loss": 0.9619335580154383,
+   "log_loss_elo": 0.9811983444801632,
+   "log_loss_reference": 1.0472975934541031,
+   "competence": 0.0815088624018745,
+   "competence_elo": 0.06311410375339188,
+   "ecart_reference": {
+    "moyenne": 0.08536403543866475,
+    "bas": 0.0013448823449487002,
+    "haut": 0.1693831885323808,
+    "matchs": 99
+   },
+   "ecart_elo": {
+    "moyenne": 0.01926478646472485,
+    "bas": -0.0028360955124711942,
+    "haut": 0.0413656684419209,
+    "matchs": 99
+   },
+   "prevue": {
+    "H": 0.4334622633878453,
+    "D": 0.25838646380145425,
+    "A": 0.3081512728107004
+   },
+   "observee": {
+    "H": 0.47474747474747475,
+    "D": 0.16161616161616163,
+    "A": 0.36363636363636365
+   }
+  },
+  {
+   "ligue": "P1",
+   "nom": "Portugal Liga",
+   "matchs": 98,
+   "precision": 0.5510204081632653,
+   "brier": 0.5376544929349908,
+   "log_loss": 0.9146429098215446,
+   "log_loss_elo": 0.9089767433686065,
+   "log_loss_reference": 1.0820504933465485,
+   "competence": 0.15471328237857773,
+   "competence_elo": 0.15994979073727167,
+   "ecart_reference": {
+    "moyenne": 0.16740758352500398,
+    "bas": 0.07058522037949089,
+    "haut": 0.2642299466705171,
+    "matchs": 98
+   },
+   "ecart_elo": {
+    "moyenne": -0.005666166452938177,
+    "bas": -0.02515906767687401,
+    "haut": 0.013826734770997655,
+    "matchs": 98
+   },
+   "prevue": {
+    "H": 0.42679810331314555,
+    "D": 0.24780040165403489,
+    "A": 0.3254014950328196
+   },
+   "observee": {
+    "H": 0.3979591836734694,
+    "D": 0.20408163265306123,
+    "A": 0.3979591836734694
+   }
+  },
+  {
+   "ligue": "F1",
+   "nom": "France L1",
+   "matchs": 90,
+   "precision": 0.5333333333333333,
+   "brier": 0.5740592738825187,
+   "log_loss": 0.9697674633278616,
+   "log_loss_elo": 0.9676505911566873,
+   "log_loss_reference": 1.0578307709099073,
+   "competence": 0.08324895626386142,
+   "competence_elo": 0.08525010070906736,
+   "ecart_reference": {
+    "moyenne": 0.08806330758204584,
+    "bas": 0.009173221133572981,
+    "haut": 0.16695339403051868,
+    "matchs": 90
+   },
+   "ecart_elo": {
+    "moyenne": -0.002116872171174223,
+    "bas": -0.025303980350083896,
+    "haut": 0.02107023600773545,
+    "matchs": 90
+   },
+   "prevue": {
+    "H": 0.4252219567002656,
+    "D": 0.2552996035891789,
+    "A": 0.3194784397105555
+   },
+   "observee": {
+    "H": 0.4666666666666667,
+    "D": 0.2222222222222222,
+    "A": 0.3111111111111111
+   }
+  },
+  {
+   "ligue": "D1",
+   "nom": "Allemagne Bundesliga",
+   "matchs": 81,
+   "precision": 0.5185185185185185,
+   "brier": 0.5694089430680053,
+   "log_loss": 0.9582993856532503,
+   "log_loss_elo": 0.9530724308263608,
+   "log_loss_reference": 1.0410189582515132,
+   "competence": 0.07946019805172233,
+   "competence_elo": 0.08448119674291688,
+   "ecart_reference": {
+    "moyenne": 0.08271957259826278,
+    "bas": -0.015204207285236651,
+    "haut": 0.18064335248176222,
+    "matchs": 81
+   },
+   "ecart_elo": {
+    "moyenne": -0.00522695482688955,
+    "bas": -0.03512336813745499,
+    "haut": 0.024669458483675886,
+    "matchs": 81
+   },
+   "prevue": {
+    "H": 0.4404290445438693,
+    "D": 0.23320917458167265,
+    "A": 0.32636178087445805
+   },
+   "observee": {
+    "H": 0.5061728395061729,
+    "D": 0.20987654320987653,
+    "A": 0.2839506172839506
+   }
+  },
+  {
+   "ligue": "SC0",
+   "nom": "Écosse Premiership",
+   "matchs": 75,
+   "precision": 0.44,
+   "brier": 0.6041461993803865,
+   "log_loss": 1.0159926339468324,
+   "log_loss_elo": 1.0166913991468165,
+   "log_loss_reference": 1.0790371268605097,
+   "competence": 0.0584266206827444,
+   "competence_elo": 0.05777903851657995,
+   "ecart_reference": {
+    "moyenne": 0.06304449291367749,
+    "bas": -0.052308958026457464,
+    "haut": 0.17839794385381244,
+    "matchs": 75
+   },
+   "ecart_elo": {
+    "moyenne": 0.0006987651999842977,
+    "bas": -0.03356475646814233,
+    "haut": 0.034962286868110926,
+    "matchs": 75
+   },
+   "prevue": {
+    "H": 0.4403035557105694,
+    "D": 0.23735942966192344,
+    "A": 0.32233701462750713
+   },
+   "observee": {
+    "H": 0.41333333333333333,
+    "D": 0.22666666666666666,
+    "A": 0.36
+   }
+  },
+  {
+   "ligue": "G1",
+   "nom": "Grèce Super League",
+   "matchs": 69,
+   "precision": 0.6376811594202898,
+   "brier": 0.5153129803026555,
+   "log_loss": 0.888421196658236,
+   "log_loss_elo": 0.8768573090733245,
+   "log_loss_reference": 1.0527817804088537,
+   "competence": 0.156120277543925,
+   "competence_elo": 0.16710440340942068,
+   "ecart_reference": {
+    "moyenne": 0.16436058375061754,
+    "bas": 0.05669467716362962,
+    "haut": 0.27202649033760545,
+    "matchs": 69
+   },
+   "ecart_elo": {
+    "moyenne": -0.011563887584911522,
+    "bas": -0.04363984380764881,
+    "haut": 0.02051206863782576,
+    "matchs": 69
+   },
+   "prevue": {
+    "H": 0.4339552079072095,
+    "D": 0.2618915369739459,
+    "A": 0.3041532551188446
+   },
+   "observee": {
+    "H": 0.4782608695652174,
+    "D": 0.21739130434782608,
+    "A": 0.30434782608695654
+   }
+  }
+ ],
+ "ecarts": [
+  {
+   "date": "2026-10-17",
+   "ligue": "N1",
+   "nom_ligue": "Pays-Bas Eredivisie",
+   "domicile": "Den Haag",
+   "exterieur": "PSV Eindhoven",
+   "prevu": "2",
+   "reel": "1",
+   "proba_prevue": 0.8724130523103342,
+   "proba_reel": 0.027660068509127826,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à l’extérieur de 690 points",
+    "tirs cadrés concédés (domicile) : 6,46 par match, au-dessus de la moyenne",
+    "tirs cadrés obtenus (visiteur) : 6,52 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 2–1",
+    "tirs cadrés 5–4",
+    "tirs 16–15",
+    "corners 3–2",
+    "expulsion(s) à l’extérieur : 1"
+   ],
+   "lecture": "les statistiques de tirs ne désignent pas de cause nette : l’écart relève surtout de la variance d’un match."
+  },
+  {
+   "date": "2026-10-25",
+   "ligue": "P1",
+   "nom_ligue": "Portugal Liga",
+   "domicile": "Sp Lisbon",
+   "exterieur": "Academico Viseu",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.7951290979023506,
+   "proba_reel": 0.04639704118365974,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 487 points",
+    "tirs cadrés concédés (visiteur) : 4,94 par match, au-dessus de la moyenne",
+    "tirs cadrés obtenus (domicile) : 4,84 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 1–2",
+    "tirs cadrés 4–3",
+    "tirs 28–9",
+    "corners 10–0"
+   ],
+   "lecture": "les statistiques de tirs ne désignent pas de cause nette : l’écart relève surtout de la variance d’un match."
+  },
+  {
+   "date": "2026-09-12",
+   "ligue": "G1",
+   "nom_ligue": "Grèce Super League",
+   "domicile": "Olympiakos",
+   "exterieur": "OFI Crete",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.782724767732673,
+   "proba_reel": 0.04701808912301597,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 450 points",
+    "corners obtenus (domicile) : 5,65 par match, au-dessus de la moyenne",
+    "tirs cadrés concédés (visiteur) : 4,74 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 0–1",
+    "tirs cadrés 4–4",
+    "tirs 20–13",
+    "corners 8–2"
+   ],
+   "lecture": "les statistiques de tirs ne désignent pas de cause nette : l’écart relève surtout de la variance d’un match."
+  },
+  {
+   "date": "2026-10-13",
+   "ligue": "E1",
+   "nom_ligue": "Angleterre Championship",
+   "domicile": "Wolves",
+   "exterieur": "Bolton",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.745244931453585,
+   "proba_reel": 0.07112499903063273,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 443 points",
+    "corners obtenus (domicile) : 5,94 par match, au-dessus de la moyenne",
+    "tirs cadrés concédés (visiteur) : 4,72 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 1–3",
+    "tirs cadrés 3–6",
+    "tirs 19–10",
+    "corners 9–3"
+   ],
+   "lecture": "le résultat réel suit la domination en tirs cadrés, que le modèle n’avait pas anticipée : ses variables (Elo, forme, résultats récents) ont davantage pesé que les tirs de ce match."
+  },
+  {
+   "date": "2026-08-15",
+   "ligue": "T1",
+   "nom_ligue": "Turquie Super Lig",
+   "domicile": "Genclerbirligi",
+   "exterieur": "Fenerbahce",
+   "prevu": "2",
+   "reel": "1",
+   "proba_prevue": 0.7362077616721148,
+   "proba_reel": 0.0760001962944202,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à l’extérieur de 525 points",
+    "corners obtenus (visiteur) : 6,36 par match, au-dessus de la moyenne",
+    "tirs cadrés obtenus (visiteur) : 5,42 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 2–1",
+    "tirs cadrés 3–11",
+    "tirs 10–27",
+    "corners 1–12"
+   ],
+   "lecture": "le favori a eu la plus grande part des tirs cadrés, sans que cela se traduise au score : efficacité insuffisante ou réussite adverse."
+  },
+  {
+   "date": "2026-10-30",
+   "ligue": "SP1",
+   "nom_ligue": "Espagne Liga",
+   "domicile": "Villarreal",
+   "exterieur": "Espanol",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.7451245026673105,
+   "proba_reel": 0.08016653412447863,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 250 points",
+    "corners obtenus (domicile) : 6,17 par match, au-dessus de la moyenne",
+    "tirs cadrés obtenus (domicile) : 5,19 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 0–1",
+    "tirs cadrés 4–3",
+    "tirs 14–5",
+    "corners 7–3"
+   ],
+   "lecture": "les statistiques de tirs ne désignent pas de cause nette : l’écart relève surtout de la variance d’un match."
+  },
+  {
+   "date": "2026-11-01",
+   "ligue": "SC0",
+   "nom_ligue": "Écosse Premiership",
+   "domicile": "Falkirk",
+   "exterieur": "Celtic",
+   "prevu": "2",
+   "reel": "1",
+   "proba_prevue": 0.7390551615666439,
+   "proba_reel": 0.08684746416799204,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à l’extérieur de 415 points",
+    "corners obtenus (visiteur) : 7,37 par match, au-dessus de la moyenne",
+    "tirs cadrés obtenus (visiteur) : 6,93 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 2–0",
+    "tirs cadrés 2–9",
+    "tirs 6–24",
+    "corners 0–14"
+   ],
+   "lecture": "le favori a eu la plus grande part des tirs cadrés, sans que cela se traduise au score : efficacité insuffisante ou réussite adverse."
+  },
+  {
+   "date": "2026-08-30",
+   "ligue": "B1",
+   "nom_ligue": "Belgique Pro League",
+   "domicile": "Gent",
+   "exterieur": "Club Brugge",
+   "prevu": "2",
+   "reel": "1",
+   "proba_prevue": 0.6975192714392033,
+   "proba_reel": 0.09361343381365474,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à l’extérieur de 319 points",
+    "tirs cadrés obtenus (visiteur) : 6,55 par match, au-dessus de la moyenne",
+    "corners obtenus (visiteur) : 6,06 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 2–1",
+    "tirs cadrés 8–3",
+    "tirs 13–8",
+    "corners 1–5",
+    "expulsion(s) à domicile : 1",
+    "expulsion(s) à l’extérieur : 1"
+   ],
+   "lecture": "le résultat réel suit la domination en tirs cadrés, que le modèle n’avait pas anticipée : ses variables (Elo, forme, résultats récents) ont davantage pesé que les tirs de ce match."
+  },
+  {
+   "date": "2026-10-12",
+   "ligue": "G1",
+   "nom_ligue": "Grèce Super League",
+   "domicile": "PAOK",
+   "exterieur": "Kalamata",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.684149127611673,
+   "proba_reel": 0.0945858740197324,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 431 points",
+    "victoires à domicile (équipe à domicile) : 70 %, au-dessus de la moyenne",
+    "corners obtenus (visiteur) : 3,83 par match, sous la moyenne"
+   ],
+   "faits": [
+    "score 1–3",
+    "tirs cadrés 5–6",
+    "tirs 19–12",
+    "corners 7–2",
+    "expulsion(s) à domicile : 1"
+   ],
+   "lecture": "les statistiques de tirs ne désignent pas de cause nette : l’écart relève surtout de la variance d’un match."
+  },
+  {
+   "date": "2026-09-05",
+   "ligue": "SP1",
+   "nom_ligue": "Espagne Liga",
+   "domicile": "Villarreal",
+   "exterieur": "La Coruna",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.7130976702747371,
+   "proba_reel": 0.097047186074314,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 354 points",
+    "corners obtenus (domicile) : 5,45 par match, au-dessus de la moyenne",
+    "tirs cadrés concédés (visiteur) : 4,52 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 2–3",
+    "tirs cadrés 5–3",
+    "tirs 17–8",
+    "corners 7–1"
+   ],
+   "lecture": "le favori a eu la plus grande part des tirs cadrés, sans que cela se traduise au score : efficacité insuffisante ou réussite adverse."
+  },
+  {
+   "date": "2026-10-31",
+   "ligue": "T1",
+   "nom_ligue": "Turquie Super Lig",
+   "domicile": "Fenerbahce",
+   "exterieur": "Goztep",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.7038355306841374,
+   "proba_reel": 0.09828092849297876,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 312 points",
+    "tirs cadrés obtenus (domicile) : 5,75 par match, au-dessus de la moyenne",
+    "tirs cadrés concédés (visiteur) : 4,87 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 1–2",
+    "tirs cadrés 6–6",
+    "tirs 18–12",
+    "corners 5–8"
+   ],
+   "lecture": "les statistiques de tirs ne désignent pas de cause nette : l’écart relève surtout de la variance d’un match."
+  },
+  {
+   "date": "2026-10-23",
+   "ligue": "D1",
+   "nom_ligue": "Allemagne Bundesliga",
+   "domicile": "Stuttgart",
+   "exterieur": "M'gladbach",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.7114047610565593,
+   "proba_reel": 0.10348201712922059,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 235 points",
+    "tirs cadrés concédés (visiteur) : 6,05 par match, au-dessus de la moyenne",
+    "corners obtenus (domicile) : 6,15 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 2–3",
+    "tirs cadrés 5–6",
+    "tirs 15–16",
+    "corners 6–5"
+   ],
+   "lecture": "les statistiques de tirs ne désignent pas de cause nette : l’écart relève surtout de la variance d’un match."
+  },
+  {
+   "date": "2026-09-05",
+   "ligue": "F1",
+   "nom_ligue": "France L1",
+   "domicile": "Lens",
+   "exterieur": "Lorient",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.7138858289006055,
+   "proba_reel": 0.10622633863629677,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 232 points",
+    "tirs cadrés obtenus (domicile) : 5,74 par match, au-dessus de la moyenne",
+    "corners obtenus (domicile) : 6,01 par match, au-dessus de la moyenne"
+   ],
+   "faits": [
+    "score 0–1",
+    "tirs cadrés 6–3",
+    "tirs 17–8",
+    "corners 8–0",
+    "expulsion(s) à domicile : 1"
+   ],
+   "lecture": "le favori a eu la plus grande part des tirs cadrés, sans que cela se traduise au score : efficacité insuffisante ou réussite adverse."
+  },
+  {
+   "date": "2026-08-29",
+   "ligue": "F1",
+   "nom_ligue": "France L1",
+   "domicile": "Lorient",
+   "exterieur": "Troyes",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.6660585198795864,
+   "proba_reel": 0.10711348745910085,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 231 points",
+    "tirs cadrés concédés (visiteur) : 5,85 par match, au-dessus de la moyenne",
+    "corners obtenus (visiteur) : 3,96 par match, sous la moyenne"
+   ],
+   "faits": [
+    "score 1–2",
+    "tirs cadrés 6–2",
+    "tirs 15–11",
+    "corners 2–5"
+   ],
+   "lecture": "le favori a eu la plus grande part des tirs cadrés, sans que cela se traduise au score : efficacité insuffisante ou réussite adverse."
+  },
+  {
+   "date": "2026-08-23",
+   "ligue": "I2",
+   "nom_ligue": "Italie Serie B",
+   "domicile": "Pisa",
+   "exterieur": "Padova",
+   "prevu": "1",
+   "reel": "2",
+   "proba_prevue": 0.64467791871524,
+   "proba_reel": 0.10928872482188835,
+   "facteurs_pour_le_prevu": [
+    "écart de niveau Elo : avantage Elo à domicile de 197 points",
+    "tirs cadrés concédés (visiteur) : 4,91 par match, au-dessus de la moyenne",
+    "tirs cadrés concédés (domicile) : 3,13 par match, sous la moyenne"
+   ],
+   "faits": [
+    "score 0–1",
+    "tirs cadrés 7–2",
+    "tirs 22–11",
+    "corners 4–6"
+   ],
+   "lecture": "le favori a eu la plus grande part des tirs cadrés, sans que cela se traduise au score : efficacité insuffisante ou réussite adverse."
+  }
+ ],
+ "journal": {
+  "enregistrees": 158,
+  "evaluees": 155,
+  "en_attente": 3,
+  "precision": 0.5483870967741935,
+  "log_loss": 0.943186264668604,
+  "brier": 0.558814385485316,
+  "entrees": [
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Birmingham",
+    "exterieur": "Millwall",
+    "proba": {
+     "1": 0.427774,
+     "N": 0.274211,
+     "2": 0.298016
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Blackburn",
+    "exterieur": "Stoke",
+    "proba": {
+     "1": 0.445609,
+     "N": 0.271384,
+     "2": 0.283007
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Charlton",
+    "exterieur": "Bolton",
+    "proba": {
+     "1": 0.475711,
+     "N": 0.274988,
+     "2": 0.249301
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Derby",
+    "exterieur": "Norwich",
+    "proba": {
+     "1": 0.351501,
+     "N": 0.263467,
+     "2": 0.385032
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Portsmouth",
+    "exterieur": "Swansea",
+    "proba": {
+     "1": 0.406922,
+     "N": 0.276712,
+     "2": 0.316366
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Preston",
+    "exterieur": "Sheffield United",
+    "proba": {
+     "1": 0.273017,
+     "N": 0.27912,
+     "2": 0.447863
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "QPR",
+    "exterieur": "Burnley",
+    "proba": {
+     "1": 0.345786,
+     "N": 0.25431,
+     "2": 0.399904
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Watford",
+    "exterieur": "Lincoln",
+    "proba": {
+     "1": 0.367216,
+     "N": 0.290129,
+     "2": 0.342655
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-03",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "West Brom",
+    "exterieur": "Southampton",
+    "proba": {
+     "1": 0.332964,
+     "N": 0.285183,
+     "2": 0.381854
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-04",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "Kortrijk",
+    "exterieur": "Mechelen",
+    "proba": {
+     "1": 0.302273,
+     "N": 0.306433,
+     "2": 0.391294
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-04",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Bristol City",
+    "exterieur": "Wolves",
+    "proba": {
+     "1": 0.336682,
+     "N": 0.25154,
+     "2": 0.411778
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-04",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Cardiff",
+    "exterieur": "West Ham",
+    "proba": {
+     "1": 0.242857,
+     "N": 0.23853,
+     "2": 0.518613
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-04",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Wrexham",
+    "exterieur": "Middlesbrough",
+    "proba": {
+     "1": 0.24112,
+     "N": 0.264567,
+     "2": 0.494313
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "Standard",
+    "exterieur": "Beveren",
+    "proba": {
+     "1": 0.535868,
+     "N": 0.243198,
+     "2": 0.220933
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "Hamburg",
+    "exterieur": "M'gladbach",
+    "proba": {
+     "1": 0.4254,
+     "N": 0.286194,
+     "2": 0.288406
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Braunschweig",
+    "exterieur": "Cottbus",
+    "proba": {
+     "1": 0.396579,
+     "N": 0.25223,
+     "2": 0.351191
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Dresden",
+    "exterieur": "Greuther Furth",
+    "proba": {
+     "1": 0.439658,
+     "N": 0.260835,
+     "2": 0.299507
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Everton",
+    "exterieur": "Coventry",
+    "proba": {
+     "1": 0.549643,
+     "N": 0.254741,
+     "2": 0.195616
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Derby",
+    "exterieur": "Bolton",
+    "proba": {
+     "1": 0.505975,
+     "N": 0.261306,
+     "2": 0.232718
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Toulouse",
+    "exterieur": "Strasbourg",
+    "proba": {
+     "1": 0.439979,
+     "N": 0.262684,
+     "2": 0.297337
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Boulogne",
+    "exterieur": "Annecy",
+    "proba": {
+     "1": 0.324506,
+     "N": 0.290191,
+     "2": 0.385303
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Dijon",
+    "exterieur": "Red Star",
+    "proba": {
+     "1": 0.340864,
+     "N": 0.285114,
+     "2": 0.374023
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Dunkerque",
+    "exterieur": "Guingamp",
+    "proba": {
+     "1": 0.345331,
+     "N": 0.307398,
+     "2": 0.347271
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Grenoble",
+    "exterieur": "Reims",
+    "proba": {
+     "1": 0.202115,
+     "N": 0.297831,
+     "2": 0.500054
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Montpellier",
+    "exterieur": "Metz",
+    "proba": {
+     "1": 0.43613,
+     "N": 0.271245,
+     "2": 0.292626
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Nancy",
+    "exterieur": "Sochaux",
+    "proba": {
+     "1": 0.504468,
+     "N": 0.266106,
+     "2": 0.229426
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Venezia",
+    "exterieur": "Udinese",
+    "proba": {
+     "1": 0.327911,
+     "N": 0.272525,
+     "2": 0.399564
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Ascoli",
+    "exterieur": "Palermo",
+    "proba": {
+     "1": 0.323235,
+     "N": 0.27862,
+     "2": 0.398146
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "Willem II",
+    "exterieur": "Zwolle",
+    "proba": {
+     "1": 0.247031,
+     "N": 0.272373,
+     "2": 0.480596
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Famalicao",
+    "exterieur": "Arouca",
+    "proba": {
+     "1": 0.447967,
+     "N": 0.29967,
+     "2": 0.252363
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Sevilla",
+    "exterieur": "Alaves",
+    "proba": {
+     "1": 0.481393,
+     "N": 0.262279,
+     "2": 0.256328
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-06",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Gaziantep",
+    "exterieur": "Kasimpasa",
+    "proba": {
+     "1": 0.325438,
+     "N": 0.290626,
+     "2": 0.383936
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "Antwerp",
+    "exterieur": "Lommel SK",
+    "proba": {
+     "1": 0.423014,
+     "N": 0.267176,
+     "2": 0.309811
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "Oud-Heverlee Leuven",
+    "exterieur": "Mechelen",
+    "proba": {
+     "1": 0.342952,
+     "N": 0.313398,
+     "2": 0.343649
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "RAAL La Louviere",
+    "exterieur": "Cercle Brugge",
+    "proba": {
+     "1": 0.341859,
+     "N": 0.287191,
+     "2": 0.370949
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "Westerlo",
+    "exterieur": "Charleroi",
+    "proba": {
+     "1": 0.27899,
+     "N": 0.265646,
+     "2": 0.455364
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "Dortmund",
+    "exterieur": "Elversberg",
+    "proba": {
+     "1": 0.737107,
+     "N": 0.169417,
+     "2": 0.093476
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "Mainz",
+    "exterieur": "Bayern Munich",
+    "proba": {
+     "1": 0.084466,
+     "N": 0.150658,
+     "2": 0.764876
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "Paderborn",
+    "exterieur": "Ein Frankfurt",
+    "proba": {
+     "1": 0.267605,
+     "N": 0.27081,
+     "2": 0.461585
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "RB Leipzig",
+    "exterieur": "Augsburg",
+    "proba": {
+     "1": 0.631925,
+     "N": 0.192025,
+     "2": 0.17605
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "Stuttgart",
+    "exterieur": "Werder Bremen",
+    "proba": {
+     "1": 0.594847,
+     "N": 0.22733,
+     "2": 0.177823
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Hertha",
+    "exterieur": "Wolfsburg",
+    "proba": {
+     "1": 0.488891,
+     "N": 0.247964,
+     "2": 0.263145
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Holstein Kiel",
+    "exterieur": "Bielefeld",
+    "proba": {
+     "1": 0.441166,
+     "N": 0.281992,
+     "2": 0.276842
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Nurnberg",
+    "exterieur": "Darmstadt",
+    "proba": {
+     "1": 0.648974,
+     "N": 0.208352,
+     "2": 0.142675
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Osnabruck",
+    "exterieur": "Kaiserslautern",
+    "proba": {
+     "1": 0.282221,
+     "N": 0.298504,
+     "2": 0.419275
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Arsenal",
+    "exterieur": "Hull",
+    "proba": {
+     "1": 0.831833,
+     "N": 0.128551,
+     "2": 0.039616
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Fulham",
+    "exterieur": "Newcastle",
+    "proba": {
+     "1": 0.536644,
+     "N": 0.247856,
+     "2": 0.215499
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Leeds",
+    "exterieur": "Tottenham",
+    "proba": {
+     "1": 0.352238,
+     "N": 0.296247,
+     "2": 0.351515
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Nott'm Forest",
+    "exterieur": "Man City",
+    "proba": {
+     "1": 0.17282,
+     "N": 0.232989,
+     "2": 0.594191
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Birmingham",
+    "exterieur": "Swansea",
+    "proba": {
+     "1": 0.518949,
+     "N": 0.245531,
+     "2": 0.235521
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Blackburn",
+    "exterieur": "West Ham",
+    "proba": {
+     "1": 0.284638,
+     "N": 0.240835,
+     "2": 0.474527
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Bristol City",
+    "exterieur": "Norwich",
+    "proba": {
+     "1": 0.435312,
+     "N": 0.239245,
+     "2": 0.325443
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Cardiff",
+    "exterieur": "Burnley",
+    "proba": {
+     "1": 0.309839,
+     "N": 0.252621,
+     "2": 0.43754
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Charlton",
+    "exterieur": "Sheffield United",
+    "proba": {
+     "1": 0.266025,
+     "N": 0.283522,
+     "2": 0.450452
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Portsmouth",
+    "exterieur": "Stoke",
+    "proba": {
+     "1": 0.453181,
+     "N": 0.266589,
+     "2": 0.28023
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Preston",
+    "exterieur": "Southampton",
+    "proba": {
+     "1": 0.167585,
+     "N": 0.233161,
+     "2": 0.599254
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "QPR",
+    "exterieur": "Lincoln",
+    "proba": {
+     "1": 0.546903,
+     "N": 0.240128,
+     "2": 0.21297
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Watford",
+    "exterieur": "Middlesbrough",
+    "proba": {
+     "1": 0.174019,
+     "N": 0.244171,
+     "2": 0.58181
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "West Brom",
+    "exterieur": "Millwall",
+    "proba": {
+     "1": 0.409039,
+     "N": 0.267398,
+     "2": 0.323563
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "E1",
+    "nom_ligue": "Angleterre Championship",
+    "domicile": "Wrexham",
+    "exterieur": "Wolves",
+    "proba": {
+     "1": 0.271703,
+     "N": 0.277825,
+     "2": 0.450472
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Auxerre",
+    "exterieur": "Paris FC",
+    "proba": {
+     "1": 0.310814,
+     "N": 0.278964,
+     "2": 0.410221
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Paris SG",
+    "exterieur": "Troyes",
+    "proba": {
+     "1": 0.826264,
+     "N": 0.132762,
+     "2": 0.040973
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Clermont",
+    "exterieur": "Rodez",
+    "proba": {
+     "1": 0.267754,
+     "N": 0.283708,
+     "2": 0.448537
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "Pau FC",
+    "exterieur": "Nantes",
+    "proba": {
+     "1": 0.438924,
+     "N": 0.285329,
+     "2": 0.275747
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "F2",
+    "nom_ligue": "France L2",
+    "domicile": "St Etienne",
+    "exterieur": "Laval",
+    "proba": {
+     "1": 0.688138,
+     "N": 0.196887,
+     "2": 0.114976
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "G1",
+    "nom_ligue": "Grèce Super League",
+    "domicile": "Aris",
+    "exterieur": "Panetolikos",
+    "proba": {
+     "1": 0.680588,
+     "N": 0.217988,
+     "2": 0.101424
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "G1",
+    "nom_ligue": "Grèce Super League",
+    "domicile": "Volos NFC",
+    "exterieur": "Kifisia",
+    "proba": {
+     "1": 0.261858,
+     "N": 0.327972,
+     "2": 0.410169
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Cagliari",
+    "exterieur": "Frosinone",
+    "proba": {
+     "1": 0.37301,
+     "N": 0.274769,
+     "2": 0.352221
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Parma",
+    "exterieur": "Bologna",
+    "proba": {
+     "1": 0.249853,
+     "N": 0.280964,
+     "2": 0.469183
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Roma",
+    "exterieur": "Sassuolo",
+    "proba": {
+     "1": 0.791728,
+     "N": 0.143149,
+     "2": 0.065123
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Torino",
+    "exterieur": "Lecce",
+    "proba": {
+     "1": 0.506301,
+     "N": 0.260313,
+     "2": 0.233386
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Benevento",
+    "exterieur": "Avellino",
+    "proba": {
+     "1": 0.475841,
+     "N": 0.281109,
+     "2": 0.24305
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Cesena",
+    "exterieur": "Catanzaro",
+    "proba": {
+     "1": 0.404678,
+     "N": 0.291706,
+     "2": 0.303616
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Juve Stabia",
+    "exterieur": "Arezzo",
+    "proba": {
+     "1": 0.513322,
+     "N": 0.271906,
+     "2": 0.214771
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Mantova",
+    "exterieur": "Verona",
+    "proba": {
+     "1": 0.403324,
+     "N": 0.270202,
+     "2": 0.326474
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Padova",
+    "exterieur": "Empoli",
+    "proba": {
+     "1": 0.417314,
+     "N": 0.293624,
+     "2": 0.289062
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Pisa",
+    "exterieur": "Sudtirol",
+    "proba": {
+     "1": 0.677709,
+     "N": 0.202835,
+     "2": 0.119456
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "Den Haag",
+    "exterieur": "Sparta Rotterdam",
+    "proba": {
+     "1": 0.224034,
+     "N": 0.250143,
+     "2": 0.525823
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "Excelsior",
+    "exterieur": "Go Ahead Eagles",
+    "proba": {
+     "1": 0.281014,
+     "N": 0.248914,
+     "2": 0.470072
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "For Sittard",
+    "exterieur": "Telstar",
+    "proba": {
+     "1": 0.492643,
+     "N": 0.25802,
+     "2": 0.249336
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Alverca",
+    "exterieur": "Casa Pia",
+    "proba": {
+     "1": 0.548465,
+     "N": 0.277023,
+     "2": 0.174512
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Nacional",
+    "exterieur": "Academico Viseu",
+    "proba": {
+     "1": 0.297842,
+     "N": 0.305121,
+     "2": 0.397036
+    },
+    "pronostic": "2",
+    "reel": null,
+    "juste": null
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Sp Lisbon",
+    "exterieur": "Moreirense",
+    "proba": {
+     "1": 0.816176,
+     "N": 0.143277,
+     "2": 0.040547
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SC0",
+    "nom_ligue": "Écosse Premiership",
+    "domicile": "Aberdeen",
+    "exterieur": "Hibernian",
+    "proba": {
+     "1": 0.363301,
+     "N": 0.258106,
+     "2": 0.378593
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SC0",
+    "nom_ligue": "Écosse Premiership",
+    "domicile": "Dundee United",
+    "exterieur": "Motherwell",
+    "proba": {
+     "1": 0.449502,
+     "N": 0.272253,
+     "2": 0.278245
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SC0",
+    "nom_ligue": "Écosse Premiership",
+    "domicile": "St Johnstone",
+    "exterieur": "Dundee",
+    "proba": {
+     "1": 0.286898,
+     "N": 0.274852,
+     "2": 0.43825
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SC0",
+    "nom_ligue": "Écosse Premiership",
+    "domicile": "St Mirren",
+    "exterieur": "Rangers",
+    "proba": {
+     "1": 0.10017,
+     "N": 0.204469,
+     "2": 0.695361
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Espanol",
+    "exterieur": "La Coruna",
+    "proba": {
+     "1": 0.338387,
+     "N": 0.309719,
+     "2": 0.351894
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Malaga",
+    "exterieur": "Santander",
+    "proba": {
+     "1": 0.317114,
+     "N": 0.281312,
+     "2": 0.401574
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Osasuna",
+    "exterieur": "Ath Bilbao",
+    "proba": {
+     "1": 0.288474,
+     "N": 0.299325,
+     "2": 0.412201
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Valencia",
+    "exterieur": "Real Madrid",
+    "proba": {
+     "1": 0.114155,
+     "N": 0.227221,
+     "2": 0.658624
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Burgos",
+    "exterieur": "Celta B",
+    "proba": {
+     "1": 0.579722,
+     "N": 0.264024,
+     "2": 0.156254
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Cadiz",
+    "exterieur": "Oviedo",
+    "proba": {
+     "1": 0.219148,
+     "N": 0.270051,
+     "2": 0.510801
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Cordoba",
+    "exterieur": "Ceuta",
+    "proba": {
+     "1": 0.508223,
+     "N": 0.267687,
+     "2": 0.224091
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Leganes",
+    "exterieur": "Albacete",
+    "proba": {
+     "1": 0.400474,
+     "N": 0.304147,
+     "2": 0.295379
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Eyupspor",
+    "exterieur": "Kocaelispor",
+    "proba": {
+     "1": 0.274518,
+     "N": 0.293387,
+     "2": 0.432096
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Galatasaray",
+    "exterieur": "Amedspor",
+    "proba": {
+     "1": 0.769157,
+     "N": 0.162486,
+     "2": 0.068357
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Goztep",
+    "exterieur": "Buyuksehyr",
+    "proba": {
+     "1": 0.427202,
+     "N": 0.280792,
+     "2": 0.292006
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-07",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Samsunspor",
+    "exterieur": "Konyaspor",
+    "proba": {
+     "1": 0.41317,
+     "N": 0.299121,
+     "2": 0.287709
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "Club Brugge",
+    "exterieur": "Anderlecht",
+    "proba": {
+     "1": 0.720107,
+     "N": 0.183805,
+     "2": 0.096088
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "Gent",
+    "exterieur": "Kortrijk",
+    "proba": {
+     "1": 0.726977,
+     "N": 0.199364,
+     "2": 0.073659
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "St Truiden",
+    "exterieur": "Waregem",
+    "proba": {
+     "1": 0.592283,
+     "N": 0.210904,
+     "2": 0.196813
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "B1",
+    "nom_ligue": "Belgique Pro League",
+    "domicile": "St. Gilloise",
+    "exterieur": "Genk",
+    "proba": {
+     "1": 0.723132,
+     "N": 0.174541,
+     "2": 0.102328
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "FC Koln",
+    "exterieur": "Leverkusen",
+    "proba": {
+     "1": 0.195997,
+     "N": 0.229888,
+     "2": 0.574116
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "Freiburg",
+    "exterieur": "Union Berlin",
+    "proba": {
+     "1": 0.610709,
+     "N": 0.226344,
+     "2": 0.162946
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "D1",
+    "nom_ligue": "Allemagne Bundesliga",
+    "domicile": "Hoffenheim",
+    "exterieur": "Schalke 04",
+    "proba": {
+     "1": 0.710129,
+     "N": 0.186623,
+     "2": 0.103248
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Bochum",
+    "exterieur": "Karlsruhe",
+    "proba": {
+     "1": 0.466213,
+     "N": 0.282394,
+     "2": 0.251393
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Heidenheim",
+    "exterieur": "Hannover",
+    "proba": {
+     "1": 0.550012,
+     "N": 0.247918,
+     "2": 0.202069
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "D2",
+    "nom_ligue": "Allemagne 2. Bundesliga",
+    "domicile": "Magdeburg",
+    "exterieur": "St Pauli",
+    "proba": {
+     "1": 0.347136,
+     "N": 0.258239,
+     "2": 0.394625
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Brighton",
+    "exterieur": "Brentford",
+    "proba": {
+     "1": 0.537163,
+     "N": 0.245492,
+     "2": 0.217346
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Crystal Palace",
+    "exterieur": "Liverpool",
+    "proba": {
+     "1": 0.162687,
+     "N": 0.262359,
+     "2": 0.574954
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Ipswich",
+    "exterieur": "Bournemouth",
+    "proba": {
+     "1": 0.19693,
+     "N": 0.249249,
+     "2": 0.553821
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Man United",
+    "exterieur": "Aston Villa",
+    "proba": {
+     "1": 0.5054,
+     "N": 0.256305,
+     "2": 0.238295
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "E0",
+    "nom_ligue": "Angleterre PL",
+    "domicile": "Sunderland",
+    "exterieur": "Chelsea",
+    "proba": {
+     "1": 0.301648,
+     "N": 0.266656,
+     "2": 0.431695
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Angers",
+    "exterieur": "Nice",
+    "proba": {
+     "1": 0.295878,
+     "N": 0.282319,
+     "2": 0.421804
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Brest",
+    "exterieur": "Lyon",
+    "proba": {
+     "1": 0.364261,
+     "N": 0.263021,
+     "2": 0.372719
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Le Havre",
+    "exterieur": "Lorient",
+    "proba": {
+     "1": 0.37464,
+     "N": 0.295838,
+     "2": 0.329522
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Le Mans",
+    "exterieur": "Monaco",
+    "proba": {
+     "1": 0.232788,
+     "N": 0.278233,
+     "2": 0.488979
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Lens",
+    "exterieur": "Marseille",
+    "proba": {
+     "1": 0.558579,
+     "N": 0.229247,
+     "2": 0.212174
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "F1",
+    "nom_ligue": "France L1",
+    "domicile": "Rennes",
+    "exterieur": "Lille",
+    "proba": {
+     "1": 0.401848,
+     "N": 0.25715,
+     "2": 0.341002
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "G1",
+    "nom_ligue": "Grèce Super League",
+    "domicile": "AEK",
+    "exterieur": "Levadeiakos",
+    "proba": {
+     "1": 0.775134,
+     "N": 0.167913,
+     "2": 0.056953
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "G1",
+    "nom_ligue": "Grèce Super League",
+    "domicile": "Asteras Tripolis",
+    "exterieur": "Kalamata",
+    "proba": {
+     "1": 0.421022,
+     "N": 0.302841,
+     "2": 0.276137
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "G1",
+    "nom_ligue": "Grèce Super League",
+    "domicile": "Iraklis",
+    "exterieur": "Panathinaikos",
+    "proba": {
+     "1": 0.078334,
+     "N": 0.213726,
+     "2": 0.707941
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "G1",
+    "nom_ligue": "Grèce Super League",
+    "domicile": "OFI Crete",
+    "exterieur": "Atromitos",
+    "proba": {
+     "1": 0.491674,
+     "N": 0.264993,
+     "2": 0.243333
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "G1",
+    "nom_ligue": "Grèce Super League",
+    "domicile": "Olympiakos",
+    "exterieur": "PAOK",
+    "proba": {
+     "1": 0.584678,
+     "N": 0.243125,
+     "2": 0.172197
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Fiorentina",
+    "exterieur": "Juventus",
+    "proba": {
+     "1": 0.18973,
+     "N": 0.245114,
+     "2": 0.565156
+    },
+    "pronostic": "2",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Genoa",
+    "exterieur": "Milan",
+    "proba": {
+     "1": 0.24786,
+     "N": 0.264516,
+     "2": 0.487624
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Inter",
+    "exterieur": "Como",
+    "proba": {
+     "1": 0.592312,
+     "N": 0.220322,
+     "2": 0.187366
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Monza",
+    "exterieur": "Atalanta",
+    "proba": {
+     "1": 0.241159,
+     "N": 0.241215,
+     "2": 0.517627
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I1",
+    "nom_ligue": "Italie Serie A",
+    "domicile": "Napoli",
+    "exterieur": "Lazio",
+    "proba": {
+     "1": 0.477367,
+     "N": 0.251824,
+     "2": 0.270809
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Carrarese",
+    "exterieur": "Sampdoria",
+    "proba": {
+     "1": 0.41876,
+     "N": 0.291257,
+     "2": 0.289983
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Vicenza",
+    "exterieur": "Cremonese",
+    "proba": {
+     "1": 0.283032,
+     "N": 0.282271,
+     "2": 0.434697
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "I2",
+    "nom_ligue": "Italie Serie B",
+    "domicile": "Virtus Entella",
+    "exterieur": "Modena",
+    "proba": {
+     "1": 0.284971,
+     "N": 0.287453,
+     "2": 0.427576
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "AZ Alkmaar",
+    "exterieur": "Groningen",
+    "proba": {
+     "1": 0.673027,
+     "N": 0.184171,
+     "2": 0.142801
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "Cambuur",
+    "exterieur": "PSV Eindhoven",
+    "proba": {
+     "1": 0.067,
+     "N": 0.119151,
+     "2": 0.813849
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "Heerenveen",
+    "exterieur": "Feyenoord",
+    "proba": {
+     "1": 0.228245,
+     "N": 0.219691,
+     "2": 0.552064
+    },
+    "pronostic": "2",
+    "reel": "1",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "Twente",
+    "exterieur": "Ajax",
+    "proba": {
+     "1": 0.506885,
+     "N": 0.204446,
+     "2": 0.288669
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "N1",
+    "nom_ligue": "Pays-Bas Eredivisie",
+    "domicile": "Utrecht",
+    "exterieur": "Nijmegen",
+    "proba": {
+     "1": 0.373941,
+     "N": 0.251587,
+     "2": 0.374471
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Estoril",
+    "exterieur": "Maritimo",
+    "proba": {
+     "1": 0.520371,
+     "N": 0.272724,
+     "2": 0.206905
+    },
+    "pronostic": "1",
+    "reel": null,
+    "juste": null
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Estrela",
+    "exterieur": "Benfica",
+    "proba": {
+     "1": 0.061011,
+     "N": 0.157519,
+     "2": 0.781471
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Guimaraes",
+    "exterieur": "Porto",
+    "proba": {
+     "1": 0.111983,
+     "N": 0.198051,
+     "2": 0.689966
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Rio Ave",
+    "exterieur": "Sp Braga",
+    "proba": {
+     "1": 0.168106,
+     "N": 0.250755,
+     "2": 0.581139
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "P1",
+    "nom_ligue": "Portugal Liga",
+    "domicile": "Santa Clara",
+    "exterieur": "Gil Vicente",
+    "proba": {
+     "1": 0.479383,
+     "N": 0.29223,
+     "2": 0.228387
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SC0",
+    "nom_ligue": "Écosse Premiership",
+    "domicile": "Celtic",
+    "exterieur": "Kilmarnock",
+    "proba": {
+     "1": 0.867367,
+     "N": 0.0991,
+     "2": 0.033533
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SC0",
+    "nom_ligue": "Écosse Premiership",
+    "domicile": "Hearts",
+    "exterieur": "Falkirk",
+    "proba": {
+     "1": 0.684056,
+     "N": 0.2039,
+     "2": 0.112044
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Ath Madrid",
+    "exterieur": "Barcelona",
+    "proba": {
+     "1": 0.267276,
+     "N": 0.212019,
+     "2": 0.520705
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Celta",
+    "exterieur": "Levante",
+    "proba": {
+     "1": 0.45183,
+     "N": 0.278921,
+     "2": 0.269249
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Elche",
+    "exterieur": "Betis",
+    "proba": {
+     "1": 0.268206,
+     "N": 0.286158,
+     "2": 0.445636
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Sociedad",
+    "exterieur": "Vallecano",
+    "proba": {
+     "1": 0.49481,
+     "N": 0.264657,
+     "2": 0.240533
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP1",
+    "nom_ligue": "Espagne Liga",
+    "domicile": "Villarreal",
+    "exterieur": "Getafe",
+    "proba": {
+     "1": 0.664011,
+     "N": 0.21796,
+     "2": 0.11803
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Girona",
+    "exterieur": "Almeria",
+    "proba": {
+     "1": 0.429892,
+     "N": 0.277091,
+     "2": 0.293016
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Las Palmas",
+    "exterieur": "Eldense",
+    "proba": {
+     "1": 0.495207,
+     "N": 0.304096,
+     "2": 0.200697
+    },
+    "pronostic": "1",
+    "reel": null,
+    "juste": null
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Sp Gijon",
+    "exterieur": "Valladolid",
+    "proba": {
+     "1": 0.438649,
+     "N": 0.31128,
+     "2": 0.25007
+    },
+    "pronostic": "1",
+    "reel": "2",
+    "juste": false
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Alanyaspor",
+    "exterieur": "Trabzonspor",
+    "proba": {
+     "1": 0.197662,
+     "N": 0.263264,
+     "2": 0.539074
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Besiktas",
+    "exterieur": "Genclerbirligi",
+    "proba": {
+     "1": 0.751232,
+     "N": 0.1694,
+     "2": 0.079368
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Corum",
+    "exterieur": "Fenerbahce",
+    "proba": {
+     "1": 0.173008,
+     "N": 0.216947,
+     "2": 0.610045
+    },
+    "pronostic": "2",
+    "reel": "2",
+    "juste": true
+   },
+   {
+    "date": "2026-11-08",
+    "ligue": "T1",
+    "nom_ligue": "Turquie Super Lig",
+    "domicile": "Rizespor",
+    "exterieur": "Erzurumspor",
+    "proba": {
+     "1": 0.513551,
+     "N": 0.264407,
+     "2": 0.222042
+    },
+    "pronostic": "1",
+    "reel": "1",
+    "juste": true
+   },
+   {
+    "date": "2026-11-09",
+    "ligue": "SP2",
+    "nom_ligue": "Espagne Liga 2",
+    "domicile": "Sabadell",
+    "exterieur": "Sociedad B",
+    "proba": {
+     "1": 0.523728,
+     "N": 0.276975,
+     "2": 0.199297
+    },
+    "pronostic": "1",
+    "reel": "N",
+    "juste": false
+   }
+  ]
+ },
+ "depuis_precedent": {
+  "date_donnees": "2026-11-08",
+  "matchs_ajoutes": 2,
+  "avant": 0.9930516845519974,
+  "apres": 0.9930537974027663,
+  "precision_avant": 0.5026737967914439,
+  "precision_apres": 0.5026706231454006
+ },
+ "attention": [
+  {
+   "resultat": "A",
+   "de": 0.2,
+   "a": 0.3,
+   "matchs": 479,
+   "prevue": 0.2518930047332249,
+   "observee": 0.2964509394572025,
+   "sens": "sous-estime"
+  },
+  {
+   "resultat": "A",
+   "de": 0.6,
+   "a": 1.0,
+   "matchs": 105,
+   "prevue": 0.6825298416952865,
+   "observee": 0.8095238095238095,
+   "sens": "sous-estime"
+  }
+ ],
+ "facteurs_recurrents": {
+  "ecarts": 270,
+  "items": [
+   [
+    "écart de niveau Elo",
+    237
+   ],
+   [
+    "tirs cadrés concédés (visiteur)",
+    115
+   ],
+   [
+    "tirs cadrés obtenus (domicile)",
+    109
+   ],
+   [
+    "corners obtenus (domicile)",
+    105
+   ],
+   [
+    "corners obtenus (visiteur)",
+    46
+   ],
+   [
+    "tirs cadrés concédés (domicile)",
+    45
+   ]
+  ]
+ }
+}

@@ -522,31 +522,31 @@
    },
    {
     "rang": 10,
+    "equipe": "Las Palmas",
+    "points": 20,
+    "matchs": 13,
+    "diff": -2
+   },
+   {
+    "rang": 11,
     "equipe": "Cordoba",
     "points": 19,
     "matchs": 13,
     "diff": 0
    },
    {
-    "rang": 11,
+    "rang": 12,
     "equipe": "Valladolid",
     "points": 18,
     "matchs": 13,
     "diff": 2
    },
    {
-    "rang": 12,
-    "equipe": "Sabadell",
-    "points": 17,
-    "matchs": 12,
-    "diff": 1
-   },
-   {
     "rang": 13,
-    "equipe": "Las Palmas",
-    "points": 17,
-    "matchs": 12,
-    "diff": -4
+    "equipe": "Sabadell",
+    "points": 18,
+    "matchs": 13,
+    "diff": 1
    },
    {
     "rang": 14,
@@ -559,8 +559,8 @@
     "rang": 15,
     "equipe": "Eldense",
     "points": 14,
-    "matchs": 12,
-    "diff": -4
+    "matchs": 13,
+    "diff": -6
    },
    {
     "rang": 16,
@@ -571,24 +571,24 @@
    },
    {
     "rang": 17,
+    "equipe": "Sociedad B",
+    "points": 12,
+    "matchs": 13,
+    "diff": -7
+   },
+   {
+    "rang": 18,
     "equipe": "Leganes",
     "points": 12,
     "matchs": 13,
     "diff": -12
    },
    {
-    "rang": 18,
+    "rang": 19,
     "equipe": "Andorra",
     "points": 11,
     "matchs": 12,
     "diff": -5
-   },
-   {
-    "rang": 19,
-    "equipe": "Sociedad B",
-    "points": 11,
-    "matchs": 12,
-    "diff": -7
    },
    {
     "rang": 20,
