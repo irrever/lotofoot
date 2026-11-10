@@ -709,6 +709,60 @@
      "issue": "2"
     }
    ]
+  },
+  "8-156": {
+   "libelle": "Loto Foot 8 n156",
+   "maj": "2026-11-10",
+   "matchs": [
+    {
+     "domicile": "Sabadell",
+     "exterieur": "RealSociedad B",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "FC Botosani",
+     "exterieur": "Otelul Galati",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Torreense",
+     "exterieur": "Uniao Leiria",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Mushuc Runa",
+     "exterieur": "Delfin SC",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Tecnico Uni.",
+     "exterieur": "Manta FC",
+     "score": "1-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "San Lorenzo",
+     "exterieur": "Rubio Nu",
+     "score": "2-2",
+     "issue": "N"
+    },
+    {
+     "domicile": "Sp.Luqueno",
+     "exterieur": "Club 2 De Mayo",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Junior FC",
+     "exterieur": "Cucuta",
+     "score": "2-0",
+     "issue": "1"
+    }
+   ]
   }
  }
 }
