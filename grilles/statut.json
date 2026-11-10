@@ -1,9 +1,20 @@
 {
- "verifie_le": "2026-11-10T13:32:08Z",
+ "verifie_le": "2026-11-10T19:24:46Z",
  "formats": {
   "7": {
-   "ok": false,
-   "erreur": "4 matchs trouvés pour un format de 7"
+   "ok": true,
+   "grilles_ouvertes": [
+    141,
+    142
+   ],
+   "equipes_inconnues": [
+    "Rép.Tchèque",
+    "Pays De Galles",
+    "Rép.Irlande",
+    "Irlandedunord",
+    "Bosnie Herzég."
+   ],
+   "erreur": null
   },
   "8": {
    "ok": true,
