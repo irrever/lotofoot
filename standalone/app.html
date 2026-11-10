@@ -59,6 +59,11 @@ body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--
 .sel-tab { table-layout: fixed; }
 .sel-tab th:first-child, .sel-tab td:first-child { width: 40%; }
 .sel-tab td, .sel-matchs td { font-family: inherit; }
+.grp-tab th, .grp-tab td { padding: 5px 3px; font-size: 12.5px; text-align: right; white-space: nowrap; }
+.grp-tab th.nom, .grp-tab td.nom { text-align: left; }
+.grp-tab th, .grp-tab td { font-family: inherit; }
+.grp-tab tr.hi td { background: rgba(29, 106, 72, 0.12); font-weight: 700; }
+.groupe { margin-top: 12px; }
 :focus-visible { outline: 3px solid var(--info); outline-offset: 2px; }
 .page { max-width: 1040px; margin: 0 auto; padding: 0 16px 112px; }
 .ico { display: block; flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -1803,7 +1808,12 @@ __PWA_HEAD__
   }
   // Rang de l’équipe dans le classement de son championnat, affiché sous son nom sur la carte du match (rien si inconnu)
   function rangHtml(nom) {
-    var t = trouverEquipe(nom), r = t && rangClassement(t);
+    var t = trouverEquipe(nom);
+    if (t && t.ligue === 'SEL') {
+      var gd = groupeDe(t.equipe);
+      return gd ? '<span class="equipe-rang">' + (gd.ligne.rang === 1 ? '1er' : gd.ligne.rang + 'e') + ' sur ' + gd.groupe.classement.length + ' · groupe ' + esc(gd.groupe.id) + '</span>' : '';
+    }
+    var r = t && rangClassement(t);
     if (!r) return '';
     return '<span class="equipe-rang">' + (r.rang === 1 ? '1er' : r.rang + 'e') + ' sur ' + r.n + ' en ' + esc(t.ligue_nom || t.ligue).replace(/ ([^ ]*)$/, ' $1') + '</span>';
   }
@@ -1930,9 +1940,47 @@ __PWA_HEAD__
       '<p class="hint">Repos et charge ne sont pas pris en compte pour les sélections : elles jouent peu, et ces valeurs ne disent rien de leur état. Tirs, corners et cartons ne sont pas disponibles : même traitement.</p>' +
       '<p class="hint">Les coefficients viennent du modèle des clubs, qui n’a pas encore été testé sur des matchs de sélections passés. Données arrêtées au ' + esc(dateFr(S.selections && S.selections.asof)) + '.</p>';
   }
+  // ---------- Ligue des nations : classement des groupes des sélections (ligue A, quatre groupes)
+  function groupeDe(nom) {
+    var gs = (S.selections && S.selections.groupes) || [];
+    for (var i = 0; i < gs.length; i++) {
+      for (var j = 0; j < gs[i].classement.length; j++) {
+        if (gs[i].classement[j].equipe === nom) return { groupe: gs[i], ligne: gs[i].classement[j] };
+      }
+    }
+    return null;
+  }
+  // Tableau du classement d’un groupe ; les équipes en évidence (celles du match) sont surlignées
+  function groupeTableHtml(g, enEvidence) {
+    var lignes = g.classement.map(function (l) {
+      var hi = enEvidence.indexOf(l.equipe) !== -1 ? ' class="hi"' : '';
+      var diff = l.diff > 0 ? '+' + l.diff : (l.diff < 0 ? '−' + Math.abs(l.diff) : '0');
+      return '<tr' + hi + '><td>' + l.rang + '</td><td class="nom">' + esc(l.equipe) + '</td><td>' + l.J + '</td><td>' + l.V + '</td><td>' + l.N + '</td><td>' + l.D + '</td><td>' + l.BP + '–' + l.BC + '</td><td>' + diff + '</td><td><b>' + l.pts + '</b></td></tr>';
+    }).join('');
+    return '<div class="scroll"><table class="grp-tab"><thead><tr><th>#</th><th class="nom">Équipe</th><th>J</th><th>V</th><th>N</th><th>D</th><th>Buts</th><th>Diff</th><th>Pts</th></tr></thead><tbody>' + lignes + '</tbody></table></div>';
+  }
+  // Carte du match : classement du groupe de la sélection, avec la date du dernier match joué
+  function groupeHtml(nomDom, nomExt) {
+    var gd = groupeDe(nomDom);
+    if (!gd) return '';
+    var g = gd.groupe, j = g.classement.length ? g.classement[0].J : 0;
+    return '<div class="groupe"><h4>Classement du groupe ' + esc(g.id) + ' · ' + esc(g.ligue) + '</h4>' +
+      groupeTableHtml(g, [nomDom, nomExt]) +
+      '<p class="hint">Après ' + j + ' matchs sur 6 pour chaque équipe.' + (g.dernier ? ' Dernier match joué le ' + esc(dateFr(g.dernier)) + '.' : '') +
+      ' En cas d’égalité : confrontations directes, puis différence de buts et buts marqués.</p></div>';
+  }
+  // Onglet Stats : les quatre groupes de la ligue A
+  function groupesStatsHtml() {
+    var gs = ((S.selections && S.selections.groupes) || []).filter(function (g) { return g.ligue === 'Ligue A'; });
+    if (!gs.length) return '<p class="hint">Les classements des groupes ne sont pas encore enregistrés.</p>';
+    var fin = gs.map(function (g) { return g.dernier || ''; }).sort().pop();
+    return '<p class="hint">Classements calculés à partir des résultats de la Ligue des nations 2026-2027, jusqu’au ' + esc(dateFr(fin)) + '.</p>' +
+      gs.map(function (g) { return '<div class="groupe"><h4>Groupe ' + esc(g.id) + ' · ' + esc(g.ligue) + '</h4>' + groupeTableHtml(g, []) + '</div>'; }).join('');
+  }
   function matchHtml(m, estSurprise, repere, fige, ctx) {
     var p = m.proba || {};
     var sel = estSelection(m);
+    var grp = sel ? groupeHtml(m.domicile, m.exterieur) : '';
     var pick = m.modele || m.pronostic || '';
     var jeu = m.pronostic || '';
     var cls = { '1': 'p1', 'N': 'pN', '2': 'p2' };
@@ -1977,6 +2025,7 @@ __PWA_HEAD__
       (m.proba && !(suivi.p1 || suivi.pN || suivi.p2) && (lireSuivi().etat || {})[clePaire(m.domicile, m.exterieur)] ? '<p class="inchanges">Pourcentages inchangés depuis le ' + esc(dateHeureFr(S.depuis || S.publieLe)) + '</p>' : '') +
       '<div class="match-foot">' + pronos + '</div>' +
       euZone +
+      grp +
       euPanel +
       infosHtml +
       '</article>';
@@ -2256,7 +2305,8 @@ __PWA_HEAD__
       notes +
       zone('info', n3, 'Résultats par championnat', '<p class="hint">Fréquence de chaque issue sur ' + esc(s.periode_stats) + '.</p>' +
         '<div class="scroll"><table><thead><tr><th>Championnat</th><th>Matchs</th><th>1</th><th>N</th><th>2</th></tr></thead><tbody>' + base + '</tbody></table></div>') +
-      zone('info', n4, 'Équipes les plus fortes (Elo)', '<p class="hint">Classement à la fin des données, dans chaque championnat. Ces classements ne se comparent pas d’un championnat à l’autre.</p><ul class="list">' + top + '</ul>');
+      zone('info', n4, 'Équipes les plus fortes (Elo)', '<p class="hint">Classement à la fin des données, dans chaque championnat. Ces classements ne se comparent pas d’un championnat à l’autre.</p><ul class="list">' + top + '</ul>') +
+      zone('info', n4 + 1, 'Ligue des nations : ligue A', groupesStatsHtml());
   }
   function viewMethode() {
     return '<div class="method">' +

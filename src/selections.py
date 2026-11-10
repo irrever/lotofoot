@@ -62,6 +62,15 @@ TOURNOIS = {
     'CONCACAF Gold Cup': 'Gold Cup',
 }
 LETTRE = {'W': 'V', 'D': 'N', 'L': 'D'}
+# Ligue des nations 2026-2027, ligue A : quatre groupes (tirage du 12 février 2026)
+DEBUT_LIGUE = dt.date(2026, 8, 1)
+TOURNOI_LIGUE = 'UEFA Nations League'
+GROUPES_LIGUE_A = [
+    ('A1', ['France', 'Italie', 'Belgique', 'Turquie']),
+    ('A2', ['Allemagne', 'Pays-Bas', 'Serbie', 'Grèce']),
+    ('A3', ['Espagne', 'Angleterre', 'Croatie', 'Tchéquie']),
+    ('A4', ['Portugal', 'Danemark', 'Norvège', 'Pays de Galles']),
+]
 
 
 def probs_from_x(x, c):
@@ -102,6 +111,55 @@ def rencontre(x):
     return {'date': d.isoformat(), 'adv': AFFICHAGE.get(adversaire, adversaire), 'score': f'{buts}–{encaisses}',
             'lieu': {'dom': 'dom.', 'ext': 'ext.', None: 'neutre'}[lieu], 'res': LETTRE[res],
             'tournoi': TOURNOIS.get(tournoi, tournoi)}
+
+
+def classement_groupe(equipes, rencontres):
+    """Points, puis confrontations directes, puis différence de buts et buts marqués."""
+    def stats(liste, matchs):
+        s = {e: {'J': 0, 'V': 0, 'N': 0, 'D': 0, 'BP': 0, 'BC': 0, 'pts': 0} for e in liste}
+        for m in matchs:
+            for equipe, bp, bc in ((m['dom'], m['bd'], m['be']), (m['ext'], m['be'], m['bd'])):
+                x = s[equipe]
+                x['J'] += 1; x['BP'] += bp; x['BC'] += bc
+                if bp > bc:
+                    x['V'] += 1; x['pts'] += 3
+                elif bp == bc:
+                    x['N'] += 1; x['pts'] += 1
+                else:
+                    x['D'] += 1
+        for e in s:
+            s[e]['diff'] = s[e]['BP'] - s[e]['BC']
+        return s
+    base = stats(equipes, rencontres)
+    par_pts = collections.defaultdict(list)
+    for e in equipes:
+        par_pts[base[e]['pts']].append(e)
+    ordre = []
+    for p in sorted(par_pts, reverse=True):
+        egaux = par_pts[p]
+        if len(egaux) > 1:
+            confr = [m for m in rencontres if m['dom'] in egaux and m['ext'] in egaux]
+            mini = stats(egaux, confr)
+            egaux = sorted(egaux, key=lambda e: (-mini[e]['pts'], -mini[e]['diff'], -mini[e]['BP'], -base[e]['diff'], -base[e]['BP'], e))
+        ordre += egaux
+    return [dict(rang=i, equipe=e, **base[e]) for i, e in enumerate(ordre, 1)]
+
+
+def groupes_ligue_a(rows):
+    """Classement des quatre groupes de la ligue A, à partir des matchs de la saison 2026-2027."""
+    rencontres = []
+    for d, h, a, hs, als, neutre, tournoi in rows:
+        if d < DEBUT_LIGUE or tournoi != TOURNOI_LIGUE:
+            continue
+        rencontres.append({'date': d, 'dom': AFFICHAGE.get(h, h), 'ext': AFFICHAGE.get(a, a), 'bd': hs, 'be': als})
+    groupes = []
+    for label, equipes in GROUPES_LIGUE_A:
+        confr = [m for m in rencontres if m['dom'] in equipes and m['ext'] in equipes]
+        dernier = max((m['date'] for m in confr), default=None)
+        groupes.append({'id': label, 'ligue': 'Ligue A', 'equipes': equipes,
+                        'classement': classement_groupe(equipes, confr),
+                        'dernier': dernier.isoformat() if dernier else None})
+    return groupes
 
 
 def calculer(chemin, asof):
@@ -181,7 +239,8 @@ def calculer(chemin, asof):
     dernier = max(x[0] for x in tout)
     return {'version': 1, 'asof': asof.isoformat(),
             'source': f'martj42/international_results, {len(rows)} matchs, dernier le {dernier.isoformat()}',
-            'equipes': equipes, 'matchs': matchs}
+            'equipes': equipes, 'matchs': matchs,
+            'groupes': groupes_ligue_a(rows)}
 
 
 def main():

@@ -36,7 +36,7 @@ SELECTIONS = ROOT / 'data/selections.json'   # équipes nationales, estimation (
 if SELECTIONS.exists():
     _sel = json.load(open(SELECTIONS, encoding='utf-8'))
     donnees['equipes'] = donnees['equipes'] + _sel['equipes']
-    donnees['selections'] = {'asof': _sel['asof'], 'source': _sel['source'], 'matchs': _sel['matchs']}
+    donnees['selections'] = {'asof': _sel['asof'], 'source': _sel['source'], 'matchs': _sel['matchs'], 'groupes': _sel.get('groupes', [])}
 RESULTATS = ROOT / 'data/resultats.json'   # matchs de la veille et précision des grilles (src/rapport.py)
 if RESULTATS.exists():
     donnees['resultats'] = json.load(open(RESULTATS, encoding='utf-8'))
