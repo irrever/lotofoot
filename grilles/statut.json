@@ -1,21 +1,70 @@
 {
- "verifie_le": "2026-11-12T01:43:13Z",
+ "verifie_le": "2026-11-12T07:45:44Z",
  "formats": {
   "7": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    141,
+    142
+   ],
+   "equipes_inconnues": [
+    "Rép.Tchèque",
+    "Pays De Galles",
+    "Rép.Irlande",
+    "Irlandedunord",
+    "Bosnie Herzég."
+   ],
+   "erreur": null
   },
   "8": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    157,
+    158
+   ],
+   "equipes_inconnues": [
+    "I.Féroé",
+    "Ecosse",
+    "Macédoineduno.",
+    "San Marin",
+    "Rép.Tchèque"
+   ],
+   "erreur": null
   },
   "12": {
-   "ok": false,
-   "erreur": "<urlopen error _ssl.c:994: The handshake operation timed out>"
+   "ok": true,
+   "grilles_ouvertes": [
+    98,
+    99
+   ],
+   "equipes_inconnues": [
+    "I.Féroé",
+    "Ecosse",
+    "Macédoineduno.",
+    "CD Leganes",
+    "Burgos CF",
+    "Rép.Tchèque",
+    "Malte"
+   ],
+   "erreur": null
   },
   "15": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    93,
+    94
+   ],
+   "equipes_inconnues": [
+    "Rép.Tchèque",
+    "San Marin",
+    "Ecosse",
+    "Macédoineduno.",
+    "Pays De Galles",
+    "Rép.Irlande",
+    "Irlandedunord",
+    "Bosnie Herzég."
+   ],
+   "erreur": null
   }
  }
 }
