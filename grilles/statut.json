@@ -1,14 +1,12 @@
 {
- "verifie_le": "2026-11-12T13:42:45Z",
+ "verifie_le": "2026-11-12T19:23:26Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    141,
     142
    ],
    "equipes_inconnues": [
-    "Rép.Tchèque",
     "Pays De Galles",
     "Rép.Irlande",
     "Irlandedunord",
@@ -51,18 +49,15 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    93,
     94
    ],
    "equipes_inconnues": [
-    "Rép.Tchèque",
-    "San Marin",
-    "Ecosse",
-    "Macédoineduno.",
     "Pays De Galles",
     "Rép.Irlande",
     "Irlandedunord",
-    "Bosnie Herzég."
+    "Bosnie Herzég.",
+    "San Marin",
+    "Rép.Tchèque"
    ],
    "erreur": null
   }

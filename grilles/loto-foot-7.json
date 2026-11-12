@@ -2,51 +2,6 @@
  "format": 7,
  "grilles": [
   {
-   "numero": 141,
-   "nom": "Loto Foot 7 · grille N°141",
-   "cloture": "2026-11-12T17:55:00+01:00",
-   "validite": "jeudi 12 novembre 2026 à 17 h 55",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-7/numero-7-141-2026.html",
-   "matchs": [
-    {
-     "domicile": "Italie",
-     "exterieur": "France",
-     "libelle": "Italie – France"
-    },
-    {
-     "domicile": "Angleterre",
-     "exterieur": "Croatie",
-     "libelle": "Angleterre – Croatie"
-    },
-    {
-     "domicile": "Turquie",
-     "exterieur": "Belgique",
-     "libelle": "Turquie – Belgique"
-    },
-    {
-     "domicile": "Monténégro",
-     "exterieur": "Lettonie",
-     "libelle": "Monténégro – Lettonie"
-    },
-    {
-     "domicile": "Arménie",
-     "exterieur": "Chypre",
-     "libelle": "Arménie – Chypre"
-    },
-    {
-     "domicile": "Albanie",
-     "exterieur": "Finlande",
-     "libelle": "Albanie – Finlande"
-    },
-    {
-     "domicile": "Rép.Tchèque",
-     "exterieur": "Espagne",
-     "libelle": "Rép.Tchèque – Espagne"
-    }
-   ]
-  },
-  {
    "numero": 142,
    "nom": "Loto Foot 7 · grille N°142",
    "cloture": "2026-11-14T17:55:00+01:00",
