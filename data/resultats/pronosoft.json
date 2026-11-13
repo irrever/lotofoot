@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-12",
+ "maj": "2026-11-13",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "matchs": [
   {
@@ -877,6 +877,123 @@
    "vu": "2026-11-10",
    "grilles": [
     "Loto Foot 8 n156"
+   ]
+  },
+  {
+   "domicile": "AS Rome F",
+   "exterieur": "Servette FC F",
+   "score": "2-1",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n140"
+   ]
+  },
+  {
+   "domicile": "Albanie",
+   "exterieur": "Finlande",
+   "score": "2-0",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n141"
+   ]
+  },
+  {
+   "domicile": "Angleterre",
+   "exterieur": "Croatie",
+   "score": "2-1",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n141"
+   ]
+  },
+  {
+   "domicile": "Armnie",
+   "exterieur": "Chypre",
+   "score": "1-1",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n141"
+   ]
+  },
+  {
+   "domicile": "Hacken F",
+   "exterieur": "Chelsea F",
+   "score": "0-0",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n140"
+   ]
+  },
+  {
+   "domicile": "Inter Milan F",
+   "exterieur": "Man.City F",
+   "score": "1-4",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n140"
+   ]
+  },
+  {
+   "domicile": "Italie",
+   "exterieur": "France",
+   "score": "3-1",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n141"
+   ]
+  },
+  {
+   "domicile": "Juventus F",
+   "exterieur": "Lyon F",
+   "score": "0-6",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n140"
+   ]
+  },
+  {
+   "domicile": "Montngro",
+   "exterieur": "Lettonie",
+   "score": "2-1",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n141"
+   ]
+  },
+  {
+   "domicile": "Paris SG F",
+   "exterieur": "Bay.Munich F",
+   "score": "1-2",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n140"
+   ]
+  },
+  {
+   "domicile": "Real Madrid F",
+   "exterieur": "Paris FC F",
+   "score": "3-0",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n140"
+   ]
+  },
+  {
+   "domicile": "Rp.Tchque",
+   "exterieur": "Espagne",
+   "score": "0-2",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n141"
+   ]
+  },
+  {
+   "domicile": "Turquie",
+   "exterieur": "Belgique",
+   "score": "1-2",
+   "vu": "2026-11-13",
+   "grilles": [
+    "Loto Foot 7 n141"
    ]
   }
  ]

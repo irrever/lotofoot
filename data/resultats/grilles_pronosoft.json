@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-12",
+ "maj": "2026-11-13",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "grilles": {
   "8-152": {
@@ -490,7 +490,7 @@
   },
   "12-97": {
    "libelle": "Loto Foot 12 n97",
-   "maj": "2026-11-12",
+   "maj": "2026-11-13",
    "matchs": [
     {
      "domicile": "Lens",
@@ -568,7 +568,7 @@
   },
   "7-139": {
    "libelle": "Loto Foot 7 n139",
-   "maj": "2026-11-12",
+   "maj": "2026-11-13",
    "matchs": [
     {
      "domicile": "Lens",
@@ -712,7 +712,7 @@
   },
   "8-156": {
    "libelle": "Loto Foot 8 n156",
-   "maj": "2026-11-12",
+   "maj": "2026-11-13",
    "matchs": [
     {
      "domicile": "Sabadell",
@@ -761,6 +761,96 @@
      "exterieur": "Cucuta",
      "score": "2-0",
      "issue": "1"
+    }
+   ]
+  },
+  "7-141": {
+   "libelle": "Loto Foot 7 n141",
+   "maj": "2026-11-13",
+   "matchs": [
+    {
+     "domicile": "Italie",
+     "exterieur": "France",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Angleterre",
+     "exterieur": "Croatie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Turquie",
+     "exterieur": "Belgique",
+     "score": "1-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Montngro",
+     "exterieur": "Lettonie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Armnie",
+     "exterieur": "Chypre",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Albanie",
+     "exterieur": "Finlande",
+     "score": "2-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Rp.Tchque",
+     "exterieur": "Espagne",
+     "score": "0-2",
+     "issue": "2"
+    }
+   ]
+  },
+  "7-140": {
+   "libelle": "Loto Foot 7 n140",
+   "maj": "2026-11-13",
+   "matchs": [
+    {
+     "domicile": "Juventus F",
+     "exterieur": "Lyon F",
+     "score": "0-6",
+     "issue": "2"
+    },
+    {
+     "domicile": "Paris SG F",
+     "exterieur": "Bay.Munich F",
+     "score": "1-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Real Madrid F",
+     "exterieur": "Paris FC F",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "AS Rome F",
+     "exterieur": "Servette FC F",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hacken F",
+     "exterieur": "Chelsea F",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "Inter Milan F",
+     "exterieur": "Man.City F",
+     "score": "1-4",
+     "issue": "2"
     }
    ]
   }
