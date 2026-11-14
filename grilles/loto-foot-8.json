@@ -2,56 +2,6 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 157,
-   "nom": "Loto Foot 8 · grille N°157",
-   "cloture": "2026-11-13T20:40:00+01:00",
-   "validite": "vendredi 13 novembre 2026 à 20 h 40",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-157-2026.html",
-   "matchs": [
-    {
-     "domicile": "Serbie",
-     "exterieur": "Allemagne",
-     "libelle": "Serbie – Allemagne"
-    },
-    {
-     "domicile": "Pays-Bas",
-     "exterieur": "Grèce",
-     "libelle": "Pays-Bas – Grèce"
-    },
-    {
-     "domicile": "Slovénie",
-     "exterieur": "Suisse",
-     "libelle": "Slovénie – Suisse"
-    },
-    {
-     "domicile": "Luxembourg",
-     "exterieur": "Estonie",
-     "libelle": "Luxembourg – Estonie"
-    },
-    {
-     "domicile": "Bulgarie",
-     "exterieur": "Islande",
-     "libelle": "Bulgarie – Islande"
-    },
-    {
-     "domicile": "Slovaquie",
-     "exterieur": "I.Féroé",
-     "libelle": "Slovaquie – I.Féroé"
-    },
-    {
-     "domicile": "Ecosse",
-     "exterieur": "Macédoineduno.",
-     "libelle": "Ecosse – Macédoineduno."
-    },
-    {
-     "domicile": "Andorre",
-     "exterieur": "Gibraltar",
-     "libelle": "Andorre – Gibraltar"
-    }
-   ]
-  },
-  {
    "numero": 158,
    "nom": "Loto Foot 8 · grille N°158",
    "cloture": "2026-11-15T14:55:00+01:00",

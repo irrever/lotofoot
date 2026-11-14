@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-13T19:23:20Z",
+ "verifie_le": "2026-11-14T01:32:12Z",
  "formats": {
   "7": {
    "ok": true,
@@ -17,13 +17,9 @@
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    157,
     158
    ],
    "equipes_inconnues": [
-    "I.Féroé",
-    "Ecosse",
-    "Macédoineduno.",
     "San Marin",
     "Rép.Tchèque"
    ],
@@ -32,17 +28,14 @@
   "12": {
    "ok": true,
    "grilles_ouvertes": [
-    98,
     99
    ],
    "equipes_inconnues": [
-    "I.Féroé",
-    "Ecosse",
-    "Macédoineduno.",
-    "CD Leganes",
-    "Burgos CF",
     "Rép.Tchèque",
-    "Malte"
+    "I.Féroé",
+    "Malte",
+    "Macédoineduno.",
+    "Ecosse"
    ],
    "erreur": null
   },
