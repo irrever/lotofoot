@@ -1,56 +1,47 @@
 {
- "verifie_le": "2026-11-14T13:22:21Z",
+ "verifie_le": "2026-11-14T19:13:27Z",
  "formats": {
   "7": {
-   "ok": true,
-   "grilles_ouvertes": [
-    142
-   ],
-   "equipes_inconnues": [
-    "Pays De Galles",
-    "Rép.Irlande",
-    "Irlandedunord",
-    "Bosnie Herzég."
-   ],
-   "erreur": null
+   "ok": false,
+   "erreur": "4 matchs trouvés pour un format de 7"
   },
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    158
+    158,
+    159
    ],
    "equipes_inconnues": [
     "San Marin",
-    "Rép.Tchèque"
+    "Rép.Tchèque",
+    "Pays De Galles",
+    "Bosnie Herzég.",
+    "Irlandedunord",
+    "Israël",
+    "Rép.Irlande",
+    "Kosovo"
    ],
    "erreur": null
   },
   "12": {
-   "ok": true,
-   "grilles_ouvertes": [
-    99
-   ],
-   "equipes_inconnues": [
-    "Rép.Tchèque",
-    "I.Féroé",
-    "Malte",
-    "Macédoineduno.",
-    "Ecosse"
-   ],
-   "erreur": null
+   "ok": false,
+   "erreur": "7 matchs trouvés pour un format de 12"
   },
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    94
+    95
    ],
    "equipes_inconnues": [
-    "Pays De Galles",
-    "Rép.Irlande",
-    "Irlandedunord",
+    "Malte",
+    "Macédoineduno.",
+    "Ecosse",
     "Bosnie Herzég.",
-    "San Marin",
-    "Rép.Tchèque"
+    "Israël",
+    "Irlandedunord",
+    "Rép.Irlande",
+    "Kosovo",
+    "Pays De Galles"
    ],
    "erreur": null
   }

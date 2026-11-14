@@ -2,87 +2,87 @@
  "format": 15,
  "grilles": [
   {
-   "numero": 94,
-   "nom": "Loto Foot 15 · grille N°94",
-   "cloture": "2026-11-14T17:55:00+01:00",
-   "validite": "samedi 14 novembre 2026 à 17 h 55",
+   "numero": 95,
+   "nom": "Loto Foot 15 · grille N°95",
+   "cloture": "2026-11-16T17:55:00+01:00",
+   "validite": "lundi 16 novembre 2026 à 17 h 55",
    "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-94-2026.html",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-95-2026.html",
    "matchs": [
     {
-     "domicile": "Portugal",
-     "exterieur": "Danemark",
-     "libelle": "Portugal – Danemark"
+     "domicile": "Allemagne",
+     "exterieur": "Pays-Bas",
+     "libelle": "Allemagne – Pays-Bas"
     },
     {
-     "domicile": "Norvège",
-     "exterieur": "Pays De Galles",
-     "libelle": "Norvège – Pays De Galles"
+     "domicile": "Gibraltar",
+     "exterieur": "Malte",
+     "libelle": "Gibraltar – Malte"
     },
     {
-     "domicile": "Autriche",
-     "exterieur": "Rép.Irlande",
-     "libelle": "Autriche – Rép.Irlande"
+     "domicile": "Grèce",
+     "exterieur": "Serbie",
+     "libelle": "Grèce – Serbie"
     },
     {
-     "domicile": "Irlandedunord",
-     "exterieur": "Ukraine",
-     "libelle": "Irlandedunord – Ukraine"
+     "domicile": "Macédoineduno.",
+     "exterieur": "Slovénie",
+     "libelle": "Macédoineduno. – Slovénie"
     },
     {
-     "domicile": "Géorgie",
-     "exterieur": "Hongrie",
-     "libelle": "Géorgie – Hongrie"
+     "domicile": "Islande",
+     "exterieur": "Luxembourg",
+     "libelle": "Islande – Luxembourg"
     },
     {
-     "domicile": "Roumanie",
-     "exterieur": "Pologne",
-     "libelle": "Roumanie – Pologne"
+     "domicile": "Estonie",
+     "exterieur": "Bulgarie",
+     "libelle": "Estonie – Bulgarie"
     },
     {
-     "domicile": "Suède",
-     "exterieur": "Bosnie Herzég.",
-     "libelle": "Suède – Bosnie Herzég."
+     "domicile": "Suisse",
+     "exterieur": "Ecosse",
+     "libelle": "Suisse – Ecosse"
     },
     {
-     "domicile": "Chypre",
-     "exterieur": "Monténégro",
-     "libelle": "Chypre – Monténégro"
+     "domicile": "Bosnie Herzég.",
+     "exterieur": "Roumanie",
+     "libelle": "Bosnie Herzég. – Roumanie"
     },
     {
-     "domicile": "Lettonie",
-     "exterieur": "Arménie",
-     "libelle": "Lettonie – Arménie"
+     "domicile": "Danemark",
+     "exterieur": "Norvège",
+     "libelle": "Danemark – Norvège"
     },
     {
-     "domicile": "Biélorussie",
-     "exterieur": "Albanie",
-     "libelle": "Biélorussie – Albanie"
+     "domicile": "Israël",
+     "exterieur": "Autriche",
+     "libelle": "Israël – Autriche"
     },
     {
-     "domicile": "Finlande",
-     "exterieur": "San Marin",
-     "libelle": "Finlande – San Marin"
+     "domicile": "Hongrie",
+     "exterieur": "Irlandedunord",
+     "libelle": "Hongrie – Irlandedunord"
     },
     {
-     "domicile": "Croatie",
-     "exterieur": "Rép.Tchèque",
-     "libelle": "Croatie – Rép.Tchèque"
+     "domicile": "Rép.Irlande",
+     "exterieur": "Kosovo",
+     "libelle": "Rép.Irlande – Kosovo"
     },
     {
-     "domicile": "Belgique",
-     "exterieur": "Italie",
-     "libelle": "Belgique – Italie"
+     "domicile": "Ukraine",
+     "exterieur": "Géorgie",
+     "libelle": "Ukraine – Géorgie"
     },
     {
-     "domicile": "Espagne",
-     "exterieur": "Angleterre",
-     "libelle": "Espagne – Angleterre"
+     "domicile": "Pologne",
+     "exterieur": "Suède",
+     "libelle": "Pologne – Suède"
     },
     {
-     "domicile": "France",
-     "exterieur": "Turquie",
-     "libelle": "France – Turquie"
+     "domicile": "Pays De Galles",
+     "exterieur": "Portugal",
+     "libelle": "Pays De Galles – Portugal"
     }
    ]
   }
