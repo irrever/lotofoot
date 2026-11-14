@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-13",
+ "maj": "2026-11-14",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "matchs": [
   {
@@ -894,7 +894,8 @@
    "score": "2-0",
    "vu": "2026-11-13",
    "grilles": [
-    "Loto Foot 7 n141"
+    "Loto Foot 7 n141",
+    "Loto Foot 15 n93"
    ]
   },
   {
@@ -903,7 +904,8 @@
    "score": "2-1",
    "vu": "2026-11-13",
    "grilles": [
-    "Loto Foot 7 n141"
+    "Loto Foot 7 n141",
+    "Loto Foot 15 n93"
    ]
   },
   {
@@ -912,7 +914,8 @@
    "score": "1-1",
    "vu": "2026-11-13",
    "grilles": [
-    "Loto Foot 7 n141"
+    "Loto Foot 7 n141",
+    "Loto Foot 15 n93"
    ]
   },
   {
@@ -939,7 +942,8 @@
    "score": "3-1",
    "vu": "2026-11-13",
    "grilles": [
-    "Loto Foot 7 n141"
+    "Loto Foot 7 n141",
+    "Loto Foot 15 n93"
    ]
   },
   {
@@ -957,7 +961,8 @@
    "score": "2-1",
    "vu": "2026-11-13",
    "grilles": [
-    "Loto Foot 7 n141"
+    "Loto Foot 7 n141",
+    "Loto Foot 15 n93"
    ]
   },
   {
@@ -984,7 +989,8 @@
    "score": "0-2",
    "vu": "2026-11-13",
    "grilles": [
-    "Loto Foot 7 n141"
+    "Loto Foot 7 n141",
+    "Loto Foot 15 n93"
    ]
   },
   {
@@ -993,7 +999,104 @@
    "score": "1-2",
    "vu": "2026-11-13",
    "grilles": [
-    "Loto Foot 7 n141"
+    "Loto Foot 7 n141",
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "Andorre",
+   "exterieur": "Gibraltar",
+   "score": "2-0",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157"
+   ]
+  },
+  {
+   "domicile": "Bulgarie",
+   "exterieur": "Islande",
+   "score": "0-5",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157",
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "Ecosse",
+   "exterieur": "MacdoineduNo.",
+   "score": "2-1",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157",
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "Luxembourg",
+   "exterieur": "Estonie",
+   "score": "0-1",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157",
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "Moldavie",
+   "exterieur": "Kazakhstan",
+   "score": "2-1",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "Pays-Bas",
+   "exterieur": "Grce",
+   "score": "7-0",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157",
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "San Marin",
+   "exterieur": "Bilorussie",
+   "score": "0-2",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "Serbie",
+   "exterieur": "Allemagne",
+   "score": "1-3",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157",
+    "Loto Foot 15 n93"
+   ]
+  },
+  {
+   "domicile": "Slovaquie",
+   "exterieur": "I.Fro",
+   "score": "2-2",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157"
+   ]
+  },
+  {
+   "domicile": "Slovnie",
+   "exterieur": "Suisse",
+   "score": "0-0",
+   "vu": "2026-11-14",
+   "grilles": [
+    "Loto Foot 8 n157",
+    "Loto Foot 15 n93"
    ]
   }
  ]
