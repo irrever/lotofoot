@@ -1081,6 +1081,54 @@
      "issue": "2"
     }
    ]
+  },
+  "7-142": {
+   "libelle": "Loto Foot 7 n142",
+   "maj": "2026-11-15",
+   "matchs": [
+    {
+     "domicile": "Portugal",
+     "exterieur": "Danemark",
+     "score": "1-4",
+     "issue": "2"
+    },
+    {
+     "domicile": "Norvge",
+     "exterieur": "Pays de Galles",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Autriche",
+     "exterieur": "Rp.Irlande",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "IrlandeduNord",
+     "exterieur": "Ukraine",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Gorgie",
+     "exterieur": "Hongrie",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Roumanie",
+     "exterieur": "Pologne",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Sude",
+     "exterieur": "Bosnie Herzg.",
+     "score": "3-2",
+     "issue": "1"
+    }
+   ]
   }
  }
 }
