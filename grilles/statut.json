@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-15T13:23:51Z",
+ "verifie_le": "2026-11-15T19:14:30Z",
  "formats": {
   "7": {
    "ok": false,
@@ -8,18 +8,20 @@
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    158,
-    159
+    159,
+    160
    ],
    "equipes_inconnues": [
-    "San Marin",
-    "Rép.Tchèque",
     "Pays De Galles",
     "Bosnie Herzég.",
     "Irlandedunord",
     "Israël",
     "Rép.Irlande",
-    "Kosovo"
+    "Kosovo",
+    "Pau",
+    "Ath. Bilbao",
+    "Espanyol",
+    "Cologne"
    ],
    "erreur": null
   },

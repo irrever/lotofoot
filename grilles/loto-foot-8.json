@@ -2,56 +2,6 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 158,
-   "nom": "Loto Foot 8 · grille N°158",
-   "cloture": "2026-11-15T14:55:00+01:00",
-   "validite": "dimanche 15 novembre 2026 à 14 h 55",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-158-2026.html",
-   "matchs": [
-    {
-     "domicile": "France",
-     "exterieur": "Turquie",
-     "libelle": "France – Turquie"
-    },
-    {
-     "domicile": "Espagne",
-     "exterieur": "Angleterre",
-     "libelle": "Espagne – Angleterre"
-    },
-    {
-     "domicile": "Chypre",
-     "exterieur": "Monténégro",
-     "libelle": "Chypre – Monténégro"
-    },
-    {
-     "domicile": "Lettonie",
-     "exterieur": "Arménie",
-     "libelle": "Lettonie – Arménie"
-    },
-    {
-     "domicile": "Finlande",
-     "exterieur": "San Marin",
-     "libelle": "Finlande – San Marin"
-    },
-    {
-     "domicile": "Biélorussie",
-     "exterieur": "Albanie",
-     "libelle": "Biélorussie – Albanie"
-    },
-    {
-     "domicile": "Croatie",
-     "exterieur": "Rép.Tchèque",
-     "libelle": "Croatie – Rép.Tchèque"
-    },
-    {
-     "domicile": "Belgique",
-     "exterieur": "Italie",
-     "libelle": "Belgique – Italie"
-    }
-   ]
-  },
-  {
    "numero": 159,
    "nom": "Loto Foot 8 · grille N°159",
    "cloture": "2026-11-17T20:40:00+01:00",
@@ -98,6 +48,56 @@
      "domicile": "Danemark",
      "exterieur": "Norvège",
      "libelle": "Danemark – Norvège"
+    }
+   ]
+  },
+  {
+   "numero": 160,
+   "nom": "Loto Foot 8 · grille N°160",
+   "cloture": "2026-11-20T19:55:00+01:00",
+   "validite": "vendredi 20 novembre 2026 à 19 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-160-2026.html",
+   "matchs": [
+    {
+     "domicile": "Troyes",
+     "exterieur": "Le Havre",
+     "libelle": "Troyes – Le Havre"
+    },
+    {
+     "domicile": "Red Star",
+     "exterieur": "Pau",
+     "libelle": "Red Star – Pau"
+    },
+    {
+     "domicile": "Guingamp",
+     "exterieur": "Rodez",
+     "libelle": "Guingamp – Rodez"
+    },
+    {
+     "domicile": "Annecy",
+     "exterieur": "Clermont",
+     "libelle": "Annecy FC – Clermont"
+    },
+    {
+     "domicile": "Metz",
+     "exterieur": "Boulogne",
+     "libelle": "Metz – Boulogne"
+    },
+    {
+     "domicile": "Nancy",
+     "exterieur": "Dijon",
+     "libelle": "Nancy – Dijon"
+    },
+    {
+     "domicile": "Ath. Bilbao",
+     "exterieur": "Espanyol",
+     "libelle": "Ath. Bilbao – Espanyol"
+    },
+    {
+     "domicile": "Bayern Munich",
+     "exterieur": "Cologne",
+     "libelle": "Bayern Munich – Cologne"
     }
    ]
   }
