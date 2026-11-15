@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-15T07:35:22Z",
+ "verifie_le": "2026-11-15T13:23:51Z",
  "formats": {
   "7": {
    "ok": false,
@@ -30,7 +30,8 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    95
+    95,
+    96
    ],
    "equipes_inconnues": [
     "Malte",
@@ -41,7 +42,10 @@
     "Irlandedunord",
     "Rép.Irlande",
     "Kosovo",
-    "Pays De Galles"
+    "Pays De Galles",
+    "Milan AC",
+    "Hull City",
+    "Real Sociedad"
    ],
    "erreur": null
   }

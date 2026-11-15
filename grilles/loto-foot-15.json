@@ -85,6 +85,91 @@
      "libelle": "Pays De Galles – Portugal"
     }
    ]
+  },
+  {
+   "numero": 96,
+   "nom": "Loto Foot 15 · grille N°96",
+   "cloture": "2026-11-21T20:40:00+01:00",
+   "validite": "samedi 21 novembre 2026 à 20 h 40",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-96-2026.html",
+   "matchs": [
+    {
+     "domicile": "Marseille",
+     "exterieur": "Le Mans",
+     "libelle": "Marseille – Le Mans"
+    },
+    {
+     "domicile": "Lille",
+     "exterieur": "Lyon",
+     "libelle": "Lille – Lyon"
+    },
+    {
+     "domicile": "Lens",
+     "exterieur": "Toulouse",
+     "libelle": "Lens – Toulouse"
+    },
+    {
+     "domicile": "Paris FC",
+     "exterieur": "Angers",
+     "libelle": "Paris FC – Angers"
+    },
+    {
+     "domicile": "Lorient",
+     "exterieur": "Rennes",
+     "libelle": "Lorient – Rennes"
+    },
+    {
+     "domicile": "Monaco",
+     "exterieur": "Auxerre",
+     "libelle": "Monaco – Auxerre"
+    },
+    {
+     "domicile": "Strasbourg",
+     "exterieur": "Brest",
+     "libelle": "Strasbourg – Brest"
+    },
+    {
+     "domicile": "Atalanta",
+     "exterieur": "Inter",
+     "libelle": "Atalanta – Inter Milan"
+    },
+    {
+     "domicile": "Milan AC",
+     "exterieur": "Frosinone",
+     "libelle": "Milan AC – Frosinone"
+    },
+    {
+     "domicile": "Hull City",
+     "exterieur": "Brighton",
+     "libelle": "Hull City – Brighton Hove"
+    },
+    {
+     "domicile": "Liverpool",
+     "exterieur": "Man United",
+     "libelle": "Liverpool – Man. United"
+    },
+    {
+     "domicile": "Santander",
+     "exterieur": "Real Sociedad",
+     "libelle": "Santander – Real Sociedad"
+    },
+    {
+     "domicile": "Getafe",
+     "exterieur": "Ath Madrid",
+     "libelle": "Getafe – Atl. Madrid"
+    },
+    {
+     "domicile": "Real Madrid",
+     "exterieur": "Celta",
+     "libelle": "Real Madrid – Celta Vigo"
+    },
+    {
+     "domicile": "Barcelona",
+     "exterieur": "Villarreal",
+     "libelle": "FC Barcelone – Villarreal"
+    }
+   ]
   }
  ]
 }
