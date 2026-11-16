@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-15",
+ "maj": "2026-11-16",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "grilles": {
   "8-152": {
@@ -766,7 +766,7 @@
   },
   "7-141": {
    "libelle": "Loto Foot 7 n141",
-   "maj": "2026-11-15",
+   "maj": "2026-11-16",
    "matchs": [
     {
      "domicile": "Italie",
@@ -856,7 +856,7 @@
   },
   "8-157": {
    "libelle": "Loto Foot 8 n157",
-   "maj": "2026-11-15",
+   "maj": "2026-11-16",
    "matchs": [
     {
      "domicile": "Serbie",
@@ -910,7 +910,7 @@
   },
   "15-93": {
    "libelle": "Loto Foot 15 n93",
-   "maj": "2026-11-15",
+   "maj": "2026-11-16",
    "matchs": [
     {
      "domicile": "Italie",
@@ -1006,7 +1006,7 @@
   },
   "12-98": {
    "libelle": "Loto Foot 12 n98",
-   "maj": "2026-11-15",
+   "maj": "2026-11-16",
    "matchs": [
     {
      "domicile": "Serbie",
@@ -1084,7 +1084,7 @@
   },
   "7-142": {
    "libelle": "Loto Foot 7 n142",
-   "maj": "2026-11-15",
+   "maj": "2026-11-16",
    "matchs": [
     {
      "domicile": "Portugal",
