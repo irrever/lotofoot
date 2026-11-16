@@ -1,9 +1,9 @@
 {
- "verifie_le": "2026-11-16T15:33:02Z",
+ "verifie_le": "2026-11-16T19:25:18Z",
  "formats": {
   "7": {
    "ok": false,
-   "erreur": "4 matchs trouvés pour un format de 7"
+   "erreur": "6 matchs trouvés pour un format de 7"
   },
   "8": {
    "ok": true,
@@ -32,19 +32,9 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    95,
     96
    ],
    "equipes_inconnues": [
-    "Malte",
-    "Macédoineduno.",
-    "Ecosse",
-    "Bosnie Herzég.",
-    "Israël",
-    "Irlandedunord",
-    "Rép.Irlande",
-    "Kosovo",
-    "Pays De Galles",
     "Milan AC",
     "Hull City",
     "Real Sociedad"
