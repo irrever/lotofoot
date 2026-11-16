@@ -1,55 +1,21 @@
 {
- "verifie_le": "2026-11-15T19:14:30Z",
+ "verifie_le": "2026-11-16T01:51:53Z",
  "formats": {
   "7": {
    "ok": false,
-   "erreur": "4 matchs trouvés pour un format de 7"
+   "erreur": "The read operation timed out"
   },
   "8": {
-   "ok": true,
-   "grilles_ouvertes": [
-    159,
-    160
-   ],
-   "equipes_inconnues": [
-    "Pays De Galles",
-    "Bosnie Herzég.",
-    "Irlandedunord",
-    "Israël",
-    "Rép.Irlande",
-    "Kosovo",
-    "Pau",
-    "Ath. Bilbao",
-    "Espanyol",
-    "Cologne"
-   ],
-   "erreur": null
+   "ok": false,
+   "erreur": "The read operation timed out"
   },
   "12": {
    "ok": false,
-   "erreur": "7 matchs trouvés pour un format de 12"
+   "erreur": "The read operation timed out"
   },
   "15": {
-   "ok": true,
-   "grilles_ouvertes": [
-    95,
-    96
-   ],
-   "equipes_inconnues": [
-    "Malte",
-    "Macédoineduno.",
-    "Ecosse",
-    "Bosnie Herzég.",
-    "Israël",
-    "Irlandedunord",
-    "Rép.Irlande",
-    "Kosovo",
-    "Pays De Galles",
-    "Milan AC",
-    "Hull City",
-    "Real Sociedad"
-   ],
-   "erreur": null
+   "ok": false,
+   "erreur": "The read operation timed out"
   }
  }
 }
