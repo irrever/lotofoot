@@ -1129,6 +1129,156 @@
      "issue": "1"
     }
    ]
+  },
+  "8-158": {
+   "libelle": "Loto Foot 8 n158",
+   "maj": "2026-11-16",
+   "matchs": [
+    {
+     "domicile": "France",
+     "exterieur": "Turquie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Espagne",
+     "exterieur": "Angleterre",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Chypre",
+     "exterieur": "Montngro",
+     "score": "1-4",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lettonie",
+     "exterieur": "Armnie",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "Finlande",
+     "exterieur": "San Marin",
+     "score": "7-2",
+     "issue": "1"
+    },
+    {
+     "domicile": "Bilorussie",
+     "exterieur": "Albanie",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Croatie",
+     "exterieur": "Rp.Tchque",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Belgique",
+     "exterieur": "Italie",
+     "score": "4-1",
+     "issue": "1"
+    }
+   ]
+  },
+  "15-94": {
+   "libelle": "Loto Foot 15 n94",
+   "maj": "2026-11-16",
+   "matchs": [
+    {
+     "domicile": "Portugal",
+     "exterieur": "Danemark",
+     "score": "1-4",
+     "issue": "2"
+    },
+    {
+     "domicile": "Norvge",
+     "exterieur": "Pays de Galles",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Autriche",
+     "exterieur": "Rp.Irlande",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "IrlandeduNord",
+     "exterieur": "Ukraine",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Gorgie",
+     "exterieur": "Hongrie",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Roumanie",
+     "exterieur": "Pologne",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Sude",
+     "exterieur": "Bosnie Herzg.",
+     "score": "3-2",
+     "issue": "1"
+    },
+    {
+     "domicile": "Chypre",
+     "exterieur": "Montngro",
+     "score": "1-4",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lettonie",
+     "exterieur": "Armnie",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "Bilorussie",
+     "exterieur": "Albanie",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Finlande",
+     "exterieur": "San Marin",
+     "score": "7-2",
+     "issue": "1"
+    },
+    {
+     "domicile": "Croatie",
+     "exterieur": "Rp.Tchque",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Belgique",
+     "exterieur": "Italie",
+     "score": "4-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Espagne",
+     "exterieur": "Angleterre",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "France",
+     "exterieur": "Turquie",
+     "score": "2-1",
+     "issue": "1"
+    }
+   ]
   }
  }
 }
