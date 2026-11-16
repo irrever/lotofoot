@@ -460,142 +460,142 @@
    {
     "rang": 1,
     "equipe": "Almeria",
-    "points": 29,
-    "matchs": 13,
-    "diff": 14
+    "points": 32,
+    "matchs": 14,
+    "diff": 15
    },
    {
     "rang": 2,
     "equipe": "Castellon",
-    "points": 27,
-    "matchs": 12,
-    "diff": 18
+    "points": 30,
+    "matchs": 13,
+    "diff": 19
    },
    {
     "rang": 3,
-    "equipe": "Burgos",
-    "points": 24,
+    "equipe": "Granada",
+    "points": 26,
     "matchs": 13,
-    "diff": 5
-   },
-   {
-    "rang": 4,
-    "equipe": "Eibar",
-    "points": 23,
-    "matchs": 12,
     "diff": 7
    },
    {
+    "rang": 4,
+    "equipe": "Girona",
+    "points": 24,
+    "matchs": 14,
+    "diff": 11
+   },
+   {
     "rang": 5,
-    "equipe": "Granada",
-    "points": 23,
-    "matchs": 12,
-    "diff": 6
+    "equipe": "Eibar",
+    "points": 24,
+    "matchs": 13,
+    "diff": 7
    },
    {
     "rang": 6,
-    "equipe": "Mallorca",
-    "points": 22,
-    "matchs": 12,
-    "diff": 8
+    "equipe": "Burgos",
+    "points": 24,
+    "matchs": 14,
+    "diff": 3
    },
    {
     "rang": 7,
-    "equipe": "Sp Gijon",
-    "points": 22,
+    "equipe": "Mallorca",
+    "points": 23,
     "matchs": 13,
-    "diff": -1
+    "diff": 8
    },
    {
     "rang": 8,
-    "equipe": "Girona",
-    "points": 21,
-    "matchs": 13,
-    "diff": 10
+    "equipe": "Sp Gijon",
+    "points": 23,
+    "matchs": 14,
+    "diff": -1
    },
    {
     "rang": 9,
     "equipe": "Oviedo",
     "points": 21,
-    "matchs": 13,
-    "diff": 3
+    "matchs": 14,
+    "diff": 2
    },
    {
     "rang": 10,
-    "equipe": "Las Palmas",
+    "equipe": "Cordoba",
     "points": 20,
-    "matchs": 13,
-    "diff": -2
+    "matchs": 14,
+    "diff": 0
    },
    {
     "rang": 11,
-    "equipe": "Cordoba",
-    "points": 19,
-    "matchs": 13,
-    "diff": 0
+    "equipe": "Las Palmas",
+    "points": 20,
+    "matchs": 14,
+    "diff": -3
    },
    {
     "rang": 12,
     "equipe": "Valladolid",
     "points": 18,
-    "matchs": 13,
-    "diff": 2
-   },
-   {
-    "rang": 13,
-    "equipe": "Sabadell",
-    "points": 18,
-    "matchs": 13,
+    "matchs": 14,
     "diff": 1
    },
    {
-    "rang": 14,
+    "rang": 13,
     "equipe": "Tenerife",
-    "points": 15,
-    "matchs": 12,
-    "diff": -2
+    "points": 18,
+    "matchs": 13,
+    "diff": 0
+   },
+   {
+    "rang": 14,
+    "equipe": "Sabadell",
+    "points": 18,
+    "matchs": 14,
+    "diff": -1
    },
    {
     "rang": 15,
     "equipe": "Eldense",
-    "points": 14,
-    "matchs": 13,
-    "diff": -6
+    "points": 17,
+    "matchs": 14,
+    "diff": -4
    },
    {
     "rang": 16,
+    "equipe": "Leganes",
+    "points": 15,
+    "matchs": 14,
+    "diff": -10
+   },
+   {
+    "rang": 17,
     "equipe": "Celta B",
     "points": 13,
     "matchs": 13,
     "diff": -6
    },
    {
-    "rang": 17,
+    "rang": 18,
     "equipe": "Sociedad B",
-    "points": 12,
-    "matchs": 13,
+    "points": 13,
+    "matchs": 14,
     "diff": -7
    },
    {
-    "rang": 18,
-    "equipe": "Leganes",
-    "points": 12,
-    "matchs": 13,
-    "diff": -12
-   },
-   {
     "rang": 19,
-    "equipe": "Andorra",
+    "equipe": "Cadiz",
     "points": 11,
-    "matchs": 12,
-    "diff": -5
+    "matchs": 14,
+    "diff": -2
    },
    {
     "rang": 20,
-    "equipe": "Cadiz",
-    "points": 10,
+    "equipe": "Andorra",
+    "points": 11,
     "matchs": 13,
-    "diff": -2
+    "diff": -6
    },
    {
     "rang": 21,
@@ -608,8 +608,8 @@
     "rang": 22,
     "equipe": "Ceuta",
     "points": 5,
-    "matchs": 13,
-    "diff": -20
+    "matchs": 14,
+    "diff": -22
    }
   ],
   "I1": [
