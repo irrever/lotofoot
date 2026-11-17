@@ -1220,7 +1220,8 @@
    "vu": "2026-11-16",
    "grilles": [
     "Loto Foot 8 n158",
-    "Loto Foot 15 n94"
+    "Loto Foot 15 n94",
+    "Loto Foot 12 n99"
    ]
   },
   {
@@ -1250,7 +1251,8 @@
    "vu": "2026-11-16",
    "grilles": [
     "Loto Foot 8 n158",
-    "Loto Foot 15 n94"
+    "Loto Foot 15 n94",
+    "Loto Foot 12 n99"
    ]
   },
   {
@@ -1260,7 +1262,8 @@
    "vu": "2026-11-16",
    "grilles": [
     "Loto Foot 8 n158",
-    "Loto Foot 15 n94"
+    "Loto Foot 15 n94",
+    "Loto Foot 12 n99"
    ]
   },
   {
@@ -1280,7 +1283,8 @@
    "vu": "2026-11-16",
    "grilles": [
     "Loto Foot 8 n158",
-    "Loto Foot 15 n94"
+    "Loto Foot 15 n94",
+    "Loto Foot 12 n99"
    ]
   },
   {
@@ -1291,6 +1295,93 @@
    "grilles": [
     "Loto Foot 8 n158",
     "Loto Foot 15 n94"
+   ]
+  },
+  {
+   "domicile": "Allemagne",
+   "exterieur": "Pays-Bas",
+   "score": "5-0",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 7 n143",
+    "Loto Foot 12 n99"
+   ]
+  },
+  {
+   "domicile": "Estonie",
+   "exterieur": "Bulgarie",
+   "score": "2-1",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 7 n143",
+    "Loto Foot 12 n99"
+   ]
+  },
+  {
+   "domicile": "Gibraltar",
+   "exterieur": "Malte",
+   "score": "1-1",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 7 n143",
+    "Loto Foot 12 n99"
+   ]
+  },
+  {
+   "domicile": "Grce",
+   "exterieur": "Serbie",
+   "score": "1-0",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 7 n143",
+    "Loto Foot 12 n99"
+   ]
+  },
+  {
+   "domicile": "I.Fro",
+   "exterieur": "Moldavie",
+   "score": "1-0",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 12 n99"
+   ]
+  },
+  {
+   "domicile": "Islande",
+   "exterieur": "Luxembourg",
+   "score": "3-0",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 7 n143"
+   ]
+  },
+  {
+   "domicile": "Kazakhstan",
+   "exterieur": "Slovaquie",
+   "score": "2-2",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 12 n99"
+   ]
+  },
+  {
+   "domicile": "MacdoineduNo.",
+   "exterieur": "Slovnie",
+   "score": "0-3",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 7 n143",
+    "Loto Foot 12 n99"
+   ]
+  },
+  {
+   "domicile": "Suisse",
+   "exterieur": "Ecosse",
+   "score": "4-0",
+   "vu": "2026-11-17",
+   "grilles": [
+    "Loto Foot 7 n143",
+    "Loto Foot 12 n99"
    ]
   }
  ]

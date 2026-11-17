@@ -1279,6 +1279,132 @@
      "issue": "1"
     }
    ]
+  },
+  "7-143": {
+   "libelle": "Loto Foot 7 n143",
+   "maj": "2026-11-17",
+   "matchs": [
+    {
+     "domicile": "Allemagne",
+     "exterieur": "Pays-Bas",
+     "score": "5-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Gibraltar",
+     "exterieur": "Malte",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Grce",
+     "exterieur": "Serbie",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "MacdoineduNo.",
+     "exterieur": "Slovnie",
+     "score": "0-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Islande",
+     "exterieur": "Luxembourg",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Estonie",
+     "exterieur": "Bulgarie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Suisse",
+     "exterieur": "Ecosse",
+     "score": "4-0",
+     "issue": "1"
+    }
+   ]
+  },
+  "12-99": {
+   "libelle": "Loto Foot 12 n99",
+   "maj": "2026-11-17",
+   "matchs": [
+    {
+     "domicile": "France",
+     "exterieur": "Turquie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Espagne",
+     "exterieur": "Angleterre",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Belgique",
+     "exterieur": "Italie",
+     "score": "4-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Croatie",
+     "exterieur": "Rp.Tchque",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Estonie",
+     "exterieur": "Bulgarie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "I.Fro",
+     "exterieur": "Moldavie",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Gibraltar",
+     "exterieur": "Malte",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "MacdoineduNo.",
+     "exterieur": "Slovnie",
+     "score": "0-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Kazakhstan",
+     "exterieur": "Slovaquie",
+     "score": "2-2",
+     "issue": "N"
+    },
+    {
+     "domicile": "Grce",
+     "exterieur": "Serbie",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Suisse",
+     "exterieur": "Ecosse",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Allemagne",
+     "exterieur": "Pays-Bas",
+     "score": "5-0",
+     "issue": "1"
+    }
+   ]
   }
  }
 }
