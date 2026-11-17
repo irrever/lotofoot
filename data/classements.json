@@ -1,6 +1,6 @@
 {
  "saison": "2627",
- "date": "2026-11-16",
+ "date": "2026-11-17",
  "par_championnat": {
   "E0": [
    {
@@ -573,8 +573,8 @@
     "rang": 17,
     "equipe": "Celta B",
     "points": 13,
-    "matchs": 13,
-    "diff": -6
+    "matchs": 14,
+    "diff": -7
    },
    {
     "rang": 18,
@@ -585,24 +585,24 @@
    },
    {
     "rang": 19,
+    "equipe": "Albacete",
+    "points": 13,
+    "matchs": 14,
+    "diff": -10
+   },
+   {
+    "rang": 20,
     "equipe": "Cadiz",
     "points": 11,
     "matchs": 14,
     "diff": -2
    },
    {
-    "rang": 20,
+    "rang": 21,
     "equipe": "Andorra",
     "points": 11,
     "matchs": 13,
     "diff": -6
-   },
-   {
-    "rang": 21,
-    "equipe": "Albacete",
-    "points": 10,
-    "matchs": 13,
-    "diff": -11
    },
    {
     "rang": 22,
