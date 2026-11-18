@@ -16,11 +16,7 @@
     },
     {
      "domicile": "Red Star",
-<<<<<<< HEAD
-     "exterieur": "Pau",
-=======
      "exterieur": "Pau FC",
->>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
      "libelle": "Red Star – Pau"
     },
     {
@@ -44,22 +40,13 @@
      "libelle": "Nancy – Dijon"
     },
     {
-<<<<<<< HEAD
-     "domicile": "Ath. Bilbao",
-     "exterieur": "Espanyol",
-=======
      "domicile": "Ath Bilbao",
      "exterieur": "Espanol",
->>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
      "libelle": "Ath. Bilbao – Espanyol"
     },
     {
      "domicile": "Bayern Munich",
-<<<<<<< HEAD
-     "exterieur": "Cologne",
-=======
      "exterieur": "FC Koln",
->>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
      "libelle": "Bayern Munich – Cologne"
     }
    ]
