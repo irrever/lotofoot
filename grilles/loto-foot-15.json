@@ -85,6 +85,91 @@
      "libelle": "FC Barcelone – Villarreal"
     }
    ]
+  },
+  {
+   "numero": 97,
+   "nom": "Loto Foot 15 · grille N°97",
+   "cloture": "2026-11-24T20:55:00+01:00",
+   "validite": "mardi 24 novembre 2026 à 20 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-97-2026.html",
+   "matchs": [
+    {
+     "domicile": "RB Leipzig",
+     "exterieur": "Lens",
+     "libelle": "RB Leipzig – Lens"
+    },
+    {
+     "domicile": "Arsenal",
+     "exterieur": "Dortmund",
+     "libelle": "Arsenal – Dortmund"
+    },
+    {
+     "domicile": "Como",
+     "exterieur": "AEK",
+     "libelle": "Como 1907 – AEK Athènes"
+    },
+    {
+     "domicile": "Feyenoord",
+     "exterieur": "Porto",
+     "libelle": "Feyenoord – FC Porto"
+    },
+    {
+     "domicile": "Slovan Bratislava",
+     "exterieur": "Betis",
+     "libelle": "Slo.Bratislava – Betis Séville"
+    },
+    {
+     "domicile": "Man City",
+     "exterieur": "Napoli",
+     "libelle": "Man. City – Naples"
+    },
+    {
+     "domicile": "Real Madrid",
+     "exterieur": "PSV Eindhoven",
+     "libelle": "Real Madrid – PSV Eindhoven"
+    },
+    {
+     "domicile": "Sabah FK",
+     "exterieur": "Barcelona",
+     "libelle": "Sabah FK – FC Barcelone"
+    },
+    {
+     "domicile": "Slavia Prague",
+     "exterieur": "Villarreal",
+     "libelle": "Slavia Prague – Villarreal"
+    },
+    {
+     "domicile": "Shakht.Donetsk",
+     "exterieur": "Fenerbahce",
+     "libelle": "Shakht.Donetsk – Fenerbahce"
+    },
+    {
+     "domicile": "Sp Lisbon",
+     "exterieur": "Man United",
+     "libelle": "Sporting – Man. United"
+    },
+    {
+     "domicile": "Club Brugge",
+     "exterieur": "Liverpool",
+     "libelle": "Club Bruges – Liverpool"
+    },
+    {
+     "domicile": "Inter",
+     "exterieur": "Stuttgart",
+     "libelle": "Inter Milan – Stuttgart"
+    },
+    {
+     "domicile": "Lille",
+     "exterieur": "Bayern Munich",
+     "libelle": "Lille – Bayern Munich"
+    },
+    {
+     "domicile": "Paris SG",
+     "exterieur": "Roma",
+     "libelle": "Paris SG – AS Rome"
+    }
+   ]
   }
  ]
 }

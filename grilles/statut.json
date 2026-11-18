@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-18T10:42:42Z",
+ "verifie_le": "2026-11-18T13:42:32Z",
  "formats": {
   "7": {
    "ok": true,
@@ -85,9 +85,15 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    96
+    96,
+    97
    ],
-   "equipes_inconnues": [],
+   "equipes_inconnues": [
+    "Slovan Bratislava",
+    "Sabah FK",
+    "Slavia Prague",
+    "Shakht.Donetsk"
+   ],
    "erreur": null
   }
  }
