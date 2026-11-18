@@ -1405,6 +1405,156 @@
      "issue": "1"
     }
    ]
+  },
+  "8-159": {
+   "libelle": "Loto Foot 8 n159",
+   "maj": "2026-11-18",
+   "matchs": [
+    {
+     "domicile": "Pays de Galles",
+     "exterieur": "Portugal",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Bosnie Herzg.",
+     "exterieur": "Roumanie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hongrie",
+     "exterieur": "IrlandeduNord",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Isral",
+     "exterieur": "Autriche",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Rp.Irlande",
+     "exterieur": "Kosovo",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Ukraine",
+     "exterieur": "Gorgie",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Pologne",
+     "exterieur": "Sude",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Danemark",
+     "exterieur": "Norvge",
+     "score": "2-3",
+     "issue": "2"
+    }
+   ]
+  },
+  "15-95": {
+   "libelle": "Loto Foot 15 n95",
+   "maj": "2026-11-18",
+   "matchs": [
+    {
+     "domicile": "Allemagne",
+     "exterieur": "Pays-Bas",
+     "score": "5-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Gibraltar",
+     "exterieur": "Malte",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Grce",
+     "exterieur": "Serbie",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "MacdoineduNo.",
+     "exterieur": "Slovnie",
+     "score": "0-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Islande",
+     "exterieur": "Luxembourg",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Estonie",
+     "exterieur": "Bulgarie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Suisse",
+     "exterieur": "Ecosse",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Bosnie Herzg.",
+     "exterieur": "Roumanie",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Danemark",
+     "exterieur": "Norvge",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Isral",
+     "exterieur": "Autriche",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Hongrie",
+     "exterieur": "IrlandeduNord",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Rp.Irlande",
+     "exterieur": "Kosovo",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Ukraine",
+     "exterieur": "Gorgie",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Pologne",
+     "exterieur": "Sude",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Pays de Galles",
+     "exterieur": "Portugal",
+     "score": "2-3",
+     "issue": "2"
+    }
+   ]
   }
  }
 }

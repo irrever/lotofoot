@@ -1304,7 +1304,8 @@
    "vu": "2026-11-17",
    "grilles": [
     "Loto Foot 7 n143",
-    "Loto Foot 12 n99"
+    "Loto Foot 12 n99",
+    "Loto Foot 15 n95"
    ]
   },
   {
@@ -1314,7 +1315,8 @@
    "vu": "2026-11-17",
    "grilles": [
     "Loto Foot 7 n143",
-    "Loto Foot 12 n99"
+    "Loto Foot 12 n99",
+    "Loto Foot 15 n95"
    ]
   },
   {
@@ -1324,7 +1326,8 @@
    "vu": "2026-11-17",
    "grilles": [
     "Loto Foot 7 n143",
-    "Loto Foot 12 n99"
+    "Loto Foot 12 n99",
+    "Loto Foot 15 n95"
    ]
   },
   {
@@ -1334,7 +1337,8 @@
    "vu": "2026-11-17",
    "grilles": [
     "Loto Foot 7 n143",
-    "Loto Foot 12 n99"
+    "Loto Foot 12 n99",
+    "Loto Foot 15 n95"
    ]
   },
   {
@@ -1352,7 +1356,8 @@
    "score": "3-0",
    "vu": "2026-11-17",
    "grilles": [
-    "Loto Foot 7 n143"
+    "Loto Foot 7 n143",
+    "Loto Foot 15 n95"
    ]
   },
   {
@@ -1371,7 +1376,8 @@
    "vu": "2026-11-17",
    "grilles": [
     "Loto Foot 7 n143",
-    "Loto Foot 12 n99"
+    "Loto Foot 12 n99",
+    "Loto Foot 15 n95"
    ]
   },
   {
@@ -1381,7 +1387,88 @@
    "vu": "2026-11-17",
    "grilles": [
     "Loto Foot 7 n143",
-    "Loto Foot 12 n99"
+    "Loto Foot 12 n99",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Bosnie Herzg.",
+   "exterieur": "Roumanie",
+   "score": "2-1",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Danemark",
+   "exterieur": "Norvge",
+   "score": "2-3",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Hongrie",
+   "exterieur": "IrlandeduNord",
+   "score": "1-1",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Isral",
+   "exterieur": "Autriche",
+   "score": "1-1",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Pays de Galles",
+   "exterieur": "Portugal",
+   "score": "2-3",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Pologne",
+   "exterieur": "Sude",
+   "score": "1-1",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Rp.Irlande",
+   "exterieur": "Kosovo",
+   "score": "3-0",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
+   ]
+  },
+  {
+   "domicile": "Ukraine",
+   "exterieur": "Gorgie",
+   "score": "1-0",
+   "vu": "2026-11-18",
+   "grilles": [
+    "Loto Foot 8 n159",
+    "Loto Foot 15 n95"
    ]
   }
  ]
