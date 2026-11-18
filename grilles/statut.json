@@ -1,27 +1,13 @@
 {
- "verifie_le": "2026-11-18T13:42:32Z",
+ "verifie_le": "2026-11-18T19:25:05Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    144,
-    145
+    145,
+    146
    ],
    "equipes_inconnues": [
-    "Chelsea F",
-    "Paris SG F",
-    "Hacken F",
-    "Man.City F",
-    "Real Madrid F",
-    "Inter Milan F",
-    "Coritiba",
-    "Santos",
-    "Corinthians",
-    "Botafogo",
-    "Cruzeiro",
-    "Palmeiras",
-    "Flamengo",
-    "Atletico Pr",
     "Arsenal F",
     "Lyon F",
     "Benfica F",
@@ -51,34 +37,15 @@
   "12": {
    "ok": true,
    "grilles_ouvertes": [
-    100,
-    101
+    101,
+    102
    ],
    "equipes_inconnues": [
-    "Chelsea F",
-    "Paris SG F",
-    "Hacken F",
-    "Man.City F",
-    "Real Madrid F",
-    "Inter Milan F",
-    "Coritiba",
-    "Santos",
-    "Corinthians",
-    "Botafogo",
-    "Cruzeiro",
-    "Palmeiras",
-    "Flamengo",
-    "Atletico Pr",
-    "Gremio",
-    "Bahia Salvador",
-    "Remo Pa",
-    "Chapecoense SC",
-    "Benfica F",
-    "AS Rome F",
-    "Paris FC F",
-    "Hb Koge F",
-    "Arsenal F",
-    "Lyon F"
+    "AC Monza",
+    "Sheffield Utd",
+    "Queens Park R.",
+    "Bodø/Glimt",
+    "LASK Linz"
    ],
    "erreur": null
   },
