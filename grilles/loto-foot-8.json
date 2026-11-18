@@ -2,56 +2,6 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 159,
-   "nom": "Loto Foot 8 · grille N°159",
-   "cloture": "2026-11-17T20:40:00+01:00",
-   "validite": "mardi 17 novembre 2026 à 20 h 40",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-159-2026.html",
-   "matchs": [
-    {
-     "domicile": "Pays De Galles",
-     "exterieur": "Portugal",
-     "libelle": "Pays De Galles – Portugal"
-    },
-    {
-     "domicile": "Bosnie Herzég.",
-     "exterieur": "Roumanie",
-     "libelle": "Bosnie Herzég. – Roumanie"
-    },
-    {
-     "domicile": "Hongrie",
-     "exterieur": "Irlandedunord",
-     "libelle": "Hongrie – Irlandedunord"
-    },
-    {
-     "domicile": "Israël",
-     "exterieur": "Autriche",
-     "libelle": "Israël – Autriche"
-    },
-    {
-     "domicile": "Rép.Irlande",
-     "exterieur": "Kosovo",
-     "libelle": "Rép.Irlande – Kosovo"
-    },
-    {
-     "domicile": "Ukraine",
-     "exterieur": "Géorgie",
-     "libelle": "Ukraine – Géorgie"
-    },
-    {
-     "domicile": "Pologne",
-     "exterieur": "Suède",
-     "libelle": "Pologne – Suède"
-    },
-    {
-     "domicile": "Danemark",
-     "exterieur": "Norvège",
-     "libelle": "Danemark – Norvège"
-    }
-   ]
-  },
-  {
    "numero": 160,
    "nom": "Loto Foot 8 · grille N°160",
    "cloture": "2026-11-20T19:55:00+01:00",
@@ -98,6 +48,56 @@
      "domicile": "Bayern Munich",
      "exterieur": "Cologne",
      "libelle": "Bayern Munich – Cologne"
+    }
+   ]
+  },
+  {
+   "numero": 161,
+   "nom": "Loto Foot 8 · grille N°161",
+   "cloture": "2026-11-21T17:10:00+01:00",
+   "validite": "samedi 21 novembre 2026 à 17 h 10",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-161-2026.html",
+   "matchs": [
+    {
+     "domicile": "Nice",
+     "exterieur": "Paris SG",
+     "libelle": "Nice – Paris SG"
+    },
+    {
+     "domicile": "Lille",
+     "exterieur": "Lyon",
+     "libelle": "Lille – Lyon"
+    },
+    {
+     "domicile": "Lens",
+     "exterieur": "Toulouse",
+     "libelle": "Lens – Toulouse"
+    },
+    {
+     "domicile": "Monaco",
+     "exterieur": "Auxerre",
+     "libelle": "Monaco – Auxerre"
+    },
+    {
+     "domicile": "Strasbourg",
+     "exterieur": "Brest",
+     "libelle": "Strasbourg – Brest"
+    },
+    {
+     "domicile": "Reims",
+     "exterieur": "St Etienne",
+     "libelle": "Reims – St Etienne"
+    },
+    {
+     "domicile": "Newcastle",
+     "exterieur": "Arsenal",
+     "libelle": "Newcastle – Arsenal"
+    },
+    {
+     "domicile": "Real Madrid",
+     "exterieur": "Celta",
+     "libelle": "Real Madrid – Celta Vigo"
     }
    ]
   }

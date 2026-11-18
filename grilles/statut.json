@@ -1,21 +1,39 @@
 {
- "verifie_le": "2026-11-18T01:47:01Z",
+ "verifie_le": "2026-11-18T07:45:01Z",
  "formats": {
   "7": {
    "ok": false,
-   "erreur": "<urlopen error timed out>"
+   "erreur": "6 matchs trouvés pour un format de 7"
   },
   "8": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    160,
+    161
+   ],
+   "equipes_inconnues": [
+    "Pau",
+    "Ath. Bilbao",
+    "Espanyol",
+    "Cologne"
+   ],
+   "erreur": null
   },
   "12": {
    "ok": false,
-   "erreur": "The read operation timed out"
+   "erreur": "7 matchs trouvés pour un format de 12"
   },
   "15": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    96
+   ],
+   "equipes_inconnues": [
+    "Milan AC",
+    "Hull City",
+    "Real Sociedad"
+   ],
+   "erreur": null
   }
  }
 }
