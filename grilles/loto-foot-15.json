@@ -50,12 +50,20 @@
      "libelle": "Atalanta – Inter Milan"
     },
     {
+<<<<<<< HEAD
      "domicile": "Milan AC",
+=======
+     "domicile": "Milan",
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
      "exterieur": "Frosinone",
      "libelle": "Milan AC – Frosinone"
     },
     {
+<<<<<<< HEAD
      "domicile": "Hull City",
+=======
+     "domicile": "Hull",
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
      "exterieur": "Brighton",
      "libelle": "Hull City – Brighton Hove"
     },
@@ -66,7 +74,11 @@
     },
     {
      "domicile": "Santander",
+<<<<<<< HEAD
      "exterieur": "Real Sociedad",
+=======
+     "exterieur": "Sociedad",
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
      "libelle": "Santander – Real Sociedad"
     },
     {

@@ -2,72 +2,149 @@
  "format": 12,
  "grilles": [
   {
+<<<<<<< HEAD
    "numero": 99,
    "nom": "Loto Foot 12 · grille N°99",
    "cloture": "2026-11-15T20:40:00+01:00",
    "validite": "dimanche 15 novembre 2026 à 20 h 40",
+=======
+   "numero": 100,
+   "nom": "Loto Foot 12 · grille N°100",
+   "cloture": "2026-11-18T18:40:00+01:00",
+   "validite": "mercredi 18 novembre 2026 à 18 h 40",
    "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-12/numero-12-99-2026.html",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-12/numero-12-100-2026.html",
    "matchs": [
     {
-     "domicile": "France",
-     "exterieur": "Turquie",
-     "libelle": "France – Turquie"
+     "domicile": "Chelsea F",
+     "exterieur": "Paris SG F",
+     "libelle": "Chelsea F – Paris SG F"
     },
     {
-     "domicile": "Espagne",
-     "exterieur": "Angleterre",
-     "libelle": "Espagne – Angleterre"
+     "domicile": "Hacken F",
+     "exterieur": "Man.City F",
+     "libelle": "Hacken F – Man.City F"
     },
     {
-     "domicile": "Belgique",
-     "exterieur": "Italie",
-     "libelle": "Belgique – Italie"
+     "domicile": "Real Madrid F",
+     "exterieur": "Inter Milan F",
+     "libelle": "Real Madrid F – Inter Milan F"
     },
     {
-     "domicile": "Croatie",
-     "exterieur": "Rép.Tchèque",
-     "libelle": "Croatie – Rép.Tchèque"
+     "domicile": "Coritiba",
+     "exterieur": "Santos",
+     "libelle": "Coritiba – Santos"
     },
     {
-     "domicile": "Estonie",
-     "exterieur": "Bulgarie",
-     "libelle": "Estonie – Bulgarie"
+     "domicile": "Corinthians",
+     "exterieur": "Botafogo",
+     "libelle": "Corinthians – Botafogo"
     },
     {
-     "domicile": "I.Féroé",
-     "exterieur": "Moldavie",
-     "libelle": "I.Féroé – Moldavie"
+     "domicile": "Cruzeiro",
+     "exterieur": "Palmeiras",
+     "libelle": "Cruzeiro – Palmeiras"
     },
     {
-     "domicile": "Gibraltar",
-     "exterieur": "Malte",
-     "libelle": "Gibraltar – Malte"
+     "domicile": "Flamengo",
+     "exterieur": "Atletico Pr",
+     "libelle": "Flamengo – Atletico Pr"
     },
     {
-     "domicile": "Macédoineduno.",
-     "exterieur": "Slovénie",
-     "libelle": "Macédoineduno. – Slovénie"
+     "domicile": "Gremio",
+     "exterieur": "Bahia Salvador",
+     "libelle": "Gremio – Bahia Salvador"
     },
     {
-     "domicile": "Kazakhstan",
-     "exterieur": "Slovaquie",
-     "libelle": "Kazakhstan – Slovaquie"
+     "domicile": "Remo Pa",
+     "exterieur": "Chapecoense SC",
+     "libelle": "Remo Pa – Chapecoense SC"
     },
     {
-     "domicile": "Grèce",
-     "exterieur": "Serbie",
-     "libelle": "Grèce – Serbie"
+     "domicile": "Benfica F",
+     "exterieur": "AS Rome F",
+     "libelle": "Benfica F – AS Rome F"
     },
     {
-     "domicile": "Suisse",
-     "exterieur": "Ecosse",
-     "libelle": "Suisse – Ecosse"
+     "domicile": "Paris FC F",
+     "exterieur": "Hb Koge F",
+     "libelle": "Paris FC F – Hb Koge F"
     },
     {
-     "domicile": "Allemagne",
-     "exterieur": "Pays-Bas",
-     "libelle": "Allemagne – Pays-Bas"
+     "domicile": "Arsenal F",
+     "exterieur": "Lyon F",
+     "libelle": "Arsenal F – Lyon F"
+    }
+   ]
+  },
+  {
+   "numero": 101,
+   "nom": "Loto Foot 12 · grille N°101",
+   "cloture": "2026-11-22T14:55:00+01:00",
+   "validite": "dimanche 22 novembre 2026 à 14 h 55",
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-12/numero-12-101-2026.html",
+   "matchs": [
+    {
+     "domicile": "Marseille",
+     "exterieur": "Le Mans",
+     "libelle": "Marseille – Le Mans"
+    },
+    {
+     "domicile": "Lorient",
+     "exterieur": "Rennes",
+     "libelle": "Lorient – Rennes"
+    },
+    {
+     "domicile": "Paris FC",
+     "exterieur": "Angers",
+     "libelle": "Paris FC – Angers"
+    },
+    {
+     "domicile": "Atalanta",
+     "exterieur": "Inter",
+     "libelle": "Atalanta – Inter Milan"
+    },
+    {
+     "domicile": "Milan",
+     "exterieur": "Frosinone",
+     "libelle": "Milan AC – Frosinone"
+    },
+    {
+     "domicile": "Getafe",
+     "exterieur": "Ath Madrid",
+     "libelle": "Getafe – Atl. Madrid"
+    },
+    {
+     "domicile": "Liverpool",
+     "exterieur": "Man United",
+     "libelle": "Liverpool – Man. United"
+    },
+    {
+     "domicile": "Hull",
+     "exterieur": "Brighton",
+     "libelle": "Hull City – Brighton Hove"
+    },
+    {
+     "domicile": "Werder Bremen",
+     "exterieur": "Hamburg",
+     "libelle": "Werder Brême – Hambourg"
+    },
+    {
+     "domicile": "Bologna",
+     "exterieur": "Udinese",
+     "libelle": "Bologne – Udinese"
+    },
+    {
+     "domicile": "Osasuna",
+     "exterieur": "Malaga",
+     "libelle": "Osasuna – Malaga"
+    },
+    {
+     "domicile": "Santander",
+     "exterieur": "Sociedad",
+     "libelle": "Santander – Real Sociedad"
     }
    ]
   }

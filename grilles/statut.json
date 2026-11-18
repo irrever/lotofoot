@@ -1,38 +1,123 @@
 {
+<<<<<<< HEAD
  "verifie_le": "2026-11-18T07:45:01Z",
  "formats": {
   "7": {
    "ok": false,
    "erreur": "6 matchs trouvés pour un format de 7"
+=======
+ "verifie_le": "2026-11-18T10:41:09Z",
+ "formats": {
+  "7": {
+   "ok": true,
+   "grilles_ouvertes": [
+    144,
+    145
+   ],
+   "equipes_inconnues": [
+    "Chelsea F",
+    "Paris SG F",
+    "Hacken F",
+    "Man.City F",
+    "Real Madrid F",
+    "Inter Milan F",
+    "Coritiba",
+    "Santos",
+    "Corinthians",
+    "Botafogo",
+    "Cruzeiro",
+    "Palmeiras",
+    "Flamengo",
+    "Atletico Pr",
+    "Arsenal F",
+    "Lyon F",
+    "Benfica F",
+    "AS Rome F",
+    "Vasco De Gama",
+    "Internacional",
+    "Vitoria Ba",
+    "Bragantino Sp",
+    "Sao Paulo",
+    "Fluminense",
+    "Seattle",
+    "Salt Lake",
+    "Orlando City",
+    "FC Cincinnati"
+   ],
+   "erreur": null
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
   },
   "8": {
    "ok": true,
    "grilles_ouvertes": [
     160,
     161
+<<<<<<< HEAD
    ],
    "equipes_inconnues": [
     "Pau",
     "Ath. Bilbao",
     "Espanyol",
     "Cologne"
+=======
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
    ],
+   "equipes_inconnues": [],
    "erreur": null
   },
   "12": {
+<<<<<<< HEAD
    "ok": false,
    "erreur": "7 matchs trouvés pour un format de 12"
+=======
+   "ok": true,
+   "grilles_ouvertes": [
+    100,
+    101
+   ],
+   "equipes_inconnues": [
+    "Chelsea F",
+    "Paris SG F",
+    "Hacken F",
+    "Man.City F",
+    "Real Madrid F",
+    "Inter Milan F",
+    "Coritiba",
+    "Santos",
+    "Corinthians",
+    "Botafogo",
+    "Cruzeiro",
+    "Palmeiras",
+    "Flamengo",
+    "Atletico Pr",
+    "Gremio",
+    "Bahia Salvador",
+    "Remo Pa",
+    "Chapecoense SC",
+    "Benfica F",
+    "AS Rome F",
+    "Paris FC F",
+    "Hb Koge F",
+    "Arsenal F",
+    "Lyon F"
+   ],
+   "erreur": null
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
   },
   "15": {
    "ok": true,
    "grilles_ouvertes": [
     96
+<<<<<<< HEAD
    ],
    "equipes_inconnues": [
     "Milan AC",
     "Hull City",
     "Real Sociedad"
+=======
+>>>>>>> f192aee (Grilles : lecture corrigée et alias réunis dans un seul fichier)
    ],
+   "equipes_inconnues": [],
    "erreur": null
   }
  }

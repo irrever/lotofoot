@@ -32,6 +32,9 @@ pub = json.load(open(ROOT / 'data/donnees_publiees.json', encoding='utf-8'))
 donnees = {'version': pub['version'], 'derniere_date': pub['derniere_date'], 'equipes': pub['equipes'],
            'stats': pub['stats'], 'modele': pub['modele'], 'publie_le': pub.get('publie_le')}
 donnees['bilan'] = dernier_bilan()
+ALIAS_FICHIER = ROOT / 'data/alias_equipes.json'   # alias des noms d'équipes, partagé avec scripts/grilles.py
+if ALIAS_FICHIER.exists():
+    donnees['alias'] = json.load(open(ALIAS_FICHIER, encoding='utf-8'))
 SELECTIONS = ROOT / 'data/selections.json'   # équipes nationales, estimation (src/selections.py)
 if SELECTIONS.exists():
     _sel = json.load(open(SELECTIONS, encoding='utf-8'))

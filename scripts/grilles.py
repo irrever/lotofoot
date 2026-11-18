@@ -13,6 +13,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 import urllib.request
 from zoneinfo import ZoneInfo
 
@@ -26,16 +27,20 @@ PARIS = ZoneInfo('Europe/Paris')
 MOIS = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin': 6, 'juillet': 7, 'août': 8,
         'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
-# Noms utilisés sur le site, quand ils diffèrent de ceux de la base de l'application
-CORRESPONDANCES = {
-    'Bayer Leverkusen': 'Leverkusen', 'Az Alkmaar': 'AZ Alkmaar', 'Juventus Turin': 'Juventus',
-    'Celta Vigo': 'Celta', 'Saint-Gilloise': 'St. Gilloise', 'Brighton Hove': 'Brighton',
-    'FC Séville': 'Sevilla', 'Annecy FC': 'Annecy', 'Man. United': 'Man United', 'Inter Milan': 'Inter',
-    'Naples': 'Napoli', 'Como 1907': 'Como', 'Lazio Rome': 'Lazio', 'CF Valence': 'Valencia',
-    'Atl. Madrid': 'Ath Madrid', 'FC Barcelone': 'Barcelona',
-    'AS Rome': 'Roma', 'FC Porto': 'Porto', 'Club Bruges': 'Club Brugge', 'Man. City': 'Man City',
-    'AEK Athènes': 'AEK', 'Betis Séville': 'Betis', 'Slo.Bratislava': 'Slovan Bratislava',
-}
+# Alias des noms (grilles du site -> données de l'application) : le même fichier sert à l'application
+try:
+    with open(os.path.join(RACINE, 'data', 'alias_equipes.json'), encoding='utf-8') as f:
+        ALIAS = json.load(f)
+except FileNotFoundError:
+    ALIAS = {}
+CONNUES = {}  # nom normalisé -> nom exact des données, rempli au lancement
+
+
+def cle(nom):
+    """Même normalisation que l'application : minuscules, sans accents, sans points, espaces réduits."""
+    texte = unicodedata.normalize('NFD', str(nom or '').lower())
+    texte = ''.join(c for c in texte if not unicodedata.combining(c))
+    return re.sub(r'\s+', ' ', texte.replace('.', '')).strip()
 
 
 def lire(url):
@@ -80,8 +85,9 @@ def lire_grille(format_, href):
                 if 'Résultat Loto Foot' in texte[i] or 'Quel est le prono' in texte[i]), len(texte))
     matchs = []
     for l in texte[debut:fin]:
-        m = re.match(r'^Pronostic (.+?) – (.+)$', l)
-        if m and m.group(1) not in [a for a, _ in matchs]:
+        # Selon le gabarit de la page, la ligne porte le préfixe « Pronostic », « Prono », ou aucun
+        m = re.match(r'^(?:Pronostic |Prono )?(.+?) – (.+)$', l)
+        if m and len(m.group(1)) < 40 and len(m.group(2)) < 40 and m.group(1).strip() not in [a for a, _ in matchs]:
             matchs.append((m.group(1).strip(), m.group(2).strip()))
     if len(matchs) != format_:
         raise ValueError('%d matchs trouvés pour un format de %d' % (len(matchs), format_))
@@ -89,7 +95,9 @@ def lire_grille(format_, href):
 
 
 def canonique(nom):
-    return CORRESPONDANCES.get(nom, nom)
+    """Nom utilisé dans l'application : alias, puis nom exact des données (même écriture normalisée)."""
+    c = cle(nom)
+    return ALIAS.get(c) or CONNUES.get(c) or nom
 
 
 def grilles_ouvertes(format_):
@@ -101,11 +109,17 @@ def grilles_ouvertes(format_):
         raise ValueError('aucune grille listée sur la rubrique')
     maintenant = dt.datetime.now(dt.timezone.utc)
     ouvertes = []
+    lues, erreurs = 0, []
     for annee, numero, href in recentes[:CANDIDATES]:
         time.sleep(PAUSE)
-        lu = lire_grille(format_, href)
+        try:
+            lu = lire_grille(format_, href)
+        except Exception as e:  # une grille illisible n'empêche pas de lire les autres
+            erreurs.append('grille %s : %s' % (numero, e))
+            continue
         if lu is None:
             continue
+        lues += 1
         matchs, cloture, date = lu
         if date <= maintenant:
             continue
@@ -119,6 +133,10 @@ def grilles_ouvertes(format_):
             'matchs': [{'domicile': canonique(a), 'exterieur': canonique(b), 'libelle': '%s – %s' % (a, b)}
                        for a, b in matchs],
         })
+    if erreurs and not lues:
+        raise ValueError(' ; '.join(erreurs))
+    for e in erreurs:
+        print('Loto Foot %d : %s ignorée' % (format_, e), file=sys.stderr)
     return sorted(ouvertes, key=lambda g: g['cloture'])
 
 
@@ -141,6 +159,7 @@ def ecrire_si_change(chemin, objet):
 
 def main(sortie):
     connues = equipes_connues()
+    CONNUES.update({cle(t): t for t in connues})
     statut = {'verifie_le': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'), 'formats': {}}
     echecs = 0
     for format_ in FORMATS:

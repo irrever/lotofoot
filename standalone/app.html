@@ -448,12 +448,8 @@ __PWA_HEAD__
   var FORMAT_DEFAUT = 8;
   var LIBELLE_PRONO = { '1': '1', '2': '2', 'N': 'N', '12': '1 ou 2', '1N': '1 ou N', '2N': '2 ou N', '12N': '1 ou 2 ou N' };
   var NOTE_METHODE = 'Calculée à partir des 25 statistiques de chaque équipe et de leur classement Elo. Entre deux championnats, les statistiques de l’équipe du championnat le plus faible sont ramenées à l’échelle du plus fort, et l’écart de niveau s’ajoute au classement Elo (4 points Elo par point de note, sur une échelle de 100). Aucune cote n’est utilisée.';
-  var ALIAS = {
-    'como 1907': 'Como', 'betis seville': 'Betis', 'fc porto': 'Porto', 'naples': 'Napoli',
-    'club bruges': 'Club Brugge', 'aek athenes': 'AEK', 'manchester city': 'Man City', 'psg': 'Paris SG',
-    'sporting': 'Sp Lisbon', 'sporting cp': 'Sp Lisbon', 'slobratislava': 'Slovan Bratislava', 'milan ac': 'Milan', 'real sociedad': 'Sociedad', 'cologne': 'FC Koln',
-    'pau': 'Pau FC', 'nottingham f': "Nott'm Forest", 'werder breme': 'Werder Bremen', 'reptcheque': 'Tchéquie', 'repirlande': 'Irlande', 'iferoe': 'Îles Féroé', 'irlandedunord': 'Irlande du Nord', 'macedoineduno': 'Macédoine du Nord', 'san marin': 'Saint-Marin', 'bosnie herzeg': 'Bosnie-Herzégovine'
-  };
+  // Alias des noms : data/alias_equipes.json, le même fichier que le relevé des grilles
+  var ALIAS = DATA.alias || {};
   var SOURCE_TAG = {
     modele_stats: '<span class="tag">Stats, sans cotes</span>',
     hypothese: '<span class="tag hyp">Hypothèse</span>',
