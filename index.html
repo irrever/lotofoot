@@ -50,6 +50,7 @@
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+.tagvide { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 8px; background: var(--line); color: var(--muted, #5b6b62); white-space: nowrap; }
 .gauche { text-align: left; }
 .res-chip { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--line); color: var(--muted, #5b6b62); }
 .res-chip.v { color: var(--ok); }
@@ -497,6 +498,11 @@ details.sect > .corps { padding: 0 0 16px; }
     var d = new Date(iso);
     return isNaN(d.getTime()) ? String(iso) : d.toLocaleString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
+  // Probabilité de la grille complète : « non calculée » tant qu’un match n’a pas de données
+  function probGrilleGrille(res) {
+    if (res && res.matchs && res.matchs.some(function (m) { return m.sansDonnee; })) return 'non calculée';
+    return probGrille(res ? res.proba_grille : null);
+  }
   function probGrille(p) {
     if (p == null || isNaN(p)) return 'incomplète';
     if (p < 0.001) return 'moins de 0,1 %';
@@ -789,17 +795,23 @@ details.sect > .corps { padding: 0 0 16px; }
     return { items: items, proba: meilleurProd };
   }
   function calculerGrille(paires, nd, nt) {
-    var res = paires.map(function (pr) { return calculMatch(pr.dom, pr.ext); });
-    var erreurs = [];
-    res.forEach(function (r, i) { if (r.erreur) erreurs.push('Match ' + (i + 1) + ' : ' + r.erreur); });
+    var calculees = [], res = {}, item = {}, erreurs = [];
+    paires.forEach(function (pr, i) { if (!pr.sansDonnee) calculees.push(i); });
+    calculees.forEach(function (i) {
+      res[i] = calculMatch(paires[i].dom, paires[i].ext);
+      if (res[i].erreur) erreurs.push('Match ' + (i + 1) + ' : ' + res[i].erreur);
+    });
     if (erreurs.length) return { erreurs: erreurs, matchs: [], proba_grille: null };
-    var choix = choisirPronostics(res.map(function (r) { return r.p; }), nd, nt);
-    if (!choix) return { erreurs: ['Nombre de doubles et de triples impossible pour ' + paires.length + ' matchs.'], matchs: [], proba_grille: null };
+    var choix = choisirPronostics(calculees.map(function (i) { return res[i].p; }), nd, nt);
+    if (!choix) return { erreurs: ['Nombre de doubles et de triples impossible : ' + calculees.length + ' match(s) avec données sur ' + paires.length + '.'], matchs: [], proba_grille: null };
+    calculees.forEach(function (i, k) { item[i] = choix.items[k]; });
+    var incomplete = calculees.length < paires.length;
     return {
       erreurs: null,
-      proba_grille: arrondir(choix.proba, 6),
+      proba_grille: incomplete ? null : arrondir(choix.proba, 6),
       matchs: paires.map(function (pr, i) {
-        var r = res[i], c = choix.items[i];
+        if (pr.sansDonnee) return matchSansDonnee(pr, i + 1);
+        var r = res[i], c = item[i];
         return {
           n: i + 1,
           ligue: r.cross ? 'UE' : pr.dom.ligue,
@@ -818,18 +830,32 @@ details.sect > .corps { padding: 0 0 16px; }
       })
     };
   }
+  // Match dont un club n’est pas dans nos données : il reste dans la grille, sans pronostic ni probabilité
+  function matchSansDonnee(pr, n) {
+    return { n: n, ligue: 'HORS', ligue_nom: 'Hors de nos données', domicile: pr.nomDom, exterieur: pr.nomExt, cotes: null,
+      proba: null, source: 'aucune', hypothese_texte: '', pronostic: '', confiance: null, ecart_niveau_elo: null,
+      raison: 'Club hors de nos données : pas de pronostic pour ce match.', alertes: [], profils: {}, sansDonnee: true };
+  }
   // Une grille verrouillée garde ses valeurs ; une grille non verrouillée est recalculée
   // avec les données actuelles (donc à jour après chaque mise à jour des données).
   function resultatGrille(g) {
     if (g.verrouillee) return { erreurs: null, matchs: g.matchs || [], proba_grille: g.proba_grille };
-    var paires = [], erreurs = [];
-    (g.paires || []).forEach(function (p, i) {
-      var h = findTeam(p.dom), a = findTeam(p.ext);
-      if (!h || !a) erreurs.push('Match ' + (i + 1) + ' : équipe absente des données actuelles.');
-      else paires.push({ dom: h, ext: a });
+    var paires = [];
+    (g.paires || []).forEach(function (p) {
+      var h = resoudreCle(p.dom), a = resoudreCle(p.ext);
+      if (h && a) paires.push({ dom: h, ext: a, nomDom: h.equipe, nomExt: a.equipe, sansDonnee: false });
+      else paires.push({ dom: null, ext: null, nomDom: nomPaire(p.dom), nomExt: nomPaire(p.ext), sansDonnee: true });
     });
-    if (erreurs.length) return { erreurs: erreurs, matchs: [], proba_grille: null };
     return appliquerContres(calculerGrille(paires, g.doubles || 0, g.triples || 0));
+  }
+  // Clé d’équipe d’une grille : « ligue|équipe », ou « hors|nom » pour un club hors de nos données
+  function resoudreCle(cle) {
+    return cle.indexOf('hors|') === 0 ? trouverEquipe(cle.slice(5)) : findTeam(cle);
+  }
+  function nomPaire(cle) {
+    if (cle.indexOf('hors|') === 0) return cle.slice(5);
+    var t = findTeam(cle);
+    return t ? t.equipe : cle.split('|').slice(1).join('|');
   }
   function nouvelleGrille(nom, paires, nd, nt, validite) {
     return {
@@ -838,7 +864,8 @@ details.sect > .corps { padding: 0 0 16px; }
       verrouillee: false, verrouillee_le: null, validite: validite || '', methode: 'stats-niveau-v8',
       doubles: nd, triples: nt,
       paires: paires.map(function (p) {
-        return { dom: p.dom.ligue + '|' + p.dom.equipe, ext: p.ext.ligue + '|' + p.ext.equipe };
+        return { dom: p.dom ? p.dom.ligue + '|' + p.dom.equipe : 'hors|' + p.nomDom,
+                 ext: p.ext ? p.ext.ligue + '|' + p.ext.equipe : 'hors|' + p.nomExt };
       }),
       note: NOTE_METHODE
     };
@@ -984,10 +1011,10 @@ details.sect > .corps { padding: 0 0 16px; }
       else if (!r.dom.trim() || !r.ext.trim()) msg = 'il manque l’équipe ' + (r.dom.trim() ? 'à l’extérieur' : 'à domicile') + '.';
       else {
         var h = trouverEquipe(r.dom), a = trouverEquipe(r.ext);
-        if (!h) msg = 'équipe introuvable : « ' + r.dom.trim() + ' ».';
-        else if (!a) msg = 'équipe introuvable : « ' + r.ext.trim() + ' ».';
-        else if (h === a) msg = 'une équipe ne peut pas jouer contre elle-même.';
-        else paires.push({ dom: h, ext: a });
+        if (h && a && h === a) msg = 'une équipe ne peut pas jouer contre elle-même.';
+        else if (h && a) paires.push({ dom: h, ext: a, nomDom: h.equipe, nomExt: a.equipe, sansDonnee: false });
+        // Un club absent de nos données : le match reste dans la grille, sans pronostic
+        else paires.push({ dom: h, ext: a, nomDom: r.dom.trim(), nomExt: r.ext.trim(), sansDonnee: true });
       }
       r.err = msg;
       if (msg) ok = false;
@@ -1004,14 +1031,20 @@ details.sect > .corps { padding: 0 0 16px; }
     if (!f) return;
     var rf = resoudreFormulaire(f);
     if (!rf.ok) return majApercu();
-    var calculs = rf.paires.map(function (pr) { return calculMatch(pr.dom, pr.ext); });
+    // Ma préférence ne retient que les matchs avec données : les autres restent sans pronostic
+    var calculees = rf.paires.filter(function (pr) { return !pr.sansDonnee; });
+    if (!calculees.length) {
+      f.preference = { erreur: 'Aucun match avec données : pas de préférence possible.' };
+      return majApercu();
+    }
+    var calculs = calculees.map(function (pr) { return calculMatch(pr.dom, pr.ext); });
     if (calculs.some(function (r) { return r.erreur; })) {
       f.preference = { erreur: 'Calcul impossible : une équipe n’a pas de données.' };
       return majApercu();
     }
     var lignes = calculs.map(function (r, i) {
       var p = r.p, ordre = ['H', 'D', 'A'].slice().sort(function (x, y) { return p[y] - p[x]; });
-      return { nom: rf.paires[i].dom.equipe + ' – ' + rf.paires[i].ext.equipe, p1: p[ordre[0]], p2: p[ordre[1]],
+      return { nom: calculees[i].dom.equipe + ' – ' + calculees[i].ext.equipe, p1: p[ordre[0]], p2: p[ordre[1]],
         ratio: p[ordre[1]] / p[ordre[0]] };
     });
     var serres = lignes.filter(function (l) { return l.ratio >= SEUIL_PREFERENCE; })
@@ -1076,12 +1109,13 @@ details.sect > .corps { padding: 0 0 16px; }
         return '<li>' + esc(e) + '</li>';
       }).join('') + '</ul>');
     }
+    var nSans = res.matchs.filter(function (m) { return m.sansDonnee; }).length;
     var nDoubles = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Double'; }).length;
     var nTriples = res.matchs.filter(function (m) { return typeDe(m.pronostic) === 'Triple'; }).length;
     return zone('ok', 3, 'Aperçu avant enregistrement',
-        '<p class="hint">' + esc(nom) + '</p>' + (f.preference ? preferenceHtml(f.preference) : '') +
+        '<p class="hint">' + esc(nom) + '</p>' + (nSans ? '<p class="hint">' + nSans + (nSans > 1 ? ' matchs sans données' : ' match sans données') + ' : pas de pronostic, ils restent dans la grille.</p>' : '') + (f.preference ? preferenceHtml(f.preference) : '') +
         '<div class="kpis">' +
-          '<div class="kpi kpi-grand"><span class="label">Grille complète juste</span><strong>' + probGrille(res.proba_grille) + '</strong></div>' +
+          '<div class="kpi kpi-grand"><span class="label">Grille complète juste</span><strong>' + probGrilleGrille(res) + '</strong></div>' +
           '<div class="kpi"><span class="label">Prix</span><strong>×' + prixDe(res.matchs) + '</strong></div>' +
           '<div class="kpi"><span class="label">Doubles · triples</span><strong>' + nDoubles + ' · ' + nTriples + '</strong></div>' +
         '</div>' +
@@ -1157,6 +1191,7 @@ details.sect > .corps { padding: 0 0 16px; }
   function csvGrille(g, res) {
     var lignes = [['N°', 'Domicile', 'Extérieur', 'Championnats', 'Pronostic', 'Type', 'Victoire domicile (%)', 'Nul (%)', 'Victoire extérieur (%)', 'Probabilité couverte (%)']];
     (res.matchs || []).forEach(function (m) {
+      if (m.sansDonnee) { lignes.push([m.n, m.domicile, m.exterieur, 'Hors de nos données', 'Pas de pronostic', '', '', '', '', '']); return; }
       var p = m.proba || {};
       lignes.push([m.n, m.domicile, m.exterieur, m.ligue_nom || m.ligue || '', LIBELLE_PRONO[m.pronostic] || m.pronostic,
         typeDe(m.pronostic), fr(p['1'] * 100, 1), fr(p['N'] * 100, 1), fr(p['2'] * 100, 1), fr(m.confiance * 100, 1)]);
@@ -1214,11 +1249,12 @@ details.sect > .corps { padding: 0 0 16px; }
     var matchs = res.matchs || [];
     var lignes = [g.nom, 'Loto Foot ' + formatDe(g) + ' · créée le ' + dateFr(g.creee), ''];
     matchs.forEach(function (m) {
+      if (m.sansDonnee) { lignes.push(m.n + '. ' + m.domicile + ' – ' + m.exterieur + ' : pas de pronostic (club hors de nos données)'); return; }
       lignes.push(m.n + '. ' + m.domicile + ' – ' + m.exterieur + ' : ' + (LIBELLE_PRONO[m.pronostic] || m.pronostic) + ' (' + pc(m.confiance, 0) + ')' +
         (m.modele ? ' · contre-pronostic validé (modèle : ' + (LIBELLE_PRONO[m.modele] || m.modele) + ')' : ''));
     });
     lignes.push('');
-    lignes.push('Grille complète juste : ' + probGrille(res.proba_grille));
+    lignes.push('Grille complète juste : ' + probGrilleGrille(res));
     if (matchs.length) lignes.push('Prix : ×' + prixDe(matchs));
     lignes.push(g.verrouillee ? 'Verrouillée le ' + dateHeureFr(g.verrouillee_le) : 'Non verrouillée : données jusqu’au ' + dateFr(S.derniere));
     if (g.validite) lignes.push('Validation : ' + g.validite);
@@ -1351,13 +1387,10 @@ details.sect > .corps { padding: 0 0 16px; }
     });
   }
   function pairesDe(x) {
-    var out = [];
-    for (var i = 0; i < x.matchs.length; i++) {
-      var h = trouverEquipe(x.matchs[i].domicile), a = trouverEquipe(x.matchs[i].exterieur);
-      if (!h || !a) return null;
-      out.push({ dom: h.ligue + '|' + h.equipe, ext: a.ligue + '|' + a.equipe });
-    }
-    return out;
+    return x.matchs.map(function (m) {
+      var h = trouverEquipe(m.domicile), a = trouverEquipe(m.exterieur);
+      return { dom: h ? h.ligue + '|' + h.equipe : 'hors|' + m.domicile, ext: a ? a.ligue + '|' + a.equipe : 'hors|' + m.exterieur };
+    });
   }
   function memesPaires(p, q) {
     return p.length === q.length && p.every(function (x, i) { return x.dom === q[i].dom && x.ext === q[i].ext; });
@@ -1890,7 +1923,7 @@ details.sect > .corps { padding: 0 0 16px; }
       return c;
     });
     if (!change) return res;
-    return { erreurs: null, matchs: matchs, proba_grille: arrondir(matchs.reduce(function (acc, m) { return acc * m.confiance; }, 1), 6) };
+    return { erreurs: null, matchs: matchs, proba_grille: matchs.some(function (m) { return m.sansDonnee; }) ? null : arrondir(matchs.reduce(function (acc, m) { return acc * m.confiance; }, 1), 6) };
   }
   // Après un choix validé, la page est redessinée ; les volets « Coupes d’Europe » déjà ouverts le restent
   function rendreEnGardantEurope() {
@@ -2048,14 +2081,14 @@ details.sect > .corps { padding: 0 0 16px; }
       '<span class="tuile-nom">' + esc(x.nom) + '</span>' +
       '<span class="tuile-meta">Loto Foot ' + formatDe(x) + ' · ' + nD + ' double(s) · ' + nT + ' triple(s)</span>' +
       '<span class="etat ' + (v ? 'ok' : 'warn') + '">' + (v ? 'Verrouillée' : 'À jour') + '</span>' +
-      '<span class="tuile-proba"><span class="label">Grille juste</span><strong>' + esc(probGrille(res.proba_grille)) + '</strong></span>' +
+      '<span class="tuile-proba"><span class="label">Grille juste</span><strong>' + esc(probGrilleGrille(res)) + '</strong></span>' +
       '</button>';
   }
   // Liste des choix de la grille, une ligne par match : domicile – extérieur, pastilles 1 / N / 2, type du pronostic
   function recapHtml(matchs) {
     var lignes = matchs.map(function (m) {
       var pick = m.pronostic || '';
-      var cases = casesChoix(pick);
+      var cases = m.sansDonnee ? '<span class="tagvide">Pas de pronostic</span>' : casesChoix(pick);
       var type = typeDe(pick);
       return '<li class="recap-ligne"><span class="num">' + esc(m.n) + '</span>' +
         '<span class="recap-dom">' + esc(m.domicile) + '</span>' +
@@ -2092,7 +2125,7 @@ details.sect > .corps { padding: 0 0 16px; }
     var fiche = zone(g.verrouillee ? 'ok' : 'warn', 2, esc(g.nom),
       '<p class="hint">' + esc(formatDe(g)) + ' matchs · créée le ' + esc(dateFr(g.creee)) + '</p>' +
       (matchs.length ? recapHtml(matchs) : '') +
-      '<div class="kpis"><div class="kpi kpi-grand"><span class="label">Grille complète juste</span><strong>' + esc(probGrille(res.proba_grille)) + '</strong></div>' +
+      '<div class="kpis"><div class="kpi kpi-grand"><span class="label">Grille complète juste</span><strong>' + esc(probGrilleGrille(res)) + '</strong></div>' +
       '<div class="kpi"><span class="label">Prix</span><strong>' + (matchs.length ? '×' + prixDe(matchs) : '—') + '</strong></div>' +
       '<div class="kpi"><span class="label">Doubles · triples</span><strong>' + nDoubles + ' · ' + nTriples + '</strong></div></div>' +
       (g.cloture ? '<p class="hint">Clôture : ' + esc(dateHeureFr(g.cloture)) + (grilleOuverte(g) ? '. La grille reste à jour jusqu’à cette heure, puis elle se verrouille seule.' : '. Elle est close.') + '</p>' : '') +
@@ -2969,7 +3002,9 @@ details.sect > .corps { padding: 0 0 16px; }
     var nDoubles = picks.filter(function (p) { return p.pronostic.length === 2; }).length;
     var nTriples = picks.filter(function (p) { return p.pronostic.length === 3; }).length;
     var connus = 0, ok = 0;
+    var reels = picks.filter(function (p) { return !p.m.sansDonnee; }).length;
     var lignes = picks.map(function (p) {
+      if (p.m.sansDonnee) return '<div style="border-left:4px solid var(--line);padding:6px 10px;margin-top:6px;border-radius:6px;background:var(--surface-2)"><span class="ligne-num">' + esc(p.m.n) + '</span> ' + esc(p.m.domicile) + ' – ' + esc(p.m.exterieur) + ' <span class="hint">· pas de pronostic (club hors de nos données)</span></div>';
       var pub = publies[p.cle];
       var j = jeuMatch(p.pronostic, pub ? pub.issue : null);
       if (pub) { connus++; if (j.statut === 'ok') ok++; }
@@ -2987,9 +3022,9 @@ details.sect > .corps { padding: 0 0 16px; }
     var titre = (gp ? 'Loto Foot ' + gp.format + ' · grille N°' + gp.numero : 'Loto Foot ' + g.format) + ' · ' + picks.length + ' matchs';
     var detail = esc(g.nom) + ' · prévu : ' + nDoubles + ' double(s), ' + nTriples + ' triple(s)';
     var bilan = connus ? 'Mon bilan : ' + ok + ' bons sur ' + connus + ' · ' + Math.round(100 * ok / connus) + ' %' +
-      (connus < picks.length ? ' (partiel)' : '') : 'Mon bilan : après la publication des résultats';
+      (connus < reels ? ' (partiel)' : '') : 'Mon bilan : après la publication des résultats';
     return '<article style="border:2px solid ' + ton + ';border-radius:14px;padding:12px;margin:14px 0;background:var(--surface)">' +
-      entetteGrille(esc(titre), g.cloture, detail, connus > 0 && connus === picks.length) +
+      entetteGrille(esc(titre), g.cloture, detail, connus > 0 && connus === reels) +
       '<p style="font-size:17px;font-weight:700;margin:10px 0 2px">' + esc(bilan) + '</p>' + lignes + bouton + '</article>';
   }
   function contenuMesGrilles(publies) {
