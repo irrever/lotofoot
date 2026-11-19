@@ -1,67 +1,21 @@
 {
- "verifie_le": "2026-11-18T19:25:05Z",
+ "verifie_le": "2026-11-19T01:45:06Z",
  "formats": {
   "7": {
-   "ok": true,
-   "grilles_ouvertes": [
-    145,
-    146
-   ],
-   "equipes_inconnues": [
-    "Arsenal F",
-    "Lyon F",
-    "Benfica F",
-    "AS Rome F",
-    "Vasco De Gama",
-    "Internacional",
-    "Vitoria Ba",
-    "Bragantino Sp",
-    "Sao Paulo",
-    "Fluminense",
-    "Seattle",
-    "Salt Lake",
-    "Orlando City",
-    "FC Cincinnati"
-   ],
-   "erreur": null
+   "ok": false,
+   "erreur": "The read operation timed out"
   },
   "8": {
-   "ok": true,
-   "grilles_ouvertes": [
-    160,
-    161
-   ],
-   "equipes_inconnues": [],
-   "erreur": null
+   "ok": false,
+   "erreur": "The read operation timed out"
   },
   "12": {
-   "ok": true,
-   "grilles_ouvertes": [
-    101,
-    102
-   ],
-   "equipes_inconnues": [
-    "AC Monza",
-    "Sheffield Utd",
-    "Queens Park R.",
-    "Bodø/Glimt",
-    "LASK Linz"
-   ],
-   "erreur": null
+   "ok": false,
+   "erreur": "The read operation timed out"
   },
   "15": {
-   "ok": true,
-   "grilles_ouvertes": [
-    96,
-    97
-   ],
-   "equipes_inconnues": [
-    "Slovan Bratislava",
-    "Sabah FK",
-    "Slavia Prague",
-    "Shakht.Donetsk"
-   ],
-   "erreur": null
+   "ok": false,
+   "erreur": "The read operation timed out"
   }
  }
 }
