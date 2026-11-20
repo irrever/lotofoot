@@ -1681,6 +1681,54 @@
      "issue": "2"
     }
    ]
+  },
+  "7-145": {
+   "libelle": "Loto Foot 7 n145",
+   "maj": "2026-11-20",
+   "matchs": [
+    {
+     "domicile": "Arsenal F",
+     "exterieur": "Lyon F",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Benfica F",
+     "exterieur": "AS Rome F",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Vasco De Gama",
+     "exterieur": "Internacional",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Vitoria BA",
+     "exterieur": "Bragantino SP",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Sao Paulo",
+     "exterieur": "Fluminense",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Seattle",
+     "exterieur": "Salt Lake",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Orlando City",
+     "exterieur": "FC Cincinnati",
+     "score": "1-3",
+     "issue": "2"
+    }
+   ]
   }
  }
 }
