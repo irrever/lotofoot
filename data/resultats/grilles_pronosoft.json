@@ -1603,6 +1603,84 @@
      "issue": "1"
     }
    ]
+  },
+  "12-100": {
+   "libelle": "Loto Foot 12 n100",
+   "maj": "2026-11-20",
+   "matchs": [
+    {
+     "domicile": "Chelsea F",
+     "exterieur": "Paris SG F",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hacken F",
+     "exterieur": "Man.City F",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Real Madrid F",
+     "exterieur": "Inter Milan F",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Coritiba",
+     "exterieur": "Santos",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Corinthians",
+     "exterieur": "Botafogo",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Cruzeiro",
+     "exterieur": "Palmeiras",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Flamengo",
+     "exterieur": "Atletico PR",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Gremio",
+     "exterieur": "Bahia Salvador",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "Remo PA",
+     "exterieur": "Chapecoense SC",
+     "score": "2-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Benfica F",
+     "exterieur": "AS Rome F",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Paris FC F",
+     "exterieur": "HB Koge F",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Arsenal F",
+     "exterieur": "Lyon F",
+     "score": "0-2",
+     "issue": "2"
+    }
+   ]
   }
  }
 }
