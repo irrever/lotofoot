@@ -1,27 +1,14 @@
 {
- "verifie_le": "2026-11-19T19:28:26Z",
+ "verifie_le": "2026-11-20T01:39:52Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    145,
-    146
+    146,
+    147
    ],
    "equipes_inconnues": [
-    "Arsenal F",
-    "Lyon F",
-    "Benfica F",
-    "AS Rome F",
-    "Vasco De Gama",
-    "Internacional",
-    "Vitoria Ba",
-    "Bragantino Sp",
-    "Sao Paulo",
-    "Fluminense",
-    "Seattle",
-    "Salt Lake",
-    "Orlando City",
-    "FC Cincinnati"
+    "Slovan Bratislava"
    ],
    "erreur": null
   },
