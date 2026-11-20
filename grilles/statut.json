@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-20T13:42:42Z",
+ "verifie_le": "2026-11-20T19:29:08Z",
  "formats": {
   "7": {
    "ok": true,
@@ -15,10 +15,16 @@
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    160,
-    161
+    161,
+    162
    ],
-   "equipes_inconnues": [],
+   "equipes_inconnues": [
+    "Hammarby",
+    "Ifk Göteborg",
+    "Brøndby",
+    "Midtjylland",
+    "AC Monza"
+   ],
    "erreur": null
   },
   "12": {
