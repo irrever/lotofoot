@@ -50,6 +50,8 @@
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+.europe-effacer { margin-top: 10px; }
+.europe-effacer .hint { margin: 6px 0 0; }
 .tagvide { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 8px; background: var(--line); color: var(--muted, #5b6b62); white-space: nowrap; }
 .gauche { text-align: left; }
 .res-chip { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 6px; border-radius: 6px; background: var(--line); color: var(--muted, #5b6b62); }
@@ -1871,9 +1873,30 @@ details.sect > .corps { padding: 0 0 16px; }
   }
   function europePanelHtml(m) {
     var uid = 'eu' + Math.floor(Math.random() * 1e9);
+    var cles = [nomCanonique(m.domicile), nomCanonique(m.exterieur)];
     return '<details class="europe-details" data-cle="' + esc(clePaire(m.domicile, m.exterieur)) + '"><summary>Coupes d’Europe cette semaine (à cocher)</summary><div class="europe-grille">' +
       europeEquipeHtml(m.domicile, trouverEquipe(m.domicile), uid + 'd') + europeEquipeHtml(m.exterieur, trouverEquipe(m.exterieur), uid + 'e') +
-      '</div></details>';
+      '</div><div class="europe-effacer"><button type="button" class="btn danger petit" data-effacer-europe="' + esc(JSON.stringify(cles)) + '">Supprimer ces coupes d’Europe</button>' +
+      '<p class="hint">Efface les cases de ' + esc(m.domicile) + ' et de ' + esc(m.exterieur) + ' sur cet appareil. Les autres matchs ne sont pas touchés.</p></div></details>';
+  }
+  // Efface les cases cochées de ces équipes (clés normalisées), sur cet appareil
+  function effacerEurope(cles) {
+    var st = lireEurope();
+    cles.forEach(function (c) { delete st[c]; });
+    ecrireEurope(st);
+  }
+  // Coupes d’Europe gardées sur cet appareil, avec « Tout effacer » : affiché seulement s’il y en a
+  function europeEnregistreesHtml() {
+    var st = lireEurope();
+    var cles = Object.keys(st).filter(function (c) {
+      return Object.keys(st[c] || {}).some(function (k) { return !!st[c][k]; });
+    });
+    if (!cles.length) return '';
+    var noms = cles.map(function (c) { var t = trouverEquipe(c); return t ? t.equipe : c; }).sort();
+    return zone('info', 5, 'Coupes d’Europe enregistrées sur cet appareil',
+      '<p class="hint">Des équipes gardent des cases cochées. Certaines ne sont plus dans aucune grille, donc on ne peut plus les effacer depuis un match.</p>' +
+      '<p><b>' + noms.length + (noms.length > 1 ? ' équipes' : ' équipe') + ' :</b> ' + noms.map(function (n) { return esc(n); }).join(', ') + '</p>' +
+      '<div class="actions"><button type="button" class="btn danger petit" data-act="effacer-europe-tout">Tout effacer</button></div>');
   }
   function enregistrerEurope(el) {
     var st = lireEurope(), t = el.getAttribute('data-team'), champ = el.getAttribute('data-champ');
@@ -2142,7 +2165,7 @@ details.sect > .corps { padding: 0 0 16px; }
     var methodeCalcul = g.note ? zone('neutre', 0, 'Méthode de calcul', '<p class="hint">' + esc(g.note) + '</p>') : '';
     return haut + avert +
       zone('info', 1, 'Mes grilles', '<div class="tuiles">' + gs.map(function (x) { return tuile(x, x.id === g.id); }).join('') + '</div>', nouvelleBtn) +
-      fiche + copie + erreurs + pronostics + methodeCalcul + sauvegardeHtml(4);
+      fiche + copie + erreurs + pronostics + methodeCalcul + sauvegardeHtml(4) + europeEnregistreesHtml();
   }
   // Choix du modèle de chaque match, pour les équipes et la case du milieu
   function choixLignes(f) {
@@ -3176,6 +3199,9 @@ details.sect > .corps { padding: 0 0 16px; }
       if (gDel && window.confirm('Supprimer la grille « ' + gDel.nom + ' » ? Cette action est définitive.')) supprimer(gDel.id);
     }
     else if (action === 'sauvegarder') { sauvegarder(); }
+    else if (action === 'effacer-europe-tout') {
+      if (window.confirm('Effacer toutes les cases des coupes d’Europe enregistrées sur cet appareil ?')) ecrireEurope({});
+    }
     render();
   }
   app.addEventListener('click', function (e) {
@@ -3185,6 +3211,8 @@ details.sect > .corps { padding: 0 0 16px; }
     if (bval) { validerChoix(bval.getAttribute('data-valider')); rendreEnGardantEurope(); return; }
     var bc = e.target.closest && e.target.closest('[data-contre]');
     if (bc) { basculerContre(bc.getAttribute('data-contre'), bc.getAttribute('data-choix')); rendreEnGardantEurope(); return; }
+    var bef = e.target.closest && e.target.closest('[data-effacer-europe]');
+    if (bef) { effacerEurope(JSON.parse(bef.getAttribute('data-effacer-europe'))); rendreEnGardantEurope(); return; }
     if (e.target.closest && (e.target.closest('.europe-details') || e.target.closest('.eu-zone'))) return;
     var th = e.target.closest('[data-theme-choix]');
     if (th) { appliquerTheme(th.getAttribute('data-theme-choix')); render(); return; }
