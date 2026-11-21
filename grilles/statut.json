@@ -1,21 +1,60 @@
 {
- "verifie_le": "2026-11-21T01:43:14Z",
+ "verifie_le": "2026-11-21T07:40:24Z",
  "formats": {
   "7": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    146,
+    147
+   ],
+   "equipes_inconnues": [
+    "Slovan Bratislava"
+   ],
+   "erreur": null
   },
   "8": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    161,
+    162
+   ],
+   "equipes_inconnues": [
+    "Hammarby",
+    "Ifk Göteborg",
+    "Brøndby",
+    "Midtjylland",
+    "AC Monza"
+   ],
+   "erreur": null
   },
   "12": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    101,
+    102
+   ],
+   "equipes_inconnues": [
+    "AC Monza",
+    "Sheffield Utd",
+    "Queens Park R.",
+    "Bodø/Glimt",
+    "LASK Linz"
+   ],
+   "erreur": null
   },
   "15": {
-   "ok": false,
-   "erreur": "<urlopen error _ssl.c:994: The handshake operation timed out>"
+   "ok": true,
+   "grilles_ouvertes": [
+    96,
+    97
+   ],
+   "equipes_inconnues": [
+    "Slovan Bratislava",
+    "Sabah FK",
+    "Slavia Prague",
+    "Shakht.Donetsk"
+   ],
+   "erreur": null
   }
  }
 }
