@@ -2,56 +2,6 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 161,
-   "nom": "Loto Foot 8 · grille N°161",
-   "cloture": "2026-11-21T17:10:00+01:00",
-   "validite": "samedi 21 novembre 2026 à 17 h 10",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-161-2026.html",
-   "matchs": [
-    {
-     "domicile": "Nice",
-     "exterieur": "Paris SG",
-     "libelle": "Nice – Paris SG"
-    },
-    {
-     "domicile": "Lille",
-     "exterieur": "Lyon",
-     "libelle": "Lille – Lyon"
-    },
-    {
-     "domicile": "Lens",
-     "exterieur": "Toulouse",
-     "libelle": "Lens – Toulouse"
-    },
-    {
-     "domicile": "Monaco",
-     "exterieur": "Auxerre",
-     "libelle": "Monaco – Auxerre"
-    },
-    {
-     "domicile": "Strasbourg",
-     "exterieur": "Brest",
-     "libelle": "Strasbourg – Brest"
-    },
-    {
-     "domicile": "Reims",
-     "exterieur": "St Etienne",
-     "libelle": "Reims – St Etienne"
-    },
-    {
-     "domicile": "Newcastle",
-     "exterieur": "Arsenal",
-     "libelle": "Newcastle – Arsenal"
-    },
-    {
-     "domicile": "Real Madrid",
-     "exterieur": "Celta",
-     "libelle": "Real Madrid – Celta Vigo"
-    }
-   ]
-  },
-  {
    "numero": 162,
    "nom": "Loto Foot 8 · grille N°162",
    "cloture": "2026-11-23T18:55:00+01:00",
@@ -98,6 +48,56 @@
      "domicile": "AC Monza",
      "exterieur": "Fiorentina",
      "libelle": "AC Monza – Fiorentina"
+    }
+   ]
+  },
+  {
+   "numero": 163,
+   "nom": "Loto Foot 8 · grille N°163",
+   "cloture": "2026-11-25T18:40:00+01:00",
+   "validite": "mercredi 25 novembre 2026 à 18 h 40",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-163-2026.html",
+   "matchs": [
+    {
+     "domicile": "Paris SG",
+     "exterieur": "Roma",
+     "libelle": "Paris SG – AS Rome"
+    },
+    {
+     "domicile": "Lille",
+     "exterieur": "Bayern Munich",
+     "libelle": "Lille – Bayern Munich"
+    },
+    {
+     "domicile": "Club Brugge",
+     "exterieur": "Liverpool",
+     "libelle": "Club Bruges – Liverpool"
+    },
+    {
+     "domicile": "Inter",
+     "exterieur": "Stuttgart",
+     "libelle": "Inter Milan – Stuttgart"
+    },
+    {
+     "domicile": "Slavia Prague",
+     "exterieur": "Villarreal",
+     "libelle": "Slavia Prague – Villarreal"
+    },
+    {
+     "domicile": "Shakht.Donetsk",
+     "exterieur": "Fenerbahce",
+     "libelle": "Shakht.Donetsk – Fenerbahce"
+    },
+    {
+     "domicile": "Sabah FK",
+     "exterieur": "Barcelona",
+     "libelle": "Sabah FK – FC Barcelone"
+    },
+    {
+     "domicile": "Sp Lisbon",
+     "exterieur": "Man United",
+     "libelle": "Sporting – Man. United"
     }
    ]
   }
