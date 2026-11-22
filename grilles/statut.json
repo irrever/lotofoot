@@ -1,14 +1,21 @@
 {
- "verifie_le": "2026-11-22T13:25:48Z",
+ "verifie_le": "2026-11-22T19:19:02Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    146,
-    147
+    147,
+    148
    ],
    "equipes_inconnues": [
-    "Slovan Bratislava"
+    "Slovan Bratislava",
+    "Lillestrøm",
+    "Nec Nimègue",
+    "Omonia Nicosie",
+    "Sturm Graz",
+    "La Gantoise",
+    "Etoile Rouge",
+    "Fribourg"
    ],
    "erreur": null
   },
@@ -33,15 +40,24 @@
   "12": {
    "ok": true,
    "grilles_ouvertes": [
-    101,
-    102
+    102,
+    103
    ],
    "equipes_inconnues": [
     "AC Monza",
     "Sheffield Utd",
     "Queens Park R.",
     "Bodø/Glimt",
-    "LASK Linz"
+    "LASK Linz",
+    "Lillestrøm",
+    "Nec Nimègue",
+    "Omonia Nicosie",
+    "Sturm Graz",
+    "La Gantoise",
+    "Etoile Rouge",
+    "Fribourg",
+    "Dinamo Zagreb",
+    "Levski Sofia"
    ],
    "erreur": null
   },
