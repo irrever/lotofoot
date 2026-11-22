@@ -1783,6 +1783,60 @@
      "issue": "N"
     }
    ]
+  },
+  "8-161": {
+   "libelle": "Loto Foot 8 n161",
+   "maj": "2026-11-22",
+   "matchs": [
+    {
+     "domicile": "Nice",
+     "exterieur": "Paris SG",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lille",
+     "exterieur": "Lyon",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lens",
+     "exterieur": "Toulouse",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Monaco",
+     "exterieur": "Auxerre",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Strasbourg",
+     "exterieur": "Brest",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Reims",
+     "exterieur": "St Etienne",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Newcastle",
+     "exterieur": "Arsenal",
+     "score": "2-2",
+     "issue": "N"
+    },
+    {
+     "domicile": "Real Madrid",
+     "exterieur": "Celta Vigo",
+     "score": "2-1",
+     "issue": "1"
+    }
+   ]
   }
  }
 }
