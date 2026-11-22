@@ -1837,6 +1837,228 @@
      "issue": "1"
     }
    ]
+  },
+  "7-146": {
+   "libelle": "Loto Foot 7 n146",
+   "maj": "2026-11-22",
+   "matchs": [
+    {
+     "domicile": "Marseille",
+     "exterieur": "Le Mans",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lorient",
+     "exterieur": "Rennes",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Paris FC",
+     "exterieur": "Angers",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Atalanta",
+     "exterieur": "Inter Milan",
+     "score": "4-4",
+     "issue": "N"
+    },
+    {
+     "domicile": "Milan AC",
+     "exterieur": "Frosinone",
+     "score": "5-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Getafe",
+     "exterieur": "Atl. Madrid",
+     "score": "0-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Liverpool",
+     "exterieur": "Man. United",
+     "score": "4-0",
+     "issue": "1"
+    }
+   ]
+  },
+  "12-101": {
+   "libelle": "Loto Foot 12 n101",
+   "maj": "2026-11-22",
+   "matchs": [
+    {
+     "domicile": "Marseille",
+     "exterieur": "Le Mans",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lorient",
+     "exterieur": "Rennes",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Paris FC",
+     "exterieur": "Angers",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Atalanta",
+     "exterieur": "Inter Milan",
+     "score": "4-4",
+     "issue": "N"
+    },
+    {
+     "domicile": "Milan AC",
+     "exterieur": "Frosinone",
+     "score": "5-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Getafe",
+     "exterieur": "Atl. Madrid",
+     "score": "0-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Liverpool",
+     "exterieur": "Man. United",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hull City",
+     "exterieur": "Brighton Hove",
+     "score": "2-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Werder Brme",
+     "exterieur": "Hambourg",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Bologne",
+     "exterieur": "Udinese",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Osasuna",
+     "exterieur": "Malaga",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Santander",
+     "exterieur": "Real Sociedad",
+     "score": "3-2",
+     "issue": "1"
+    }
+   ]
+  },
+  "15-96": {
+   "libelle": "Loto Foot 15 n96",
+   "maj": "2026-11-22",
+   "matchs": [
+    {
+     "domicile": "Marseille",
+     "exterieur": "Le Mans",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lille",
+     "exterieur": "Lyon",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Lens",
+     "exterieur": "Toulouse",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Paris FC",
+     "exterieur": "Angers",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Lorient",
+     "exterieur": "Rennes",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Monaco",
+     "exterieur": "Auxerre",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Strasbourg",
+     "exterieur": "Brest",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Atalanta",
+     "exterieur": "Inter Milan",
+     "score": "4-4",
+     "issue": "N"
+    },
+    {
+     "domicile": "Milan AC",
+     "exterieur": "Frosinone",
+     "score": "5-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hull City",
+     "exterieur": "Brighton Hove",
+     "score": "2-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Liverpool",
+     "exterieur": "Man. United",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Santander",
+     "exterieur": "Real Sociedad",
+     "score": "3-2",
+     "issue": "1"
+    },
+    {
+     "domicile": "Getafe",
+     "exterieur": "Atl. Madrid",
+     "score": "0-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Real Madrid",
+     "exterieur": "Celta Vigo",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "FC Barcelone",
+     "exterieur": "Villarreal",
+     "score": "3-2",
+     "issue": "1"
+    }
+   ]
   }
  }
 }
