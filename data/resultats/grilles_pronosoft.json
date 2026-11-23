@@ -2059,6 +2059,60 @@
      "issue": "1"
     }
    ]
+  },
+  "8-162": {
+   "libelle": "Loto Foot 8 n162",
+   "maj": "2026-11-23",
+   "matchs": [
+    {
+     "domicile": "Nantes",
+     "exterieur": "Grenoble",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Sochaux",
+     "exterieur": "Dunkerque",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Brentford",
+     "exterieur": "Everton",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Levante",
+     "exterieur": "Elche",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Ceuta",
+     "exterieur": "Almeria",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Hammarby",
+     "exterieur": "IFK Gteborg",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Brndby",
+     "exterieur": "Midtjylland",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "AC Monza",
+     "exterieur": "Fiorentina",
+     "score": "3-0",
+     "issue": "1"
+    }
+   ]
   }
  }
 }

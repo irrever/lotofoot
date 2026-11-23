@@ -1914,6 +1914,78 @@
    "grilles": [
     "Loto Foot 12 n101"
    ]
+  },
+  {
+   "domicile": "AC Monza",
+   "exterieur": "Fiorentina",
+   "score": "3-0",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
+  },
+  {
+   "domicile": "Brentford",
+   "exterieur": "Everton",
+   "score": "4-0",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
+  },
+  {
+   "domicile": "Brndby",
+   "exterieur": "Midtjylland",
+   "score": "0-2",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
+  },
+  {
+   "domicile": "Ceuta",
+   "exterieur": "Almeria",
+   "score": "2-3",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
+  },
+  {
+   "domicile": "Hammarby",
+   "exterieur": "IFK Gteborg",
+   "score": "3-1",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
+  },
+  {
+   "domicile": "Levante",
+   "exterieur": "Elche",
+   "score": "1-1",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
+  },
+  {
+   "domicile": "Nantes",
+   "exterieur": "Grenoble",
+   "score": "1-0",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
+  },
+  {
+   "domicile": "Sochaux",
+   "exterieur": "Dunkerque",
+   "score": "2-3",
+   "vu": "2026-11-23",
+   "grilles": [
+    "Loto Foot 8 n162"
+   ]
   }
  ]
 }
