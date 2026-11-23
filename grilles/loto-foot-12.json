@@ -85,11 +85,7 @@
      "libelle": "Lyon – Lillestrøm"
     },
     {
-<<<<<<< HEAD
-     "domicile": "Nec Nimègue",
-=======
      "domicile": "Nijmegen",
->>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
      "exterieur": "Rennes",
      "libelle": "Nec Nimègue – Rennes"
     },
@@ -109,20 +105,12 @@
      "libelle": "Hoffenheim – Sturm Graz"
     },
     {
-<<<<<<< HEAD
-     "domicile": "La Gantoise",
-=======
      "domicile": "Gent",
->>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
      "exterieur": "Etoile Rouge",
      "libelle": "La Gantoise – Etoile Rouge"
     },
     {
-<<<<<<< HEAD
-     "domicile": "Fribourg",
-=======
      "domicile": "Freiburg",
->>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
      "exterieur": "Twente",
      "libelle": "Fribourg – Twente"
     },

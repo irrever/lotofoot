@@ -165,11 +165,7 @@
      "libelle": "Real Madrid – Alaves"
     },
     {
-<<<<<<< HEAD
-     "domicile": "La Corogne",
-=======
      "domicile": "La Coruna",
->>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
      "exterieur": "Barcelona",
      "libelle": "La Corogne – FC Barcelone"
     }
