@@ -1,5 +1,5 @@
 {
- "date": "2026-11-22",
+ "date": "2026-11-23",
  "source": "foot-actu.com",
  "regles": {
   "buteur": -10,
@@ -101,7 +101,7 @@
     "malus": -4
    },
    "Hull": {
-    "absents": 6,
+    "absents": 5,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -128,7 +128,7 @@
     "malus": -2
    },
    "Liverpool": {
-    "absents": 6,
+    "absents": 5,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -146,7 +146,7 @@
     "malus": -9
    },
    "Man United": {
-    "absents": 9,
+    "absents": 8,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -193,13 +193,13 @@
   },
   "F1": {
    "Angers": {
-    "absents": 3,
-    "buteur": true,
+    "absents": 2,
+    "buteur": false,
     "passeur": false,
     "meme_joueur": false,
-    "buteurs_cles": 1,
+    "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -14
+    "malus": -4
    },
    "Auxerre": {
     "absents": 5,
@@ -229,13 +229,13 @@
     "malus": -15
    },
    "Le Mans": {
-    "absents": 3,
+    "absents": 2,
     "buteur": false,
     "passeur": true,
     "meme_joueur": false,
-    "buteurs_cles": 2,
+    "buteurs_cles": 1,
     "passeurs_cles": 1,
-    "malus": -9
+    "malus": -7
    },
    "Lens": {
     "absents": 7,
@@ -256,13 +256,13 @@
     "malus": -6
    },
    "Lorient": {
-    "absents": 4,
+    "absents": 3,
     "buteur": false,
     "passeur": true,
     "meme_joueur": false,
-    "buteurs_cles": 2,
+    "buteurs_cles": 1,
     "passeurs_cles": 1,
-    "malus": -11
+    "malus": -9
    },
    "Lyon": {
     "absents": 5,
@@ -301,13 +301,13 @@
     "malus": -8
    },
    "Paris FC": {
-    "absents": 4,
+    "absents": 2,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -8
+    "malus": -4
    },
    "Paris SG": {
     "absents": 5,
@@ -359,15 +359,15 @@
  "suivi": {
   "E0": {
    "blessures_clubs": 20,
-   "blessures_joueurs": 89,
+   "blessures_joueurs": 86,
    "buteurs": 20,
    "passeurs": 20
   },
   "F1": {
    "blessures_clubs": 18,
-   "blessures_joueurs": 68,
-   "buteurs": 130,
-   "passeurs": 116
+   "blessures_joueurs": 63,
+   "buteurs": 132,
+   "passeurs": 118
   }
  }
 }
