@@ -2,56 +2,6 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 162,
-   "nom": "Loto Foot 8 · grille N°162",
-   "cloture": "2026-11-23T18:55:00+01:00",
-   "validite": "lundi 23 novembre 2026 à 18 h 55",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-162-2026.html",
-   "matchs": [
-    {
-     "domicile": "Nantes",
-     "exterieur": "Grenoble",
-     "libelle": "Nantes – Grenoble"
-    },
-    {
-     "domicile": "Sochaux",
-     "exterieur": "Dunkerque",
-     "libelle": "Sochaux – Dunkerque"
-    },
-    {
-     "domicile": "Brentford",
-     "exterieur": "Everton",
-     "libelle": "Brentford – Everton"
-    },
-    {
-     "domicile": "Levante",
-     "exterieur": "Elche",
-     "libelle": "Levante – Elche"
-    },
-    {
-     "domicile": "Ceuta",
-     "exterieur": "Almeria",
-     "libelle": "Ceuta – Almeria"
-    },
-    {
-     "domicile": "Hammarby",
-     "exterieur": "Ifk Göteborg",
-     "libelle": "Hammarby – Ifk Göteborg"
-    },
-    {
-     "domicile": "Brøndby",
-     "exterieur": "Midtjylland",
-     "libelle": "Brøndby – Midtjylland"
-    },
-    {
-     "domicile": "Monza",
-     "exterieur": "Fiorentina",
-     "libelle": "AC Monza – Fiorentina"
-    }
-   ]
-  },
-  {
    "numero": 163,
    "nom": "Loto Foot 8 · grille N°163",
    "cloture": "2026-11-25T18:40:00+01:00",
@@ -98,6 +48,56 @@
      "domicile": "Sp Lisbon",
      "exterieur": "Man United",
      "libelle": "Sporting – Man. United"
+    }
+   ]
+  },
+  {
+   "numero": 164,
+   "nom": "Loto Foot 8 · grille N°164",
+   "cloture": "2026-11-27T20:25:00+01:00",
+   "validite": "vendredi 27 novembre 2026 à 20 h 25",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-164-2026.html",
+   "matchs": [
+    {
+     "domicile": "Brest",
+     "exterieur": "Paris FC",
+     "libelle": "Brest – Paris FC"
+    },
+    {
+     "domicile": "Nott'm Forest",
+     "exterieur": "Chelsea",
+     "libelle": "Nottingham F. – Chelsea"
+    },
+    {
+     "domicile": "Southampton",
+     "exterieur": "Middlesbrough",
+     "libelle": "Southampton – Middlesbrough"
+    },
+    {
+     "domicile": "Cs Maritimo",
+     "exterieur": "CD Nacional",
+     "libelle": "Cs Maritimo – CD Nacional"
+    },
+    {
+     "domicile": "Werder Bremen",
+     "exterieur": "M'gladbach",
+     "libelle": "Werder Brême – M'gladbach"
+    },
+    {
+     "domicile": "CD Leganes",
+     "exterieur": "Sabadell",
+     "libelle": "CD Leganes – Sabadell"
+    },
+    {
+     "domicile": "Levante",
+     "exterieur": "Santander",
+     "libelle": "Levante – Santander"
+    },
+    {
+     "domicile": "Venezia FC",
+     "exterieur": "Bologna",
+     "libelle": "Venezia FC – Bologne"
     }
    ]
   }

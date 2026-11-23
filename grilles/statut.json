@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-23T13:50:41Z",
+ "verifie_le": "2026-11-23T19:28:36Z",
  "formats": {
   "7": {
    "ok": true,
@@ -19,17 +19,17 @@
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    162,
-    163
+    163,
+    164
    ],
    "equipes_inconnues": [
-    "Hammarby",
-    "Ifk Göteborg",
-    "Brøndby",
-    "Midtjylland",
     "Slavia Prague",
     "Shakht.Donetsk",
-    "Sabah FK"
+    "Sabah FK",
+    "Cs Maritimo",
+    "CD Nacional",
+    "CD Leganes",
+    "Venezia FC"
    ],
    "erreur": null
   },
