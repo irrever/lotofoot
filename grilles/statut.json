@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
  "verifie_le": "2026-11-23T08:00:15Z",
+=======
+ "verifie_le": "2026-11-23T12:26:50Z",
+>>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
  "formats": {
   "7": {
    "ok": true,
@@ -10,12 +14,18 @@
    "equipes_inconnues": [
     "Slovan Bratislava",
     "Lillestrøm",
+<<<<<<< HEAD
     "Nec Nimègue",
     "Omonia Nicosie",
     "Sturm Graz",
     "La Gantoise",
     "Etoile Rouge",
     "Fribourg"
+=======
+    "Omonia Nicosie",
+    "Sturm Graz",
+    "Etoile Rouge"
+>>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
    ],
    "erreur": null
   },
@@ -30,7 +40,10 @@
     "Ifk Göteborg",
     "Brøndby",
     "Midtjylland",
+<<<<<<< HEAD
     "AC Monza",
+=======
+>>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
     "Slavia Prague",
     "Shakht.Donetsk",
     "Sabah FK"
@@ -44,18 +57,21 @@
     103
    ],
    "equipes_inconnues": [
-    "AC Monza",
-    "Sheffield Utd",
-    "Queens Park R.",
     "Bodø/Glimt",
     "LASK Linz",
     "Lillestrøm",
+<<<<<<< HEAD
     "Nec Nimègue",
     "Omonia Nicosie",
     "Sturm Graz",
     "La Gantoise",
     "Etoile Rouge",
     "Fribourg",
+=======
+    "Omonia Nicosie",
+    "Sturm Graz",
+    "Etoile Rouge",
+>>>>>>> 85d6a4b (Clubs : sept variantes de nom reconnues, grilles à jour)
     "Dinamo Zagreb",
     "Levski Sofia"
    ],
