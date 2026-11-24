@@ -1,6 +1,6 @@
 {
  "saison": "2627",
- "date": "2026-11-23",
+ "date": "2026-11-24",
  "par_championnat": {
   "E0": [
    {
@@ -40,17 +40,17 @@
    },
    {
     "rang": 6,
+    "equipe": "Brentford",
+    "points": 17,
+    "matchs": 11,
+    "diff": 9
+   },
+   {
+    "rang": 7,
     "equipe": "Leeds",
     "points": 17,
     "matchs": 11,
     "diff": 5
-   },
-   {
-    "rang": 7,
-    "equipe": "Everton",
-    "points": 16,
-    "matchs": 10,
-    "diff": 2
    },
    {
     "rang": 8,
@@ -61,17 +61,17 @@
    },
    {
     "rang": 9,
+    "equipe": "Everton",
+    "points": 16,
+    "matchs": 11,
+    "diff": -2
+   },
+   {
+    "rang": 10,
     "equipe": "Tottenham",
     "points": 15,
     "matchs": 11,
     "diff": 1
-   },
-   {
-    "rang": 10,
-    "equipe": "Brentford",
-    "points": 14,
-    "matchs": 10,
-    "diff": 5
    },
    {
     "rang": 11,
@@ -415,37 +415,37 @@
    },
    {
     "rang": 15,
+    "equipe": "Levante",
+    "points": 12,
+    "matchs": 13,
+    "diff": -5
+   },
+   {
+    "rang": 16,
     "equipe": "Vallecano",
     "points": 12,
     "matchs": 12,
     "diff": -7
    },
    {
-    "rang": 16,
+    "rang": 17,
     "equipe": "Valencia",
     "points": 12,
     "matchs": 13,
     "diff": -11
    },
    {
-    "rang": 17,
+    "rang": 18,
     "equipe": "Getafe",
     "points": 12,
     "matchs": 13,
     "diff": -13
    },
    {
-    "rang": 18,
-    "equipe": "Levante",
-    "points": 11,
-    "matchs": 12,
-    "diff": -5
-   },
-   {
     "rang": 19,
     "equipe": "Elche",
-    "points": 10,
-    "matchs": 12,
+    "points": 11,
+    "matchs": 13,
     "diff": -6
    },
    {
@@ -459,17 +459,17 @@
   "SP2": [
    {
     "rang": 1,
+    "equipe": "Almeria",
+    "points": 35,
+    "matchs": 15,
+    "diff": 16
+   },
+   {
+    "rang": 2,
     "equipe": "Castellon",
     "points": 33,
     "matchs": 14,
     "diff": 21
-   },
-   {
-    "rang": 2,
-    "equipe": "Almeria",
-    "points": 32,
-    "matchs": 14,
-    "diff": 15
    },
    {
     "rang": 3,
@@ -608,8 +608,8 @@
     "rang": 22,
     "equipe": "Ceuta",
     "points": 5,
-    "matchs": 14,
-    "diff": -22
+    "matchs": 15,
+    "diff": -23
    }
   ],
   "I1": [
@@ -706,38 +706,38 @@
    },
    {
     "rang": 14,
+    "equipe": "Monza",
+    "points": 10,
+    "matchs": 12,
+    "diff": -5
+   },
+   {
+    "rang": 15,
     "equipe": "Lecce",
     "points": 10,
     "matchs": 12,
     "diff": -13
    },
    {
-    "rang": 15,
+    "rang": 16,
     "equipe": "Fiorentina",
     "points": 9,
-    "matchs": 11,
-    "diff": -8
+    "matchs": 12,
+    "diff": -11
    },
    {
-    "rang": 16,
+    "rang": 17,
     "equipe": "Parma",
     "points": 8,
     "matchs": 12,
     "diff": -12
    },
    {
-    "rang": 17,
+    "rang": 18,
     "equipe": "Sassuolo",
     "points": 8,
     "matchs": 12,
     "diff": -15
-   },
-   {
-    "rang": 18,
-    "equipe": "Monza",
-    "points": 7,
-    "matchs": 11,
-    "diff": -8
    },
    {
     "rang": 19,
@@ -1346,38 +1346,38 @@
    },
    {
     "rang": 10,
+    "equipe": "Dunkerque",
+    "points": 18,
+    "matchs": 13,
+    "diff": 1
+   },
+   {
+    "rang": 11,
     "equipe": "Rodez",
     "points": 16,
     "matchs": 13,
     "diff": -4
    },
    {
-    "rang": 11,
-    "equipe": "Dunkerque",
+    "rang": 12,
+    "equipe": "Nantes",
     "points": 15,
-    "matchs": 12,
-    "diff": 0
+    "matchs": 13,
+    "diff": -3
    },
    {
-    "rang": 12,
+    "rang": 13,
     "equipe": "Guingamp",
     "points": 14,
     "matchs": 13,
     "diff": -4
    },
    {
-    "rang": 13,
+    "rang": 14,
     "equipe": "Boulogne",
     "points": 13,
     "matchs": 13,
     "diff": 1
-   },
-   {
-    "rang": 14,
-    "equipe": "Nantes",
-    "points": 12,
-    "matchs": 12,
-    "diff": -4
    },
    {
     "rang": 15,
@@ -1397,15 +1397,15 @@
     "rang": 17,
     "equipe": "Sochaux",
     "points": 11,
-    "matchs": 12,
-    "diff": -7
+    "matchs": 13,
+    "diff": -8
    },
    {
     "rang": 18,
     "equipe": "Grenoble",
     "points": 11,
-    "matchs": 12,
-    "diff": -9
+    "matchs": 13,
+    "diff": -10
    }
   ],
   "N1": [
@@ -1837,24 +1837,24 @@
    },
    {
     "rang": 7,
-    "equipe": "Kocaelispor",
+    "equipe": "Buyuksehyr",
     "points": 20,
     "matchs": 12,
     "diff": 4
    },
    {
     "rang": 8,
-    "equipe": "Goztep",
-    "points": 18,
+    "equipe": "Kocaelispor",
+    "points": 20,
     "matchs": 12,
     "diff": 4
    },
    {
     "rang": 9,
-    "equipe": "Buyuksehyr",
-    "points": 17,
-    "matchs": 11,
-    "diff": 2
+    "equipe": "Goztep",
+    "points": 18,
+    "matchs": 12,
+    "diff": 4
    },
    {
     "rang": 10,
@@ -1867,8 +1867,8 @@
     "rang": 11,
     "equipe": "Corum",
     "points": 16,
-    "matchs": 11,
-    "diff": 0
+    "matchs": 12,
+    "diff": -2
    },
    {
     "rang": 12,
@@ -2038,9 +2038,9 @@
    {
     "rang": 5,
     "equipe": "Aris",
-    "points": 19,
-    "matchs": 10,
-    "diff": -1
+    "points": 22,
+    "matchs": 11,
+    "diff": 0
    },
    {
     "rang": 6,
@@ -2086,17 +2086,17 @@
    },
    {
     "rang": 12,
-    "equipe": "Asteras Tripolis",
-    "points": 7,
-    "matchs": 10,
-    "diff": -9
-   },
-   {
-    "rang": 13,
     "equipe": "Levadeiakos",
     "points": 7,
     "matchs": 11,
     "diff": -9
+   },
+   {
+    "rang": 13,
+    "equipe": "Asteras Tripolis",
+    "points": 7,
+    "matchs": 11,
+    "diff": -10
    },
    {
     "rang": 14,

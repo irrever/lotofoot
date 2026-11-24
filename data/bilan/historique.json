@@ -68,5 +68,15 @@
   "log_loss": 0.9902460960330276,
   "log_loss_reference": 1.0692667462644065,
   "competence": 0.07390171863797856
+ },
+ {
+  "saison": "2627",
+  "date_donnees": "2026-11-23",
+  "genere_le": "2026-11-24",
+  "matchs": 1835,
+  "precision": 0.5062670299727521,
+  "log_loss": 0.9900983212204397,
+  "log_loss_reference": 1.0691071692581133,
+  "competence": 0.07390171005260426
  }
 ]

@@ -1,5 +1,5 @@
 {
- "date": "2026-11-23",
+ "date": "2026-11-24",
  "source": "foot-actu.com",
  "regles": {
   "buteur": -10,
@@ -38,7 +38,7 @@
     "malus": -6
    },
    "Brentford": {
-    "absents": 8,
+    "absents": 7,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -359,7 +359,7 @@
  "suivi": {
   "E0": {
    "blessures_clubs": 20,
-   "blessures_joueurs": 86,
+   "blessures_joueurs": 85,
    "buteurs": 20,
    "passeurs": 20
   },
