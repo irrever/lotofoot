@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-24",
+ "maj": "2026-11-25",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "grilles": {
   "8-152": {
@@ -1840,7 +1840,7 @@
   },
   "7-146": {
    "libelle": "Loto Foot 7 n146",
-   "maj": "2026-11-24",
+   "maj": "2026-11-25",
    "matchs": [
     {
      "domicile": "Marseille",
@@ -1888,7 +1888,7 @@
   },
   "12-101": {
    "libelle": "Loto Foot 12 n101",
-   "maj": "2026-11-24",
+   "maj": "2026-11-25",
    "matchs": [
     {
      "domicile": "Marseille",
@@ -2062,7 +2062,7 @@
   },
   "8-162": {
    "libelle": "Loto Foot 8 n162",
-   "maj": "2026-11-24",
+   "maj": "2026-11-25",
    "matchs": [
     {
      "domicile": "Nantes",
@@ -2110,6 +2110,132 @@
      "domicile": "AC Monza",
      "exterieur": "Fiorentina",
      "score": "3-0",
+     "issue": "1"
+    }
+   ]
+  },
+  "7-147": {
+   "libelle": "Loto Foot 7 n147",
+   "maj": "2026-11-25",
+   "matchs": [
+    {
+     "domicile": "RB Leipzig",
+     "exterieur": "Lens",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Arsenal",
+     "exterieur": "Dortmund",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Como 1907",
+     "exterieur": "AEK Athnes",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Feyenoord",
+     "exterieur": "FC Porto",
+     "score": "0-1",
+     "issue": "2"
+    },
+    {
+     "domicile": "Slo.Bratislava",
+     "exterieur": "Betis Sville",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Man. City",
+     "exterieur": "Naples",
+     "score": "2-2",
+     "issue": "N"
+    },
+    {
+     "domicile": "Real Madrid",
+     "exterieur": "PSV Eindhoven",
+     "score": "5-1",
+     "issue": "1"
+    }
+   ]
+  },
+  "12-102": {
+   "libelle": "Loto Foot 12 n102",
+   "maj": "2026-11-25",
+   "matchs": [
+    {
+     "domicile": "Nantes",
+     "exterieur": "Grenoble",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Sochaux",
+     "exterieur": "Dunkerque",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "AC Monza",
+     "exterieur": "Fiorentina",
+     "score": "3-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Levante",
+     "exterieur": "Elche",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Brentford",
+     "exterieur": "Everton",
+     "score": "4-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Portsmouth",
+     "exterieur": "West Ham",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Sheffield Utd",
+     "exterieur": "Southampton",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Norwich",
+     "exterieur": "Queens Park R.",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Middlesbrough",
+     "exterieur": "Swansea",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Bristol City",
+     "exterieur": "Wrexham",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Bod/Glimt",
+     "exterieur": "Lask Linz",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Galatasaray",
+     "exterieur": "Aston Villa",
+     "score": "1-0",
      "issue": "1"
     }
    ]
