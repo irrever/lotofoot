@@ -1,14 +1,13 @@
 {
- "verifie_le": "2026-11-24T18:01:42Z",
+ "verifie_le": "2026-11-25T02:40:27Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    147,
-    148
+    148,
+    149
    ],
    "equipes_inconnues": [
-    "Slovan Bratislava",
     "Lillestrøm",
     "Omonia Nicosie",
     "Sturm Graz",
@@ -52,15 +51,9 @@
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    97,
     98
    ],
-   "equipes_inconnues": [
-    "Slovan Bratislava",
-    "Sabah FK",
-    "Slavia Prague",
-    "Shakht.Donetsk"
-   ],
+   "equipes_inconnues": [],
    "erreur": null
   }
  }
