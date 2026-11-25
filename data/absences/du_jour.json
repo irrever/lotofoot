@@ -1,5 +1,5 @@
 {
- "date": "2026-11-24",
+ "date": "2026-11-25",
  "source": "foot-actu.com",
  "regles": {
   "buteur": -10,
@@ -211,13 +211,13 @@
     "malus": -10
    },
    "Brest": {
-    "absents": 2,
+    "absents": 4,
     "buteur": false,
-    "passeur": false,
+    "passeur": true,
     "meme_joueur": false,
-    "buteurs_cles": 0,
-    "passeurs_cles": 0,
-    "malus": -4
+    "buteurs_cles": 1,
+    "passeurs_cles": 1,
+    "malus": -11
    },
    "Le Havre": {
     "absents": 7,
@@ -365,7 +365,7 @@
   },
   "F1": {
    "blessures_clubs": 18,
-   "blessures_joueurs": 63,
+   "blessures_joueurs": 65,
    "buteurs": 132,
    "passeurs": 118
   }
