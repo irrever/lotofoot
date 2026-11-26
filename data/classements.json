@@ -148,170 +148,170 @@
    {
     "rang": 1,
     "equipe": "Middlesbrough",
-    "points": 32,
-    "matchs": 16,
-    "diff": 13
+    "points": 35,
+    "matchs": 17,
+    "diff": 14
    },
    {
     "rang": 2,
     "equipe": "Stoke",
-    "points": 32,
-    "matchs": 16,
-    "diff": 7
+    "points": 35,
+    "matchs": 17,
+    "diff": 8
    },
    {
     "rang": 3,
-    "equipe": "Southampton",
-    "points": 31,
-    "matchs": 16,
-    "diff": 16
+    "equipe": "Wolves",
+    "points": 34,
+    "matchs": 17,
+    "diff": 12
    },
    {
     "rang": 4,
-    "equipe": "Wolves",
-    "points": 31,
-    "matchs": 16,
-    "diff": 9
+    "equipe": "Southampton",
+    "points": 32,
+    "matchs": 17,
+    "diff": 16
    },
    {
     "rang": 5,
     "equipe": "Birmingham",
-    "points": 29,
-    "matchs": 16,
-    "diff": 13
+    "points": 32,
+    "matchs": 17,
+    "diff": 15
    },
    {
     "rang": 6,
     "equipe": "West Brom",
-    "points": 29,
-    "matchs": 16,
-    "diff": 8
+    "points": 32,
+    "matchs": 17,
+    "diff": 10
    },
    {
     "rang": 7,
     "equipe": "QPR",
-    "points": 27,
-    "matchs": 16,
+    "points": 28,
+    "matchs": 17,
     "diff": 7
    },
    {
     "rang": 8,
     "equipe": "Swansea",
     "points": 27,
-    "matchs": 16,
-    "diff": 4
+    "matchs": 17,
+    "diff": 3
    },
    {
     "rang": 9,
     "equipe": "Sheffield United",
-    "points": 25,
-    "matchs": 16,
+    "points": 26,
+    "matchs": 17,
     "diff": 6
    },
    {
     "rang": 10,
-    "equipe": "West Ham",
-    "points": 24,
-    "matchs": 16,
-    "diff": 14
+    "equipe": "Portsmouth",
+    "points": 26,
+    "matchs": 17,
+    "diff": 3
    },
    {
     "rang": 11,
     "equipe": "Norwich",
-    "points": 24,
-    "matchs": 16,
+    "points": 25,
+    "matchs": 17,
     "diff": 9
    },
    {
     "rang": 12,
-    "equipe": "Portsmouth",
-    "points": 23,
-    "matchs": 16,
-    "diff": 2
+    "equipe": "Blackburn",
+    "points": 25,
+    "matchs": 17,
+    "diff": 0
    },
    {
     "rang": 13,
-    "equipe": "Blackburn",
-    "points": 22,
-    "matchs": 16,
-    "diff": -1
+    "equipe": "West Ham",
+    "points": 24,
+    "matchs": 17,
+    "diff": 13
    },
    {
     "rang": 14,
     "equipe": "Wrexham",
-    "points": 21,
-    "matchs": 16,
+    "points": 22,
+    "matchs": 17,
     "diff": -1
    },
    {
     "rang": 15,
-    "equipe": "Cardiff",
-    "points": 18,
-    "matchs": 16,
-    "diff": -1
+    "equipe": "Charlton",
+    "points": 20,
+    "matchs": 17,
+    "diff": -7
    },
    {
     "rang": 16,
-    "equipe": "Millwall",
-    "points": 18,
-    "matchs": 16,
-    "diff": -5
-   },
-   {
-    "rang": 17,
-    "equipe": "Bolton",
-    "points": 18,
-    "matchs": 16,
-    "diff": -9
-   },
-   {
-    "rang": 18,
     "equipe": "Bristol City",
-    "points": 18,
-    "matchs": 16,
+    "points": 19,
+    "matchs": 17,
     "diff": -10
    },
    {
+    "rang": 17,
+    "equipe": "Cardiff",
+    "points": 18,
+    "matchs": 17,
+    "diff": -5
+   },
+   {
+    "rang": 18,
+    "equipe": "Millwall",
+    "points": 18,
+    "matchs": 17,
+    "diff": -6
+   },
+   {
     "rang": 19,
-    "equipe": "Charlton",
-    "points": 17,
-    "matchs": 16,
+    "equipe": "Bolton",
+    "points": 18,
+    "matchs": 17,
     "diff": -11
    },
    {
     "rang": 20,
-    "equipe": "Lincoln",
+    "equipe": "Watford",
     "points": 15,
-    "matchs": 16,
-    "diff": -12
+    "matchs": 17,
+    "diff": -15
    },
    {
     "rang": 21,
-    "equipe": "Watford",
+    "equipe": "Lincoln",
     "points": 15,
-    "matchs": 16,
-    "diff": -14
+    "matchs": 17,
+    "diff": -16
    },
    {
     "rang": 22,
-    "equipe": "Burnley",
-    "points": 11,
-    "matchs": 16,
-    "diff": -9
+    "equipe": "Preston",
+    "points": 12,
+    "matchs": 17,
+    "diff": -13
    },
    {
     "rang": 23,
-    "equipe": "Derby",
-    "points": 10,
-    "matchs": 16,
-    "diff": -18
+    "equipe": "Burnley",
+    "points": 11,
+    "matchs": 17,
+    "diff": -11
    },
    {
     "rang": 24,
-    "equipe": "Preston",
-    "points": 9,
-    "matchs": 16,
-    "diff": -17
+    "equipe": "Derby",
+    "points": 10,
+    "matchs": 17,
+    "diff": -21
    }
   ],
   "SP1": [
@@ -758,142 +758,142 @@
    {
     "rang": 1,
     "equipe": "Palermo",
-    "points": 27,
-    "matchs": 12,
-    "diff": 10
+    "points": 30,
+    "matchs": 13,
+    "diff": 13
    },
    {
     "rang": 2,
     "equipe": "Modena",
-    "points": 26,
-    "matchs": 12,
+    "points": 27,
+    "matchs": 13,
     "diff": 12
    },
    {
     "rang": 3,
-    "equipe": "Ascoli",
-    "points": 21,
-    "matchs": 12,
-    "diff": 10
+    "equipe": "Avellino",
+    "points": 22,
+    "matchs": 13,
+    "diff": 9
    },
    {
     "rang": 4,
-    "equipe": "Avellino",
-    "points": 19,
-    "matchs": 12,
-    "diff": 8
+    "equipe": "Mantova",
+    "points": 22,
+    "matchs": 13,
+    "diff": 4
    },
    {
     "rang": 5,
-    "equipe": "Pisa",
-    "points": 19,
-    "matchs": 12,
-    "diff": 4
+    "equipe": "Ascoli",
+    "points": 21,
+    "matchs": 13,
+    "diff": 6
    },
    {
     "rang": 6,
-    "equipe": "Mantova",
-    "points": 19,
-    "matchs": 12,
-    "diff": 1
-   },
-   {
-    "rang": 7,
-    "equipe": "Sudtirol",
-    "points": 18,
-    "matchs": 12,
-    "diff": 2
-   },
-   {
-    "rang": 8,
     "equipe": "Cesena",
-    "points": 18,
-    "matchs": 12,
-    "diff": 0
-   },
-   {
-    "rang": 9,
-    "equipe": "Verona",
-    "points": 16,
-    "matchs": 12,
+    "points": 21,
+    "matchs": 13,
     "diff": 4
    },
    {
-    "rang": 10,
+    "rang": 7,
+    "equipe": "Pisa",
+    "points": 20,
+    "matchs": 13,
+    "diff": 4
+   },
+   {
+    "rang": 8,
     "equipe": "Benevento",
-    "points": 16,
-    "matchs": 12,
-    "diff": 2
+    "points": 19,
+    "matchs": 13,
+    "diff": 7
+   },
+   {
+    "rang": 9,
+    "equipe": "Sudtirol",
+    "points": 18,
+    "matchs": 13,
+    "diff": -1
+   },
+   {
+    "rang": 10,
+    "equipe": "Sampdoria",
+    "points": 17,
+    "matchs": 13,
+    "diff": -4
    },
    {
     "rang": 11,
-    "equipe": "Padova",
+    "equipe": "Verona",
     "points": 16,
-    "matchs": 12,
-    "diff": -1
+    "matchs": 13,
+    "diff": 3
    },
    {
     "rang": 12,
-    "equipe": "Juve Stabia",
+    "equipe": "Padova",
     "points": 16,
-    "matchs": 12,
-    "diff": -1
+    "matchs": 13,
+    "diff": -2
    },
    {
     "rang": 13,
-    "equipe": "Cremonese",
-    "points": 15,
-    "matchs": 12,
-    "diff": 1
+    "equipe": "Juve Stabia",
+    "points": 16,
+    "matchs": 13,
+    "diff": -3
    },
    {
     "rang": 14,
-    "equipe": "Sampdoria",
-    "points": 14,
-    "matchs": 12,
-    "diff": -5
+    "equipe": "Carrarese",
+    "points": 16,
+    "matchs": 13,
+    "diff": -3
    },
    {
     "rang": 15,
-    "equipe": "Carrarese",
-    "points": 13,
-    "matchs": 12,
-    "diff": -4
+    "equipe": "Cremonese",
+    "points": 15,
+    "matchs": 13,
+    "diff": 0
    },
    {
     "rang": 16,
-    "equipe": "Arezzo",
-    "points": 12,
-    "matchs": 12,
-    "diff": -11
+    "equipe": "Virtus Entella",
+    "points": 13,
+    "matchs": 13,
+    "diff": -3
    },
    {
     "rang": 17,
-    "equipe": "Virtus Entella",
-    "points": 10,
-    "matchs": 12,
-    "diff": -4
-   },
-   {
-    "rang": 18,
-    "equipe": "Vicenza",
-    "points": 10,
-    "matchs": 12,
-    "diff": -10
-   },
-   {
-    "rang": 19,
-    "equipe": "Empoli",
-    "points": 9,
-    "matchs": 12,
+    "equipe": "Catanzaro",
+    "points": 12,
+    "matchs": 13,
     "diff": -8
    },
    {
+    "rang": 18,
+    "equipe": "Arezzo",
+    "points": 12,
+    "matchs": 13,
+    "diff": -14
+   },
+   {
+    "rang": 19,
+    "equipe": "Vicenza",
+    "points": 10,
+    "matchs": 13,
+    "diff": -11
+   },
+   {
     "rang": 20,
-    "equipe": "Catanzaro",
+    "equipe": "Empoli",
     "points": 9,
-    "matchs": 12,
-    "diff": -10
+    "matchs": 13,
+    "diff": -13
    }
   ],
   "D1": [
@@ -1931,9 +1931,9 @@
    {
     "rang": 2,
     "equipe": "Rangers",
-    "points": 30,
-    "matchs": 13,
-    "diff": 13
+    "points": 33,
+    "matchs": 14,
+    "diff": 14
    },
    {
     "rang": 3,
@@ -1967,36 +1967,36 @@
     "rang": 7,
     "equipe": "Dundee",
     "points": 17,
-    "matchs": 13,
-    "diff": -5
+    "matchs": 14,
+    "diff": -6
    },
    {
     "rang": 8,
     "equipe": "Aberdeen",
     "points": 14,
-    "matchs": 13,
-    "diff": -4
+    "matchs": 14,
+    "diff": -5
    },
    {
     "rang": 9,
+    "equipe": "Hibernian",
+    "points": 14,
+    "matchs": 14,
+    "diff": -5
+   },
+   {
+    "rang": 10,
     "equipe": "St Mirren",
     "points": 14,
     "matchs": 14,
     "diff": -13
    },
    {
-    "rang": 10,
+    "rang": 11,
     "equipe": "Motherwell",
     "points": 13,
     "matchs": 14,
     "diff": -7
-   },
-   {
-    "rang": 11,
-    "equipe": "Hibernian",
-    "points": 11,
-    "matchs": 13,
-    "diff": -6
    },
    {
     "rang": 12,
