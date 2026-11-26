@@ -11,13 +11,13 @@
  "championnats": {
   "E0": {
    "Arsenal": {
-    "absents": 3,
+    "absents": 4,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -6
+    "malus": -8
    },
    "Aston Villa": {
     "absents": 3,
@@ -47,7 +47,7 @@
     "malus": -10
    },
    "Brighton": {
-    "absents": 6,
+    "absents": 8,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -65,7 +65,7 @@
     "malus": -20
    },
    "Coventry": {
-    "absents": 7,
+    "absents": 8,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -74,7 +74,7 @@
     "malus": -10
    },
    "Crystal Palace": {
-    "absents": 5,
+    "absents": 7,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -83,13 +83,13 @@
     "malus": -10
    },
    "Everton": {
-    "absents": 2,
+    "absents": 3,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -4
+    "malus": -6
    },
    "Fulham": {
     "absents": 2,
@@ -101,7 +101,7 @@
     "malus": -4
    },
    "Hull": {
-    "absents": 5,
+    "absents": 7,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -110,13 +110,13 @@
     "malus": -10
    },
    "Ipswich": {
-    "absents": 2,
+    "absents": 3,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -4
+    "malus": -6
    },
    "Leeds": {
     "absents": 1,
@@ -128,12 +128,12 @@
     "malus": -2
    },
    "Liverpool": {
-    "absents": 5,
+    "absents": 7,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
-    "passeurs_cles": 0,
+    "passeurs_cles": 1,
     "malus": -10
    },
    "Man City": {
@@ -146,7 +146,7 @@
     "malus": -9
    },
    "Man United": {
-    "absents": 8,
+    "absents": 9,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -155,13 +155,13 @@
     "malus": -10
    },
    "Newcastle": {
-    "absents": 2,
+    "absents": 3,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -4
+    "malus": -6
    },
    "Nott'm Forest": {
     "absents": 5,
@@ -202,7 +202,7 @@
     "malus": -4
    },
    "Auxerre": {
-    "absents": 5,
+    "absents": 6,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -211,13 +211,13 @@
     "malus": -10
    },
    "Brest": {
-    "absents": 4,
+    "absents": 2,
     "buteur": false,
-    "passeur": true,
+    "passeur": false,
     "meme_joueur": false,
-    "buteurs_cles": 1,
-    "passeurs_cles": 1,
-    "malus": -11
+    "buteurs_cles": 0,
+    "passeurs_cles": 0,
+    "malus": -4
    },
    "Le Havre": {
     "absents": 8,
@@ -251,27 +251,27 @@
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
-    "buteurs_cles": 2,
+    "buteurs_cles": 1,
     "passeurs_cles": 0,
     "malus": -6
    },
    "Lorient": {
-    "absents": 3,
+    "absents": 4,
     "buteur": false,
     "passeur": true,
     "meme_joueur": false,
     "buteurs_cles": 1,
     "passeurs_cles": 1,
-    "malus": -9
+    "malus": -11
    },
    "Lyon": {
-    "absents": 5,
+    "absents": 7,
     "buteur": false,
     "passeur": true,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 1,
-    "malus": -13
+    "malus": -15
    },
    "Marseille": {
     "absents": 2,
@@ -283,13 +283,13 @@
     "malus": -7
    },
    "Monaco": {
-    "absents": 4,
-    "buteur": false,
+    "absents": 9,
+    "buteur": true,
     "passeur": true,
     "meme_joueur": false,
-    "buteurs_cles": 0,
+    "buteurs_cles": 2,
     "passeurs_cles": 1,
-    "malus": -11
+    "malus": -20
    },
    "Nice": {
     "absents": 4,
@@ -319,31 +319,31 @@
     "malus": -6
    },
    "Rennes": {
-    "absents": 2,
-    "buteur": true,
+    "absents": 4,
+    "buteur": false,
     "passeur": true,
     "meme_joueur": false,
-    "buteurs_cles": 1,
-    "passeurs_cles": 1,
-    "malus": -15
+    "buteurs_cles": 0,
+    "passeurs_cles": 2,
+    "malus": -9
    },
    "Strasbourg": {
-    "absents": 4,
+    "absents": 6,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
-    "buteurs_cles": 1,
+    "buteurs_cles": 2,
     "passeurs_cles": 1,
-    "malus": -8
+    "malus": -10
    },
    "Toulouse": {
-    "absents": 1,
+    "absents": 2,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -2
+    "malus": -4
    },
    "Troyes": {
     "absents": 4,
@@ -359,13 +359,13 @@
  "suivi": {
   "E0": {
    "blessures_clubs": 20,
-   "blessures_joueurs": 86,
+   "blessures_joueurs": 100,
    "buteurs": 20,
    "passeurs": 20
   },
   "F1": {
    "blessures_clubs": 18,
-   "blessures_joueurs": 65,
+   "blessures_joueurs": 77,
    "buteurs": 132,
    "passeurs": 118
   }

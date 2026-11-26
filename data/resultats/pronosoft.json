@@ -2204,6 +2204,121 @@
     "Loto Foot 8 n163",
     "Loto Foot 15 n97"
    ]
+  },
+  {
+   "domicile": "Celta Vigo",
+   "exterieur": "Bournemouth",
+   "score": "1-2",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Crystal Palace",
+   "exterieur": "Real Sociedad",
+   "score": "2-1",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 7 n148",
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Dinamo Zagreb",
+   "exterieur": "Leverkusen",
+   "score": "0-2",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Fribourg",
+   "exterieur": "Twente",
+   "score": "2-1",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 7 n148",
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Hearts",
+   "exterieur": "Monaco",
+   "score": "2-3",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Hoffenheim",
+   "exterieur": "Sturm Graz",
+   "score": "3-1",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 7 n148",
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Juventus Turin",
+   "exterieur": "Omonia Nicosie",
+   "score": "4-1",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 7 n148",
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "La Gantoise",
+   "exterieur": "Etoile Rouge",
+   "score": "1-1",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 7 n148",
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Lyon",
+   "exterieur": "Lillestrm",
+   "score": "0-0",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 7 n148",
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Marseille",
+   "exterieur": "Levski Sofia",
+   "score": "1-0",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "NEC Nimgue",
+   "exterieur": "Rennes",
+   "score": "3-1",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 7 n148",
+    "Loto Foot 12 n103"
+   ]
+  },
+  {
+   "domicile": "Olympiakos",
+   "exterieur": "Milan AC",
+   "score": "2-4",
+   "vu": "2026-11-26",
+   "grilles": [
+    "Loto Foot 12 n103"
+   ]
   }
  ]
 }

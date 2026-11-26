@@ -2389,6 +2389,132 @@
      "issue": "N"
     }
    ]
+  },
+  "7-148": {
+   "libelle": "Loto Foot 7 n148",
+   "maj": "2026-11-26",
+   "matchs": [
+    {
+     "domicile": "Lyon",
+     "exterieur": "Lillestrm",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "NEC Nimgue",
+     "exterieur": "Rennes",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Juventus Turin",
+     "exterieur": "Omonia Nicosie",
+     "score": "4-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Crystal Palace",
+     "exterieur": "Real Sociedad",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hoffenheim",
+     "exterieur": "Sturm Graz",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "La Gantoise",
+     "exterieur": "Etoile Rouge",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Fribourg",
+     "exterieur": "Twente",
+     "score": "2-1",
+     "issue": "1"
+    }
+   ]
+  },
+  "12-103": {
+   "libelle": "Loto Foot 12 n103",
+   "maj": "2026-11-26",
+   "matchs": [
+    {
+     "domicile": "Lyon",
+     "exterieur": "Lillestrm",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "NEC Nimgue",
+     "exterieur": "Rennes",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Juventus Turin",
+     "exterieur": "Omonia Nicosie",
+     "score": "4-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Crystal Palace",
+     "exterieur": "Real Sociedad",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hoffenheim",
+     "exterieur": "Sturm Graz",
+     "score": "3-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "La Gantoise",
+     "exterieur": "Etoile Rouge",
+     "score": "1-1",
+     "issue": "N"
+    },
+    {
+     "domicile": "Fribourg",
+     "exterieur": "Twente",
+     "score": "2-1",
+     "issue": "1"
+    },
+    {
+     "domicile": "Hearts",
+     "exterieur": "Monaco",
+     "score": "2-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Olympiakos",
+     "exterieur": "Milan AC",
+     "score": "2-4",
+     "issue": "2"
+    },
+    {
+     "domicile": "Celta Vigo",
+     "exterieur": "Bournemouth",
+     "score": "1-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Dinamo Zagreb",
+     "exterieur": "Leverkusen",
+     "score": "0-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Marseille",
+     "exterieur": "Levski Sofia",
+     "score": "1-0",
+     "issue": "1"
+    }
+   ]
   }
  }
 }
