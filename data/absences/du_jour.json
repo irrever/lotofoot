@@ -1,5 +1,5 @@
 {
- "date": "2026-11-25",
+ "date": "2026-11-26",
  "source": "foot-actu.com",
  "regles": {
   "buteur": -10,
@@ -56,13 +56,13 @@
     "malus": -10
    },
    "Chelsea": {
-    "absents": 5,
+    "absents": 6,
     "buteur": true,
     "passeur": false,
     "meme_joueur": true,
     "buteurs_cles": 1,
     "passeurs_cles": 1,
-    "malus": -18
+    "malus": -20
    },
    "Coventry": {
     "absents": 7,
@@ -220,7 +220,7 @@
     "malus": -11
    },
    "Le Havre": {
-    "absents": 7,
+    "absents": 8,
     "buteur": false,
     "passeur": true,
     "meme_joueur": false,
@@ -310,13 +310,13 @@
     "malus": -4
    },
    "Paris SG": {
-    "absents": 5,
+    "absents": 3,
     "buteur": false,
-    "passeur": true,
+    "passeur": false,
     "meme_joueur": false,
-    "buteurs_cles": 1,
-    "passeurs_cles": 1,
-    "malus": -13
+    "buteurs_cles": 0,
+    "passeurs_cles": 0,
+    "malus": -6
    },
    "Rennes": {
     "absents": 2,
@@ -346,20 +346,20 @@
     "malus": -2
    },
    "Troyes": {
-    "absents": 3,
+    "absents": 4,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
     "buteurs_cles": 0,
     "passeurs_cles": 0,
-    "malus": -6
+    "malus": -8
    }
   }
  },
  "suivi": {
   "E0": {
    "blessures_clubs": 20,
-   "blessures_joueurs": 85,
+   "blessures_joueurs": 86,
    "buteurs": 20,
    "passeurs": 20
   },
