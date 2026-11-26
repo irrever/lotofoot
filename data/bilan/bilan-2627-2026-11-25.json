@@ -9,27 +9,27 @@
  "resume": {
   "matchs": 1859,
   "precision": 0.506186121570737,
-  "brier": 0.5892273858159206,
+  "brier": 0.5892273858159205,
   "log_loss": 0.989832237356123,
   "log_loss_elo": 0.9941942251150294,
   "log_loss_reference": 1.068704104501061,
   "competence": 0.07380140752969255,
   "competence_elo": 0.0697198401991892,
   "ecart_reference": {
-   "moyenne": 0.07887186714493807,
-   "bas": 0.060944790768327206,
-   "haut": 0.09679894352154894,
+   "moyenne": 0.07887186714493817,
+   "bas": 0.060944790768327234,
+   "haut": 0.09679894352154911,
    "matchs": 1859
   },
   "ecart_elo": {
-   "moyenne": 0.004361987758906382,
-   "bas": -0.0017222949888657645,
-   "haut": 0.010446270506678528,
+   "moyenne": 0.004361987758906471,
+   "bas": -0.0017222949888657385,
+   "haut": 0.01044627050667868,
    "matchs": 1859
   },
   "prevue": {
-   "H": 0.43338302392789907,
-   "D": 0.25686222382549084,
+   "H": 0.4333830239278999,
+   "D": 0.25686222382549,
    "A": 0.3097547522466101
   },
   "observee": {
@@ -43,173 +43,173 @@
    "semaine": "2026-07-27",
    "matchs": 5,
    "precision": 0.0,
-   "log_loss": 1.4397547115571583,
-   "log_loss_cumule": 1.4397547115571583,
+   "log_loss": 1.4397547115571605,
+   "log_loss_cumule": 1.4397547115571605,
    "log_loss_reference_cumule": 1.081084763209949,
    "log_loss_elo_cumule": 1.4313940481200027,
    "precision_cumulee": 0.0,
-   "competence_cumulee": -0.3317685722276291
+   "competence_cumulee": -0.3317685722276311
   },
   {
    "semaine": "2026-08-03",
    "matchs": 51,
    "precision": 0.5294117647058824,
-   "log_loss": 0.9833632127984078,
-   "log_loss_cumule": 1.0241124537590105,
+   "log_loss": 0.9833632127984069,
+   "log_loss_cumule": 1.0241124537590098,
    "log_loss_reference_cumule": 1.0642310613457489,
    "log_loss_elo_cumule": 1.0282594633347375,
    "precision_cumulee": 0.48214285714285715,
-   "competence_cumulee": 0.037697271808630806
+   "competence_cumulee": 0.03769727180863147
   },
   {
    "semaine": "2026-08-10",
    "matchs": 76,
    "precision": 0.40789473684210525,
-   "log_loss": 1.0689617081472256,
-   "log_loss_cumule": 1.049934751740104,
+   "log_loss": 1.0689617081472236,
+   "log_loss_cumule": 1.0499347517401025,
    "log_loss_reference_cumule": 1.0841895018555128,
    "log_loss_elo_cumule": 1.06557391052639,
    "precision_cumulee": 0.4393939393939394,
-   "competence_cumulee": 0.031594799669969253
+   "competence_cumulee": 0.0315947996699707
   },
   {
    "semaine": "2026-08-17",
    "matchs": 113,
    "precision": 0.49557522123893805,
-   "log_loss": 0.9896839333257043,
-   "log_loss_cumule": 1.022145598757136,
+   "log_loss": 0.9896839333257039,
+   "log_loss_cumule": 1.022145598757135,
    "log_loss_reference_cumule": 1.0804705968946793,
    "log_loss_elo_cumule": 1.023347977283462,
    "precision_cumulee": 0.46530612244897956,
-   "competence_cumulee": 0.053981106293102266
+   "competence_cumulee": 0.05398110629310304
   },
   {
    "semaine": "2026-08-24",
    "matchs": 149,
    "precision": 0.4563758389261745,
-   "log_loss": 1.0028067680074857,
-   "log_loss_cumule": 1.0148321830675475,
+   "log_loss": 1.002806768007486,
+   "log_loss_cumule": 1.0148321830675469,
    "log_loss_reference_cumule": 1.079966659549507,
    "log_loss_elo_cumule": 1.013966678466908,
    "precision_cumulee": 0.4619289340101523,
-   "competence_cumulee": 0.06031156231168233
+   "competence_cumulee": 0.06031156231168289
   },
   {
    "semaine": "2026-08-31",
    "matchs": 171,
    "precision": 0.5263157894736842,
-   "log_loss": 0.976829072230117,
-   "log_loss_cumule": 1.0033303566017056,
+   "log_loss": 0.9768290722301204,
+   "log_loss_cumule": 1.0033303566017062,
    "log_loss_reference_cumule": 1.0862127674955406,
    "log_loss_elo_cumule": 1.0086436189901753,
    "precision_cumulee": 0.4814159292035398,
-   "competence_cumulee": 0.0763040293523114
+   "competence_cumulee": 0.07630402935231073
   },
   {
    "semaine": "2026-09-07",
    "matchs": 159,
    "precision": 0.44025157232704404,
-   "log_loss": 1.0335895793677177,
-   "log_loss_cumule": 1.009975683148385,
+   "log_loss": 1.033589579367718,
+   "log_loss_cumule": 1.0099756831483855,
    "log_loss_reference_cumule": 1.0867021707329316,
    "log_loss_elo_cumule": 1.0131420080916296,
    "precision_cumulee": 0.4723756906077348,
-   "competence_cumulee": 0.07060489032868866
+   "competence_cumulee": 0.07060489032868833
   },
   {
    "semaine": "2026-09-14",
    "matchs": 173,
    "precision": 0.4624277456647399,
-   "log_loss": 1.0291825917448556,
-   "log_loss_cumule": 1.0136800256090197,
+   "log_loss": 1.0291825917448576,
+   "log_loss_cumule": 1.0136800256090206,
    "log_loss_reference_cumule": 1.0840583077010533,
    "log_loss_elo_cumule": 1.016130741393564,
    "precision_cumulee": 0.47045707915273133,
-   "competence_cumulee": 0.06492112240833592
+   "competence_cumulee": 0.06492112240833514
   },
   {
    "semaine": "2026-09-21",
    "matchs": 10,
    "precision": 0.5,
-   "log_loss": 0.9883828800502716,
-   "log_loss_cumule": 1.0134011155146567,
+   "log_loss": 0.9883828800502718,
+   "log_loss_cumule": 1.0134011155146574,
    "log_loss_reference_cumule": 1.083173299946449,
    "log_loss_elo_cumule": 1.0154387971866106,
    "precision_cumulee": 0.47078280044101434,
-   "competence_cumulee": 0.06441460884905648
+   "competence_cumulee": 0.06441460884905581
   },
   {
    "semaine": "2026-09-28",
    "matchs": 11,
    "precision": 0.36363636363636365,
-   "log_loss": 1.1143056275880239,
-   "log_loss_cumule": 1.0146102109752306,
+   "log_loss": 1.1143056275880339,
+   "log_loss_cumule": 1.0146102109752317,
    "log_loss_reference_cumule": 1.08355118001302,
    "log_loss_elo_cumule": 1.0166921764870445,
    "precision_cumulee": 0.46949891067538124,
-   "competence_cumulee": 0.06362502326559316
+   "competence_cumulee": 0.06362502326559216
   },
   {
    "semaine": "2026-10-05",
    "matchs": 136,
    "precision": 0.5588235294117647,
-   "log_loss": 0.9139443314481425,
-   "log_loss_cumule": 1.0016210652297999,
+   "log_loss": 0.9139443314481424,
+   "log_loss_cumule": 1.0016210652298008,
    "log_loss_reference_cumule": 1.0790317674930399,
    "log_loss_elo_cumule": 1.002331037317497,
    "precision_cumulee": 0.4810246679316888,
-   "competence_cumulee": 0.07174089271077866
+   "competence_cumulee": 0.07174089271077777
   },
   {
    "semaine": "2026-10-12",
    "matchs": 146,
    "precision": 0.5616438356164384,
-   "log_loss": 1.004605821176377,
-   "log_loss_cumule": 1.0019842105366334,
+   "log_loss": 1.0046058211763769,
+   "log_loss_cumule": 1.0019842105366343,
    "log_loss_reference_cumule": 1.0772290577883674,
    "log_loss_elo_cumule": 1.0054981772132237,
    "precision_cumulee": 0.49083333333333334,
-   "competence_cumulee": 0.06985036906284103
+   "competence_cumulee": 0.06985036906284026
   },
   {
    "semaine": "2026-10-19",
    "matchs": 148,
    "precision": 0.49324324324324326,
-   "log_loss": 1.0106060153813687,
-   "log_loss_cumule": 1.0029308181902097,
+   "log_loss": 1.0106060153813652,
+   "log_loss_cumule": 1.0029308181902101,
    "log_loss_reference_cumule": 1.0760733299764107,
    "log_loss_elo_cumule": 1.0077660229477436,
    "precision_cumulee": 0.4910979228486647,
-   "competence_cumulee": 0.06797167976257201
+   "competence_cumulee": 0.06797167976257157
   },
   {
    "semaine": "2026-10-26",
    "matchs": 164,
    "precision": 0.5670731707317073,
-   "log_loss": 0.9557306631052109,
-   "log_loss_cumule": 0.9978112246492443,
+   "log_loss": 0.9557306631052112,
+   "log_loss_cumule": 0.9978112246492444,
    "log_loss_reference_cumule": 1.071234185958375,
    "log_loss_elo_cumule": 1.0013500053738533,
    "precision_cumulee": 0.49933862433862436,
-   "competence_cumulee": 0.06854053228654489
+   "competence_cumulee": 0.06854053228654478
   },
   {
    "semaine": "2026-11-02",
    "matchs": 171,
    "precision": 0.5321637426900585,
-   "log_loss": 0.9509673300079181,
-   "log_loss_cumule": 0.9930516845519972,
+   "log_loss": 0.9509673300079178,
+   "log_loss_cumule": 0.9930516845519974,
    "log_loss_reference_cumule": 1.0708159724147743,
    "log_loss_elo_cumule": 0.9974341641732252,
    "precision_cumulee": 0.5026737967914439,
-   "competence_cumulee": 0.07262152402098798
+   "competence_cumulee": 0.07262152402098776
   },
   {
    "semaine": "2026-11-09",
    "matchs": 12,
    "precision": 0.3333333333333333,
    "log_loss": 1.091664923962058,
-   "log_loss_cumule": 0.9937498313796791,
+   "log_loss_cumule": 0.9937498313796792,
    "log_loss_reference_cumule": 1.0707303422697128,
    "log_loss_elo_cumule": 0.9979441343431138,
    "precision_cumulee": 0.5014749262536873,
@@ -219,7 +219,7 @@
    "semaine": "2026-11-16",
    "matchs": 132,
    "precision": 0.5606060606060606,
-   "log_loss": 0.9452549489680709,
+   "log_loss": 0.9452549489680697,
    "log_loss_cumule": 0.9902460960330276,
    "log_loss_reference_cumule": 1.0692667462644065,
    "log_loss_elo_cumule": 0.9944917215962391,
@@ -230,7 +230,7 @@
    "semaine": "2026-11-23",
    "matchs": 32,
    "precision": 0.53125,
-   "log_loss": 0.9662034935216005,
+   "log_loss": 0.9662034935215924,
    "log_loss_cumule": 0.989832237356123,
    "log_loss_reference_cumule": 1.068704104501061,
    "log_loss_elo_cumule": 0.9941942251150294,
@@ -244,7 +244,7 @@
    "de": 0.0,
    "a": 0.2,
    "matchs": 172,
-   "prevue": 0.1354275267195891,
+   "prevue": 0.1354275267195892,
    "observee": 0.12790697674418605
   },
   {
@@ -252,7 +252,7 @@
    "de": 0.2,
    "a": 0.3,
    "matchs": 252,
-   "prevue": 0.25559387137408307,
+   "prevue": 0.2555938713740816,
    "observee": 0.30158730158730157
   },
   {
@@ -260,7 +260,7 @@
    "de": 0.3,
    "a": 0.4,
    "matchs": 374,
-   "prevue": 0.3541743216292261,
+   "prevue": 0.35417432162922646,
    "observee": 0.3877005347593583
   },
   {
@@ -268,7 +268,7 @@
    "de": 0.4,
    "a": 0.5,
    "matchs": 436,
-   "prevue": 0.44664236328175355,
+   "prevue": 0.4466423632817556,
    "observee": 0.4243119266055046
   },
   {
@@ -276,7 +276,7 @@
    "de": 0.5,
    "a": 0.6,
    "matchs": 309,
-   "prevue": 0.5431664742225427,
+   "prevue": 0.5431664742225453,
    "observee": 0.5242718446601942
   },
   {
@@ -284,7 +284,7 @@
    "de": 0.6,
    "a": 1.0,
    "matchs": 316,
-   "prevue": 0.7054434939398267,
+   "prevue": 0.7054434939398273,
    "observee": 0.7310126582278481
   },
   {
@@ -292,7 +292,7 @@
    "de": 0.0,
    "a": 0.2,
    "matchs": 208,
-   "prevue": 0.16425509671949415,
+   "prevue": 0.1642550967194949,
    "observee": 0.11538461538461539
   },
   {
@@ -300,7 +300,7 @@
    "de": 0.2,
    "a": 0.3,
    "matchs": 1441,
-   "prevue": 0.26220971467097487,
+   "prevue": 0.26220971467097376,
    "observee": 0.24496877168632894
   },
   {
@@ -308,7 +308,7 @@
    "de": 0.3,
    "a": 0.4,
    "matchs": 210,
-   "prevue": 0.31189340539551424,
+   "prevue": 0.31189340539551336,
    "observee": 0.2619047619047619
   },
   {
@@ -316,7 +316,7 @@
    "de": 0.0,
    "a": 0.2,
    "matchs": 474,
-   "prevue": 0.12801195165718224,
+   "prevue": 0.12801195165718085,
    "observee": 0.13291139240506328
   },
   {
@@ -324,7 +324,7 @@
    "de": 0.2,
    "a": 0.3,
    "matchs": 525,
-   "prevue": 0.25105897238617414,
+   "prevue": 0.2510589723861736,
    "observee": 0.29523809523809524
   },
   {
@@ -332,7 +332,7 @@
    "de": 0.3,
    "a": 0.4,
    "matchs": 391,
-   "prevue": 0.3454091283292996,
+   "prevue": 0.34540912832929965,
    "observee": 0.34782608695652173
   },
   {
@@ -340,7 +340,7 @@
    "de": 0.4,
    "a": 0.5,
    "matchs": 229,
-   "prevue": 0.44644321254737585,
+   "prevue": 0.4464432125473799,
    "observee": 0.39737991266375544
   },
   {
@@ -348,7 +348,7 @@
    "de": 0.5,
    "a": 0.6,
    "matchs": 125,
-   "prevue": 0.5418165281280674,
+   "prevue": 0.5418165281280666,
    "observee": 0.552
   },
   {
@@ -356,7 +356,7 @@
    "de": 0.6,
    "a": 1.0,
    "matchs": 115,
-   "prevue": 0.6811558954094673,
+   "prevue": 0.6811558954094674,
    "observee": 0.8
   }
  ],
@@ -366,28 +366,28 @@
    "nom": "Angleterre Championship",
    "matchs": 204,
    "precision": 0.4411764705882353,
-   "brier": 0.6441061806036735,
-   "log_loss": 1.066769086284622,
+   "brier": 0.6441061806036724,
+   "log_loss": 1.0667690862846206,
    "log_loss_elo": 1.0922618205285282,
    "log_loss_reference": 1.0741050652830313,
-   "competence": 0.0068298523445434745,
+   "competence": 0.006829852344544696,
    "competence_elo": -0.016904077480272006,
    "ecart_reference": {
-    "moyenne": 0.00733597899840927,
-    "bas": -0.03884519363252102,
-    "haut": 0.053517151629339565,
+    "moyenne": 0.007335978998410703,
+    "bas": -0.03884519363251942,
+    "haut": 0.05351715162934082,
     "matchs": 204
    },
    "ecart_elo": {
-    "moyenne": 0.025492734243906058,
-    "bas": 0.005653377731105316,
-    "haut": 0.0453320907567068,
+    "moyenne": 0.02549273424390749,
+    "bas": 0.005653377731106166,
+    "haut": 0.04533209075670881,
     "matchs": 204
    },
    "prevue": {
-    "H": 0.43543337629484524,
-    "D": 0.25709305761146434,
-    "A": 0.30747356609369036
+    "H": 0.43543337629484646,
+    "D": 0.257093057611464,
+    "A": 0.3074735660936895
    },
    "observee": {
     "H": 0.4362745098039216,
@@ -400,28 +400,28 @@
    "nom": "Espagne Liga 2",
    "matchs": 162,
    "precision": 0.4876543209876543,
-   "brier": 0.6163119540867055,
-   "log_loss": 1.024075225575882,
+   "brier": 0.6163119540867068,
+   "log_loss": 1.0240752255758832,
    "log_loss_elo": 1.0228748440961608,
    "log_loss_reference": 1.0648041483948925,
-   "competence": 0.0382501541531427,
+   "competence": 0.03825015415314159,
    "competence_elo": 0.0393774802267034,
    "ecart_reference": {
-    "moyenne": 0.04072892281901047,
-    "bas": 0.001339221666387766,
-    "haut": 0.08011862397163318,
+    "moyenne": 0.04072892281900925,
+    "bas": 0.0013392216663862533,
+    "haut": 0.08011862397163225,
     "matchs": 162
    },
    "ecart_elo": {
-    "moyenne": -0.0012003814797212453,
-    "bas": -0.02192320003890442,
-    "haut": 0.01952243707946193,
+    "moyenne": -0.0012003814797224607,
+    "bas": -0.021923200038906233,
+    "haut": 0.019522437079461313,
     "matchs": 162
    },
    "prevue": {
-    "H": 0.430939555160027,
-    "D": 0.28840254491908485,
-    "A": 0.28065789992088813
+    "H": 0.43093955516002985,
+    "D": 0.2884025449190819,
+    "A": 0.28065789992088835
    },
    "observee": {
     "H": 0.4506172839506173,
@@ -434,28 +434,28 @@
    "nom": "Italie Serie B",
    "matchs": 130,
    "precision": 0.4,
-   "brier": 0.6593593436328714,
-   "log_loss": 1.092143165831307,
+   "brier": 0.6593593436328686,
+   "log_loss": 1.0921431658313023,
    "log_loss_elo": 1.089343414115594,
    "log_loss_reference": 1.0950804720289231,
-   "competence": 0.0026822742918372056,
+   "competence": 0.0026822742918414244,
    "competence_elo": 0.005238937283485456,
    "ecart_reference": {
-    "moyenne": 0.00293730619761622,
-    "bas": -0.04208357359419542,
-    "haut": 0.047958185989427866,
+    "moyenne": 0.0029373061976206783,
+    "bas": -0.04208357359419082,
+    "haut": 0.047958185989432175,
     "matchs": 130
    },
    "ecart_elo": {
-    "moyenne": -0.00279975171571284,
-    "bas": -0.02507293264925698,
-    "haut": 0.019473429217831302,
+    "moyenne": -0.0027997517157083824,
+    "bas": -0.025072932649252717,
+    "haut": 0.019473429217835955,
     "matchs": 130
    },
    "prevue": {
-    "H": 0.42410494480848004,
-    "D": 0.28855875563775707,
-    "A": 0.2873362995537629
+    "H": 0.42410494480847943,
+    "D": 0.28855875563775685,
+    "A": 0.2873362995537637
    },
    "observee": {
     "H": 0.3923076923076923,
@@ -468,28 +468,28 @@
    "nom": "Espagne Liga",
    "matchs": 129,
    "precision": 0.5348837209302325,
-   "brier": 0.552119430636004,
-   "log_loss": 0.9399714201589038,
+   "brier": 0.5521194306360064,
+   "log_loss": 0.9399714201589092,
    "log_loss_elo": 0.9311203651305544,
    "log_loss_reference": 1.0714194231156269,
-   "competence": 0.12268585030359047,
+   "competence": 0.12268585030358548,
    "competence_elo": 0.1309469055331205,
    "ecart_reference": {
-    "moyenne": 0.13144800295672326,
-    "bas": 0.06414461145955656,
-    "haut": 0.19875139445388995,
+    "moyenne": 0.13144800295671769,
+    "bas": 0.06414461145954943,
+    "haut": 0.19875139445388595,
     "matchs": 129
    },
    "ecart_elo": {
-    "moyenne": -0.00885105502834934,
-    "bas": -0.03045761185014756,
-    "haut": 0.012755501793448878,
+    "moyenne": -0.008851055028354942,
+    "bas": -0.030457611850154234,
+    "haut": 0.012755501793444353,
     "matchs": 129
    },
    "prevue": {
-    "H": 0.4394290154408131,
-    "D": 0.257570930043816,
-    "A": 0.3030000545153709
+    "H": 0.43942901544081436,
+    "D": 0.2575709300438169,
+    "A": 0.3030000545153687
    },
    "observee": {
     "H": 0.4418604651162791,
@@ -502,28 +502,28 @@
    "nom": "Italie Serie A",
    "matchs": 120,
    "precision": 0.6083333333333333,
-   "brier": 0.5075898227920674,
-   "log_loss": 0.8764884654260573,
+   "brier": 0.5075898227920675,
+   "log_loss": 0.8764884654260569,
    "log_loss_elo": 0.8897332440027093,
    "log_loss_reference": 1.0489072659973424,
-   "competence": 0.1643794510350184,
+   "competence": 0.16437945103501872,
    "competence_elo": 0.15175223506844926,
    "ecart_reference": {
-    "moyenne": 0.17241880057128503,
-    "bas": 0.09734167632396115,
-    "haut": 0.2474959248186089,
+    "moyenne": 0.17241880057128559,
+    "bas": 0.09734167632396136,
+    "haut": 0.24749592481860982,
     "matchs": 120
    },
    "ecart_elo": {
-    "moyenne": 0.013244778576651874,
-    "bas": -0.012687252049562822,
-    "haut": 0.03917680920286657,
+    "moyenne": 0.013244778576652431,
+    "bas": -0.012687252049562508,
+    "haut": 0.03917680920286737,
     "matchs": 120
    },
    "prevue": {
-    "H": 0.4281541355858834,
-    "D": 0.24907861786210447,
-    "A": 0.3227672465520121
+    "H": 0.42815413558588405,
+    "D": 0.24907861786210234,
+    "A": 0.32276724655201355
    },
    "observee": {
     "H": 0.475,
@@ -536,28 +536,28 @@
    "nom": "France L2",
    "matchs": 117,
    "precision": 0.4358974358974359,
-   "brier": 0.6380433163358714,
-   "log_loss": 1.057542161173335,
+   "brier": 0.6380433163358683,
+   "log_loss": 1.05754216117333,
    "log_loss_elo": 1.0773432927197122,
    "log_loss_reference": 1.0792608793502274,
-   "competence": 0.020123696311468375,
+   "competence": 0.02012369631147315,
    "competence_elo": 0.001776759138781836,
    "ecart_reference": {
-    "moyenne": 0.021718718176892332,
-    "bas": -0.029805075113817095,
-    "haut": 0.07324251146760176,
+    "moyenne": 0.021718718176897505,
+    "bas": -0.02980507511381202,
+    "haut": 0.07324251146760703,
     "matchs": 117
    },
    "ecart_elo": {
-    "moyenne": 0.019801131546377172,
-    "bas": -0.0009060580465199766,
-    "haut": 0.04050832113927432,
+    "moyenne": 0.019801131546382345,
+    "bas": -0.0009060580465149355,
+    "haut": 0.04050832113927963,
     "matchs": 117
    },
    "prevue": {
-    "H": 0.4206552058223155,
-    "D": 0.2785405975211844,
-    "A": 0.30080419665650016
+    "H": 0.42065520582231697,
+    "D": 0.2785405975211831,
+    "A": 0.3008041966565
    },
    "observee": {
     "H": 0.4188034188034188,
@@ -570,28 +570,28 @@
    "nom": "Pays-Bas Eredivisie",
    "matchs": 117,
    "precision": 0.5213675213675214,
-   "brier": 0.594340578783179,
-   "log_loss": 0.9998886825706143,
+   "brier": 0.5943405787831786,
+   "log_loss": 0.9998886825706141,
    "log_loss_elo": 1.0203620061486238,
    "log_loss_reference": 1.113461657558938,
-   "competence": 0.10199989754232919,
+   "competence": 0.1019998975423293,
    "competence_elo": 0.08361280406764815,
    "ecart_reference": {
-    "moyenne": 0.11357297498832385,
-    "bas": 0.008280418769654171,
-    "haut": 0.21886553120699354,
+    "moyenne": 0.11357297498832393,
+    "bas": 0.00828041876965381,
+    "haut": 0.21886553120699404,
     "matchs": 117
    },
    "ecart_elo": {
-    "moyenne": 0.02047332357800952,
-    "bas": -0.012033577568698588,
-    "haut": 0.052980224724717626,
+    "moyenne": 0.02047332357800959,
+    "bas": -0.012033577568699192,
+    "haut": 0.052980224724718375,
     "matchs": 117
    },
    "prevue": {
-    "H": 0.4410555894133793,
-    "D": 0.21522743083001047,
-    "A": 0.34371697975661025
+    "H": 0.44105558941337897,
+    "D": 0.21522743083000898,
+    "A": 0.3437169797566121
    },
    "observee": {
     "H": 0.3333333333333333,
@@ -604,28 +604,28 @@
    "nom": "Angleterre PL",
    "matchs": 110,
    "precision": 0.4636363636363636,
-   "brier": 0.6195900085576915,
-   "log_loss": 1.0283467256376324,
+   "brier": 0.6195900085576863,
+   "log_loss": 1.0283467256376233,
    "log_loss_elo": 1.0294348802620066,
    "log_loss_reference": 1.0756432278800476,
-   "competence": 0.043970436494664145,
+   "competence": 0.04397043649467258,
    "competence_elo": 0.04295880494605231,
    "ecart_reference": {
-    "moyenne": 0.04729650224241519,
-    "bas": -0.020791097287450933,
-    "haut": 0.11538410177228131,
+    "moyenne": 0.04729650224242433,
+    "bas": -0.0207910972874406,
+    "haut": 0.11538410177228925,
     "matchs": 110
    },
    "ecart_elo": {
-    "moyenne": 0.0010881546243741863,
-    "bas": -0.023390442526878552,
-    "haut": 0.025566751775626922,
+    "moyenne": 0.0010881546243833255,
+    "bas": -0.02339044252686935,
+    "haut": 0.025566751775636,
     "matchs": 110
    },
    "prevue": {
-    "H": 0.4339035267060535,
-    "D": 0.25386098923327816,
-    "A": 0.31223548406066837
+    "H": 0.43390352670605264,
+    "D": 0.2538609892332772,
+    "A": 0.3122354840606702
    },
    "observee": {
     "H": 0.43636363636363634,
@@ -638,28 +638,28 @@
    "nom": "Belgique Pro League",
    "matchs": 108,
    "precision": 0.6111111111111112,
-   "brier": 0.5282677603060212,
-   "log_loss": 0.9019046071501522,
+   "brier": 0.5282677603060218,
+   "log_loss": 0.9019046071501534,
    "log_loss_elo": 0.8865521116804911,
    "log_loss_reference": 1.0368813165252821,
-   "competence": 0.13017565966706168,
+   "competence": 0.13017565966706046,
    "competence_elo": 0.14498207504457972,
    "ecart_reference": {
-    "moyenne": 0.13497670937512996,
-    "bas": 0.0559048257507348,
-    "haut": 0.2140485929995251,
+    "moyenne": 0.13497670937512882,
+    "bas": 0.05590482575073431,
+    "haut": 0.21404859299952333,
     "matchs": 108
    },
    "ecart_elo": {
-    "moyenne": -0.015352495469661184,
-    "bas": -0.041327838957004995,
-    "haut": 0.010622848017682625,
+    "moyenne": -0.015352495469662306,
+    "bas": -0.04132783895700538,
+    "haut": 0.010622848017680767,
     "matchs": 108
    },
    "prevue": {
-    "H": 0.43219836949296947,
-    "D": 0.2426260779390945,
-    "A": 0.32517555256793607
+    "H": 0.43219836949296925,
+    "D": 0.2426260779390962,
+    "A": 0.32517555256793457
    },
    "observee": {
     "H": 0.5092592592592593,
@@ -672,28 +672,28 @@
    "nom": "Allemagne 2. Bundesliga",
    "matchs": 108,
    "precision": 0.4351851851851852,
-   "brier": 0.6378283219332703,
-   "log_loss": 1.0579923860237064,
+   "brier": 0.6378283219332721,
+   "log_loss": 1.0579923860237086,
    "log_loss_elo": 1.054242403545352,
    "log_loss_reference": 1.0613577566662882,
-   "competence": 0.0031708164579230536,
+   "competence": 0.003170816457921055,
    "competence_elo": 0.0067040101005013675,
    "ecart_reference": {
-    "moyenne": 0.003365370642581662,
-    "bas": -0.04292992149457735,
-    "haut": 0.04966066277974067,
+    "moyenne": 0.0033653706425795064,
+    "bas": -0.04292992149458014,
+    "haut": 0.04966066277973914,
     "matchs": 108
    },
    "ecart_elo": {
-    "moyenne": -0.003749982478354519,
-    "bas": -0.027571927179958097,
-    "haut": 0.02007196222324906,
+    "moyenne": -0.0037499824783566752,
+    "bas": -0.02757192717996076,
+    "haut": 0.02007196222324741,
     "matchs": 108
    },
    "prevue": {
-    "H": 0.43671804288250077,
-    "D": 0.2645535691240943,
-    "A": 0.29872838799340495
+    "H": 0.43671804288250166,
+    "D": 0.26455356912409417,
+    "A": 0.2987283879934041
    },
    "observee": {
     "H": 0.4722222222222222,
@@ -706,28 +706,28 @@
    "nom": "Turquie Super Lig",
    "matchs": 108,
    "precision": 0.5555555555555556,
-   "brier": 0.5572012157981993,
-   "log_loss": 0.9481921964516948,
+   "brier": 0.5572012157982056,
+   "log_loss": 0.948192196451705,
    "log_loss_elo": 0.9630404893426648,
    "log_loss_reference": 1.0441504527285377,
-   "competence": 0.09190079458959965,
+   "competence": 0.09190079458958988,
    "competence_elo": 0.07768034115573963,
    "ecart_reference": {
-    "moyenne": 0.0959582562768429,
-    "bas": 0.01646181990922034,
-    "haut": 0.17545469264446545,
+    "moyenne": 0.09595825627683263,
+    "bas": 0.016461819909208864,
+    "haut": 0.1754546926444564,
     "matchs": 108
    },
    "ecart_elo": {
-    "moyenne": 0.014848292890969925,
-    "bas": -0.00622773422026994,
-    "haut": 0.03592432000220979,
+    "moyenne": 0.014848292890959677,
+    "bas": -0.006227734220279644,
+    "haut": 0.035924320002199,
     "matchs": 108
    },
    "prevue": {
-    "H": 0.43697241077544635,
-    "D": 0.25638083080773333,
-    "A": 0.30664675841682026
+    "H": 0.43697241077544746,
+    "D": 0.2563808308077319,
+    "A": 0.3066467584168206
    },
    "observee": {
     "H": 0.48148148148148145,
@@ -740,28 +740,28 @@
    "nom": "France L1",
    "matchs": 99,
    "precision": 0.5050505050505051,
-   "brier": 0.5875017449160785,
-   "log_loss": 0.9885490052988615,
+   "brier": 0.5875017449160781,
+   "log_loss": 0.988549005298861,
    "log_loss_elo": 0.9904625709742663,
    "log_loss_reference": 1.0676430420757501,
-   "competence": 0.07408284759961636,
+   "competence": 0.07408284759961681,
    "competence_elo": 0.07229052038912442,
    "ecart_reference": {
-    "moyenne": 0.07909403677688853,
-    "bas": 0.003605942349838173,
-    "haut": 0.15458213120393888,
+    "moyenne": 0.07909403677688898,
+    "bas": 0.0036059423498391308,
+    "haut": 0.15458213120393882,
     "matchs": 99
    },
    "ecart_elo": {
-    "moyenne": 0.001913565675404823,
-    "bas": -0.02045051005239769,
-    "haut": 0.02427764140320733,
+    "moyenne": 0.001913565675405261,
+    "bas": -0.02045051005239623,
+    "haut": 0.024277641403206755,
     "matchs": 99
    },
    "prevue": {
-    "H": 0.4280047764475977,
-    "D": 0.2550213886153385,
-    "A": 0.3169738349370638
+    "H": 0.42800477644759766,
+    "D": 0.25502138861533846,
+    "A": 0.31697383493706394
    },
    "observee": {
     "H": 0.4444444444444444,
@@ -774,28 +774,28 @@
    "nom": "Portugal Liga",
    "matchs": 98,
    "precision": 0.5510204081632653,
-   "brier": 0.5376544929349926,
-   "log_loss": 0.9146429098215474,
+   "brier": 0.5376544929349912,
+   "log_loss": 0.9146429098215461,
    "log_loss_elo": 0.9089767433686065,
    "log_loss_reference": 1.0820504933465485,
-   "competence": 0.15471328237857507,
+   "competence": 0.1547132823785764,
    "competence_elo": 0.15994979073727167,
    "ecart_reference": {
-    "moyenne": 0.16740758352500118,
-    "bas": 0.07058522037948799,
-    "haut": 0.26422994667051436,
+    "moyenne": 0.16740758352500254,
+    "bas": 0.07058522037948853,
+    "haut": 0.2642299466705166,
     "matchs": 98
    },
    "ecart_elo": {
-    "moyenne": -0.0056661664529409845,
-    "bas": -0.025159067676876548,
-    "haut": 0.013826734770994581,
+    "moyenne": -0.00566616645293963,
+    "bas": -0.025159067676873603,
+    "haut": 0.013826734770994342,
     "matchs": 98
    },
    "prevue": {
-    "H": 0.42679810331314416,
-    "D": 0.24780040165403464,
-    "A": 0.3254014950328212
+    "H": 0.4267981033131488,
+    "D": 0.24780040165403305,
+    "A": 0.3254014950328181
    },
    "observee": {
     "H": 0.3979591836734694,
@@ -808,28 +808,28 @@
    "nom": "Allemagne Bundesliga",
    "matchs": 90,
    "precision": 0.5444444444444444,
-   "brier": 0.5693031272139456,
-   "log_loss": 0.9572524937661813,
+   "brier": 0.5693031272139464,
+   "log_loss": 0.9572524937661833,
    "log_loss_elo": 0.949436050181095,
    "log_loss_reference": 1.0435432829250597,
-   "competence": 0.08269018695324715,
+   "competence": 0.08269018695324526,
    "competence_elo": 0.0901804786478827,
    "ecart_reference": {
-    "moyenne": 0.08629078915887856,
-    "bas": -0.009028528873150421,
-    "haut": 0.18161010719090753,
+    "moyenne": 0.08629078915887657,
+    "bas": -0.009028528873154792,
+    "haut": 0.18161010719090792,
     "matchs": 90
    },
    "ecart_elo": {
-    "moyenne": -0.007816443585086265,
-    "bas": -0.036272368017469005,
-    "haut": 0.020639480847296478,
+    "moyenne": -0.007816443585088251,
+    "bas": -0.03627236801747204,
+    "haut": 0.020639480847295538,
     "matchs": 90
    },
    "prevue": {
-    "H": 0.43817280311778495,
-    "D": 0.23137318040434335,
-    "A": 0.3304540164778717
+    "H": 0.4381728031177868,
+    "D": 0.23137318040434024,
+    "A": 0.3304540164778729
    },
    "observee": {
     "H": 0.5,
@@ -842,28 +842,28 @@
    "nom": "Écosse Premiership",
    "matchs": 83,
    "precision": 0.46987951807228917,
-   "brier": 0.5787490795517188,
-   "log_loss": 0.9786938087630883,
+   "brier": 0.5787490795517203,
+   "log_loss": 0.9786938087630906,
    "log_loss_elo": 0.9860109741729849,
    "log_loss_reference": 1.0730683142469608,
-   "competence": 0.08794827340522215,
+   "competence": 0.08794827340521993,
    "competence_elo": 0.08112935487715855,
    "ecart_reference": {
-    "moyenne": 0.09437450548387256,
-    "bas": -0.013224340114634359,
-    "haut": 0.2019733510823795,
+    "moyenne": 0.09437450548387016,
+    "bas": -0.013224340114636857,
+    "haut": 0.20197335108237718,
     "matchs": 83
    },
    "ecart_elo": {
-    "moyenne": 0.007317165409896526,
-    "bas": -0.024442683812176035,
-    "haut": 0.03907701463196909,
+    "moyenne": 0.007317165409894126,
+    "bas": -0.02444268381217872,
+    "haut": 0.03907701463196697,
     "matchs": 83
    },
    "prevue": {
-    "H": 0.4474374140110528,
-    "D": 0.23508830430066727,
-    "A": 0.31747428168828
+    "H": 0.44743741401105186,
+    "D": 0.23508830430066735,
+    "A": 0.3174742816882808
    },
    "observee": {
     "H": 0.42168674698795183,
@@ -876,28 +876,28 @@
    "nom": "Grèce Super League",
    "matchs": 76,
    "precision": 0.6578947368421053,
-   "brier": 0.49600552503344686,
-   "log_loss": 0.8600876344585332,
+   "brier": 0.49600552503344536,
+   "log_loss": 0.8600876344585308,
    "log_loss_elo": 0.84836263291054,
    "log_loss_reference": 1.048608556587384,
-   "competence": 0.17978197960006892,
+   "competence": 0.17978197960007125,
    "competence_elo": 0.19096346526918384,
    "ecart_reference": {
-    "moyenne": 0.18852092212885074,
-    "bas": 0.08772948277754868,
-    "haut": 0.2893123614801528,
+    "moyenne": 0.18852092212885327,
+    "bas": 0.08772948277755116,
+    "haut": 0.2893123614801554,
     "matchs": 76
    },
    "ecart_elo": {
-    "moyenne": -0.011725001547993313,
-    "bas": -0.04114151872482494,
-    "haut": 0.017691515628838313,
+    "moyenne": -0.011725001547990777,
+    "bas": -0.04114151872482273,
+    "haut": 0.017691515628841175,
     "matchs": 76
    },
    "prevue": {
-    "H": 0.4403007128626145,
-    "D": 0.25897873208912736,
-    "A": 0.3007205550482581
+    "H": 0.4403007128626147,
+    "D": 0.25897873208912664,
+    "A": 0.30072055504825856
    },
    "observee": {
     "H": 0.4868421052631579,
@@ -915,8 +915,8 @@
    "exterieur": "PSV Eindhoven",
    "prevu": "2",
    "reel": "1",
-   "proba_prevue": 0.8724130523103342,
-   "proba_reel": 0.027660068509127826,
+   "proba_prevue": 0.8724130523103352,
+   "proba_reel": 0.027660068509128107,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à l’extérieur de 690 points",
     "tirs cadrés concédés (domicile) : 6,46 par match, au-dessus de la moyenne",
@@ -940,7 +940,7 @@
    "prevu": "1",
    "reel": "2",
    "proba_prevue": 0.7951290979023506,
-   "proba_reel": 0.04639704118365972,
+   "proba_reel": 0.04639704118365974,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 487 points",
     "tirs cadrés concédés (visiteur) : 4,94 par match, au-dessus de la moyenne",
@@ -962,8 +962,8 @@
    "exterieur": "OFI Crete",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.7827247677326715,
-   "proba_reel": 0.047018089123016166,
+   "proba_prevue": 0.782724767732671,
+   "proba_reel": 0.04701808912301626,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 450 points",
     "corners obtenus (domicile) : 5,65 par match, au-dessus de la moyenne",
@@ -985,8 +985,8 @@
    "exterieur": "Excelsior",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.8344234165684675,
-   "proba_reel": 0.051507287321615705,
+   "proba_prevue": 0.8344234165684571,
+   "proba_reel": 0.05150728732161549,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 428 points",
     "tirs cadrés obtenus (domicile) : 6,68 par match, au-dessus de la moyenne",
@@ -1008,8 +1008,8 @@
    "exterieur": "Bolton",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.745244931453585,
-   "proba_reel": 0.07112499903063267,
+   "proba_prevue": 0.7452449314535851,
+   "proba_reel": 0.07112499903063269,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 443 points",
     "corners obtenus (domicile) : 5,94 par match, au-dessus de la moyenne",
@@ -1031,8 +1031,8 @@
    "exterieur": "Fenerbahce",
    "prevu": "2",
    "reel": "1",
-   "proba_prevue": 0.7362077616721224,
-   "proba_reel": 0.07600019629441856,
+   "proba_prevue": 0.7362077616721148,
+   "proba_reel": 0.0760001962944203,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à l’extérieur de 525 points",
     "corners obtenus (visiteur) : 6,36 par match, au-dessus de la moyenne",
@@ -1054,8 +1054,8 @@
    "exterieur": "Espanol",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.7451245026673102,
-   "proba_reel": 0.0801665341244788,
+   "proba_prevue": 0.7451245026673099,
+   "proba_reel": 0.08016653412447898,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 250 points",
     "corners obtenus (domicile) : 6,17 par match, au-dessus de la moyenne",
@@ -1077,8 +1077,8 @@
    "exterieur": "FC Koln",
    "prevu": "1",
    "reel": "N",
-   "proba_prevue": 0.8928596860058206,
-   "proba_reel": 0.08425404244761377,
+   "proba_prevue": 0.8928596860058207,
+   "proba_reel": 0.08425404244761374,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 598 points",
     "tirs cadrés obtenus (domicile) : 7,21 par match, au-dessus de la moyenne",
@@ -1100,8 +1100,8 @@
    "exterieur": "Celtic",
    "prevu": "2",
    "reel": "1",
-   "proba_prevue": 0.7390551615666425,
-   "proba_reel": 0.08684746416799219,
+   "proba_prevue": 0.7390551615666439,
+   "proba_reel": 0.08684746416799204,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à l’extérieur de 415 points",
     "corners obtenus (visiteur) : 7,37 par match, au-dessus de la moyenne",
@@ -1123,8 +1123,8 @@
    "exterieur": "Club Brugge",
    "prevu": "2",
    "reel": "1",
-   "proba_prevue": 0.697519271439201,
-   "proba_reel": 0.09361343381365721,
+   "proba_prevue": 0.6975192714392012,
+   "proba_reel": 0.09361343381365711,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à l’extérieur de 319 points",
     "tirs cadrés obtenus (visiteur) : 6,55 par match, au-dessus de la moyenne",
@@ -1148,8 +1148,8 @@
    "exterieur": "Kalamata",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.6841491276116749,
-   "proba_reel": 0.09458587401973176,
+   "proba_prevue": 0.6841491276116728,
+   "proba_reel": 0.09458587401973237,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 431 points",
     "victoires à domicile (équipe à domicile) : 70 %, au-dessus de la moyenne",
@@ -1172,8 +1172,8 @@
    "exterieur": "La Coruna",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.713097670274704,
-   "proba_reel": 0.09704718607433006,
+   "proba_prevue": 0.7130976702747363,
+   "proba_reel": 0.09704718607431444,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 354 points",
     "corners obtenus (domicile) : 5,45 par match, au-dessus de la moyenne",
@@ -1195,8 +1195,8 @@
    "exterieur": "Goztep",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.7038355306841372,
-   "proba_reel": 0.09828092849297895,
+   "proba_prevue": 0.7038355306841377,
+   "proba_reel": 0.09828092849297869,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 312 points",
     "tirs cadrés obtenus (domicile) : 5,75 par match, au-dessus de la moyenne",
@@ -1218,8 +1218,8 @@
    "exterieur": "M'gladbach",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.7114047610565595,
-   "proba_reel": 0.10348201712922055,
+   "proba_prevue": 0.7114047610565593,
+   "proba_reel": 0.1034820171292206,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 235 points",
     "tirs cadrés concédés (visiteur) : 6,05 par match, au-dessus de la moyenne",
@@ -1241,8 +1241,8 @@
    "exterieur": "Lorient",
    "prevu": "1",
    "reel": "2",
-   "proba_prevue": 0.713885828900642,
-   "proba_reel": 0.10622633863627655,
+   "proba_prevue": 0.713885828900606,
+   "proba_reel": 0.10622633863629644,
    "facteurs_pour_le_prevu": [
     "écart de niveau Elo : avantage Elo à domicile de 232 points",
     "tirs cadrés obtenus (domicile) : 5,74 par match, au-dessus de la moyenne",
@@ -6262,7 +6262,7 @@
    "de": 0.2,
    "a": 0.3,
    "matchs": 525,
-   "prevue": 0.25105897238617414,
+   "prevue": 0.2510589723861736,
    "observee": 0.29523809523809524,
    "sens": "sous-estime"
   },
@@ -6271,7 +6271,7 @@
    "de": 0.6,
    "a": 1.0,
    "matchs": 115,
-   "prevue": 0.6811558954094673,
+   "prevue": 0.6811558954094674,
    "observee": 0.8,
    "sens": "sous-estime"
   }
