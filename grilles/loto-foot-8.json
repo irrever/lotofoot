@@ -2,56 +2,6 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 163,
-   "nom": "Loto Foot 8 · grille N°163",
-   "cloture": "2026-11-25T18:40:00+01:00",
-   "validite": "mercredi 25 novembre 2026 à 18 h 40",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-163-2026.html",
-   "matchs": [
-    {
-     "domicile": "Paris SG",
-     "exterieur": "Roma",
-     "libelle": "Paris SG – AS Rome"
-    },
-    {
-     "domicile": "Lille",
-     "exterieur": "Bayern Munich",
-     "libelle": "Lille – Bayern Munich"
-    },
-    {
-     "domicile": "Club Brugge",
-     "exterieur": "Liverpool",
-     "libelle": "Club Bruges – Liverpool"
-    },
-    {
-     "domicile": "Inter",
-     "exterieur": "Stuttgart",
-     "libelle": "Inter Milan – Stuttgart"
-    },
-    {
-     "domicile": "Slavia Prague",
-     "exterieur": "Villarreal",
-     "libelle": "Slavia Prague – Villarreal"
-    },
-    {
-     "domicile": "Shakht.Donetsk",
-     "exterieur": "Fenerbahce",
-     "libelle": "Shakht.Donetsk – Fenerbahce"
-    },
-    {
-     "domicile": "Sabah FK",
-     "exterieur": "Barcelona",
-     "libelle": "Sabah FK – FC Barcelone"
-    },
-    {
-     "domicile": "Sp Lisbon",
-     "exterieur": "Man United",
-     "libelle": "Sporting – Man. United"
-    }
-   ]
-  },
-  {
    "numero": 164,
    "nom": "Loto Foot 8 · grille N°164",
    "cloture": "2026-11-27T20:25:00+01:00",
@@ -98,6 +48,56 @@
      "domicile": "Venezia FC",
      "exterieur": "Bologna",
      "libelle": "Venezia FC – Bologne"
+    }
+   ]
+  },
+  {
+   "numero": 165,
+   "nom": "Loto Foot 8 · grille N°165",
+   "cloture": "2026-11-28T17:10:00+01:00",
+   "validite": "samedi 28 novembre 2026 à 17 h 10",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-165-2026.html",
+   "matchs": [
+    {
+     "domicile": "Paris SG",
+     "exterieur": "Lorient",
+     "libelle": "Paris SG – Lorient"
+    },
+    {
+     "domicile": "Angers",
+     "exterieur": "Lens",
+     "libelle": "Angers – Lens"
+    },
+    {
+     "domicile": "Le Mans",
+     "exterieur": "Lille",
+     "libelle": "Le Mans – Lille"
+    },
+    {
+     "domicile": "Le Havre",
+     "exterieur": "Strasbourg",
+     "libelle": "Le Havre – Strasbourg"
+    },
+    {
+     "domicile": "Nice",
+     "exterieur": "Troyes",
+     "libelle": "Nice – Troyes"
+    },
+    {
+     "domicile": "Stuttgart",
+     "exterieur": "Ein.Francfort",
+     "libelle": "Stuttgart – Ein.Francfort"
+    },
+    {
+     "domicile": "Ipswich",
+     "exterieur": "Aston Villa",
+     "libelle": "Ipswich – Aston Villa"
+    },
+    {
+     "domicile": "Elche",
+     "exterieur": "Ath Madrid",
+     "libelle": "Elche – Atl. Madrid"
     }
    ]
   }
