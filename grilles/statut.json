@@ -1,21 +1,44 @@
 {
- "verifie_le": "2026-11-27T01:50:28Z",
+ "verifie_le": "2026-11-27T16:52:41Z",
  "formats": {
   "7": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    149
+   ],
+   "equipes_inconnues": [],
+   "erreur": null
   },
   "8": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    164,
+    165
+   ],
+   "equipes_inconnues": [
+    "Cs Maritimo",
+    "CD Nacional",
+    "CD Leganes",
+    "Venezia FC",
+    "Ein.Francfort"
+   ],
+   "erreur": null
   },
   "12": {
-   "ok": false,
-   "erreur": "The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    104
+   ],
+   "equipes_inconnues": [],
+   "erreur": null
   },
   "15": {
-   "ok": false,
-   "erreur": "grille 98 : The read operation timed out"
+   "ok": true,
+   "grilles_ouvertes": [
+    98
+   ],
+   "equipes_inconnues": [],
+   "erreur": null
   }
  }
 }
