@@ -1,5 +1,5 @@
 {
- "date": "2026-11-26",
+ "date": "2026-11-27",
  "source": "foot-actu.com",
  "regles": {
   "buteur": -10,
@@ -173,7 +173,7 @@
     "malus": -10
    },
    "Sunderland": {
-    "absents": 5,
+    "absents": 6,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -182,7 +182,7 @@
     "malus": -10
    },
    "Tottenham": {
-    "absents": 6,
+    "absents": 7,
     "buteur": false,
     "passeur": false,
     "meme_joueur": false,
@@ -359,7 +359,7 @@
  "suivi": {
   "E0": {
    "blessures_clubs": 20,
-   "blessures_joueurs": 100,
+   "blessures_joueurs": 102,
    "buteurs": 20,
    "passeurs": 20
   },
