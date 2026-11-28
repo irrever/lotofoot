@@ -1,12 +1,19 @@
 {
- "verifie_le": "2026-11-28T01:33:24Z",
+ "verifie_le": "2026-11-28T15:43:40Z",
  "formats": {
   "7": {
    "ok": true,
    "grilles_ouvertes": [
-    149
+    149,
+    150
    ],
-   "equipes_inconnues": [],
+   "equipes_inconnues": [
+    "Boca Juniors",
+    "Ca Platense",
+    "Hertha Berlin",
+    "Sv Darmstadt",
+    "Dynamo Dresden"
+   ],
    "erreur": null
   },
   "8": {
@@ -15,29 +22,35 @@
     165,
     166
    ],
-   "equipes_inconnues": [
-    "Ein.Francfort",
-    "US Catanzaro",
-    "Braga",
-    "Real Oviedo",
-    "Celta Fortuna"
-   ],
+   "equipes_inconnues": [],
    "erreur": null
   },
   "12": {
    "ok": true,
    "grilles_ouvertes": [
-    104
+    104,
+    105
    ],
-   "equipes_inconnues": [],
+   "equipes_inconnues": [
+    "Leeds Utd",
+    "US Cremonese"
+   ],
    "erreur": null
   },
   "15": {
    "ok": true,
    "grilles_ouvertes": [
-    98
+    98,
+    99
    ],
-   "equipes_inconnues": [],
+   "equipes_inconnues": [
+    "Boca Juniors",
+    "Ca Platense",
+    "Hertha Berlin",
+    "Sv Darmstadt",
+    "Dynamo Dresden",
+    "Leeds Utd"
+   ],
    "erreur": null
   }
  }

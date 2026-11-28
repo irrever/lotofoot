@@ -45,6 +45,51 @@
      "libelle": "Dortmund – Leverkusen"
     }
    ]
+  },
+  {
+   "numero": 150,
+   "nom": "Loto Foot 7 · grille N°150",
+   "cloture": "2026-12-01T17:55:00+01:00",
+   "validite": "mardi 1 décembre 2026 à 17 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-7/numero-7-150-2026.html",
+   "matchs": [
+    {
+     "domicile": "Inter",
+     "exterieur": "Genoa",
+     "libelle": "Inter Milan – Genoa"
+    },
+    {
+     "domicile": "Coventry",
+     "exterieur": "Ipswich",
+     "libelle": "Coventry – Ipswich"
+    },
+    {
+     "domicile": "Boca Juniors",
+     "exterieur": "Ca Platense",
+     "libelle": "Boca Juniors – Ca Platense"
+    },
+    {
+     "domicile": "Bayern Munich",
+     "exterieur": "Hertha Berlin",
+     "libelle": "Bayern Munich – Hertha Berlin"
+    },
+    {
+     "domicile": "M'gladbach",
+     "exterieur": "Sv Darmstadt",
+     "libelle": "M'gladbach – Sv Darmstadt"
+    },
+    {
+     "domicile": "Holstein Kiel",
+     "exterieur": "FC Koln",
+     "libelle": "Holstein Kiel – Cologne"
+    },
+    {
+     "domicile": "Stuttgart",
+     "exterieur": "Dynamo Dresden",
+     "libelle": "Stuttgart – Dynamo Dresden"
+    }
+   ]
   }
  ]
 }

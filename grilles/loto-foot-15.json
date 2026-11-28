@@ -85,6 +85,91 @@
      "libelle": "La Corogne – FC Barcelone"
     }
    ]
+  },
+  {
+   "numero": 99,
+   "nom": "Loto Foot 15 · grille N°99",
+   "cloture": "2026-12-01T17:55:00+01:00",
+   "validite": "mardi 1 décembre 2026 à 17 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-15/numero-15-99-2026.html",
+   "matchs": [
+    {
+     "domicile": "Inter",
+     "exterieur": "Genoa",
+     "libelle": "Inter Milan – Genoa"
+    },
+    {
+     "domicile": "Coventry",
+     "exterieur": "Ipswich",
+     "libelle": "Coventry – Ipswich"
+    },
+    {
+     "domicile": "Boca Juniors",
+     "exterieur": "Ca Platense",
+     "libelle": "Boca Juniors – Ca Platense"
+    },
+    {
+     "domicile": "Bayern Munich",
+     "exterieur": "Hertha Berlin",
+     "libelle": "Bayern Munich – Hertha Berlin"
+    },
+    {
+     "domicile": "M'gladbach",
+     "exterieur": "Sv Darmstadt",
+     "libelle": "M'gladbach – Sv Darmstadt"
+    },
+    {
+     "domicile": "Holstein Kiel",
+     "exterieur": "FC Koln",
+     "libelle": "Holstein Kiel – Cologne"
+    },
+    {
+     "domicile": "Stuttgart",
+     "exterieur": "Dynamo Dresden",
+     "libelle": "Stuttgart – Dynamo Dresden"
+    },
+    {
+     "domicile": "Ein Frankfurt",
+     "exterieur": "Dortmund",
+     "libelle": "Ein.Francfort – Dortmund"
+    },
+    {
+     "domicile": "Leverkusen",
+     "exterieur": "RB Leipzig",
+     "libelle": "Leverkusen – RB Leipzig"
+    },
+    {
+     "domicile": "Kaiserslautern",
+     "exterieur": "Freiburg",
+     "libelle": "Kaiserslautern – Fribourg"
+    },
+    {
+     "domicile": "Man City",
+     "exterieur": "Leeds Utd",
+     "libelle": "Man. City – Leeds Utd"
+    },
+    {
+     "domicile": "Liverpool",
+     "exterieur": "Sunderland",
+     "libelle": "Liverpool – Sunderland"
+    },
+    {
+     "domicile": "Brentford",
+     "exterieur": "Arsenal",
+     "libelle": "Brentford – Arsenal"
+    },
+    {
+     "domicile": "Sociedad",
+     "exterieur": "Real Madrid",
+     "libelle": "Real Sociedad – Real Madrid"
+    },
+    {
+     "domicile": "Barcelona",
+     "exterieur": "Ath Madrid",
+     "libelle": "FC Barcelone – Atl. Madrid"
+    }
+   ]
   }
  ]
 }

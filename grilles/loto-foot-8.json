@@ -36,7 +36,7 @@
     },
     {
      "domicile": "Stuttgart",
-     "exterieur": "Ein.Francfort",
+     "exterieur": "Ein Frankfurt",
      "libelle": "Stuttgart – Ein.Francfort"
     },
     {
@@ -70,7 +70,7 @@
      "libelle": "Lecce – Atalanta"
     },
     {
-     "domicile": "US Catanzaro",
+     "domicile": "Catanzaro",
      "exterieur": "Avellino",
      "libelle": "US Catanzaro – Avellino"
     },
@@ -81,7 +81,7 @@
     },
     {
      "domicile": "Casa Pia",
-     "exterieur": "Braga",
+     "exterieur": "Sp Braga",
      "libelle": "Casa Pia – Braga"
     },
     {
@@ -90,8 +90,8 @@
      "libelle": "Besiktas – Galatasaray"
     },
     {
-     "domicile": "Real Oviedo",
-     "exterieur": "Celta Fortuna",
+     "domicile": "Oviedo",
+     "exterieur": "Celta B",
      "libelle": "Real Oviedo – Celta Fortuna"
     },
     {

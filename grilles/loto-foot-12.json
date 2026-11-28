@@ -70,6 +70,76 @@
      "libelle": "Arsenal – Man. City"
     }
    ]
+  },
+  {
+   "numero": 105,
+   "nom": "Loto Foot 12 · grille N°105",
+   "cloture": "2026-12-02T18:55:00+01:00",
+   "validite": "mercredi 2 décembre 2026 à 18 h 55",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-12/numero-12-105-2026.html",
+   "matchs": [
+    {
+     "domicile": "Barcelona",
+     "exterieur": "Ath Madrid",
+     "libelle": "FC Barcelone – Atl. Madrid"
+    },
+    {
+     "domicile": "Brentford",
+     "exterieur": "Arsenal",
+     "libelle": "Brentford – Arsenal"
+    },
+    {
+     "domicile": "Newcastle",
+     "exterieur": "Man United",
+     "libelle": "Newcastle – Man. United"
+    },
+    {
+     "domicile": "Liverpool",
+     "exterieur": "Sunderland",
+     "libelle": "Liverpool – Sunderland"
+    },
+    {
+     "domicile": "Man City",
+     "exterieur": "Leeds Utd",
+     "libelle": "Man. City – Leeds Utd"
+    },
+    {
+     "domicile": "Chelsea",
+     "exterieur": "Crystal Palace",
+     "libelle": "Chelsea – Crystal Palace"
+    },
+    {
+     "domicile": "Bournemouth",
+     "exterieur": "Brighton",
+     "libelle": "Bournemouth – Brighton Hove"
+    },
+    {
+     "domicile": "Ein Frankfurt",
+     "exterieur": "Dortmund",
+     "libelle": "Ein.Francfort – Dortmund"
+    },
+    {
+     "domicile": "Hull",
+     "exterieur": "Nott'm Forest",
+     "libelle": "Hull City – Nottingham F."
+    },
+    {
+     "domicile": "Aston Villa",
+     "exterieur": "Everton",
+     "libelle": "Aston Villa – Everton"
+    },
+    {
+     "domicile": "Como",
+     "exterieur": "US Cremonese",
+     "libelle": "Como 1907 – US Cremonese"
+    },
+    {
+     "domicile": "Sociedad",
+     "exterieur": "Real Madrid",
+     "libelle": "Real Sociedad – Real Madrid"
+    }
+   ]
   }
  ]
 }
