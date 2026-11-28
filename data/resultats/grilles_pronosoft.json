@@ -1,5 +1,5 @@
 {
- "maj": "2026-11-27",
+ "maj": "2026-11-28",
  "source": "Pronosoft, Loto Foot, résultats et rapports",
  "grilles": {
   "8-152": {
@@ -2242,7 +2242,7 @@
   },
   "8-163": {
    "libelle": "Loto Foot 8 n163",
-   "maj": "2026-11-27",
+   "maj": "2026-11-28",
    "matchs": [
     {
      "domicile": "Paris SG",
@@ -2296,7 +2296,7 @@
   },
   "15-97": {
    "libelle": "Loto Foot 15 n97",
-   "maj": "2026-11-27",
+   "maj": "2026-11-28",
    "matchs": [
     {
      "domicile": "RB Leipzig",
@@ -2392,7 +2392,7 @@
   },
   "7-148": {
    "libelle": "Loto Foot 7 n148",
-   "maj": "2026-11-27",
+   "maj": "2026-11-28",
    "matchs": [
     {
      "domicile": "Lyon",
@@ -2440,7 +2440,7 @@
   },
   "12-103": {
    "libelle": "Loto Foot 12 n103",
-   "maj": "2026-11-27",
+   "maj": "2026-11-28",
    "matchs": [
     {
      "domicile": "Lyon",
@@ -2513,6 +2513,60 @@
      "exterieur": "Levski Sofia",
      "score": "1-0",
      "issue": "1"
+    }
+   ]
+  },
+  "8-164": {
+   "libelle": "Loto Foot 8 n164",
+   "maj": "2026-11-28",
+   "matchs": [
+    {
+     "domicile": "Brest",
+     "exterieur": "Paris FC",
+     "score": "1-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "Nottingham F.",
+     "exterieur": "Chelsea",
+     "score": "3-2",
+     "issue": "1"
+    },
+    {
+     "domicile": "Southampton",
+     "exterieur": "Middlesbrough",
+     "score": "2-0",
+     "issue": "1"
+    },
+    {
+     "domicile": "CS Maritimo",
+     "exterieur": "CD Nacional",
+     "score": "1-2",
+     "issue": "2"
+    },
+    {
+     "domicile": "Werder Brme",
+     "exterieur": "M'Gladbach",
+     "score": "3-3",
+     "issue": "N"
+    },
+    {
+     "domicile": "CD Leganes",
+     "exterieur": "Sabadell",
+     "score": "0-0",
+     "issue": "N"
+    },
+    {
+     "domicile": "Levante",
+     "exterieur": "Santander",
+     "score": "1-3",
+     "issue": "2"
+    },
+    {
+     "domicile": "Venezia FC",
+     "exterieur": "Bologne",
+     "score": "0-0",
+     "issue": "N"
     }
    ]
   }
