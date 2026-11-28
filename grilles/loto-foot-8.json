@@ -2,56 +2,6 @@
  "format": 8,
  "grilles": [
   {
-   "numero": 164,
-   "nom": "Loto Foot 8 · grille N°164",
-   "cloture": "2026-11-27T20:25:00+01:00",
-   "validite": "vendredi 27 novembre 2026 à 20 h 25",
-   "source": "ruedesjoueurs.com",
-   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-164-2026.html",
-   "matchs": [
-    {
-     "domicile": "Brest",
-     "exterieur": "Paris FC",
-     "libelle": "Brest – Paris FC"
-    },
-    {
-     "domicile": "Nott'm Forest",
-     "exterieur": "Chelsea",
-     "libelle": "Nottingham F. – Chelsea"
-    },
-    {
-     "domicile": "Southampton",
-     "exterieur": "Middlesbrough",
-     "libelle": "Southampton – Middlesbrough"
-    },
-    {
-     "domicile": "Cs Maritimo",
-     "exterieur": "CD Nacional",
-     "libelle": "Cs Maritimo – CD Nacional"
-    },
-    {
-     "domicile": "Werder Bremen",
-     "exterieur": "M'gladbach",
-     "libelle": "Werder Brême – M'gladbach"
-    },
-    {
-     "domicile": "CD Leganes",
-     "exterieur": "Sabadell",
-     "libelle": "CD Leganes – Sabadell"
-    },
-    {
-     "domicile": "Levante",
-     "exterieur": "Santander",
-     "libelle": "Levante – Santander"
-    },
-    {
-     "domicile": "Venezia FC",
-     "exterieur": "Bologna",
-     "libelle": "Venezia FC – Bologne"
-    }
-   ]
-  },
-  {
    "numero": 165,
    "nom": "Loto Foot 8 · grille N°165",
    "cloture": "2026-11-28T17:10:00+01:00",
@@ -98,6 +48,56 @@
      "domicile": "Elche",
      "exterieur": "Ath Madrid",
      "libelle": "Elche – Atl. Madrid"
+    }
+   ]
+  },
+  {
+   "numero": 166,
+   "nom": "Loto Foot 8 · grille N°166",
+   "cloture": "2026-11-30T18:25:00+01:00",
+   "validite": "lundi 30 novembre 2026 à 18 h 25",
+   "source": "ruedesjoueurs.com",
+   "url": "https://www.ruedesjoueurs.com/paris-sportifs/lotofoot-8/numero-8-166-2026.html",
+   "matchs": [
+    {
+     "domicile": "Cagliari",
+     "exterieur": "Milan",
+     "libelle": "Cagliari – Milan AC"
+    },
+    {
+     "domicile": "Lecce",
+     "exterieur": "Atalanta",
+     "libelle": "Lecce – Atalanta"
+    },
+    {
+     "domicile": "US Catanzaro",
+     "exterieur": "Avellino",
+     "libelle": "US Catanzaro – Avellino"
+    },
+    {
+     "domicile": "Benfica",
+     "exterieur": "Famalicao",
+     "libelle": "Benfica – Famalicao"
+    },
+    {
+     "domicile": "Casa Pia",
+     "exterieur": "Braga",
+     "libelle": "Casa Pia – Braga"
+    },
+    {
+     "domicile": "Besiktas",
+     "exterieur": "Galatasaray",
+     "libelle": "Besiktas – Galatasaray"
+    },
+    {
+     "domicile": "Real Oviedo",
+     "exterieur": "Celta Fortuna",
+     "libelle": "Real Oviedo – Celta Fortuna"
+    },
+    {
+     "domicile": "Espanol",
+     "exterieur": "Getafe",
+     "libelle": "Espanyol – Getafe"
     }
    ]
   }

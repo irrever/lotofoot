@@ -1,5 +1,5 @@
 {
- "verifie_le": "2026-11-27T16:52:41Z",
+ "verifie_le": "2026-11-28T01:33:24Z",
  "formats": {
   "7": {
    "ok": true,
@@ -12,15 +12,15 @@
   "8": {
    "ok": true,
    "grilles_ouvertes": [
-    164,
-    165
+    165,
+    166
    ],
    "equipes_inconnues": [
-    "Cs Maritimo",
-    "CD Nacional",
-    "CD Leganes",
-    "Venezia FC",
-    "Ein.Francfort"
+    "Ein.Francfort",
+    "US Catanzaro",
+    "Braga",
+    "Real Oviedo",
+    "Celta Fortuna"
    ],
    "erreur": null
   },
